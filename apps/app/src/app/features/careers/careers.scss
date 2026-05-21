@@ -1,0 +1,172 @@
+// src/app/features/careers/careers.scss
+
+// Importar estilos reutilizables
+@use '../about-us/about-us.scss';
+// --- CORRECCIÓN: Se eliminó el bloque 'with' que causaba el error ---
+@use '../home/home.scss';
+
+.page-title {
+  text-align: center;
+}
+.page-subtitle {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 4rem;
+}
+
+// Reutilizar estilos de la intro de "About Us"
+.careers-intro {
+  @extend .about-intro;
+}
+.careers-intro__text {
+  // --- CORRECCIÓN: Se añadió !optional para evitar el error de compilación ---
+  @extend .about-intro__text !optional;
+}
+.careers-intro__image {
+  @extend .about-intro__image;
+}
+
+// Reutilizar estilos de "Core Values" para los beneficios
+.benefits-section {
+  @extend .core-values-section;
+}
+.benefits-grid {
+  @extend .core-values-grid;
+  grid-template-columns: repeat(4, 1fr); // Siempre 4 columnas en desktop
+
+  @media (max-width: 992px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+.benefit-card {
+  @extend .core-value-card;
+}
+.benefit-card__icon {
+  @extend .core-value-card__icon;
+}
+.benefit-card__title {
+  @extend .core-value-card__title;
+  font-size: 1.25rem; // Un poco más pequeño
+}
+.benefit-card__desc {
+  @extend .core-value-card__desc;
+}
+
+// Estilos para las posiciones abiertas
+.open-positions-section {
+  padding: 6rem 0 4rem;
+}
+
+.open-positions-header {
+  text-align: center;
+  max-width: 750px;
+  margin: 0 auto 4rem;
+}
+
+.positions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.job-card {
+  display: grid;
+  grid-template-columns: 1fr auto; // Contenido | Botón
+  gap: 2rem;
+  padding: 2rem;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-speed) ease;
+
+  &:hover {
+    border-color: var(--primary);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    transform: translateY(-5px);
+  }
+}
+
+.job-card__title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 1rem;
+}
+
+.job-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+
+  .meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+
+    lucide-icon {
+      width: 16px;
+      height: 16px;
+      color: var(--primary);
+    }
+  }
+}
+
+.job-card__desc {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+.job-card__cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  // Reutilizar el botón del hero pero más pequeño
+  .hero-slide__cta {
+    @extend .hero-slide__cta; // Heredar estilos
+    animation: none; // Sin animación de entrada
+    padding: 0.8rem 1.5rem;
+    font-size: 0.9rem;
+    text-transform: none; // Sin mayúsculas
+    gap: 0.5rem;
+    
+    lucide-icon {
+      width: 18px;
+    }
+  }
+}
+
+.no-positions {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  text-align: center;
+  padding: 3rem 0;
+  border: 1px dashed var(--border-color);
+  border-radius: var(--radius-md);
+}
+
+// Responsive para Job Card
+@media (max-width: 768px) {
+  .job-card {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    text-align: center;
+  }
+  .job-card__meta {
+    justify-content: center;
+  }
+  .job-card__cta {
+    .hero-slide__cta {
+      width: 100%; // Botón ancho completo
+    }
+  }
+}

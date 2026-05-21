@@ -1,0 +1,130 @@
+<!-- Hero -->
+<section class="trust-hero">
+  <div class="hero-glow"></div>
+  <div class="container">
+    <div class="hero-content">
+      <span class="section-eyebrow" jslAnimateOnScroll>{{ 'SECURITY_CENTER.EYEBROW' | translate }}</span>
+      <h1 class="hero-title" jslAnimateOnScroll>{{ 'SECURITY_CENTER.TITLE' | translate }}</h1>
+      <p class="hero-subtitle" jslAnimateOnScroll>{{ 'SECURITY_CENTER.SUBTITLE' | translate }}</p>
+    </div>
+  </div>
+</section>
+
+<!-- Security Pillars -->
+<section class="trust-pillars">
+  <div class="container">
+    <div class="section-header" jslAnimateOnScroll>
+      <span class="section-eyebrow">{{ 'SECURITY_CENTER.PILLARS_EYEBROW' | translate }}</span>
+      <h2 class="section-title">{{ 'SECURITY_CENTER.PILLARS_TITLE' | translate }}</h2>
+    </div>
+    <div class="pillars-grid">
+      @for (pillar of securityPillars; track pillar.key) {
+        <div class="pillar-card" jslAnimateOnScroll>
+          <div class="pillar-card__icon-wrapper">
+            <div class="pillar-card__icon">
+              <lucide-icon [name]="pillar.icon" [size]="28"></lucide-icon>
+            </div>
+          </div>
+          <div class="pillar-card__content">
+            <h3>{{ 'SECURITY_CENTER.' + pillar.key | translate }}</h3>
+            <p>{{ 'SECURITY_CENTER.' + pillar.key + '_DESC' | translate }}</p>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Certifications -->
+<section class="trust-certifications">
+  <div class="container">
+    <div class="certifications-card-wrapper" jslAnimateOnScroll>
+      <div class="section-header">
+        <span class="section-eyebrow">{{ 'SECURITY_CENTER.CERTS_EYEBROW' | translate }}</span>
+        <h2 class="section-title">{{ 'SECURITY_CENTER.CERTS_TITLE' | translate }}</h2>
+        <p class="section-subtitle">{{ 'SECURITY_CENTER.CERTS_SUBTITLE' | translate }}</p>
+      </div>
+      <div class="certifications-grid">
+        @for (cert of certifications; track cert.key) {
+          <div class="cert-card">
+            <div class="cert-card__icon">
+              <lucide-icon [name]="cert.icon" [size]="32"></lucide-icon>
+            </div>
+            <div class="cert-card__body">
+              <h3 class="cert-card__name">{{ 'SECURITY_CENTER.BADGE_' + cert.key | translate }}</h3>
+              <p class="cert-card__desc">{{ cert.desc | translate }}</p>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Data Practices -->
+<section class="trust-data">
+  <div class="container">
+    <div class="data-grid">
+      <div class="data-text" jslAnimateOnScroll>
+        <span class="section-eyebrow">{{ 'SECURITY_CENTER.DATA_EYEBROW' | translate }}</span>
+        <h2 class="section-title">{{ 'SECURITY_CENTER.DATA_TITLE' | translate }}</h2>
+        <div class="data-description">
+          <p>{{ 'SECURITY_CENTER.DATA_DESC_1' | translate }}</p>
+          <p>{{ 'SECURITY_CENTER.DATA_DESC_2' | translate }}</p>
+        </div>
+        <a [routerLink]="['/', currentLang, 'privacy-policy']" class="btn-outline">
+          {{ 'SECURITY_CENTER.READ_PRIVACY' | translate }}
+          <lucide-icon name="ArrowRight" [size]="18"></lucide-icon>
+        </a>
+      </div>
+      <div class="data-checklist-wrapper" jslAnimateOnScroll>
+        <ul class="data-checklist">
+          <li>
+            <div class="check-icon"><lucide-icon name="CheckCircle" [size]="20"></lucide-icon></div>
+            <span>{{ 'SECURITY_CENTER.DATA_POINT_1' | translate }}</span>
+          </li>
+          <li>
+            <div class="check-icon"><lucide-icon name="CheckCircle" [size]="20"></lucide-icon></div>
+            <span>{{ 'SECURITY_CENTER.DATA_POINT_2' | translate }}</span>
+          </li>
+          <li>
+            <div class="check-icon"><lucide-icon name="CheckCircle" [size]="20"></lucide-icon></div>
+            <span>{{ 'SECURITY_CENTER.DATA_POINT_3' | translate }}</span>
+          </li>
+          <li>
+            <div class="check-icon"><lucide-icon name="CheckCircle" [size]="20"></lucide-icon></div>
+            <span>{{ 'SECURITY_CENTER.DATA_POINT_4' | translate }}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Responsible Disclosure -->
+<section class="trust-disclosure">
+  <div class="container">
+    <div class="disclosure-card" jslAnimateOnScroll>
+      <div class="disclosure-card__icon">
+        <lucide-icon name="Shield" [size]="48"></lucide-icon>
+      </div>
+      <div class="disclosure-card__content">
+        <h2>{{ 'SECURITY_CENTER.DISCLOSURE_TITLE' | translate }}</h2>
+        <p>{{ 'SECURITY_CENTER.DISCLOSURE_DESC' | translate }}</p>
+      </div>
+      <div class="disclosure-card__actions">
+        <a href="mailto:security@jsl.technology" class="btn-primary">
+          <lucide-icon name="Mail" [size]="20"></lucide-icon>
+          security&#64;jsl.technology
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<jsl-cta-section
+  eyebrowKey="SECURITY_CENTER.CTA_EYEBROW"
+  titleKey="SECURITY_CENTER.CTA_TITLE"
+  subtitleKey="SECURITY_CENTER.CTA_SUBTITLE"
+  [ctaLink]="['/', currentLang, 'contact']">
+</jsl-cta-section>

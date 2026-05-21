@@ -1,0 +1,66 @@
+@use 'app/styles/variables' as *;
+
+.breadcrumbs {
+  padding: 16px 0;
+  margin-bottom: 24px;
+  font-size: 0.9rem;
+  color: #6b7280;
+
+  ol {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 8px;
+  }
+
+  li {
+    display: flex;
+    align-items: center;
+
+    &.separator {
+      color: #9ca3af;
+    }
+
+    a {
+      color: #6b7280;
+      text-decoration: none;
+      transition: color 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+
+      &:hover {
+        color: #111827; // Primary
+      }
+
+      &.home-link {
+         display: flex;
+         align-items: center;
+      }
+    }
+
+    &.active span {
+      color: #111827;
+      font-weight: 500;
+    }
+  }
+}
+
+// Dark mode
+:host-context(.dark) {
+  .breadcrumbs {
+    color: #9ca3af;
+
+    li.separator { color: #4b5563; }
+
+    li a {
+      color: #9ca3af;
+      &:hover { color: white; }
+    }
+
+    li.active span { color: white; }
+  }
+}

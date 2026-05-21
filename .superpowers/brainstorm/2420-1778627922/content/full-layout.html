@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Us — Full Layout Preview</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #111; color: #e0e0e0; font-family: 'Segoe UI', system-ui, sans-serif; padding: 16px; font-size: 13px; }
+  h1 { font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 4px; }
+  .meta { font-size: 11px; color: #666; margin-bottom: 20px; }
+
+  .page { background: #0a0a0f; border-radius: 12px; overflow: hidden; max-width: 760px; margin: 0 auto; border: 1px solid rgba(255,255,255,0.07); }
+
+  /* ── SECTION LABELS ── */
+  .section-label { font-size: 9px; letter-spacing: 3px; color: rgba(255,75,43,0.5); text-transform: uppercase; padding: 8px 20px 4px; font-weight: 600; }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 60px 40px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    background-image: linear-gradient(rgba(255,75,43,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,75,43,0.04) 1px,transparent 1px);
+    background-size: 32px 32px;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px; height: 200px;
+    background: radial-gradient(ellipse, rgba(255,75,43,0.13), transparent 70%);
+    pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(255,75,43,0.08); border: 1px solid rgba(255,75,43,0.2);
+    border-radius: 20px; padding: 5px 14px; margin-bottom: 20px;
+  }
+  .hero-badge .dot { width: 6px; height: 6px; background: #ff4b2b; border-radius: 50%; }
+  .hero-badge span { font-size: 10px; color: #ff4b2b; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; }
+  .hero h2 {
+    font-size: 36px; font-weight: 800; color: #f5f5f5;
+    line-height: 1.1; letter-spacing: -1px; margin-bottom: 14px;
+    position: relative;
+  }
+  .hero h2 em {
+    font-style: normal;
+    background: linear-gradient(90deg, #ff4b2b, #ff416c);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero p { font-size: 13px; color: #707070; max-width: 440px; margin: 0 auto; line-height: 1.7; position: relative; }
+
+  /* ── STATS BAND ── */
+  .stats { display: grid; grid-template-columns: repeat(4,1fr); border-top: 1px solid rgba(255,255,255,0.06); }
+  .stat-item { padding: 20px 16px; text-align: center; border-right: 1px solid rgba(255,255,255,0.06); }
+  .stat-item:last-child { border-right: none; }
+  .stat-num { font-size: 22px; font-weight: 800; background: linear-gradient(90deg,#ff4b2b,#ff416c); -webkit-background-clip:text; -webkit-text-fill-color:transparent; line-height: 1; margin-bottom: 4px; }
+  .stat-lbl { font-size: 9px; color: #555; letter-spacing: 2px; text-transform: uppercase; }
+
+  /* ── INTRO ── */
+  .intro { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-top: 1px solid rgba(255,255,255,0.06); }
+  .intro-text { padding: 36px 32px; }
+  .intro-eyebrow { font-size: 9px; color: #ff4b2b; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 12px; font-weight: 600; }
+  .intro-title { font-size: 18px; font-weight: 700; color: #f5f5f5; line-height: 1.3; margin-bottom: 12px; letter-spacing: -0.3px; }
+  .intro-body { font-size: 12px; color: #808080; line-height: 1.7; margin-bottom: 8px; }
+  .intro-cta {
+    display: inline-flex; align-items: center; gap: 6px; margin-top: 16px;
+    background: rgba(255,75,43,0.1); border: 1px solid rgba(255,75,43,0.25);
+    border-radius: 6px; padding: 8px 14px;
+  }
+  .intro-cta span { font-size: 11px; color: #ff4b2b; font-weight: 600; }
+  .intro-image { background: linear-gradient(135deg, rgba(255,75,43,0.08), rgba(255,65,108,0.05)); border-left: 1px solid rgba(255,255,255,0.05); position: relative; overflow: hidden; min-height: 180px; }
+  .intro-image .img-placeholder { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .intro-image .img-placeholder div { width: 80px; height: 3px; background: linear-gradient(90deg,#ff4b2b,transparent); border-radius: 2px; }
+
+  /* ── DIVIDER ── */
+  .gradient-divider { height: 1px; background: linear-gradient(90deg, rgba(255,75,43,0.4), rgba(255,75,43,0.1), transparent); margin: 0 32px; }
+
+  /* ── VALUES ── */
+  .values { padding: 36px 28px; border-top: 1px solid rgba(255,255,255,0.06); }
+  .section-eyebrow { font-size: 9px; color: #ff4b2b; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 10px; font-weight: 600; text-align: center; }
+  .section-title { font-size: 18px; font-weight: 700; color: #f5f5f5; text-align: center; margin-bottom: 24px; letter-spacing: -0.3px; }
+  .values-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
+  .value-card {
+    background: rgba(255,255,255,0.025); border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 10px; padding: 20px 16px; backdrop-filter: blur(8px);
+    transition: border-color 0.2s;
+  }
+  .value-icon { width: 28px; height: 28px; background: linear-gradient(135deg,#ff4b2b,#ff416c); border-radius: 7px; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; }
+  .value-icon svg { width: 14px; height: 14px; fill: white; }
+  .value-name { font-size: 12px; font-weight: 700; color: #f5f5f5; margin-bottom: 6px; letter-spacing: 0.3px; }
+  .value-desc { font-size: 10px; color: #707070; line-height: 1.6; }
+
+  /* ── AWARDS ── */
+  .awards { padding: 28px 28px; border-top: 1px solid rgba(255,255,255,0.06); }
+  .awards-inner { display: flex; gap: 10px; }
+  .award-card {
+    flex: 1; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 8px; padding: 14px 12px; display: flex; align-items: center; gap: 10px;
+  }
+  .award-icon { width: 28px; height: 28px; background: rgba(255,75,43,0.1); border: 1px solid rgba(255,75,43,0.2); border-radius: 6px; flex-shrink: 0; }
+  .award-label { font-size: 10px; font-weight: 600; color: #d0d0d0; }
+  .award-sub { font-size: 9px; color: #555; margin-top: 2px; }
+
+  /* ── TEAM ── */
+  .team { padding: 36px 28px; border-top: 1px solid rgba(255,255,255,0.06); }
+  .team-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-top: 20px; }
+  .team-card {
+    background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 10px; overflow: hidden;
+  }
+  .team-avatar { height: 70px; background: linear-gradient(135deg, rgba(255,75,43,0.15), rgba(255,65,108,0.08)); position: relative; }
+  .team-avatar::after { content:''; position:absolute;bottom:0;left:0;right:0;height:20px;background:linear-gradient(transparent,rgba(10,10,15,0.8)); }
+  .team-info { padding: 10px 10px 12px; }
+  .team-name { font-size: 10px; font-weight: 700; color: #f0f0f0; }
+  .team-role { font-size: 9px; color: #606060; margin-top: 2px; line-height: 1.3; }
+  .team-certs { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 7px; }
+  .cert-tag { font-size: 7px; background: rgba(255,75,43,0.08); border: 1px solid rgba(255,75,43,0.2); color: #ff4b2b; border-radius: 4px; padding: 2px 5px; }
+  .team-cta { text-align: center; margin-top: 20px; }
+  .team-cta-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px; padding: 10px 20px;
+  }
+  .team-cta-btn span { font-size: 11px; color: #c0c0c0; font-weight: 500; }
+
+  /* ── CTA BLOCK ── */
+  .cta-block {
+    margin: 0; padding: 40px 28px; text-align: center;
+    background: linear-gradient(180deg, rgba(255,75,43,0.04), transparent);
+    border-top: 1px solid rgba(255,75,43,0.1);
+    position: relative; overflow: hidden;
+  }
+  .cta-block::before { content:''; position:absolute;top:0;left:50%;transform:translateX(-50%);width:300px;height:80px;background:radial-gradient(ellipse,rgba(255,75,43,0.1),transparent 70%); }
+  .cta-block .eyebrow { font-size: 9px; color: #ff4b2b; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 10px; font-weight: 600; }
+  .cta-block h3 { font-size: 20px; font-weight: 800; color: #f5f5f5; letter-spacing: -0.3px; margin-bottom: 8px; }
+  .cta-block p { font-size: 11px; color: #606060; max-width: 340px; margin: 0 auto 18px; line-height: 1.6; }
+  .cta-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: linear-gradient(90deg,#ff4b2b,#ff416c);
+    border-radius: 8px; padding: 11px 22px;
+  }
+  .cta-btn span { font-size: 12px; color: white; font-weight: 700; letter-spacing: 0.3px; }
+</style>
+</head>
+<body>
+<h1>About Us — Full Page Layout Preview</h1>
+<p class="meta">Direction C · Hero A · Technical Elegance · Dark Theme</p>
+
+<div class="page">
+
+  <!-- HERO -->
+  <div class="section-label">① Hero</div>
+  <div class="hero">
+    <div class="hero-badge"><div class="dot"></div><span>About JSL Technology</span></div>
+    <h2>Engineering the<br><em>Future of Software</em></h2>
+    <p>We transform complex technical challenges into elegant, scalable digital solutions that power businesses across 30+ countries.</p>
+  </div>
+
+  <!-- STATS BAND -->
+  <div class="section-label">② Stats</div>
+  <div class="stats">
+    <div class="stat-item"><div class="stat-num">8+</div><div class="stat-lbl">Years</div></div>
+    <div class="stat-item"><div class="stat-num">200+</div><div class="stat-lbl">Projects</div></div>
+    <div class="stat-item"><div class="stat-num">30+</div><div class="stat-lbl">Countries</div></div>
+    <div class="stat-item"><div class="stat-num">50+</div><div class="stat-lbl">Team</div></div>
+  </div>
+
+  <!-- INTRO -->
+  <div class="section-label">③ Intro</div>
+  <div class="intro">
+    <div class="intro-text">
+      <div class="intro-eyebrow">Who We Are</div>
+      <div class="intro-title">Precision engineering<br>at global scale</div>
+      <div class="intro-body">We are a global technology partner trusted by enterprises and startups alike. Our cross-functional teams deliver end-to-end digital products with uncompromising quality.</div>
+      <div class="intro-body">From architecture to deployment, every line of code reflects our commitment to excellence and long-term impact.</div>
+      <div class="intro-cta"><span>Get in touch →</span></div>
+    </div>
+    <div class="intro-image"><div class="img-placeholder"><div></div></div></div>
+  </div>
+
+  <div class="gradient-divider"></div>
+
+  <!-- VALUES -->
+  <div class="section-label">④ Mission · Vision · Values</div>
+  <div class="values">
+    <div class="section-eyebrow">Our Foundation</div>
+    <div class="section-title">What drives us forward</div>
+    <div class="values-grid">
+      <div class="value-card">
+        <div class="value-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></div>
+        <div class="value-name">Mission</div>
+        <div class="value-desc">Drive digital excellence through innovative technology that creates real business value.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/></svg></div>
+        <div class="value-name">Vision</div>
+        <div class="value-desc">Become the world's most trusted technology partner for ambitious organizations.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-icon"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+        <div class="value-name">Values</div>
+        <div class="value-desc">Quality, transparency, and long-term impact guide every decision we make.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AWARDS -->
+  <div class="section-label">⑤ Awards</div>
+  <div class="awards">
+    <div class="section-eyebrow" style="text-align:left;margin-bottom:14px;">Recognition</div>
+    <div class="awards-inner">
+      <div class="award-card"><div class="award-icon"></div><div><div class="award-label">Clutch Global</div><div class="award-sub">Top Software Developer 2024</div></div></div>
+      <div class="award-card"><div class="award-icon"></div><div><div class="award-label">Google Partner</div><div class="award-sub">Premier Technology Partner</div></div></div>
+      <div class="award-card"><div class="award-icon"></div><div><div class="award-label">Forbes Tech</div><div class="award-sub">Most Innovative Firm 2023</div></div></div>
+    </div>
+  </div>
+
+  <!-- TEAM -->
+  <div class="section-label">⑥ Team</div>
+  <div class="team">
+    <div class="section-eyebrow">The People</div>
+    <div class="section-title" style="margin-bottom:0;">Meet the team</div>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-avatar"></div>
+        <div class="team-info">
+          <div class="team-name">Javier S. Liranzo</div>
+          <div class="team-role">Founder & Chief Architect</div>
+          <div class="team-certs"><span class="cert-tag">AWS</span><span class="cert-tag">GCP</span></div>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar"></div>
+        <div class="team-info">
+          <div class="team-name">Laura Fernández</div>
+          <div class="team-role">Product & UX Director</div>
+          <div class="team-certs"><span class="cert-tag">Figma</span></div>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar"></div>
+        <div class="team-info">
+          <div class="team-name">Marcos Reyes</div>
+          <div class="team-role">Principal Cloud Engineer</div>
+          <div class="team-certs"><span class="cert-tag">K8s</span><span class="cert-tag">Azure</span></div>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar"></div>
+        <div class="team-info">
+          <div class="team-name">Daniel Gómez</div>
+          <div class="team-role">Mobile Development Lead</div>
+          <div class="team-certs"><span class="cert-tag">iOS</span><span class="cert-tag">RN</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="team-cta"><div class="team-cta-btn"><span>Join Our Team →</span></div></div>
+  </div>
+
+  <!-- CTA BLOCK -->
+  <div class="section-label">⑦ CTA</div>
+  <div class="cta-block">
+    <div class="eyebrow">Let's Work Together</div>
+    <h3>Ready to build something great?</h3>
+    <p>Tell us about your project and we'll get back to you within 24 hours.</p>
+    <div class="cta-btn"><span>Start a Conversation</span></div>
+  </div>
+
+</div>
+
+<div style="margin-top:16px;padding:12px 16px;background:rgba(255,75,43,0.05);border:1px solid rgba(255,75,43,0.15);border-radius:8px;max-width:760px;margin-left:auto;margin-right:auto;">
+  <p style="font-size:11px;color:#888;line-height:1.6;"><strong style="color:#ff4b2b;">Implementation notes:</strong> AnimateOnScroll directive on every section. Glass cards use <code style="color:#ccc;">backdrop-filter:blur</code>. Stats band border-separated. Gradient line dividers between major sections. Team avatars use real Unsplash images. Font: <em>Syne</em> (display) + <em>Inter</em> (body) loaded via Google Fonts. All existing i18n/translate keys preserved.</p>
+</div>
+
+<script>
+// No interactivity needed for layout preview
+</script>
+</body>
+</html>

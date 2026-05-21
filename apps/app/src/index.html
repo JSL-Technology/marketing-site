@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="notranslate">
+  <head>
+    <meta charset="utf-8" />
+    <title>JSL Technology — Expert Software Development & Digital Transformation</title>
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Primary meta — English fallback (Angular SSR overwrites dynamically per route/lang) -->
+    <meta
+      name="description"
+      content="JSL Technology: Custom software development, ERP, POS, and mobile solutions to accelerate your business growth worldwide."
+    />
+    <meta name="robots" content="index, follow" />
+    <meta name="google" content="notranslate" />
+    <meta http-equiv="Content-Language" content="en" />
+
+    <!-- Google Search Console site verification is injected server-side by SeoService
+         Set GSC_VERIFICATION_TOKEN env var on your server to activate it. -->
+
+    <!-- Fallback social tags — SSR/Angular overrides these per route -->
+    <meta property="og:title" content="JSL Technology — Expert Software Development" />
+    <meta
+      property="og:description"
+      content="JSL Technology: Custom software development, ERP, POS, and mobile solutions to accelerate your business growth worldwide."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="JSL Technology" />
+    <meta property="og:url" content="https://www.jsl.technology/en" />
+    <meta property="og:image" content="https://www.jsl.technology/assets/imgs/jsl-social-default.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="JSL Technology — Expert Software Development" />
+    <meta property="og:locale" content="en_US" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@jsl_technology" />
+    <meta name="twitter:creator" content="@jsl_technology" />
+    <meta name="twitter:title" content="JSL Technology — Expert Software Development" />
+    <meta
+      name="twitter:description"
+      content="JSL Technology: Custom software development, ERP, POS, and mobile solutions to accelerate your business growth worldwide."
+    />
+    <meta name="twitter:image" content="https://www.jsl.technology/assets/imgs/jsl-social-default.jpg" />
+    <meta name="twitter:image:alt" content="JSL Technology — Expert Software Development" />
+
+    <link rel="canonical" href="https://www.jsl.technology/en" />
+    <link rel="alternate" hreflang="x-default" href="https://www.jsl.technology/en" />
+
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+
+    <!-- Performance: preconnect to critical third-party origins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+    <link rel="dns-prefetch" href="https://www.google-analytics.com" />
+
+    <!-- Preload critical above-the-fold hero image (LCP optimization) -->
+    <link rel="preload" as="image" href="assets/imgs/Avif/img-2.avif" type="image/avif" fetchpriority="high" />
+
+    <!-- Fonts: async (non-render-blocking) via preload + onload swap -->
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      />
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap"
+      />
+    </noscript>
+    <!--
+      Noto Sans Arabic — loaded for all users; the font *binary* is only
+      downloaded by the browser when Arabic glyphs are actually rendered,
+      so LTR users pay only a tiny CSS round-trip (~1 KB gzip).
+    -->
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;500;600;700&display=swap"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;500;600;700&display=swap"
+      />
+    </noscript>
+
+    <!-- WebSite schema — static fallback for crawlers before Angular hydration.
+         The dynamic SeoService overwrites this per-route with the correct language. -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://www.jsl.technology/#website",
+      "url": "https://www.jsl.technology",
+      "name": "JSL Technology",
+      "description": "Expert software development and digital transformation solutions for businesses worldwide.",
+      "publisher": {
+        "@id": "https://www.jsl.technology/#organization"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://www.jsl.technology/{lang}/blog?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+  </head>
+  <body>
+    <jsl-root></jsl-root>
+  </body>
+</html>

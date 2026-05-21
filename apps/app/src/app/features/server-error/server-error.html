@@ -1,0 +1,33 @@
+<div class="page-container">
+  <div class="container">
+    <div class="server-error-page">
+      <div class="server-error-page__icon-container">
+        <lucide-icon name="Server" [size]="48"></lucide-icon>
+      </div>
+
+      <div class="server-error-page__code">500</div>
+      <h1 class="server-error-page__title">{{ 'ERRORS.500_TITLE' | translate }}</h1>
+      <p class="server-error-page__desc">{{ 'ERRORS.500_DESC' | translate }}</p>
+
+      <div class="server-error-page__actions">
+        <button (click)="reload()" class="server-error-page__button server-error-page__button--primary">
+          <lucide-icon name="ArrowRight" [size]="18"></lucide-icon>
+          {{ 'ERRORS.TRY_AGAIN' | translate }}
+        </button>
+        <a [routerLink]="['/', currentLang, 'home']" class="server-error-page__button server-error-page__button--ghost">
+          <lucide-icon name="Home" [size]="18"></lucide-icon>
+          {{ 'ERRORS.GO_HOME' | translate }}
+        </a>
+      </div>
+
+      <div class="server-error-page__status-link">
+        <a [routerLink]="['/', currentLang, 'status']">
+          <lucide-icon name="CheckCircle" [size]="14"></lucide-icon>
+          {{ 'ERRORS.CHECK_STATUS' | translate }}
+        </a>
+        <span>·</span>
+        <a href="mailto:support@jsl.technology">{{ 'ERRORS.CONTACT_SUPPORT' | translate }}</a>
+      </div>
+    </div>
+  </div>
+</div>

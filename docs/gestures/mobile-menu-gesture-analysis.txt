@@ -1,0 +1,34 @@
+# Análisis de Interrupción de Gestos en Menú Móvil
+
+## Síntomas
+1. El usuario intenta cerrar el menú deslizando el dedo, pero el movimiento se detiene o no responde.
+2. Se registra el evento: `{metric: 'gesture_cancel', source: 'system_interrupt'}`.
+3. El problema ocurre con más frecuencia en áreas específicas como el buscador (input de búsqueda).
+
+## Causas Identificadas
+
+### 1. Interferencia de Multi-touch en `GestureBusService`
+El `GestureBusService` tenía un error lógico en `handlePointerDown`. Al detectar CUALQUIER nuevo `pointerdown` (un segundo dedo tocando la pantalla, o un clic accidental), reiniciaba el estado del gesto activo.
+- Si el segundo toque ocurría mientras el primer dedo ya estaba deslizando, el sistema "perdía" al primer dedo.
+- Esto causaba que el menú se quedara bloqueado o dejara de seguir el dedo del usuario.
+
+### 2. Eventos de Cancelación del Sistema (`pointercancel`)
+El mensaje `system_interrupt` proviene de un evento `pointercancel`. Esto ocurre cuando el navegador decide que el toque pertenece a otra acción (como scroll nativo) y le quita el control al JavaScript.
+- En el buscador, el navegador prioriza el foco y la interacción del teclado/input.
+- Si el usuario comienza el deslizamiento sobre el input, el navegador puede interpretar que se quiere mover el cursor o hacer scroll horizontal dentro del campo de texto, disparando la cancelación.
+
+### 3. Falta de Captura de Puntero (`setPointerCapture`)
+Sin captura de puntero, si el dedo se mueve muy rápido o sale del área exacta del menú, el navegador puede dejar de enviar eventos a los escuchas del menú, causando una experiencia "entrecortada".
+
+## Soluciones Implementadas
+
+1. **Robustez en `GestureBusService`**:
+   - Se implementó seguimiento de `activePointerId`. Ahora, una vez que un dedo inicia un gesto, el sistema ignora cualquier otro toque accidental hasta que el primer gesto termine.
+   - Se añadió `setPointerCapture` para asegurar que el flujo de eventos no se pierda aunque el dedo se mueva fuera del menú o sobre elementos complejos.
+
+2. **Control de `touch-action` en CSS**:
+   - Se aplicó `touch-action: pan-y` al input de búsqueda, los encabezados de acordeón y los tiles de acceso rápido.
+   - Esto le indica explícitamente al navegador que permita el desplazamiento vertical (scroll) pero que **no** intente manejar el deslizamiento horizontal, dejando que nuestro código de gestos tome el control total para cerrar el menú.
+
+3. **Manejo de Estados Estables**:
+   - Se mejoró la lógica para que, ante una interrupción real del sistema (como una llamada entrante), el menú vuelva suavemente a su última posición estable (completamente abierto o cerrado) en lugar de quedarse a medias.

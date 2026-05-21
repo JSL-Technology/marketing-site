@@ -1,0 +1,25 @@
+<div class="app-shell">
+  <jsl-header [class.is-scrolled]="isScrolled"></jsl-header>
+
+  <main class="main-content">
+    <!-- <div class="container mx-auto px-4" style="margin-top: var(--page-top-offset)">
+      <app-breadcrumbs></app-breadcrumbs>
+    </div> -->
+    <router-outlet></router-outlet>
+  </main>
+
+  <jsl-footer></jsl-footer>
+  <!-- <jsl-chat-bubble></jsl-chat-bubble> -->
+
+  <jsl-whatsapp-button></jsl-whatsapp-button>
+
+  @if (hasToasts$ | async) {
+    <app-toast></app-toast>
+  }
+
+  @if (shouldRenderCookieBanner) {
+    <app-cookie-banner></app-cookie-banner>
+  }
+
+  <jsl-language-suggestion></jsl-language-suggestion>
+</div>

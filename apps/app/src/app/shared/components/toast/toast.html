@@ -1,0 +1,19 @@
+<div class="toast-container">
+  @for (toast of toastService.toasts$ | async; track toast.id) {
+    <div class="toast" [ngClass]="toast.type">
+      <div class="toast-icon">
+        @if (toast.type === 'success') {
+          <lucide-icon [name]="icons.Check" [size]="20"></lucide-icon>
+        } @else if (toast.type === 'error') {
+          <lucide-icon [name]="icons.X" [size]="20"></lucide-icon>
+        } @else {
+          <lucide-icon [name]="icons.Info" [size]="20"></lucide-icon>
+        }
+      </div>
+      <div class="toast-message">{{ toast.message | translate }}</div>
+      <button class="toast-close" (click)="remove(toast.id)" [attr.aria-label]="'ARIA.CLOSE' | translate">
+        <lucide-icon [name]="icons.X" [size]="16"></lucide-icon>
+      </button>
+    </div>
+  }
+</div>

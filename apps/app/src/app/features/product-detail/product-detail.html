@@ -1,0 +1,306 @@
+@if (product$ | async; as product) {
+
+  <!-- ============================================================
+       HERO
+  ============================================================ -->
+  <section class="pd-hero">
+    <div class="pd-hero__bg-glow"></div>
+
+    <div class="container">
+
+      <!-- Breadcrumb -->
+      <nav class="pd-breadcrumb" [attr.aria-label]="'ARIA.BREADCRUMB' | translate">
+        <a [routerLink]="['/', currentLang, 'home']">{{ 'COMMON.BREADCRUMB_HOME' | translate }}</a>
+        <lucide-icon name="ChevronRight" [size]="14"></lucide-icon>
+        <a [routerLink]="['/', currentLang, 'products']">{{ 'HEADER.PRODUCTS' | translate }}</a>
+        <lucide-icon name="ChevronRight" [size]="14"></lucide-icon>
+        <span>{{ 'PRODUCTS.' + product.key + '_TITLE' | translate }}</span>
+      </nav>
+
+      <div class="pd-hero__content">
+
+        <!-- Badge -->
+        <div class="pd-hero__badge">
+          <lucide-icon [name]="product.icon" [size]="16"></lucide-icon>
+          <span>{{ extras ? extras.brandName : ('PRODUCTS.' + product.key + '_TITLE' | translate) }}</span>
+        </div>
+
+        <!-- Title -->
+        <h1 class="pd-hero__title">
+          @if (extras) {
+            <span class="gradient-text">{{ extras.brandName }}</span>
+          } @else {
+            {{ 'PRODUCTS.' + product.key + '_TITLE' | translate }}
+          }
+        </h1>
+
+        <!-- Tagline -->
+        <p class="pd-hero__tagline">
+          @if (extras) {
+            {{ extras.tagline }}
+          } @else {
+            {{ 'PRODUCTS.' + product.key + '_DESC' | translate }}
+          }
+        </p>
+
+        <!-- CTAs -->
+        <div class="pd-hero__actions">
+          @if (product.externalUrl) {
+            <a [href]="product.externalUrl" target="_blank" rel="noopener" class="btn-primary">
+              <lucide-icon name="ExternalLink" [size]="18"></lucide-icon>
+              {{ extras ? ( 'PRODUCTS.VISIT_BRAND_SITE' | translate:{brand: extras.brandName} ) : ('PRODUCTS.VIEW_DEDICATED_PAGE' | translate) }}
+            </a>
+          }
+          <a [routerLink]="['/', currentLang, 'contact']" class="btn-ghost">
+            <lucide-icon name="Calendar" [size]="18"></lucide-icon>
+            {{ 'HOME.STICKY_CTA' | translate }}
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats bar (ERP only) -->
+    @if (extras) {
+      <div class="pd-stats">
+        <div class="container">
+          <div class="pd-stats__grid">
+            @for (stat of extras.stats; track stat.labelKey) {
+              <div class="pd-stats__item">
+                <lucide-icon [name]="stat.icon" [size]="20"></lucide-icon>
+                <strong>{{ stat.valueKey | translate }}</strong>
+                <span>{{ stat.labelKey | translate }}</span>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    }
+  </section>
+
+  <!-- ============================================================
+       ERP RICH LAYOUT
+  ============================================================ -->
+  @if (extras) {
+
+    <!-- Overview -->
+    <section class="pd-overview container">
+      <div class="pd-overview__text">
+        <span class="section-eyebrow">{{ 'PRODUCTS.OVERVIEW' | translate }}</span>
+        <h2 class="section-title">{{ 'PRODUCTS.WHAT_IS_BRAND' | translate:{brand: extras.brandName} }}</h2>
+        <p class="pd-overview__desc">{{ extras.overview }}</p>
+        <a [href]="product.externalUrl" target="_blank" rel="noopener" class="pd-overview__link">
+          {{ 'PRODUCTS.LEARN_MORE_AT' | translate:{brand: extras.brandName} }}
+          <lucide-icon name="ArrowRight" [size]="16"></lucide-icon>
+        </a>
+      </div>
+      <div class="pd-overview__visual">
+        <div class="pd-ecosystem-core">
+          <lucide-icon [name]="product.icon" [size]="40"></lucide-icon>
+          <span>{{ extras.brandName }}</span>
+          <small>{{ 'PRODUCTS.ERP_CORE_LABEL' | translate }}</small>
+        </div>
+        <div class="pd-ecosystem-orbits">
+          @for (platform of extras.platforms.slice(0, 4); track platform.name) {
+            <div class="pd-ecosystem-orbit">
+              <lucide-icon [name]="platform.icon" [size]="18"></lucide-icon>
+              <span>{{ platform.name }}</span>
+            </div>
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- Modules -->
+    <section class="pd-section pd-modules">
+      <div class="container">
+        <div class="pd-section__header">
+          <span class="section-eyebrow">{{ 'PRODUCTS.MODULAR_ARCH' | translate }}</span>
+          <h2 class="section-title">{{ 'PRODUCTS.FUNCTIONAL_MODULES' | translate }}</h2>
+          <p class="section-subtitle">{{ 'PRODUCTS.FUNCTIONAL_MODULES_SUB' | translate }}</p>
+        </div>
+        <div class="pd-modules__grid">
+          @for (mod of extras.modules; track mod.name) {
+            <div class="pd-module-card">
+              <div class="pd-module-card__icon">
+                <lucide-icon [name]="mod.icon" [size]="22"></lucide-icon>
+              </div>
+              <h3>{{ mod.name }}</h3>
+              <p>{{ mod.desc }}</p>
+            </div>
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- Platforms -->
+    <section class="pd-section pd-platforms">
+      <div class="container">
+        <div class="pd-section__header">
+          <span class="section-eyebrow">{{ 'PRODUCTS.OMNICHANNEL' | translate }}</span>
+          <h2 class="section-title">{{ 'PRODUCTS.MULTI_PLATFORM' | translate }}</h2>
+          <p class="section-subtitle">{{ 'PRODUCTS.MULTI_PLATFORM_SUB' | translate }}</p>
+        </div>
+        <div class="pd-platforms__grid">
+          @for (platform of extras.platforms; track platform.name) {
+            <div class="pd-platform-card">
+              <div class="pd-platform-card__icon">
+                <lucide-icon [name]="platform.icon" [size]="28"></lucide-icon>
+              </div>
+              <h3>{{ platform.name }}</h3>
+              <span class="pd-platform-card__tech">{{ platform.tech }}</span>
+              <p>{{ platform.desc }}</p>
+            </div>
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- Country Readiness -->
+    <section class="pd-section pd-countries">
+      <div class="container">
+        <div class="pd-section__header">
+          <span class="section-eyebrow">{{ 'PRODUCTS.TAX_LOCALIZATION' | translate }}</span>
+          <h2 class="section-title">{{ 'PRODUCTS.COUNTRY_READINESS' | translate }}</h2>
+          <p class="section-subtitle">{{ 'PRODUCTS.COUNTRY_READINESS_SUB' | translate }}</p>
+        </div>
+        <div class="pd-countries__grid">
+          @for (country of extras.countries; track country.name) {
+            <div class="pd-country-card">
+              <span class="pd-country-card__flag" role="img" [attr.aria-label]="country.name">{{ country.flag }}</span>
+              <div class="pd-country-card__info">
+                <div class="pd-country-card__header">
+                  <strong>{{ country.name }}</strong>
+                  <span class="pd-badge" [class]="statusClass(country.status)">{{ country.status }}</span>
+                </div>
+                <p>{{ country.detail }}</p>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- Tech Stack -->
+    <section class="pd-section pd-tech">
+      <div class="container">
+        <div class="pd-section__header">
+          <span class="section-eyebrow">{{ 'PRODUCTS.ENGINEERING' | translate }}</span>
+          <h2 class="section-title">{{ 'PRODUCTS.TECH_STACK_TITLE' | translate }}</h2>
+          <p class="section-subtitle">{{ 'PRODUCTS.TECH_STACK_SUB' | translate }}</p>
+        </div>
+        <div class="pd-tech__pills">
+          @for (tech of extras.coreTech; track tech) {
+            <span class="pd-tech__pill">{{ tech }}</span>
+          }
+        </div>
+        <div class="pd-tech__highlights">
+          <div class="pd-tech__highlight">
+            <lucide-icon name="Layers" [size]="24"></lucide-icon>
+            <div>
+              <strong>{{ 'PRODUCTS.CLEAN_ARCH_DDD' | translate }}</strong>
+              <p>{{ 'PRODUCTS.CLEAN_ARCH_DDD_DESC' | translate }}</p>
+            </div>
+          </div>
+          <div class="pd-tech__highlight">
+            <lucide-icon name="Share2" [size]="24"></lucide-icon>
+            <div>
+              <strong>{{ 'PRODUCTS.GRAPHQL_FED' | translate }}</strong>
+              <p>{{ 'PRODUCTS.GRAPHQL_FED_DESC' | translate }}</p>
+            </div>
+          </div>
+          <div class="pd-tech__highlight">
+            <lucide-icon name="WifiOff" [size]="24"></lucide-icon>
+            <div>
+              <strong>{{ 'PRODUCTS.OFFLINE_FIRST' | translate }}</strong>
+              <p>{{ 'PRODUCTS.OFFLINE_FIRST_DESC' | translate }}</p>
+            </div>
+          </div>
+          <div class="pd-tech__highlight">
+            <lucide-icon name="Puzzle" [size]="24"></lucide-icon>
+            <div>
+              <strong>{{ 'PRODUCTS.PLUGIN_MARKET' | translate }}</strong>
+              <p>{{ 'PRODUCTS.PLUGIN_MARKET_DESC' | translate }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Security -->
+    <section class="pd-section pd-security">
+      <div class="container">
+        <div class="pd-section__header">
+          <span class="section-eyebrow">{{ 'PRODUCTS.ENTERPRISE_GRADE' | translate }}</span>
+          <h2 class="section-title">{{ 'PRODUCTS.SECURITY_COMPLIANCE' | translate }}</h2>
+          <p class="section-subtitle">{{ 'PRODUCTS.SECURITY_COMPLIANCE_SUB' | translate }}</p>
+        </div>
+        <div class="pd-security__grid">
+          @for (feat of extras.securityFeatures; track feat.title) {
+            <div class="pd-security-card">
+              <div class="pd-security-card__icon">
+                <lucide-icon [name]="feat.icon" [size]="22"></lucide-icon>
+              </div>
+              <h3>{{ feat.title }}</h3>
+              <p>{{ feat.desc }}</p>
+            </div>
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="pd-final-cta">
+      <div class="container">
+        <div class="pd-final-cta__card">
+          <span class="section-eyebrow">{{ 'PRODUCTS.READY_MODERNIZE' | translate }}</span>
+          <h2>{{ 'PRODUCTS.START_JOURNEY' | translate:{brand: extras.brandName} }}</h2>
+          <p>{{ 'PRODUCTS.JOURNEY_DESC' | translate }}</p>
+          <div class="pd-final-cta__actions">
+            <a [href]="product.externalUrl" target="_blank" rel="noopener" class="btn-primary">
+              <lucide-icon name="ExternalLink" [size]="18"></lucide-icon>
+              {{ 'PRODUCTS.VISIT_BRAND_SITE' | translate:{brand: extras.brandName} }}
+            </a>
+            <a [routerLink]="['/', currentLang, 'contact']" class="btn-ghost">
+              <lucide-icon name="MessageSquare" [size]="18"></lucide-icon>
+              {{ 'PRODUCTS.CONTACT_SALES' | translate }}
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  } @else {
+
+    <!-- ============================================================
+         FALLBACK LAYOUT (POS, Mobile Apps, future products)
+    ============================================================ -->
+    <div class="container pd-simple">
+      <main class="pd-simple__content">
+        <p [innerHTML]="'PRODUCTS.' + product.key + '_DETAIL_CONTENT' | translate"></p>
+
+        @if (product.externalUrl) {
+          <a [href]="product.externalUrl" target="_blank" rel="noopener" class="btn-primary">
+            <lucide-icon name="ExternalLink" [size]="18"></lucide-icon>
+            {{ 'PRODUCTS.VIEW_DEDICATED_PAGE' | translate }}
+          </a>
+        } @else {
+          <a [href]="'PRODUCTS.' + product.key + '_MARKETING_URL' | translate" target="_blank" rel="noopener" class="btn-primary">
+            <lucide-icon name="ExternalLink" [size]="18"></lucide-icon>
+            {{ 'PRODUCTS.VIEW_DEDICATED_PAGE' | translate }}
+          </a>
+        }
+      </main>
+    </div>
+
+    <jsl-cta-section></jsl-cta-section>
+  }
+
+} @else {
+  <div class="page-container container">
+    <h2 class="page-title h1">{{ 'NOT_FOUND.PRODUCT_TITLE' | translate }}</h2>
+    <p class="page-subtitle">
+      {{ 'NOT_FOUND.PRODUCT_SUBTITLE' | translate }}
+      <a [routerLink]="['/', currentLang, 'products']">{{ 'HEADER.PRODUCTS' | translate }}</a>.
+    </p>
+  </div>
+}

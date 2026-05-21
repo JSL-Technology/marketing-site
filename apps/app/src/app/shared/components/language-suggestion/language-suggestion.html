@@ -1,0 +1,35 @@
+<div *ngIf="suggestion$ | async as suggestion" class="language-suggestion" @fadeScale role="status" aria-live="polite">
+  <div class="language-suggestion__body">
+    <div class="language-suggestion__icon-wrapper">
+      <div class="language-suggestion__icon">
+        <lucide-icon name="Languages"></lucide-icon>
+      </div>
+    </div>
+
+    <div class="language-suggestion__content">
+      <h3 class="language-suggestion__title">
+        {{ 'LANGUAGE_SUGGESTION.TITLE' | translate:{ targetLanguage: suggestion.name } }}
+      </h3>
+      <p class="language-suggestion__subtitle">
+        {{ 'LANGUAGE_SUGGESTION.SUBTITLE' | translate:{ targetLanguage: suggestion.name } }}
+      </p>
+    </div>
+
+    <div class="language-suggestion__actions">
+      <button (click)="onSwitch(suggestion.code)" class="btn-primary">
+        {{ 'LANGUAGE_SUGGESTION.SWITCH' | translate:{ targetLanguage: suggestion.name } }}
+      </button>
+      <button (click)="onDismiss()" class="btn-secondary">
+        {{ 'LANGUAGE_SUGGESTION.KEEP' | translate:{ currentLanguage: suggestion.currentName } }}
+      </button>
+    </div>
+
+    <div class="language-suggestion__footer">
+      <p>{{ 'LANGUAGE_SUGGESTION.FOOTER' | translate }}</p>
+    </div>
+  </div>
+
+  <div class="language-suggestion__progress">
+    <div class="language-suggestion__progress-bar"></div>
+  </div>
+</div>

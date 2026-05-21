@@ -1,0 +1,35 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "moduleResolution": "bundler",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "paths": {
+      "@app/*": ["apps/app/src/app/*"],
+      "@core/*": ["apps/app/src/app/core/*"],
+      "@features/*": ["apps/app/src/app/features/*"],
+      "@layout/*": ["apps/app/src/app/layout/*"],
+      "@shared/*": ["apps/app/src/app/shared/*"],
+      "@styles/*": ["apps/app/src/app/styles/*"],
+      "@assets/*": ["apps/app/src/assets/*"]
+    }
+  },
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "typeCheckHostBindings": true,
+    "strictTemplates": true
+  },
+  "files": [],
+  "include": [],
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ]
+}

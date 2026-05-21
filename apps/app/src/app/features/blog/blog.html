@@ -1,0 +1,122 @@
+<div class="page-container container">
+  <h1 class="page-title" jslAnimateOnScroll>{{ 'BLOG.TITLE' | translate }}</h1>
+  <p class="page-subtitle" jslAnimateOnScroll>{{ 'BLOG.SUBTITLE' | translate }}</p>
+
+  <div class="blog-controls" jslAnimateOnScroll>
+    <div class="search-bar-wrapper">
+      <div class="search-bar">
+        <lucide-icon name="Search"></lucide-icon>
+        <input
+          type="text"
+          [placeholder]="'BLOG.SEARCH_PLACEHOLDER' | translate"
+          (input)="onSearch($event)"
+          [attr.aria-label]="'ARIA.SEARCH' | translate"
+        />
+      </div>
+    </div>
+
+    <div class="tag-filters">
+      <button
+        (click)="selectTag(null)"
+        [class.active]="selectedTag() === null"
+        class="tag-btn"
+      >
+        {{ 'SEARCH.ALL' | translate }}
+      </button>
+      @for (tag of allTags(); track tag) {
+        <button
+          (click)="selectTag(tag)"
+          [class.active]="selectedTag() === tag"
+          class="tag-btn"
+        >
+          {{ tag | titlecase }}
+        </button>
+      }
+    </div>
+  </div>
+
+  @if (featuredPosts().length > 0) {
+    <div class="featured-slider-container" jslAnimateOnScroll>
+      <swiper-container #featuredSwiper init="false" class="featured-slider">
+        @for (post of featuredPosts(); track post.key) {
+          <swiper-slide>
+            <div class="featured-post-card">
+              <a [routerLink]="['/', currentLang, 'blog', post.slug]" class="featured-post__image">
+                <img [src]="post.imageUrl" [alt]="'BLOG.' + post.key + '_TITLE' | translate" width="1200" height="600" loading="eager" fetchpriority="high" />
+              </a>
+              <div class="featured-post__content">
+                <div class="featured-post__info">
+                  <span class="featured-post__eyebrow">
+                    <lucide-icon name="Star"></lucide-icon> {{ 'BLOG.FEATURED_BADGE' | translate }}
+                  </span>
+                  <h2 class="featured-post__title">
+                    <a [routerLink]="['/', currentLang, 'blog', post.slug]">
+                      {{ 'BLOG.' + post.key + '_TITLE' | translate }}
+                    </a>
+                  </h2>
+                  <p class="featured-post__excerpt">
+                    {{ 'BLOG.' + post.key + '_EXCERPT' | translate }}
+                  </p>
+                  <div class="featured-post__meta">
+                    <span class="meta-item">
+                      <lucide-icon name="Calendar"></lucide-icon>
+                      {{ post.date | date : 'longDate' }}
+                    </span>
+                    <span class="meta-item">
+                      <lucide-icon name="Clock"></lucide-icon>
+                      {{ post.readTime }} {{ 'BLOG.READ_TIME_UNIT' | translate }}
+                    </span>
+                  </div>
+                  <a [routerLink]="['/', currentLang, 'blog', post.slug]" class="featured-post__cta">
+                    {{ 'COMMON.READ_MORE' | translate }} <lucide-icon name="ArrowRight"></lucide-icon>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </swiper-slide>
+        }
+      </swiper-container>
+    </div>
+  }
+
+  <div class="blog-grid">
+    @for (post of paginatedPosts(); track post.key) {
+      <jsl-card
+        [imageUrl]="post.imageUrl"
+        [title]="'BLOG.' + post.key + '_TITLE' | translate"
+        [description]="'BLOG.' + post.key + '_EXCERPT' | translate"
+        [link]="['/', currentLang, 'blog', post.slug]"
+        [meta]="{
+          date: post.date,
+          readTime: post.readTime,
+          tags: post.tags
+        }"
+        jslAnimateOnScroll
+      >
+      </jsl-card>
+    }
+  </div>
+
+  @if (totalItems() > itemsPerPage) {
+    <app-pagination
+      [totalItems]="totalItems()"
+      [itemsPerPage]="itemsPerPage"
+      [currentPage]="currentPage()"
+      (pageChange)="onPageChange($event)">
+    </app-pagination>
+  }
+
+  @if (regularPosts().length === 0 && featuredPosts().length === 0) {
+    <p class="no-results" jslAnimateOnScroll>
+      {{ 'BLOG.NO_RESULTS' | translate }}
+    </p>
+  }
+  </div>
+
+<jsl-cta-section
+  eyebrowKey="BLOG.CTA_EYEBROW"
+  titleKey="BLOG.CTA_TITLE"
+  subtitleKey="BLOG.CTA_SUBTITLE"
+  [ctaLink]="['/', currentLang, 'contact']"
+>
+</jsl-cta-section>

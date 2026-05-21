@@ -1,0 +1,10 @@
+<div class="code-block">
+  <div class="code-header">
+    <span class="language">{{ language }}</span>
+    <button (click)="copyCode()" class="copy-btn">
+      <lucide-icon [name]="copied ? 'check' : 'copy'" [size]="14"></lucide-icon>
+      {{ copied ? 'Copied' : 'Copy' }}
+    </button>
+  </div>
+  <pre><code [class]="'language-' + language">{{ code }}</code></pre>
+</div>

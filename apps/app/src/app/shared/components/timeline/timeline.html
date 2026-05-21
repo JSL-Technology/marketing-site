@@ -1,0 +1,13 @@
+<div class="timeline">
+  <div class="timeline-item" *ngFor="let item of items" [class]="item.status">
+    <div class="timeline-marker"></div>
+    <div class="timeline-content">
+      <div class="date">{{ item.date }}</div>
+      <h3 class="title">{{ item.titleKey | translate }}</h3>
+      <p class="description">{{ item.descKey | translate }}</p>
+      <span class="status-badge" [class]="item.status">
+        {{ 'ROADMAP.' + (item.status === 'current' ? 'IN_DEV' : item.status === 'completed' ? 'RELEASED' : 'PLANNED') | translate }}
+      </span>
+    </div>
+  </div>
+</div>

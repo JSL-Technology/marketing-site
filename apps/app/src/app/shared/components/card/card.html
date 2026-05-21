@@ -1,0 +1,131 @@
+@if (externalLink) {
+  <a [href]="externalLink"
+     target="_blank"
+     rel="noopener noreferrer"
+     class="card"
+     [class.card--service]="!imageUrl && icon"
+     [class.card--article]="imageUrl">
+
+    @if (imageUrl) {
+      <div class="card__image-wrapper">
+        <img [src]="imageUrl" alt="{{ title }}" class="card__image" loading="lazy" width="400" height="250">
+        <div class="card__image-overlay"></div>
+        @if (meta?.tags?.length) {
+          <span class="card__category">{{ meta.tags[0] }}</span>
+        }
+      </div>
+    }
+
+    @if (!imageUrl && icon) {
+      <div class="card__icon">
+        <lucide-icon [name]="icon"></lucide-icon>
+      </div>
+    }
+
+    <div class="card__content">
+      @if (meta) {
+        <div class="card__meta">
+          @if (meta.date) {
+            <span class="meta-item">
+              <lucide-icon name="Calendar"></lucide-icon>
+              {{ meta.date | date : 'mediumDate' }}
+            </span>
+          }
+          @if (meta.readTime) {
+            <span class="meta-item">
+              <lucide-icon name="Clock"></lucide-icon>
+              {{ meta.readTime }} min
+            </span>
+          }
+        </div>
+      }
+      <h3 class="card__title">{{ title }}</h3>
+      @if (metrics.length > 0) {
+        <div class="card__metrics">
+          @for (metric of metrics; track $index) {
+            <span class="card__metric-tag">{{ metric }}</span>
+          }
+        </div>
+      }
+      <p class="card__description">{{ description }}</p>
+      <span class="card__link">
+        {{ 'COMMON.VISIT_WEBSITE' | translate }} <lucide-icon name="ExternalLink"></lucide-icon>
+      </span>
+    </div>
+  </a>
+} @else if (link) {
+  <a [routerLink]="link"
+     class="card"
+     [class.card--service]="!imageUrl && icon"
+     [class.card--article]="imageUrl">
+
+    @if (imageUrl) {
+      <div class="card__image-wrapper">
+        <img [src]="imageUrl" alt="{{ title }}" class="card__image" loading="lazy" width="400" height="250">
+        <div class="card__image-overlay"></div>
+        @if (meta?.tags?.length) {
+          <span class="card__category">{{ meta.tags[0] }}</span>
+        }
+      </div>
+    }
+
+    @if (!imageUrl && icon) {
+      <div class="card__icon">
+        <lucide-icon [name]="icon"></lucide-icon>
+      </div>
+    }
+
+    <div class="card__content">
+      @if (meta) {
+        <div class="card__meta">
+          @if (meta.date) {
+            <span class="meta-item">
+              <lucide-icon name="Calendar"></lucide-icon>
+              {{ meta.date | date : 'mediumDate' }}
+            </span>
+          }
+          @if (meta.readTime) {
+            <span class="meta-item">
+              <lucide-icon name="Clock"></lucide-icon>
+              {{ meta.readTime }} min
+            </span>
+          }
+        </div>
+      }
+      <h3 class="card__title">{{ title }}</h3>
+      @if (metrics.length > 0) {
+        <div class="card__metrics">
+          @for (metric of metrics; track $index) {
+            <span class="card__metric-tag">{{ metric }}</span>
+          }
+        </div>
+      }
+      <p class="card__description">{{ description }}</p>
+      <span class="card__link">
+        {{ 'COMMON.READ_MORE' | translate }} <lucide-icon name="ArrowRight"></lucide-icon>
+      </span>
+    </div>
+  </a>
+} @else {
+  <div class="card"
+       [class.card--service]="!imageUrl && icon"
+       [class.card--article]="imageUrl">
+
+    @if (imageUrl) {
+      <div class="card__image-wrapper">
+        <img [src]="imageUrl" alt="{{ title }}" class="card__image" loading="lazy" width="400" height="250">
+      </div>
+    }
+
+    @if (!imageUrl && icon) {
+      <div class="card__icon">
+        <lucide-icon [name]="icon"></lucide-icon>
+      </div>
+    }
+
+    <div class="card__content">
+      <h3 class="card__title">{{ title }}</h3>
+      <p class="card__description">{{ description }}</p>
+    </div>
+  </div>
+}

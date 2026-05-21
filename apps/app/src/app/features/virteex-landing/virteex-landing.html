@@ -1,0 +1,119 @@
+<!-- Hero -->
+<section class="virteex-hero">
+  <div class="container">
+    <div class="virteex-hero__logo">
+      <img src="assets/imgs/logos/virteex.svg" alt="virtex" width="160" height="48">
+    </div>
+    <span class="section-eyebrow" jslAnimateOnScroll>{{ 'VIRTEEX.EYEBROW' | translate }}</span>
+    <h1 jslAnimateOnScroll>{{ 'VIRTEEX.TITLE' | translate }}</h1>
+    <p class="subtitle" jslAnimateOnScroll>{{ 'VIRTEEX.SUBTITLE' | translate }}</p>
+    <div class="virteex-hero__actions" jslAnimateOnScroll>
+      <a href="https://virtex.com" target="_blank" rel="noopener noreferrer" class="btn btn--primary">
+        {{ 'VIRTEEX.VISIT_SITE' | translate }}
+        <lucide-icon name="ExternalLink" [size]="16"></lucide-icon>
+      </a>
+      <a [routerLink]="['/', currentLang, 'contact']" class="btn btn--secondary">
+        {{ 'VIRTEEX.REQUEST_DEMO' | translate }}
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Stats Band -->
+<section class="virteex-stats">
+  <div class="container">
+    <div class="stats-band">
+      @for (stat of stats; track stat.labelKey) {
+        <div class="stat-item" jslAnimateOnScroll>
+          <span class="stat-item__value">{{ stat.valueKey | translate }}</span>
+          <span class="stat-item__label">{{ stat.labelKey | translate }}</span>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Core Features -->
+<section class="virteex-features">
+  <div class="container">
+    <div class="section-header" jslAnimateOnScroll>
+      <span class="section-eyebrow">{{ 'VIRTEEX.FEATURES_EYEBROW' | translate }}</span>
+      <h2 class="section-title">{{ 'VIRTEEX.FEATURES_TITLE' | translate }}</h2>
+      <p class="section-subtitle">{{ 'VIRTEEX.FEATURES_SUBTITLE' | translate }}</p>
+    </div>
+    <div class="features-grid">
+      @for (feat of features; track feat.key) {
+        <div class="feature-card" jslAnimateOnScroll>
+          <div class="feature-card__icon">
+            <lucide-icon [name]="feat.icon" [size]="28"></lucide-icon>
+          </div>
+          <h3>{{ 'VIRTEEX.FEAT_' + feat.key + '_TITLE' | translate }}</h3>
+          <p>{{ 'VIRTEEX.FEAT_' + feat.key + '_DESC' | translate }}</p>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Ecosystem Diagram -->
+<section class="virteex-ecosystem">
+  <div class="container">
+    <div class="section-header" jslAnimateOnScroll>
+      <span class="section-eyebrow">{{ 'VIRTEEX.ECOSYSTEM_EYEBROW' | translate }}</span>
+      <h2 class="section-title">{{ 'VIRTEEX.ECOSYSTEM_TITLE' | translate }}</h2>
+      <p class="section-subtitle">{{ 'VIRTEEX.ECOSYSTEM_SUBTITLE' | translate }}</p>
+    </div>
+    <div class="ecosystem-diagram" jslAnimateOnScroll>
+      <div class="ecosystem-core">
+        <div class="ecosystem-core__icon">
+          <lucide-icon name="Database" [size]="36"></lucide-icon>
+        </div>
+        <span class="ecosystem-core__label">{{ 'VIRTEEX.ERP_CORE' | translate }}</span>
+      </div>
+      <div class="ecosystem-satellites">
+        <div class="ecosystem-satellite">
+          <lucide-icon name="ShoppingCart" [size]="22"></lucide-icon>
+          <span>{{ 'VIRTEEX.POS' | translate }}</span>
+        </div>
+        <div class="ecosystem-satellite">
+          <lucide-icon name="Smartphone" [size]="22"></lucide-icon>
+          <span>{{ 'VIRTEEX.MOBILE_APP' | translate }}</span>
+        </div>
+        <div class="ecosystem-satellite">
+          <lucide-icon name="Globe" [size]="22"></lucide-icon>
+          <span>{{ 'VIRTEEX.ECOMMERCE' | translate }}</span>
+        </div>
+        <div class="ecosystem-satellite">
+          <lucide-icon name="BarChart3" [size]="22"></lucide-icon>
+          <span>{{ 'VIRTEEX.ANALYTICS' | translate }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Modules -->
+<section class="virteex-modules">
+  <div class="container">
+    <div class="section-header" jslAnimateOnScroll>
+      <span class="section-eyebrow">{{ 'VIRTEEX.MODULES_EYEBROW' | translate }}</span>
+      <h2 class="section-title">{{ 'VIRTEEX.MODULES_TITLE' | translate }}</h2>
+    </div>
+    <div class="modules-grid">
+      @for (mod of modules; track mod.key) {
+        <div class="module-card" jslAnimateOnScroll>
+          <lucide-icon [name]="mod.icon" [size]="24"></lucide-icon>
+          <h3>{{ 'VIRTEEX.MODULE_' + mod.key + '_TITLE' | translate }}</h3>
+          <p>{{ 'VIRTEEX.MODULE_' + mod.key + '_DESC' | translate }}</p>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<jsl-cta-section
+  eyebrowKey="VIRTEEX.CTA_EYEBROW"
+  titleKey="VIRTEEX.CTA_TITLE"
+  subtitleKey="VIRTEEX.CTA_SUBTITLE"
+  [ctaLink]="['/', currentLang, 'contact']">
+</jsl-cta-section>

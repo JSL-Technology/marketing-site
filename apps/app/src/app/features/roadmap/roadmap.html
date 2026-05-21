@@ -1,0 +1,64 @@
+<!-- Hero -->
+<section class="roadmap-hero">
+  <div class="container">
+    <span class="section-eyebrow" jslAnimateOnScroll>{{ 'ROADMAP.EYEBROW' | translate }}</span>
+    <h1 jslAnimateOnScroll>{{ 'ROADMAP.TITLE' | translate }}</h1>
+    <p class="subtitle" jslAnimateOnScroll>{{ 'ROADMAP.SUBTITLE' | translate }}</p>
+  </div>
+</section>
+
+<!-- Filter Tabs -->
+<section class="roadmap-filters">
+  <div class="container">
+    <div class="filter-tabs" role="tablist" jslAnimateOnScroll>
+      @for (filter of filters; track filter.key) {
+        <button
+          class="filter-tab"
+          [class.filter-tab--active]="activeFilter() === filter.key"
+          (click)="setFilter(filter.key)"
+          role="tab"
+          [attr.aria-selected]="activeFilter() === filter.key">
+          {{ filter.labelKey | translate }}
+        </button>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Timeline -->
+<section class="roadmap-content">
+  <div class="container">
+    @if (filteredItems().length > 0) {
+      <jsl-timeline [items]="filteredItems()"></jsl-timeline>
+    } @else {
+      <div class="roadmap-empty" jslAnimateOnScroll>
+        <lucide-icon name="Info" [size]="32"></lucide-icon>
+        <p>{{ 'ROADMAP.EMPTY' | translate }}</p>
+      </div>
+    }
+  </div>
+</section>
+
+<!-- Submit Feedback -->
+<section class="roadmap-feedback">
+  <div class="container">
+    <div class="feedback-card" jslAnimateOnScroll>
+      <lucide-icon name="Lightbulb" [size]="36"></lucide-icon>
+      <div class="feedback-card__content">
+        <h2>{{ 'ROADMAP.FEEDBACK_TITLE' | translate }}</h2>
+        <p>{{ 'ROADMAP.FEEDBACK_DESC' | translate }}</p>
+      </div>
+      <a [routerLink]="['/', currentLang, 'contact']" class="btn-primary">
+        {{ 'ROADMAP.FEEDBACK_CTA' | translate }}
+        <lucide-icon name="ArrowRight" [size]="18"></lucide-icon>
+      </a>
+    </div>
+  </div>
+</section>
+
+<jsl-cta-section
+  eyebrowKey="ROADMAP.CTA_EYEBROW"
+  titleKey="ROADMAP.CTA_TITLE"
+  subtitleKey="ROADMAP.CTA_SUBTITLE"
+  [ctaLink]="['/', currentLang, 'contact']">
+</jsl-cta-section>

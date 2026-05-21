@@ -1,0 +1,50 @@
+<!-- Hero -->
+<section class="industries-hero">
+  <div class="container">
+    <span class="section-eyebrow" jslAnimateOnScroll>{{ 'INDUSTRIES.EYEBROW' | translate }}</span>
+    <h1 jslAnimateOnScroll>{{ 'INDUSTRIES.TITLE' | translate }}</h1>
+    <p class="subtitle" jslAnimateOnScroll>{{ 'INDUSTRIES.SUBTITLE' | translate }}</p>
+  </div>
+</section>
+
+<!-- Industries Grid -->
+<section class="industries-section">
+  <div class="container">
+    <div class="industries-grid">
+      @for (industry of industries; track industry.key) {
+        <div class="industry-card" jslAnimateOnScroll>
+          <div class="industry-card__image-wrapper">
+            <img
+              [src]="industry.image"
+              [alt]="'INDUSTRIES.' + industry.key + '_TITLE' | translate"
+              loading="lazy" width="400" height="260">
+            <div class="industry-card__icon">
+              <lucide-icon [name]="industry.icon" [size]="22"></lucide-icon>
+            </div>
+          </div>
+          <div class="industry-card__content">
+            <h3 class="industry-card__title">{{ 'INDUSTRIES.' + industry.key + '_TITLE' | translate }}</h3>
+            <p class="industry-card__desc">{{ 'INDUSTRIES.' + industry.key + '_DESC' | translate }}</p>
+
+            <h4 class="industry-card__links-title">{{ 'INDUSTRIES.RELATED_LINKS' | translate }}</h4>
+            <div class="industry-card__links">
+              @for (link of industry.relatedLinks; track link.labelKey) {
+                <a [routerLink]="buildRoute(link.routeParts)">
+                  {{ link.labelKey | translate }}
+                </a>
+              }
+              <a [routerLink]="['/', currentLang, 'contact']">{{ 'INDUSTRIES.CONTACT_SOLUTION' | translate }}</a>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<jsl-cta-section
+  eyebrowKey="INDUSTRIES.CTA_EYEBROW"
+  titleKey="INDUSTRIES.CTA_TITLE"
+  subtitleKey="INDUSTRIES.CTA_SUBTITLE"
+  [ctaLink]="['/', currentLang, 'contact']">
+</jsl-cta-section>

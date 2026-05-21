@@ -1,0 +1,160 @@
+/* src/app/shared/styles/_detail-page.scss */
+/* Estilos compartidos para Blog-Detail y Project-Detail */
+
+.detail-page-header {
+  text-align: center;
+  
+  // --- CAMBIOS CLAVE ---
+  // 1. Añadido margen superior para compensar el header FIJO.
+  //    Esto resuelve el problema de que el breadcrumb quede oculto.
+  margin-top: var(--page-top-offset);
+  // 2. Padding ajustado para un look más limpio.
+  padding: var(--space-xl) 0 var(--space-lg);
+  // --- FIN CAMBIOS ---
+  
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+
+  .page-subtitle {
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    max-width: 700px;
+    margin: 0 auto;
+  }
+}
+
+.detail-page-breadcrumb {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+
+  a {
+    color: var(--text-muted);
+    &:hover {
+      color: var(--text-main);
+    }
+  }
+
+  lucide-icon {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.detail-page-title {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 1rem;
+  line-height: 1.2;
+  max-width: 900px;
+  margin-inline: auto;
+}
+
+.detail-page-meta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap; // <-- Añadido para mejor responsive
+  gap: 1.5rem;
+  margin-top: 1.5rem; // <-- Ajustado
+  color: var(--text-muted);
+
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    
+    lucide-icon {
+      width: 16px;
+      height: 16px;
+      color: var(--primary);
+    }
+  }
+}
+
+.detail-page-banner {
+  width: 100%;
+  
+  // --- CAMBIOS CLAVE ---
+  // 1. Imagen más grande y con altura máxima para elegancia.
+  height: 500px;
+  max-height: 60vh;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  
+  // 2. Eliminado el 'margin-top' negativo que causaba el
+  //    solapamiento sobre la sección de 'meta'.
+  margin-top: 0; 
+  
+  // 3. Eliminados z-index y box-shadow que ya no son necesarios.
+  // z-index: 10; (Eliminado)
+  // box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3); (Eliminado)
+
+  // 4. Fondo de fallback por si la imagen no carga.
+  background-color: var(--bg-secondary); 
+  // --- FIN CAMBIOS ---
+
+
+  @media (max-width: 768px) {
+    height: 250px;
+    max-height: 40vh; // <-- Ajustado
+    // margin-top: -40px; (Eliminado)
+  }
+}
+
+.detail-page-content {
+  display: block;
+  grid-template-columns: 1fr;
+  gap: 0;
+  max-width: 800px;
+  // 1. Más espacio entre la imagen y el contenido.
+  margin: 5rem auto 0;
+
+  .content-block {
+    margin-bottom: 3rem;
+  }
+  
+  h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--text-main);
+    margin-bottom: 1.5rem;
+    margin-top: 0;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5rem;
+
+    .content-block + .content-block h2,
+    h2 + h2 {
+      margin-top: 2.5rem;
+    }
+  }
+  
+  h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-main);
+    margin: 2rem 0 1rem;
+  }
+
+  p, li {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    line-height: 1.9;
+    margin-bottom: 1.5rem;
+  }
+  
+  ul, ol {
+    padding-inline-start: 2rem;
+  }
+  
+  li {
+    margin-bottom: 1rem;
+  }
+}

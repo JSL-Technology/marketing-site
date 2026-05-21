@@ -1,0 +1,67 @@
+<h2>How should the hero section feel?</h2>
+<p class="subtitle">Same direction C aesthetic — choosing the opening statement of the page.</p>
+
+<div class="cards">
+
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#0a0a0f;padding:24px 20px;border-radius:8px;font-family:'Segoe UI',sans-serif;min-height:220px;overflow:hidden;position:relative;display:flex;flex-direction:column;justify-content:center;">
+      <!-- grid bg -->
+      <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,75,43,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,75,43,0.05) 1px,transparent 1px);background-size:28px 28px;border-radius:8px;pointer-events:none;"></div>
+      <!-- glow -->
+      <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:200px;height:100px;background:radial-gradient(ellipse,rgba(255,75,43,0.12),transparent 70%);pointer-events:none;"></div>
+      <!-- content centered -->
+      <div style="text-align:center;position:relative;">
+        <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,75,43,0.08);border:1px solid rgba(255,75,43,0.2);border-radius:20px;padding:4px 12px;margin-bottom:16px;">
+          <div style="width:5px;height:5px;background:#ff4b2b;border-radius:50%;"></div>
+          <span style="font-size:9px;color:#ff4b2b;letter-spacing:2px;text-transform:uppercase;font-weight:600;">About JSL Technology</span>
+        </div>
+        <div style="font-size:28px;font-weight:800;color:#f5f5f5;line-height:1.1;letter-spacing:-0.5px;">Engineering the<br><span style="background:linear-gradient(90deg,#ff4b2b,#ff416c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Future of Software</span></div>
+        <div style="font-size:10px;color:#707070;margin-top:12px;max-width:260px;margin-left:auto;margin-right:auto;line-height:1.6;">We transform complex technical challenges into elegant, scalable solutions for global enterprises.</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A — Centered Statement</h3>
+      <p>Full-width centered hero with ambient glow and subtle grid. Large bold headline, gradient text accent, short descriptor. The page opens with gravitas. Flows into stats below.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#0a0a0f;padding:20px;border-radius:8px;font-family:'Segoe UI',sans-serif;min-height:220px;overflow:hidden;position:relative;display:flex;flex-direction:column;justify-content:space-between;">
+      <!-- grid bg -->
+      <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,75,43,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,75,43,0.04) 1px,transparent 1px);background-size:24px 24px;border-radius:8px;pointer-events:none;"></div>
+      <!-- side glow -->
+      <div style="position:absolute;left:-20px;top:50%;transform:translateY(-50%);width:100px;height:160px;background:radial-gradient(ellipse,rgba(255,75,43,0.15),transparent 70%);pointer-events:none;"></div>
+      <!-- two-col layout -->
+      <div style="display:grid;grid-template-columns:1.2fr 0.8fr;gap:16px;align-items:center;flex:1;position:relative;">
+        <div>
+          <div style="width:28px;height:2px;background:linear-gradient(90deg,#ff4b2b,#ff416c);border-radius:1px;margin-bottom:10px;"></div>
+          <div style="font-size:9px;color:#606060;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;">Est. 2016</div>
+          <div style="font-size:22px;font-weight:800;color:#f5f5f5;line-height:1.15;letter-spacing:-0.3px;">About<br>JSL Technology</div>
+          <div style="font-size:9px;color:#808080;margin-top:10px;line-height:1.6;">Global engineering team.<br>Delivering excellence at scale.</div>
+          <div style="margin-top:12px;display:inline-flex;align-items:center;gap:6px;background:rgba(255,75,43,0.1);border:1px solid rgba(255,75,43,0.25);border-radius:6px;padding:5px 10px;cursor:pointer;">
+            <span style="font-size:8px;color:#ff4b2b;font-weight:600;">Our story →</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="background:rgba(255,75,43,0.06);border:1px solid rgba(255,75,43,0.15);border-radius:8px;padding:10px;backdrop-filter:blur(8px);">
+            <div style="font-size:18px;font-weight:700;color:#ff4b2b;line-height:1;">8+</div>
+            <div style="font-size:7px;color:#606060;letter-spacing:1px;text-transform:uppercase;margin-top:2px;">Years</div>
+          </div>
+          <div style="background:rgba(255,75,43,0.06);border:1px solid rgba(255,75,43,0.15);border-radius:8px;padding:10px;backdrop-filter:blur(8px);">
+            <div style="font-size:18px;font-weight:700;color:#ff4b2b;line-height:1;">200+</div>
+            <div style="font-size:7px;color:#606060;letter-spacing:1px;text-transform:uppercase;margin-top:2px;">Projects</div>
+          </div>
+          <div style="background:rgba(255,75,43,0.06);border:1px solid rgba(255,75,43,0.15);border-radius:8px;padding:10px;backdrop-filter:blur(8px);">
+            <div style="font-size:18px;font-weight:700;color:#ff4b2b;line-height:1;">30+</div>
+            <div style="font-size:7px;color:#606060;letter-spacing:1px;text-transform:uppercase;margin-top:2px;">Countries</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — Split Hero + Stats</h3>
+      <p>Two-column hero: headline and CTA on the left, stat cards stacked on the right. Stats are immediately visible — no need to scroll. More compact, information-dense. Feels like a dashboard or product page.</p>
+    </div>
+  </div>
+
+</div>

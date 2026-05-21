@@ -1,0 +1,79 @@
+.status-hero {
+  padding: 8rem 0 4rem;
+  background: #050505;
+  text-align: center;
+
+  .status-indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+  }
+}
+
+.text-primary { color: var(--primary-color, #00ff9d); }
+
+.systems-grid {
+  display: grid;
+  gap: 1.5rem;
+  margin-bottom: 4rem;
+}
+
+.system-card {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  .sys-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+
+  .progress-bar {
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    margin-bottom: 0.5rem;
+    overflow: hidden;
+
+    .progress-fill {
+      height: 100%;
+      background: var(--primary-color, #00ff9d);
+    }
+  }
+
+  .uptime-label {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.5);
+  }
+}
+
+.incidents-section {
+  h2 { margin-bottom: 2rem; font-size: 1.75rem; }
+
+  .incident-item {
+    display: grid;
+    grid-template-columns: 100px 1fr auto;
+    gap: 2rem;
+    padding: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+    }
+
+    .inc-date { color: rgba(255, 255, 255, 0.5); font-size: 0.875rem; }
+    h3 { font-size: 1.125rem; margin-bottom: 0.5rem; }
+    p { color: rgba(255, 255, 255, 0.7); font-size: 0.875rem; }
+    .inc-status { color: #3b82f6; font-weight: 600; font-size: 0.875rem; }
+  }
+}

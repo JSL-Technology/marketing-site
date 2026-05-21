@@ -1,0 +1,35 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node update-langs.js)",
+      "Bash(node update-langs2.js)",
+      "Bash(node update-langs3.js)",
+      "Bash(node update-langs4.js)",
+      "Bash(Get-ChildItem -Path . -Recurse -Directory -Filter \"*mobile*\")",
+      "Bash(Select-Object -ExpandProperty FullName)",
+      "Bash(grep -E \"\\\\.ts$|\\\\.html$|\\\\.scss$\")",
+      "Bash(xargs grep -l \"drawer\\\\|sidebar\\\\|lateral\\\\|side-menu\\\\|sidenav\")",
+      "Bash(xargs grep -l \"mobile-menu\\\\|drawer\\\\|sidebar\\\\|lateral\")",
+      "Bash(npx tsc *)",
+      "Bash(xargs grep -l \"menu\\\\|drawer\")",
+      "Bash(powershell -Command \"Get-ChildItem -Path . -Filter '*product*' -Recurse -File | Select-Object -ExpandProperty FullName | head -100\")",
+      "Bash(powershell *)",
+      "Bash(dir \"apps\\\\app\\\\src\\\\app\\\\shared\\\\components\")",
+      "PowerShell(Get-ChildItem \"C:\\\\Users\\\\Usuario\\\\Downloads\\\\jules_session_1391041394126519322 \\(3\\)\\\\apps\\\\app\\\\src\\\\app\\\\shared\\\\components\" | Where-Object {$_.PSIsContainer} | Select-Object Name)",
+      "PowerShell(Get-ChildItem *)",
+      "PowerShell(\\(Get-Content \"C:\\\\Users\\\\Usuario\\\\Downloads\\\\jules_session_1391041394126519322 \\(3\\)\\\\apps\\\\app\\\\src\\\\app\\\\core\\\\data\\\\mock-data.ts\" | Select-String -Pattern \"TEAM_MEMBERS|export const\" | Select-Object -First 10\\).LineNumber)",
+      "Bash(C:/Users/Usuario/.claude/plugins/cache/claude-plugins-official/superpowers/5.1.0/scripts/start-server.sh *)",
+      "Bash(bash *)",
+      "PowerShell(New-Item *)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\Usuario\\\\Downloads\\\\jules_session_1391041394126519322 \\(3\\)\" -Force)",
+      "Bash(Select-Object Name, FullName)",
+      "Bash(Format-Table -AutoSize)",
+      "Skill(superpowers:brainstorming)",
+      "Skill(superpowers:writing-plans)",
+      "PowerShell(Get-Content *)",
+      "PowerShell(\\(Get-Content \"C:\\\\Users\\\\Usuario\\\\Downloads\\\\jules_session_1391041394126519322 \\(3\\)\\\\apps\\\\app\\\\src\\\\app\\\\features\\\\home\\\\home.scss\" | Select-Object -Last 20\\) -join \"`n\")"
+    ]
+  }
+}

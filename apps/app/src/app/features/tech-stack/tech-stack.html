@@ -1,0 +1,41 @@
+<div class="page-container container">
+  <h1 class="page-title" jslAnimateOnScroll>{{ 'TECH_STACK.TITLE' | translate }}</h1>
+  <p class="page-subtitle" jslAnimateOnScroll>{{ 'TECH_STACK.SUBTITLE' | translate }}</p>
+
+  <nav class="tech-tabs" jslAnimateOnScroll>
+    @for (category of categories(); track category.key) {
+      <button 
+        (click)="selectCategory(category)" 
+        [class.active]="category === selectedCategory()">
+        <lucide-icon [name]="category.icon"></lucide-icon>
+        <span>{{ 'TECH_STACK.' + category.key + '_TITLE' | translate }}</span>
+      </button>
+    }
+  </nav>
+
+  <section class="tech-content-area">
+    @if (selectedCategory(); as selected) {
+      <div [class]="selected.key">
+        <div class="category-header">
+          <p class="category-subtitle">{{ 'TECH_STACK.' + selected.key + '_DESC' | translate }}</p>
+        </div>
+        
+        <div class="tech-grid">
+          @for (tech of selected.technologies; track tech.name) {
+            <jsl-logo-card
+              [imageUrl]="tech.imageUrl"
+              [name]="tech.name">
+            </jsl-logo-card>
+          }
+        </div>
+      </div>
+    }
+  </section>
+
+</div>
+
+<jsl-cta-section 
+  eyebrowKey="TECH_STACK.CTA_EYEBROW"
+  titleKey="TECH_STACK.CTA_TITLE"
+  subtitleKey="TECH_STACK.CTA_SUBTITLE">
+</jsl-cta-section>

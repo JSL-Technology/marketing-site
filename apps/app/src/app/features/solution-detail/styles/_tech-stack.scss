@@ -1,0 +1,51 @@
+// src/app/features/solution-detail/styles/_tech-stack.scss
+@use "app/styles/variables" as *;
+
+.tech-stack-section {
+  padding: 5rem 0;
+  background-color: var(--background-alt);
+
+  .section-title {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+  
+  .section-subtitle {
+    text-align: center;
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    max-width: 600px;
+    margin: 0 auto 3rem;
+  }
+
+  .tech-logos {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4rem;
+    flex-wrap: wrap;
+
+    .tech-logo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      
+      img {
+        height: 60px;
+        transition: transform 0.3s ease;
+
+        &:hover {
+          transform: scale(1.1);
+        }
+      }
+
+      span {
+        font-weight: 500;
+        color: var(--text-muted);
+      }
+    }
+  }
+}

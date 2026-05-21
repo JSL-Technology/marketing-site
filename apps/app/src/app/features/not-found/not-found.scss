@@ -1,0 +1,121 @@
+// src/app/features/not-found/not-found.scss
+
+.page-container {
+  display: flex;
+  align-items: center;
+  min-height: calc(90vh - var(--header-height) - var(--top-bar-height));
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+.not-found-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 4rem;
+  width: 100%;
+}
+
+.not-found-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.5rem;
+
+  .not-found-eyebrow {
+    font-size: 1.2rem;
+    font-weight: 600;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+  }
+
+  h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 0;
+    line-height: 1.2;
+  }
+
+  p {
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    max-width: 450px;
+    margin-bottom: 1rem;
+    line-height: 1.7;
+  }
+
+  // --- INICIO DE LA CORRECCIÓN DEL BOTÓN ---
+  .hero-slide__cta {
+    // Estilos base copiados de home.scss
+    display: inline-flex; // (Modificado de inline-block a inline-flex)
+    padding: 1rem 2.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    background: var(--accent-gradient);
+    border-radius: var(--radius-md);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+    animation: none; // (Ya estaba)
+    
+    // Estilos específicos de not-found
+    gap: 0.75rem;
+    align-items: center; // (Añadido para centrar icono y texto)
+
+    lucide-icon {
+      width: 20px;
+      height: 20px;
+      color: #fff;
+    }
+
+    &:hover {
+      // Estilos de hover de home.scss
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(255, 65, 108, 0.2); // (Modificado para usar el color correcto)
+    }
+    
+    &:active {
+      // Estilos de active de home.scss
+      transform: translateY(-1px);
+      box-shadow: 0 5px 10px rgba(255, 65, 108, 0.2);
+    }
+  }
+  // --- FIN DE LA CORRECCIÓN DEL BOTÓN ---
+}
+
+.not-found-image {
+  text-align: center;
+  
+  img {
+    max-width: 100%;
+    height: auto;
+    filter: drop-shadow(0 10px 30px rgba(var(--primary-rgb), 0.1));
+  }
+}
+
+// --- Adaptación para móviles (UI/UX) ---
+@media (max-width: 992px) {
+  .not-found-grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    text-align: center;
+  }
+
+  .not-found-content {
+    align-items: center;
+    order: 2;
+  }
+
+  .not-found-image {
+    order: 1;
+  }
+
+  .not-found-content h1 {
+    font-size: 2.5rem;
+  }
+}

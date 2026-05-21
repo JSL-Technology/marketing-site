@@ -1,0 +1,139 @@
+// src/app/features/process/process.scss
+.page-title {
+  text-align: center;
+}
+.page-subtitle {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 4rem;
+}
+
+.process-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0; // Las líneas conectarán los items
+  max-width: 800px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.process-item {
+  display: grid;
+  grid-template-columns: 80px 1fr; // Columna de icono | Columna de contenido
+  gap: 2rem;
+  position: relative;
+  padding-bottom: 3rem;
+
+  // Alinear el contenido en lados opuestos (opcional, pero con "sazón")
+  &:nth-child(odd) {
+    .process-item__content {
+      text-align: start;
+    }
+  }
+  &:nth-child(even) {
+    grid-template-columns: 1fr 80px; // Invertir columnas
+
+    .process-item__content {
+      order: -1; // Mover contenido a la izquierda
+      text-align: end;
+    }
+    .process-item__icon-wrapper {
+      order: 1;
+    }
+  }
+}
+
+.process-item__icon-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.process-item__icon {
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--accent-gradient);
+  color: #fff;
+  z-index: 2;
+
+  lucide-icon {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+.process-item__line {
+  position: absolute;
+  top: 80px; // Debajo del ícono
+  inset-inline-start: 50%;
+  width: 2px;
+  height: 100%; // Se extiende hasta el final del padding-bottom
+  background: var(--border-color);
+  z-index: 1;
+}
+
+.process-item__content {
+  padding-top: 1rem;
+}
+
+.process-item__number {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.process-item__title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 1rem;
+}
+
+.process-item__desc {
+  font-size: 1rem;
+  color: var(--text-muted);
+  line-height: 1.8;
+}
+
+// Media query para móvil (stack lineal)
+@media (max-width: 768px) {
+  .process-item,
+  .process-item:nth-child(even) {
+    grid-template-columns: 60px 1fr; // Icono más pequeño
+    gap: 1.5rem;
+  }
+
+  .process-item__icon,
+  .process-item:nth-child(even) .process-item__icon {
+    width: 60px;
+    height: 60px;
+    
+    lucide-icon {
+      width: 28px;
+      height: 28px;
+    }
+  }
+
+  .process-item__line {
+    top: 60px;
+  }
+
+  .process-item__content,
+  .process-item:nth-child(even) .process-item__content {
+    order: 0;
+    text-align: start;
+  }
+  
+  .process-item__icon-wrapper,
+  .process-item:nth-child(even) .process-item__icon-wrapper {
+    order: 0;
+  }
+}

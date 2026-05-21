@@ -1,0 +1,36 @@
+<div
+  class="comparison-container"
+  #container
+  (mousedown)="onMouseDown($event)"
+  (touchstart)="onTouchStart($event)"
+>
+  <div class="image-wrapper after-image">
+    <img [src]="afterImage" [alt]="alt + ' - ' + afterLabel" width="1200" height="600" loading="lazy">
+    <span class="label after-label">{{ afterLabel }}</span>
+  </div>
+
+  <div
+    class="image-wrapper before-image"
+    [style.clip-path]="'inset(0 ' + (100 - sliderPosition) + '% 0 0)'"
+  >
+    <img [src]="beforeImage" [alt]="alt + ' - ' + beforeLabel" width="1200" height="600" loading="lazy">
+    <span class="label before-label">{{ beforeLabel }}</span>
+  </div>
+
+  <div
+    class="slider-handle"
+    [style.inset-inline-start.%]="sliderPosition"
+    tabindex="0"
+    role="slider"
+    [attr.aria-valuenow]="sliderPosition"
+    aria-valuemin="0"
+    aria-valuemax="100"
+    [attr.aria-label]="'Comparison slider'"
+    (keydown)="onKeyDown($event)"
+  >
+    <div class="handle-line"></div>
+    <div class="handle-circle">
+      <lucide-icon name="ChevronsLeftRight" size="16"></lucide-icon>
+    </div>
+  </div>
+</div>

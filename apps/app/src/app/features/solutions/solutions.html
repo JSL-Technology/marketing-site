@@ -1,0 +1,105 @@
+<div class="solutions-page">
+  <!-- Decorative Background Elements -->
+  <div class="bg-glow bg-glow--1"></div>
+  <div class="bg-glow bg-glow--2"></div>
+
+  <!-- Hero Section -->
+  <section class="solutions-hero">
+    <div class="container">
+      <div class="hero-content">
+        <span class="section-eyebrow" jslAnimateOnScroll>{{ 'SOLUTIONS.EYEBROW' | translate }}</span>
+        <h1 class="hero-title" jslAnimateOnScroll>{{ 'SOLUTIONS.TITLE' | translate }}</h1>
+        <p class="hero-subtitle" jslAnimateOnScroll>{{ 'SOLUTIONS.SUBTITLE' | translate }}</p>
+        <div class="hero-actions" jslAnimateOnScroll>
+          <button (click)="scrollToGrid()" class="btn-primary">
+            {{ 'SOLUTIONS.VIEW_ALL' | translate }}
+            <lucide-icon name="ArrowRight" [size]="18"></lucide-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="solutions-stats">
+    <div class="container">
+      <div class="stats-grid">
+        @for (stat of stats; track stat.labelKey) {
+          <div class="stat-card" jslAnimateOnScroll>
+            <div class="stat-card__icon">
+              <lucide-icon [name]="stat.icon" [size]="24"></lucide-icon>
+            </div>
+            <div class="stat-card__content">
+              <span class="stat-card__value">{{ stat.valueKey | translate }}</span>
+              <span class="stat-card__label">{{ stat.labelKey | translate }}</span>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Narrative Intro -->
+  <section class="solutions-narrative">
+    <div class="container">
+      <div class="narrative-grid">
+        <div class="narrative-text" jslAnimateOnScroll>
+          <span class="section-eyebrow">{{ 'SOLUTIONS.NARRATIVE_EYEBROW' | translate }}</span>
+          <h2 class="section-title">{{ 'SOLUTIONS.NARRATIVE_TITLE' | translate }}</h2>
+          <div class="narrative-description">
+            <p>{{ 'SOLUTIONS.NARRATIVE_DESC_1' | translate }}</p>
+            <p>{{ 'SOLUTIONS.NARRATIVE_DESC_2' | translate }}</p>
+          </div>
+        </div>
+        <div class="narrative-checklist-card" jslAnimateOnScroll>
+          <ul class="checklist">
+            <li>
+              <div class="checklist-icon"><lucide-icon name="CheckCircle" [size]="20"></lucide-icon></div>
+              <span>{{ 'SOLUTIONS.NARRATIVE_POINT_1' | translate }}</span>
+            </li>
+            <li>
+              <div class="checklist-icon"><lucide-icon name="CheckCircle" [size]="20"></lucide-icon></div>
+              <span>{{ 'SOLUTIONS.NARRATIVE_POINT_2' | translate }}</span>
+            </li>
+            <li>
+              <div class="checklist-icon"><lucide-icon name="CheckCircle" [size]="20"></lucide-icon></div>
+              <span>{{ 'SOLUTIONS.NARRATIVE_POINT_3' | translate }}</span>
+            </li>
+            <li>
+              <div class="checklist-icon"><lucide-icon name="CheckCircle" [size]="20"></lucide-icon></div>
+              <span>{{ 'SOLUTIONS.NARRATIVE_POINT_4' | translate }}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Solutions Grid -->
+  <section class="solutions-grid-section" id="solutions-grid">
+    <div class="container">
+      <div class="section-header" jslAnimateOnScroll>
+        <span class="section-eyebrow">{{ 'SOLUTIONS.GRID_EYEBROW' | translate }}</span>
+        <h2 class="section-title">{{ 'SOLUTIONS.GRID_TITLE' | translate }}</h2>
+      </div>
+      <div class="solutions-grid">
+        @for (solution of solutions(); track solution.key) {
+          <jsl-card
+            [icon]="solution.icon"
+            [title]="'SOLUTIONS.' + solution.key + '_TITLE' | translate"
+            [description]="'SOLUTIONS.' + solution.key + '_DESC' | translate"
+            [link]="['/', currentLang, 'solutions', solution.slug]"
+            jslAnimateOnScroll>
+          </jsl-card>
+        }
+      </div>
+    </div>
+  </section>
+
+  <jsl-cta-section
+    eyebrowKey="SOLUTIONS.CTA_EYEBROW"
+    titleKey="SOLUTIONS.CTA_TITLE"
+    subtitleKey="SOLUTIONS.CTA_SUBTITLE"
+    [ctaLink]="['/', currentLang, 'contact']">
+  </jsl-cta-section>
+</div>

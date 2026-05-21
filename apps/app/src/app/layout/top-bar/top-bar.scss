@@ -1,0 +1,50 @@
+:host {
+  width: 100%;
+}
+
+.top-bar {
+  height: var(--top-bar-height);
+  padding-top: 0; 
+  padding-bottom: 0; 
+  opacity: 1;
+
+  transition: height 0.3s ease-out, 
+              opacity 0.3s ease-out,
+              padding-top 0.3s ease-out,
+              padding-bottom 0.3s ease-out,
+              border-color 0.3s ease-out;
+}
+
+.top-bar__container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  gap: 1.5rem; 
+}
+
+.top-bar__links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.top-bar__link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  text-decoration: none;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: var(--primary);
+  }
+}
+
+// Ocultar en móvil (ya estaba)
+@media (max-width: 992px) {
+  .top-bar__container {
+    display: none;
+  }
+}

@@ -1,0 +1,126 @@
+<!-- Hero Section -->
+<section class="faq-hero">
+  <div class="container">
+    <div class="faq-hero__content">
+      <span class="section-eyebrow" jslAnimateOnScroll>{{ 'FAQ.EYEBROW' | translate }}</span>
+      <h1 jslAnimateOnScroll>{{ 'FAQ.TITLE' | translate }}</h1>
+      <p class="subtitle" jslAnimateOnScroll>{{ 'FAQ.SUBTITLE' | translate }}</p>
+
+      <!-- Enterprise Search Bar -->
+      <div class="faq-search-container" jslAnimateOnScroll>
+        <div class="faq-search-wrapper">
+          <lucide-icon name="Search" class="search-icon" [size]="20"></lucide-icon>
+          <input
+            type="text"
+            [placeholder]="'FAQ.SEARCH_PLACEHOLDER' | translate"
+            [(ngModel)]="searchQuery"
+            class="faq-search-input"
+            aria-label="Search FAQ"
+          />
+          @if (searchQuery()) {
+            <button class="clear-search" (click)="clearSearch()" aria-label="Clear search">
+              <lucide-icon name="X" [size]="16"></lucide-icon>
+            </button>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Category Navigation -->
+<section class="faq-categories-section">
+  <div class="container">
+    <div class="categories-grid" role="tablist" jslAnimateOnScroll>
+      @for (cat of categories; track cat.key) {
+        <button
+          class="category-card"
+          [class.category-card--active]="activeCategory() === cat.key"
+          (click)="setCategory(cat.key)"
+          role="tab"
+          [attr.aria-selected]="activeCategory() === cat.key">
+          <div class="category-card__icon">
+            <lucide-icon [name]="cat.icon" [size]="24"></lucide-icon>
+          </div>
+          <span class="category-card__label">{{ cat.labelKey | translate }}</span>
+        </button>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- FAQ Accordion Section -->
+<section class="faq-content-section">
+  <div class="container">
+    <div class="faq-grid">
+      <div class="faq-list" jslAnimateOnScroll>
+        @for (item of filteredItems(); track $index) {
+          <div
+            class="faq-card"
+            [class.faq-card--open]="openQuestionIndex() === $index"
+            jslAnimateOnScroll>
+            <button
+              class="faq-card__trigger"
+              (click)="toggleQuestion($index)"
+              [attr.aria-expanded]="openQuestionIndex() === $index">
+              <span class="faq-card__question">{{ item.questionKey | translate }}</span>
+              <div class="faq-card__icon-box">
+                <lucide-icon name="ChevronDown" class="chevron" [size]="20"></lucide-icon>
+              </div>
+            </button>
+
+            <div class="faq-card__answer-wrapper" [class.faq-card__answer-wrapper--open]="openQuestionIndex() === $index">
+              <div class="faq-card__answer">
+                <div class="answer-content" [innerHTML]="item.answerKey | translate"></div>
+              </div>
+            </div>
+          </div>
+        } @empty {
+          <div class="faq-empty-state" jslAnimateOnScroll>
+            <div class="empty-icon">
+              <lucide-icon name="Search" [size]="48"></lucide-icon>
+            </div>
+            <h3>{{ 'FAQ.EMPTY' | translate }}</h3>
+            <p>{{ 'SEARCH.NO_RESULTS' | translate }}</p>
+            <button class="btn-text" (click)="clearSearch()">{{ 'MATURITY.CTA_RESTART' | translate }}</button>
+          </div>
+        }
+      </div>
+
+      <!-- Sidebar Contact -->
+      <aside class="faq-sidebar" jslAnimateOnScroll>
+        <div class="contact-card">
+          <div class="contact-card__icon">
+            <lucide-icon name="MessageSquare" [size]="32"></lucide-icon>
+          </div>
+          <h3>{{ 'FAQ.STILL_QUESTIONS' | translate }}</h3>
+          <p>{{ 'CONTACT.RESPONSE_TIME' | translate }}</p>
+          <div class="contact-card__actions">
+            <a href="mailto:info@jsl.technology" class="btn-primary">
+              {{ 'FAQ.CONTACT_US' | translate }}
+              <lucide-icon name="Mail" [size]="18"></lucide-icon>
+            </a>
+            <a href="https://wa.me/18092641693" target="_blank" class="btn-outline">
+              WhatsApp
+              <lucide-icon name="MessageCircle" [size]="18"></lucide-icon>
+            </a>
+          </div>
+        </div>
+
+        <div class="support-card">
+          <h4>{{ 'HEADER.SUPPORT' | translate }}</h4>
+          <p>{{ 'CONTACT.ALT_SUPPORT_DESC' | translate }}</p>
+          <a href="mailto:support@jsl.technology" class="support-link">
+            support@jsl.technology
+          </a>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<jsl-cta-section
+  eyebrowKey="FAQ.CTA_EYEBROW"
+  titleKey="FAQ.CTA_TITLE"
+  subtitleKey="FAQ.CTA_SUBTITLE">
+</jsl-cta-section>

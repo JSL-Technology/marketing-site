@@ -1,0 +1,34 @@
+@if (totalPages > 1) {
+  <div class="pagination">
+    <button
+      class="page-btn prev"
+      [disabled]="currentPage === 1"
+      (click)="onPageChange(currentPage - 1)"
+      [attr.aria-label]="'ARIA.PREVIOUS_PAGE' | translate">
+      <lucide-icon [name]="icons.ChevronLeft" [size]="20"></lucide-icon>
+    </button>
+
+    <div class="pages">
+      @for (page of pages; track $index) {
+        @if (page === -1) {
+          <span class="ellipsis">...</span>
+        } @else {
+          <button
+            class="page-number"
+            [class.active]="page === currentPage"
+            (click)="onPageChange(page)">
+            {{ page }}
+          </button>
+        }
+      }
+    </div>
+
+    <button
+      class="page-btn next"
+      [disabled]="currentPage === totalPages"
+      (click)="onPageChange(currentPage + 1)"
+      [attr.aria-label]="'ARIA.NEXT_PAGE' | translate">
+      <lucide-icon [name]="icons.ChevronRight" [size]="20"></lucide-icon>
+    </button>
+  </div>
+}

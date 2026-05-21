@@ -1,0 +1,318 @@
+/* src/app/shared/components/chat-bubble/chat-bubble.scss */
+@use 'sass:color';
+
+:host {
+  display: block;
+}
+
+.chat-bubble-widget {
+  position: fixed;
+  bottom: 2rem;
+  inset-inline-end: 2rem;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1rem;
+}
+
+.chat-preview-bubble {
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  padding: 1rem 1.5rem;
+  border-radius: var(--radius-md);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+  max-width: 300px;
+  animation: previewFadeIn 0.5s ease-out forwards;
+
+  p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    font-weight: 500;
+  }
+}
+
+@keyframes previewFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+// --- Botón Burbuja (sin cambios) ---
+.chat-bubble-button {
+  width: 60px;
+  height: 60px;
+  background: var(--accent-gradient);
+  color: #fff;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 5px 20px rgba(var(--primary-rgb), 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  align-self: flex-end;
+
+  lucide-icon {
+    width: 30px;
+    height: 30px;
+  }
+
+  &:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 25px rgba(var(--primary-rgb), 0.4);
+  }
+}
+
+// --- Ventana de Chat ---
+.chat-window {
+  width: 370px; // Un poco más ancho
+  max-width: calc(100vw - 2rem); // Más responsive en móvil
+  height: 550px; // Un poco más alto
+  max-height: calc(100vh - 4rem);
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: fadeInUp 0.3s ease-out;
+}
+
+// --- NUEVO: Header Mejorado ---
+.chat-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem; // Espacio entre avatar e info
+  padding: 1rem 1.5rem;
+  background-color: var(--bg-primary);
+  border-bottom: 1px solid var(--border-color);
+  flex-shrink: 0;
+
+  .chat-header-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--accent-gradient);
+    color: #fff;
+    font-weight: 600;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .chat-header-info {
+    flex-grow: 1;
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-main);
+      margin: 0;
+    }
+    span {
+      font-size: 0.85rem;
+      color: #2ecc71; // Verde "online"
+      font-weight: 500;
+    }
+  }
+
+  .chat-close-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    cursor: pointer;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+
+    lucide-icon {
+      width: 20px;
+      height: 20px;
+    }
+
+    &:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--text-muted);
+    }
+  }
+}
+
+// --- NUEVO: Body Mejorado (Estilo WhatsApp) ---
+.chat-body {
+  flex-grow: 1;
+  padding: 1.5rem 1rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  background-color: var(--bg-primary); // Fondo más oscuro
+}
+
+.chat-message {
+  display: flex; // Para alinear
+  max-width: 80%; // Burbujas no ocupan todo el ancho
+
+  .message-content {
+    border-radius: var(--radius-md);
+    padding: 0.75rem 1rem;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+
+    p {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin: 0 0 0.25rem; // Espacio para el status
+      color: var(--text-main);
+      white-space: pre-wrap; // Respeta saltos de línea
+      word-wrap: break-word; // Evita desbordamiento
+    }
+  }
+
+  &.chat-message--operator {
+    align-self: flex-start;
+    .message-content {
+      background-color: var(--bg-secondary);
+      color: var(--text-muted);
+      border-start-start-radius: 4px; // top-left in LTR, top-right in RTL
+      p {
+        color: var(--text-main);
+      }
+    }
+  }
+
+  &.chat-message--user {
+    align-self: flex-end;
+    .message-content {
+      background-color: var(--primary);
+      color: #fff;
+      border-start-end-radius: 4px; // top-right in LTR, top-left in RTL
+      p {
+        color: #fff;
+      }
+    }
+  }
+}
+
+// --- NUEVO: Status del Mensaje (Hora y Visto) ---
+.message-status {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; // Alinea a la derecha
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+
+  .chat-message--user & {
+    color: rgba(255, 255, 255, 0.8);
+    lucide-icon {
+      color: rgba(255, 255, 255, 0.8); // Color del "visto"
+    }
+  }
+}
+
+// --- NUEVO: Footer Mejorado (Textarea) ---
+.chat-footer {
+  display: flex;
+  padding: 0.75rem 1rem;
+  border-top: 1px solid var(--border-color);
+  background-color: var(--bg-secondary);
+  flex-shrink: 0;
+  gap: 0.75rem;
+  align-items: flex-end; // Alinea items abajo
+
+  textarea {
+    flex-grow: 1;
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 0.75rem 1rem;
+    color: var(--text-main);
+    font-family: var(--font-family-base);
+    font-size: 0.95rem;
+    resize: none;
+    max-height: 100px; // Límite de altura
+    overflow-y: auto;
+    scrollbar-width: none; // Ocultar scrollbar
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+  }
+
+  .chat-send-btn {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    background: var(--accent-gradient);
+    border: none;
+    border-radius: 50%; // Botón de envío circular
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+
+    lucide-icon {
+      width: 20px;
+      height: 20px;
+    }
+
+    &:hover:not(:disabled) {
+      filter: brightness(1.2);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .chat-bubble-widget {
+    bottom: 1.5rem;
+    inset-inline-end: 1.5rem;
+    // width: calc(100vw - 3rem);
+  }
+  .chat-window {
+    width: 100%;
+    max-height: calc(100vh - 5rem);
+  }
+  .chat-preview-bubble {
+    max-width: 100%;
+  }
+}

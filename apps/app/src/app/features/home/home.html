@@ -1,0 +1,822 @@
+<section class="hero-slider">
+  <!-- Añadido #heroSwiper para referencia en TypeScript -->
+  <swiper-container 
+    #heroSwiper
+    init="false"
+    class="hero-main-swiper"
+    [attr.dir]="directionService.isRtl() ? 'rtl' : 'ltr'"
+  >
+    <swiper-slide class="hero-slide">
+      <jsl-picture
+        avifSrc="assets/imgs/Avif/img-2.avif"
+        [fill]="true"
+        [priority]="true"
+        [alt]="'HOME.HERO1_ALT' | translate"
+      ></jsl-picture>
+
+      <div class="hero-slide__overlay"></div>
+      <div class="hero-slide__content container">
+        @if (isReturningVisitor()) {
+          <p class="hero-slide__eyebrow">{{ 'HOME.WELCOME_BACK' | translate }}</p>
+        } @else {
+          <p class="hero-slide__eyebrow">{{ 'HOME.WELCOME_EYEBROW' | translate }}</p>
+        }
+        <h1 class="hero-slide__title">{{ personalizedHeroTitle() | translate }}</h1>
+        <p class="hero-slide__subtitle">{{ personalizedHeroSubtitle() | translate }}</p>
+
+        @if (heroVariant() === 'B') {
+          <div class="hero-trust-block" jslAnimateOnScroll>
+            <div class="hero-trust-block__icons">
+              <lucide-icon name="CheckCircle2" [size]="16"></lucide-icon>
+            </div>
+            <span>{{ 'HOME.HERO_B_SOCIAL_PROOF' | translate }}</span>
+          </div>
+        }
+
+        <div class="hero-actions">
+          <a [routerLink]="['/', currentLang, 'about-us']" class="hero-slide__cta" [attr.aria-label]="'HOME.LEARN_MORE' | translate" (click)="onHeroCtaClick(0, 'primary')">{{
+            personalizedHeroCTA() | translate
+          }}</a>
+          <button (click)="openVideoModal(); onHeroCtaClick(0, 'secondary')" class="hero-slide__cta hero-slide__cta--secondary" [attr.aria-label]="'ARIA.WATCH_REEL' | translate">
+             <lucide-icon name="Play"></lucide-icon>
+             {{ 'HOME.WATCH_REEL' | translate }}
+          </button>
+        </div>
+      </div>
+    </swiper-slide>
+
+    <swiper-slide class="hero-slide">
+      <!-- <img ngSrc="https://images.unsplash.com/photo-1587620962725-abab7fe55159?fit=crop&w=1920&q=80"  -->
+      <jsl-picture
+        avifSrc="assets/imgs/Avif/photo-1587620962725-abab7fe55159.avif"
+        [fill]="true"
+        [alt]="'HOME.HERO2_ALT' | translate"
+      ></jsl-picture>
+
+      <div class="hero-slide__overlay"></div>
+      <div class="hero-slide__content container">
+        <span class="hero-slide__eyebrow">{{ 'HOME.PRODUCTS_EYEBROW' | translate }}</span>
+        <h2 class="hero-slide__title">{{ 'HOME.HERO2_TITLE' | translate }}</h2>
+        <p class="hero-slide__subtitle">{{ 'HOME.HERO2_SUBTITLE' | translate }}</p>
+        <a [routerLink]="['/', currentLang, 'products']" class="hero-slide__cta" [attr.aria-label]="'HOME.VIEW_PRODUCTS' | translate">{{
+          'HOME.HERO2_CTA' | translate
+        }}</a>
+      </div>
+    </swiper-slide>
+
+    <swiper-slide class="hero-slide">
+      <!-- <img ngSrc="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?fit=crop&w=1920&q=80"  -->
+      <jsl-picture
+        avifSrc="assets/imgs/Avif/photo-1517694712202-14dd9538aa97.avif"
+        [fill]="true"
+        [alt]="'HOME.HERO3_ALT' | translate"
+      ></jsl-picture>
+
+      <div class="hero-slide__overlay"></div>
+      <div class="hero-slide__content container">
+        <span class="hero-slide__eyebrow">{{ 'HOME.SERVICES_EYEBROW' | translate }}</span>
+        <h2 class="hero-slide__title">{{ 'HOME.HERO3_TITLE' | translate }}</h2>
+        <p class="hero-slide__subtitle">{{ 'HOME.HERO3_SUBTITLE' | translate }}</p>
+        <a [routerLink]="['/', currentLang, 'solutions']" class="hero-slide__cta" [attr.aria-label]="'HOME.EXPLORE_SOLUTIONS' | translate">{{
+          'HOME.HERO3_CTA' | translate
+        }}</a>
+      </div>
+    </swiper-slide>
+  </swiper-container>
+
+  <!-- Custom Navigation Buttons - MODERNOS Y DISCRETOS -->
+  <div
+    class="hero-swiper-button-prev"
+    [attr.aria-label]="'ARIA.PREVIOUS_SLIDE' | translate"
+    role="button"
+    tabindex="0"
+    (click)="onPrevNav()"
+    (keydown.enter)="onPrevNav()"
+    (keydown.space)="onPrevNav()">
+    <lucide-icon name="ChevronLeft"></lucide-icon>
+  </div>
+  <div
+    class="hero-swiper-button-next"
+    [attr.aria-label]="'ARIA.NEXT_SLIDE' | translate"
+    role="button"
+    tabindex="0"
+    (click)="onNextNav()"
+    (keydown.enter)="onNextNav()"
+    (keydown.space)="onNextNav()">
+    <lucide-icon name="ChevronRight"></lucide-icon>
+  </div>
+
+  <div class="hero-bottom-bar">
+    <div class="hero-bottom-bar__container container">
+      <div class="hero-bottom-bar__col">
+        <p>{{ 'HOME.HERO_BAR_LEFT_1' | translate }}</p>
+        <p>{{ 'HOME.HERO_BAR_LEFT_2' | translate }}</p>
+      </div>
+      <div class="hero-bottom-bar__col hero-bottom-bar__col--center">
+        <p>{{ 'HOME.HERO_BAR_CENTER' | translate }}</p>
+      </div>
+      <div class="hero-bottom-bar__col hero-bottom-bar__col--right">
+        <p>{{ 'HOME.HERO_BAR_RIGHT_1' | translate }}</p>
+        <p>{{ 'HOME.HERO_BAR_RIGHT_2' | translate }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- NUEVO: Scroll Down Indicator -->
+  <div class="scroll-indicator" [class.hidden]="!showScrollIndicator()">
+    <div class="mouse">
+      <div class="wheel"></div>
+    </div>
+    <div class="arrow"></div>
+  </div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats-section">
+  <div class="container">
+    <div class="stats-section__header" jslAnimateOnScroll>
+      <span class="section-eyebrow">{{ 'HOME.STATS_EYEBROW' | translate }}</span>
+      <h2 class="section-title">{{ 'HOME.STATS_TITLE' | translate }}</h2>
+    </div>
+
+    <div class="stats-grid">
+      @for (stat of stats; track stat.valueKey) {
+        <div class="stat-card" jslAnimateOnScroll>
+          <div class="stat-card__icon">
+            <lucide-icon [name]="stat.icon" [size]="24"></lucide-icon>
+          </div>
+          <h3 class="stat-card__value">{{ stat.valueKey | translate }}</h3>
+          <p class="stat-card__label">{{ stat.labelKey | translate }}</p>
+          <p class="stat-card__sub">{{ stat.subtitleKey | translate }}</p>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Partners / Clients Section -->
+<section class="partners-section" [attr.aria-label]="'ARIA.PARTNERS' | translate">
+  <div class="container">
+    <div class="partners-header">
+      <span class="partners-title">{{ 'HOME.PARTNERS_TITLE' | translate }}</span>
+    </div>
+    <div class="partners-grid">
+      @for (partner of partners(); track partner.name) {
+        <div class="partner-logo">
+          <img [src]="partner.imageUrl" [alt]="partner.name" loading="lazy" width="150" height="60">
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- NUEVO: Tech Stack Slider (Marquee) -->
+<section class="tech-stack-slider">
+  <div class="container-fluid">
+    <swiper-container init="false" class="logo-slider" [attr.dir]="directionService.isRtl() ? 'rtl' : 'ltr'">
+      @for (tech of techStack(); track tech.name) {
+        <swiper-slide class="logo-slide">
+          <img [src]="tech.imageUrl" [alt]="tech.name" loading="lazy" width="100" height="100" />
+        </swiper-slide>
+      }
+    </swiper-container>
+  </div>
+</section>
+
+<section class="welcome-section container" jslAnimateOnScroll>
+  <div class="welcome-section__text">
+    <span class="section-eyebrow">{{ 'HOME.WELCOME_EYEBROW' | translate }}</span>
+    <h2 class="section-title">{{ 'HOME.WELCOME_TITLE' | translate }}</h2>
+    <p class="section-subtitle">{{ 'HOME.WELCOME_SUBTITLE' | translate }}</p>
+    <a [routerLink]="['/', currentLang, 'about-us']" class="welcome-section__cta">
+      <span>{{ 'HEADER.ABOUT' | translate }}</span>
+      <lucide-icon name="ArrowRight"></lucide-icon>
+    </a>
+  </div>
+
+  <div class="welcome-section__image welcome-photo-block">
+    <div class="welcome-photo-frame">
+      <img
+        src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?fit=crop&w=900&q=85"
+        [alt]="'HOME.WELCOME_TITLE' | translate"
+        class="welcome-photo"
+        loading="lazy"
+        width="900"
+        height="600"
+      />
+      <div class="welcome-photo-overlay"></div>
+    </div>
+  </div>
+</section>
+
+<section class="offerings-section container" id="offerings">
+  <div class="offerings-header" jslAnimateOnScroll>
+    <span class="section-eyebrow">{{ 'HOME.OFFERINGS_EYEBROW' | translate }}</span>
+    <h2 class="section-title">{{ 'HOME.OFFERINGS_TITLE' | translate }}</h2>
+
+    <div class="search-trigger-container">
+      <div class="search-trigger" (click)="openSearch()">
+        <lucide-icon name="Search"></lucide-icon>
+        <span>{{ 'HOME.SEARCH_PLACEHOLDER' | translate }}</span>
+      </div>
+    </div>
+
+    <div class="offerings-tabs-container">
+      <div class="offerings-tabs">
+        <button
+          class="tab-btn"
+          [class.active]="activeTab() === 'services'"
+          (click)="setActiveTab('services')"
+        >
+          {{ 'HEADER.SERVICES' | translate }}
+        </button>
+        <button
+          class="tab-btn"
+          [class.active]="activeTab() === 'products'"
+          (click)="setActiveTab('products')"
+        >
+          {{ 'HEADER.PRODUCTS' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="offerings-content">
+    @if (isLoading()) {
+      <div class="solutions-grid">
+         @for (i of [1,2,3]; track $index) {
+           <div class="skeleton-wrapper">
+             <app-skeleton-loader shape="circle" width="48px" height="48px"></app-skeleton-loader>
+             <app-skeleton-loader width="60%" height="24px"></app-skeleton-loader>
+             <app-skeleton-loader width="100%" height="16px"></app-skeleton-loader>
+             <app-skeleton-loader width="90%" height="16px"></app-skeleton-loader>
+           </div>
+         }
+      </div>
+    } @else {
+      <div class="offerings-slider-wrapper">
+        <swiper-container
+          init="false"
+          class="offerings-swiper"
+          [attr.dir]="directionService.isRtl() ? 'rtl' : 'ltr'"
+        >
+          @for (item of offeringItems(); track item.key) {
+            <swiper-slide class="offering-slide">
+              <jsl-card
+                [icon]="item.icon"
+                [title]="(activeTab() === 'services' ? 'SOLUTIONS.' : 'PRODUCTS.') + item.key + '_TITLE' | translate"
+                [description]="(activeTab() === 'services' ? 'SOLUTIONS.' : 'PRODUCTS.') + item.key + '_DESC' | translate"
+                [link]="['/', currentLang, activeTab() === 'services' ? 'solutions' : 'products', item.slug]"
+                jslAnimateOnScroll
+              >
+              </jsl-card>
+            </swiper-slide>
+          }
+          <swiper-slide class="offering-slide view-more-slide">
+            <a [routerLink]="['/', currentLang, activeTab() === 'services' ? 'solutions' : 'products']" class="view-more-card">
+              <div class="view-more-card__content">
+                <div class="view-more-card__icon">
+                  <lucide-icon name="ArrowRight"></lucide-icon>
+                </div>
+                <span class="view-more-card__text">{{ (activeTab() === 'services' ? 'HEADER.VIEW_ALL_SERVICES' : 'HEADER.VIEW_ALL_PRODUCTS') | translate }}</span>
+              </div>
+            </a>
+          </swiper-slide>
+        </swiper-container>
+
+        <!-- Custom Navigation Buttons -->
+        <div
+          class="offerings-swiper-button-prev"
+          [class.is-disabled]="!canOfferingsPrev()"
+          [attr.aria-disabled]="!canOfferingsPrev()"
+          [attr.aria-label]="'ARIA.PREVIOUS_SLIDE' | translate"
+          role="button"
+          tabindex="0"
+          (keydown.enter)="onPrevOfferings()"
+          (keydown.space)="onPrevOfferings()"
+          (click)="onPrevOfferings()">
+          <lucide-icon name="ChevronLeft"></lucide-icon>
+        </div>
+        <div
+          class="offerings-swiper-button-next"
+          [class.is-disabled]="!canOfferingsNext()"
+          [attr.aria-disabled]="!canOfferingsNext()"
+          [attr.aria-label]="'ARIA.NEXT_SLIDE' | translate"
+          role="button"
+          tabindex="0"
+          (keydown.enter)="onNextOfferings()"
+          (keydown.space)="onNextOfferings()"
+          (click)="onNextOfferings()">
+          <lucide-icon name="ChevronRight"></lucide-icon>
+        </div>
+      </div>
+    }
+  </div>
+</section>
+
+<!-- NUEVO: Maturity Diagnosis Section -->
+<section class="maturity-section container" jslAnimateOnScroll>
+  <div class="section-header text-center">
+    <span class="section-eyebrow">{{ 'MATURITY.EYEBROW' | translate }}</span>
+    <h2 class="section-title">{{ 'MATURITY.TITLE' | translate }}</h2>
+    <p class="section-subtitle">{{ 'MATURITY.SUBTITLE' | translate }}</p>
+  </div>
+
+  <div class="maturity-grid">
+    <div>
+      <h3>{{ 'HOME.ASSESS_TECH' | translate }}</h3>
+      <jsl-digital-maturity-selector></jsl-digital-maturity-selector>
+    </div>
+    <div>
+      <h3>{{ 'HOME.CALC_SAVINGS' | translate }}</h3>
+      <app-roi-calculator></app-roi-calculator>
+    </div>
+  </div>
+
+  <div class="maturity-cta">
+    <button (click)="openBookingModal()" class="welcome-section__cta">
+      <span>{{ 'HOME.STICKY_CTA' | translate }}</span>
+      <lucide-icon name="Calendar"></lucide-icon>
+    </button>
+    <div class="urgency-indicator">
+      <lucide-icon name="AlertCircle" [size]="14"></lucide-icon>
+      <span>{{ 'HOME.LIMITED_AVAILABILITY' | translate:{ month: currentMonth } }}</span>
+    </div>
+  </div>
+</section>
+
+<section class="featured-projects container">
+  <div class="featured-projects__header" jslAnimateOnScroll>
+    <span class="section-eyebrow">{{ 'HOME.PROJECTS_EYEBROW' | translate }}</span>
+    <h2 class="section-title">{{ 'HOME.PROJECTS_TITLE' | translate }}</h2>
+    <p class="section-subtitle">{{ 'HOME.PROJECTS_SUBTITLE' | translate }}</p>
+  </div>
+
+  <div class="projects-filter">
+    @for (category of projectCategories; track category) {
+      <button
+        class="filter-pill"
+        [class.active]="selectedProjectCategory() === category"
+        (click)="setProjectCategory(category)">
+        {{ category }}
+      </button>
+    }
+  </div>
+
+  <div class="projects-slider-wrapper">
+    <swiper-container
+      init="false"
+      class="projects-swiper"
+      [attr.dir]="directionService.isRtl() ? 'rtl' : 'ltr'"
+    >
+      @for (project of filteredProjects(); track project.key) {
+        <swiper-slide class="project-slide">
+          <a [routerLink]="['/', currentLang, 'projects', project.slug]" class="project-card">
+            <div class="project-card__image-wrap">
+              <img
+                [src]="project.imageUrl"
+                [alt]="'PROJECTS.' + project.key + '_TITLE' | translate"
+                class="project-card__image"
+                loading="lazy"
+                width="600"
+                height="380"
+              >
+              <div class="project-card__overlay"></div>
+              @if (project.category) {
+                <span class="project-card__category">{{ project.category }}</span>
+              }
+            </div>
+            <div class="project-card__body">
+              <div class="project-card__content">
+                <h3 class="project-card__title">{{ 'PROJECTS.' + project.key + '_TITLE' | translate }}</h3>
+                <p class="project-card__desc">{{ 'PROJECTS.' + project.key + '_DESC' | translate }}</p>
+              </div>
+              @if (project.metrics?.length) {
+                <div class="project-card__metrics">
+                  @for (metric of (project.metrics ?? []).slice(0, 3); track metric) {
+                    <span class="project-card__metric">{{ metric }}</span>
+                  }
+                </div>
+              }
+              <div class="project-card__footer">
+                <span class="project-card__cta">
+                  {{ 'COMMON.READ_MORE' | translate }}
+                  <lucide-icon name="ArrowRight" [size]="14" class="project-card__cta-icon"></lucide-icon>
+                </span>
+              </div>
+            </div>
+          </a>
+        </swiper-slide>
+      }
+      <swiper-slide class="project-slide view-more-slide">
+        <a [routerLink]="['/', currentLang, 'projects']" class="view-more-card">
+          <div class="view-more-card__content">
+            <div class="view-more-card__icon">
+              <lucide-icon name="ArrowRight"></lucide-icon>
+            </div>
+            <span class="view-more-card__text">{{ 'PROJECTS.ALL_TITLE' | translate }}</span>
+          </div>
+        </a>
+      </swiper-slide>
+    </swiper-container>
+
+    <!-- Custom Navigation Buttons -->
+    <div
+      class="projects-swiper-button-prev"
+      [class.is-disabled]="!canProjectsPrev()"
+      [attr.aria-disabled]="!canProjectsPrev()"
+      [attr.aria-label]="'ARIA.PREVIOUS_SLIDE' | translate"
+      role="button"
+      tabindex="0"
+      (click)="onPrevProjects()"
+      (keydown.enter)="onPrevProjects()"
+      (keydown.space)="onPrevProjects()">
+      <lucide-icon name="ChevronLeft"></lucide-icon>
+    </div>
+    <div
+      class="projects-swiper-button-next"
+      [class.is-disabled]="!canProjectsNext()"
+      [attr.aria-disabled]="!canProjectsNext()"
+      [attr.aria-label]="'ARIA.NEXT_SLIDE' | translate"
+      role="button"
+      tabindex="0"
+      (click)="onNextProjects()"
+      (keydown.enter)="onNextProjects()"
+      (keydown.space)="onNextProjects()">
+      <lucide-icon name="ChevronRight"></lucide-icon>
+    </div>
+  </div>
+</section>
+
+<!-- NUEVO COMPONENTE: Lead Magnet (Captura Intermedia) -->
+<section class="lead-magnet-section">
+  <div class="container lead-magnet-container">
+    <div class="lead-magnet-content" jslAnimateOnScroll>
+      <div class="lead-magnet-badge" jslAnimateOnScroll>
+        <lucide-icon name="Star" [size]="14"></lucide-icon>
+        <span>{{ 'HOME.LEAD_MAGNET_TRUSTED' | translate }}</span>
+      </div>
+      <span class="lead-magnet-eyebrow">{{ 'HOME.LEAD_MAGNET_EYEBROW' | translate }}</span>
+      <h2 class="lead-magnet-title">{{ 'HOME.LEAD_MAGNET_TITLE' | translate }}</h2>
+      <p class="lead-magnet-subtitle">{{ 'HOME.LEAD_MAGNET_SUBTITLE' | translate }}</p>
+
+      <ul class="lead-magnet-benefits">
+        <li jslAnimateOnScroll>
+          <lucide-icon name="CheckCircle2" [size]="18"></lucide-icon>
+          <span>{{ 'HOME.LEAD_MAGNET_BENEFIT_1' | translate }}</span>
+        </li>
+        <li jslAnimateOnScroll>
+          <lucide-icon name="CheckCircle2" [size]="18"></lucide-icon>
+          <span>{{ 'HOME.LEAD_MAGNET_BENEFIT_2' | translate }}</span>
+        </li>
+        <li jslAnimateOnScroll>
+          <lucide-icon name="CheckCircle2" [size]="18"></lucide-icon>
+          <span>{{ 'HOME.LEAD_MAGNET_BENEFIT_3' | translate }}</span>
+        </li>
+      </ul>
+
+      <div class="lead-magnet-form-wrapper">
+        <div class="lead-magnet-form">
+          <input type="email" [placeholder]="'HOME.LEAD_MAGNET_PLACEHOLDER' | translate" class="lead-magnet-input" />
+          <button (click)="downloadLeadMagnet()" class="lead-magnet-btn" [disabled]="isSubmitting()">
+            @if (isSubmitting()) {
+               <span>{{ 'HOME.LEAD_MAGNET_SENDING' | translate }}</span>
+               <lucide-icon name="Loader2" class="spin-icon"></lucide-icon>
+            } @else {
+               {{ 'HOME.LEAD_MAGNET_BTN' | translate }}
+               <lucide-icon name="Download"></lucide-icon>
+            }
+          </button>
+        </div>
+        <p class="lead-magnet-disclaimer">{{ 'HOME.LEAD_MAGNET_DISCLAIMER' | translate }}</p>
+      </div>
+    </div>
+    <div class="lead-magnet-visual" jslAnimateOnScroll>
+       <div class="book-scene">
+         <div class="book-mockup">
+           <div class="book-spine"></div>
+           <div class="book-front">
+              <div class="book-front-content">
+                <div class="book-logo">JSL</div>
+                <lucide-icon name="Zap" size="48" class="book-icon"></lucide-icon>
+                <h3 class="book-title">2025</h3>
+                <p class="book-subtitle">Transformation</p>
+                <div class="book-badge">{{ 'HOME.LEAD_MAGNET_BADGE' | translate }}</div>
+              </div>
+           </div>
+           <div class="book-pages"></div>
+         </div>
+         <div class="book-shadow"></div>
+       </div>
+    </div>
+  </div>
+</section>
+
+<section class="testimonials-section">
+  <div class="ts-bg" aria-hidden="true">
+    <div class="ts-bg__orb ts-bg__orb--1"></div>
+    <div class="ts-bg__orb ts-bg__orb--2"></div>
+  </div>
+
+  <div class="container" jslAnimateOnScroll>
+    <div class="testimonials-header">
+      <div class="testimonials-header__text">
+        <span class="section-eyebrow">{{ 'HOME.TESTIMONIALS_EYEBROW' | translate }}</span>
+        <h2 class="section-title">{{ 'HOME.TESTIMONIALS_TITLE' | translate }}</h2>
+      </div>
+      <div class="testimonials-header__nav" aria-label="Testimonial navigation">
+        <button class="testimonial-nav-btn testimonial-nav-btn--prev" aria-label="Previous testimonial">
+          <lucide-icon name="ChevronLeft" [size]="18"></lucide-icon>
+        </button>
+        <button class="testimonial-nav-btn testimonial-nav-btn--next" aria-label="Next testimonial">
+          <lucide-icon name="ChevronRight" [size]="18"></lucide-icon>
+        </button>
+      </div>
+    </div>
+
+    <swiper-container init="false" class="testimonial-slider" [attr.dir]="directionService.isRtl() ? 'rtl' : 'ltr'">
+      @for (testimonial of testimonials(); track testimonial.nameKey) {
+        <swiper-slide>
+          <div class="testimonial-card">
+            <span class="testimonial-card__deco" aria-hidden="true">"</span>
+
+            <div class="testimonial-card__stars" aria-label="5 out of 5 stars">
+              @for (star of getStars(5); track $index) {
+                <lucide-icon name="Star" [size]="14"></lucide-icon>
+              }
+            </div>
+
+            <p class="testimonial-card__text">{{ testimonial.textKey | translate }}</p>
+
+            <div class="testimonial-card__divider"></div>
+
+            <div class="testimonial-card__author">
+              <img
+                [src]="testimonial.imageUrl"
+                [alt]="testimonial.nameKey | translate"
+                loading="lazy"
+                width="44"
+                height="44"
+              />
+              <div class="testimonial-card__author-info">
+                <span class="name">{{ testimonial.nameKey | translate }}</span>
+                <span class="role">{{ testimonial.roleKey | translate }}</span>
+              </div>
+              <lucide-icon name="BadgeCheck" [size]="18" class="verified-icon" aria-label="Verified review"></lucide-icon>
+            </div>
+          </div>
+        </swiper-slide>
+      }
+    </swiper-container>
+
+    <div class="social-proof-widgets">
+      <div class="sp-widget">
+        <div class="sp-widget__stars" aria-hidden="true">
+          @for (star of getStars(5); track $index) {
+            <lucide-icon name="Star" [size]="12"></lucide-icon>
+          }
+        </div>
+        <span class="sp-score">{{ 'HOME.CLUTCH_SCORE' | translate }}</span>
+        <span class="sp-divider" aria-hidden="true">·</span>
+        <span class="sp-source">{{ 'HOME.ON_CLUTCH' | translate }}</span>
+      </div>
+      <div class="sp-widget__separator" aria-hidden="true"></div>
+      <div class="sp-widget">
+        <div class="sp-widget__stars" aria-hidden="true">
+          @for (star of getStars(5); track $index) {
+            <lucide-icon name="Star" [size]="12"></lucide-icon>
+          }
+        </div>
+        <span class="sp-score">{{ 'HOME.GOOGLE_SCORE' | translate }}</span>
+        <span class="sp-divider" aria-hidden="true">·</span>
+        <span class="sp-source">{{ 'HOME.ON_GOOGLE' | translate }}</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="process-section">
+  <div class="container">
+    <div class="process-header" jslAnimateOnScroll>
+      <span class="section-eyebrow">{{ 'HOME.PROCESS_EYEBROW' | translate }}</span>
+      <h2 class="section-title">{{ 'HOME.PROCESS_TITLE' | translate }}</h2>
+      <p class="section-subtitle">{{ 'HOME.PROCESS_SUBTITLE' | translate }}</p>
+    </div>
+    <div class="process-grid">
+      @for (step of processSteps(); track step.key) {
+        <div class="process-step" jslAnimateOnScroll>
+          <div class="process-step__icon">
+            <lucide-icon [name]="step.icon"></lucide-icon>
+          </div>
+          <h3 class="process-step__title">{{ 'HOME.PROCESS_' + step.key + '_TITLE' | translate }}</h3>
+          <p class="process-step__desc">{{ 'HOME.PROCESS_' + step.key + '_DESC' | translate }}</p>
+        </div>
+      }
+    </div>
+
+    <div class="process-section__cta" jslAnimateOnScroll>
+      <a [routerLink]="['/', currentLang, 'about-us']" class="welcome-section__cta">
+        <span>{{ 'HEADER.ABOUT' | translate }}</span>
+        <lucide-icon name="ArrowRight"></lucide-icon>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- <section class="latest-insights container"> -->
+<section class="latest-insights">
+  <div class="latest-insights__header" jslAnimateOnScroll>
+    <div class="latest-insights__header-left">
+      <span class="section-eyebrow">{{ 'HOME.BLOG_EYEBROW' | translate }}</span>
+      <h2 class="section-title">{{ 'HOME.BLOG_TITLE' | translate }}</h2>
+    </div>
+    <div class="latest-insights__header-right">
+      <div class="insights-header-nav">
+        <button
+          class="insights-nav-btn"
+          [class.is-disabled]="!canInsightsPrev()"
+          [attr.aria-disabled]="!canInsightsPrev()"
+          [attr.aria-label]="'ARIA.PREVIOUS_SLIDE' | translate"
+          (click)="onPrevInsights()">
+          <lucide-icon name="ArrowLeft" [size]="16"></lucide-icon>
+        </button>
+        <button
+          class="insights-nav-btn"
+          [class.is-disabled]="!canInsightsNext()"
+          [attr.aria-disabled]="!canInsightsNext()"
+          [attr.aria-label]="'ARIA.NEXT_SLIDE' | translate"
+          (click)="onNextInsights()">
+          <lucide-icon name="ArrowRight" [size]="16"></lucide-icon>
+        </button>
+      </div>
+      <a [routerLink]="['/', currentLang, 'blog']" class="insights-view-all">
+        {{ 'HEADER.BLOG' | translate }}
+        <lucide-icon name="ArrowRight" [size]="14"></lucide-icon>
+      </a>
+    </div>
+  </div>
+
+  <div class="insights-slider-wrapper">
+    <swiper-container
+      init="false"
+      class="insights-swiper"
+      [attr.dir]="directionService.isRtl() ? 'rtl' : 'ltr'"
+    >
+      @for (post of latestBlogPosts(); track post.key) {
+        <swiper-slide class="insight-slide">
+          <article class="insight-card">
+            <a [routerLink]="['/', currentLang, 'blog', post.slug]" class="insight-card__inner">
+              <div class="insight-card__image-wrap">
+                <img
+                  [src]="post.imageUrl"
+                  [alt]="'BLOG.' + post.key + '_TITLE' | translate"
+                  class="insight-card__image"
+                  loading="lazy"
+                  width="600"
+                  height="338"
+                >
+                <div class="insight-card__image-overlay"></div>
+                @if (post.tags?.length) {
+                  <div class="insight-card__badges">
+                    <span class="insight-card__badge">{{ post.tags[0] }}</span>
+                  </div>
+                }
+              </div>
+              <div class="insight-card__body">
+                <div class="insight-card__meta">
+                  <span class="insight-meta-item">
+                    <lucide-icon name="Calendar" [size]="11"></lucide-icon>
+                    {{ post.date | date:'MMM d, y' }}
+                  </span>
+                  <span class="insight-meta-sep">·</span>
+                  <span class="insight-meta-item">
+                    <lucide-icon name="Clock" [size]="11"></lucide-icon>
+                    {{ post.readTime }} {{ 'BLOG.READ_TIME_UNIT' | translate }}
+                  </span>
+                </div>
+                <h3 class="insight-card__title">{{ 'BLOG.' + post.key + '_TITLE' | translate }}</h3>
+                <p class="insight-card__excerpt">{{ 'BLOG.' + post.key + '_EXCERPT' | translate }}</p>
+                <div class="insight-card__footer">
+                  <div class="insight-card__tags">
+                    @for (tag of post.tags.slice(0, 2); track tag) {
+                      <span class="insight-card__tag">{{ tag }}</span>
+                    }
+                  </div>
+                  <span class="insight-card__cta">
+                    {{ 'COMMON.READ_MORE' | translate }}
+                    <lucide-icon name="ArrowRight" [size]="13" class="insight-card__cta-icon"></lucide-icon>
+                  </span>
+                </div>
+              </div>
+            </a>
+          </article>
+        </swiper-slide>
+      }
+      <swiper-slide class="insight-slide view-more-slide">
+        <a [routerLink]="['/', currentLang, 'blog']" class="view-more-card">
+          <div class="view-more-card__content">
+            <div class="view-more-card__icon">
+              <lucide-icon name="BookOpen"></lucide-icon>
+            </div>
+            <span class="view-more-card__text">{{ 'HEADER.BLOG' | translate }}</span>
+          </div>
+        </a>
+      </swiper-slide>
+    </swiper-container>
+  </div>
+</section>
+
+<!-- NUEVO COMPONENTE: FAQ Preview (Manejo de Objeciones) -->
+<section class="faq-preview-section container" jslAnimateOnScroll>
+  <div class="faq-preview-header">
+     <span class="section-eyebrow">{{ 'HOME.FAQ_PREVIEW_EYEBROW' | translate }}</span>
+     <h2 class="section-title">{{ 'HOME.FAQ_PREVIEW_TITLE' | translate }}</h2>
+  </div>
+  <div class="faq-list">
+    @for (item of faqPreview; track $index) {
+      <div class="faq-item" [class.open]="item.isOpen">
+        <button class="faq-question" (click)="toggleFaq($index)" [attr.aria-expanded]="item.isOpen">
+          {{ item.titleKey | translate }}
+          <lucide-icon [name]="item.isOpen ? 'Minus' : 'Plus'"></lucide-icon>
+        </button>
+        <div class="faq-answer" [style.max-height]="item.isOpen ? '500px' : '0'">
+          <div class="faq-answer-inner" [innerHTML]="item.descKey | translate"></div>
+        </div>
+      </div>
+    }
+  </div>
+  <div class="faq-preview-footer">
+    <a [routerLink]="['/', currentLang, 'faq']" class="welcome-section__cta">
+      <span>{{ 'HOME.FAQ_PREVIEW_LINK' | translate }}</span>
+      <lucide-icon name="ArrowRight"></lucide-icon>
+    </a>
+  </div>
+</section>
+
+<!-- NUEVO COMPONENTE: Casos de Éxito (Before/After) -->
+<!-- <section class="success-cases-section container">
+  <div class="section-header text-center">
+     <span class="section-eyebrow">{{ 'HOME.VISUAL_TRANSFORMATION' | translate }}</span>
+     <h2 class="section-title">{{ 'HOME.SEE_DIFFERENCE' | translate }}</h2>
+     <p class="section-subtitle">{{ 'HOME.DIFF_SUBTITLE' | translate }}</p>
+  </div>
+
+  <div class="comparison-container">
+     <jsl-image-comparison
+       beforeImage="assets/imgs/Avif/legacy-ui.avif"
+       afterImage="assets/imgs/Avif/modern-ui.avif"
+       [beforeLabel]="'HOME.LEGACY_SYSTEM' | translate"
+       [afterLabel]="'HOME.JSL_SOLUTION' | translate"
+       [alt]="'HOME.DASHBOARD_COMP' | translate"
+     ></jsl-image-comparison>
+  </div>
+</section> -->
+
+<jsl-cta-section></jsl-cta-section>
+
+<jsl-video-modal
+  [isOpen]="isVideoModalOpen()"
+  [videoUrl]="demoVideoUrl"
+  (close)="closeVideoModal()">
+</jsl-video-modal>
+
+<jsl-booking-modal
+  [isOpen]="isBookingModalOpen()"
+  (close)="closeBookingModal()">
+</jsl-booking-modal>
+
+<jsl-exit-intent-modal
+  [isOpen]="isExitModalOpen()"
+  (close)="closeExitModal()"
+  (confirm)="onExitModalConfirm()">
+</jsl-exit-intent-modal>
+
+<!-- Mobile Exit-Intent Bottom Sheet -->
+@if (isMobileExitSheetOpen()) {
+  <div class="mobile-exit-sheet" role="dialog" aria-modal="true" aria-labelledby="mobile-exit-title">
+    <div class="mobile-exit-sheet__overlay" (click)="closeMobileExitSheet()"></div>
+    <div class="mobile-exit-sheet__panel">
+      <div class="mobile-exit-sheet__handle"></div>
+      <p class="mobile-exit-sheet__count">
+        <lucide-icon name="Users" [size]="16"></lucide-icon>
+        {{ 'HOME.MOBILE_EXIT_BODY' | translate: {count: socialProofCount()} }}
+      </p>
+      <h3 id="mobile-exit-title" class="mobile-exit-sheet__title">{{ 'HOME.MOBILE_EXIT_TITLE' | translate }}</h3>
+      <a [routerLink]="['/', currentLang, 'contact']" class="mobile-exit-sheet__cta" (click)="closeMobileExitSheet()">
+        {{ 'HOME.MOBILE_EXIT_CTA' | translate }}
+        <lucide-icon name="ArrowRight" [size]="18"></lucide-icon>
+      </a>
+      <button class="mobile-exit-sheet__dismiss" (click)="closeMobileExitSheet()">
+        {{ 'HOME.MOBILE_EXIT_DISMISS' | translate }}
+      </button>
+    </div>
+  </div>
+}
+
+<!-- Sticky CTA for Mobile -->
+<!-- <div class="mobile-sticky-cta">
+  <button (click)="openBookingModal()">
+    {{ 'HOME.STICKY_CTA' | translate }}
+    <lucide-icon name="Calendar"></lucide-icon>
+  </button>
+</div> -->

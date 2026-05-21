@@ -1,0 +1,21 @@
+@if (isVisible()) {
+  <div class="cookie-banner">
+    <div class="cookie-content">
+      <div class="cookie-icon">
+        <lucide-icon [name]="icons.Info" [size]="24"></lucide-icon>
+      </div>
+      <div class="cookie-text">
+        <h3>{{ 'COOKIE.TITLE' | translate }}</h3>
+        <p>{{ 'COOKIE.DESCRIPTION' | translate }}</p>
+      </div>
+    </div>
+    <div class="cookie-actions">
+      <button class="btn-decline" (click)="decline()">
+        {{ 'COOKIE.DECLINE' | translate }}
+      </button>
+      <button class="btn-accept" (click)="accept()">
+        {{ 'COOKIE.ACCEPT' | translate }}
+      </button>
+    </div>
+  </div>
+}

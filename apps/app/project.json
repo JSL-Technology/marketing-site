@@ -1,0 +1,107 @@
+{
+  "name": "app",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/app/src",
+  "prefix": "app",
+  "generators": {
+    "@schematics/angular:component": {
+      "style": "scss"
+    }
+  },
+  "targets": {
+    "build": {
+      "executor": "@angular/build:application",
+      "options": {
+        "browser": "apps/app/src/main.ts",
+        "tsConfig": "apps/app/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": [
+          {
+            "glob": "**/*",
+            "input": "apps/app/public"
+          },
+          "apps/app/src/assets",
+          "apps/app/src/robots.txt"
+        ],
+        "styles": ["apps/app/src/styles.scss"],
+        "stylePreprocessorOptions": {
+          "includePaths": ["apps/app/src"]
+        },
+        "server": "apps/app/src/main.server.ts",
+        "outputMode": "server",
+        "ssr": {
+          "entry": "apps/app/src/server.ts"
+        },
+        "allowedCommonJsDependencies": ["prismjs"],
+        "outputPath": "dist/apps/app"
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "2MB",
+              "maximumError": "2.5MB"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "80kB",
+              "maximumError": "100kB"
+            }
+          ],
+          "outputHashing": "all",
+          "optimization": {
+            "fonts": false
+          },
+          "serviceWorker": "apps/app/src/ngsw-config.json"
+        },
+        "development": {
+          "optimization": false,
+          "extractLicenses": false,
+          "sourceMap": true
+        }
+      },
+      "defaultConfiguration": "production",
+      "outputs": ["{options.outputPath}"]
+    },
+    "serve": {
+      "executor": "@angular/build:dev-server",
+      "configurations": {
+        "production": {
+          "buildTarget": "app:build:production"
+        },
+        "development": {
+          "buildTarget": "app:build:development"
+        }
+      },
+      "defaultConfiguration": "development",
+      "options": {
+        "prebundle": false,
+        "allowedHosts": ["waters-members-examinations-atlas.trycloudflare.com", "localhost", "127.0.0.1"]
+      }
+    },
+    "extract-i18n": {
+      "executor": "@angular/build:extract-i18n"
+    },
+    "test": {
+      "executor": "@angular/build:karma",
+      "options": {
+        "tsConfig": "apps/app/tsconfig.spec.json",
+        "inlineStyleLanguage": "scss",
+        "assets": [
+          {
+            "glob": "**/*",
+            "input": "apps/app/public"
+          },
+          "apps/app/src/assets",
+          "apps/app/src/robots.txt"
+        ],
+        "styles": ["apps/app/src/styles.scss"],
+        "stylePreprocessorOptions": {
+          "includePaths": ["apps/app/src"]
+        }
+      }
+    }
+  }
+}

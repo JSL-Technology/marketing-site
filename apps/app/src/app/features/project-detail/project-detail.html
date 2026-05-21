@@ -1,0 +1,72 @@
+@if (project$ | async; as project) {
+  <header class="detail-page-header">
+    <div class="container">
+      <div class="detail-page-breadcrumb">
+        <a [routerLink]="['/', currentLang, 'home']">{{ 'COMMON.BREADCRUMB_HOME' | translate }}</a>
+        <lucide-icon name="ChevronRight"></lucide-icon>
+        <a [routerLink]="['/', currentLang, 'projects']">{{ 'HEADER.PROJECTS' | translate }}</a>
+        <lucide-icon name="ChevronRight"></lucide-icon>
+        <span>{{ 'PROJECTS.' + project.key + '_TITLE' | translate }}</span>
+      </div>
+      <h1 class="detail-page-title">{{ 'PROJECTS.' + project.key + '_TITLE' | translate }}</h1>
+    </div>
+  </header>
+
+  <div class="container">
+    <img [src]="project.imageUrl"
+         [alt]="'PROJECTS.' + project.key + '_TITLE' | translate"
+         class="detail-page-banner"
+         fetchpriority="high"
+         loading="eager"
+         width="1200"
+         height="600">
+
+    <main class="detail-page-content">
+      
+      <!-- New Metrics Section -->
+      @if (project.metrics && project.metrics.length > 0) {
+        <section class="metrics-section content-block">
+          <h2>{{ 'PROJECTS.METRICS_TITLE' | translate }}</h2>
+          <div class="metrics-grid">
+            @for (metric of project.metrics; track metric) {
+              <div class="metric-card">
+                <lucide-icon name="TrendingUp" class="metric-icon"></lucide-icon>
+                <span class="metric-value">{{ metric }}</span>
+              </div>
+            }
+          </div>
+        </section>
+      }
+
+      <section class="content-block">
+        <h2>{{ 'PROJECTS.DETAIL_CHALLENGE_TITLE' | translate }}</h2>
+        <p>{{ 'PROJECTS.' + project.key + '_DETAIL_CHALLENGE' | translate }}</p>
+      </section>
+
+      <section class="content-block">
+        <h2>{{ 'PROJECTS.DETAIL_SOLUTION_TITLE' | translate }}</h2>
+        <p [innerHTML]="'PROJECTS.' + project.key + '_DETAIL_SOLUTION' | translate"></p>
+      </section>
+
+      <section class="content-block">
+        <h2>{{ 'PROJECTS.DETAIL_RESULT_TITLE' | translate }}</h2>
+        <p>{{ 'PROJECTS.' + project.key + '_DETAIL_RESULT' | translate }}</p>
+      </section>
+
+    </main>
+  </div>
+
+  <jsl-cta-section
+    eyebrowKey="PROJECTS.CTA_EYEBROW"
+    titleKey="PROJECTS.CTA_TITLE"
+    subtitleKey="PROJECTS.CTA_SUBTITLE">
+  </jsl-cta-section>
+} @else {
+  <div class="page-container container">
+    <h2 class="page-title h1">{{ 'NOT_FOUND.PROJECT_TITLE' | translate }}</h2>
+    <p class="page-subtitle">
+      {{ 'NOT_FOUND.PROJECT_SUBTITLE' | translate }}
+      <a [routerLink]="['/', currentLang, 'projects']">{{ 'HEADER.PROJECTS' | translate }}</a>.
+    </p>
+  </div>
+}

@@ -1,0 +1,96 @@
+<div class="wp-card">
+  <!-- Ambient glows -->
+  <div class="wp-card__glow wp-card__glow--1" aria-hidden="true"></div>
+  <div class="wp-card__glow wp-card__glow--2" aria-hidden="true"></div>
+
+  <!-- Document cover mockup (decorative, hidden from a11y) -->
+  <div class="wp-cover" aria-hidden="true">
+    <div class="wp-cover__stack wp-cover__stack--back"></div>
+    <div class="wp-cover__stack wp-cover__stack--mid"></div>
+    <div class="wp-cover__page">
+      <div class="wp-cover__accent-bar"></div>
+      <div class="wp-cover__logo-row">
+        <lucide-icon name="Cpu" [size]="14"></lucide-icon>
+        <span>JSL Technology</span>
+      </div>
+      <div class="wp-cover__lines" aria-hidden="true">
+        @for (line of coverLines; track $index) {
+          <span [style.width]="line"></span>
+        }
+      </div>
+      <div class="wp-cover__label">WHITEPAPER</div>
+      <p class="wp-cover__heading">
+        Guía de<br>Transformación<br>Digital
+      </p>
+      <div class="wp-cover__year-row">
+        <span class="wp-cover__year">{{ 'WHITEPAPER.YEAR' | translate }}</span>
+        <div class="wp-cover__dot"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main content -->
+  <div class="wp-content">
+    <div class="wp-content__header">
+      <div class="wp-icon-wrap">
+        <lucide-icon name="FileText" [size]="26"></lucide-icon>
+      </div>
+      <span class="wp-badge">{{ 'WHITEPAPER.BADGE' | translate }}</span>
+    </div>
+
+    <h3 class="wp-title">{{ titleKey | translate }}</h3>
+    <p class="wp-desc">{{ descriptionKey | translate }}</p>
+
+    <div class="wp-stats" aria-label="Detalles del documento">
+      <span class="wp-stat">
+        <lucide-icon name="BookOpen" [size]="12"></lucide-icon>
+        {{ 'WHITEPAPER.STAT_PAGES' | translate }}
+      </span>
+      <span class="wp-stat-sep" aria-hidden="true">·</span>
+      <span class="wp-stat">
+        <lucide-icon name="BarChart3" [size]="12"></lucide-icon>
+        {{ 'WHITEPAPER.STAT_INDUSTRIES' | translate }}
+      </span>
+      <span class="wp-stat-sep" aria-hidden="true">·</span>
+      <span class="wp-stat">
+        <lucide-icon name="Zap" [size]="12"></lucide-icon>
+        {{ 'WHITEPAPER.STAT_FREE' | translate }}
+      </span>
+    </div>
+
+    @if (!isSubmitted) {
+      <form (submit)="onSubmit()" class="wp-form">
+        <div class="wp-form__group">
+          <lucide-icon name="Mail" [size]="15" class="wp-form__icon"></lucide-icon>
+          <input
+            type="email"
+            [(ngModel)]="email"
+            (ngModelChange)="onEmailChange()"
+            name="email"
+            [placeholder]="'WHITEPAPER.EMAIL_PLACEHOLDER' | translate"
+            required
+            class="wp-form__input"
+          />
+        </div>
+        <button type="submit" class="wp-form__btn">
+          <lucide-icon name="Download" [size]="16"></lucide-icon>
+          {{ 'WHITEPAPER.DOWNLOAD_BTN' | translate }}
+        </button>
+      </form>
+      <p class="wp-privacy">
+        <lucide-icon name="Shield" [size]="12"></lucide-icon>
+        {{ 'WHITEPAPER.NO_SPAM' | translate }}
+      </p>
+    } @else {
+      <div class="wp-success">
+        <div class="wp-success__icon">
+          <lucide-icon name="CheckCircle" [size]="26"></lucide-icon>
+        </div>
+        <div>
+          <p class="wp-success__title">{{ 'WHITEPAPER.SENT_MSG' | translate }}</p>
+          <p class="wp-success__sub">{{ 'WHITEPAPER.CHECK_INBOX' | translate }}</p>
+        </div>
+      </div>
+    }
+  </div>
+</div>

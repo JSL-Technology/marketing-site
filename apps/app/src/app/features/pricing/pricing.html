@@ -1,0 +1,200 @@
+<section class="pricing-hero">
+  <div class="container">
+    <span class="section-eyebrow">{{ 'PRICING.EYEBROW' | translate }}</span>
+    <h1>{{ 'PRICING.TITLE' | translate }}</h1>
+    <p class="subtitle">{{ 'PRICING.SUBTITLE' | translate }}</p>
+  </div>
+</section>
+
+<section class="wizard-section">
+  <div class="container">
+    <div class="wizard-card">
+
+      <!-- Step Indicators -->
+      <div class="wizard-steps-header">
+        @for (s of [1,2,3,4]; track s) {
+          <div class="wizard-step-indicator" [class.active]="step >= s" [class.current]="step === s">
+            <span class="step-num">{{ s }}</span>
+            <span class="step-label">{{ 'PRICING.STEP_' + s + '_LABEL' | translate }}</span>
+          </div>
+          @if (s < 4) {
+            <div class="wizard-step-line" [class.active]="step > s"></div>
+          }
+        }
+      </div>
+
+      <!-- Step 1: Type -->
+      @if (step === 1) {
+        <div class="step">
+          <h2>{{ 'PRICING.WIZARD_STEP_1' | translate }}</h2>
+          <p class="step-desc">{{ 'PRICING.WIZARD_STEP_1_DESC' | translate }}</p>
+          <div class="options-grid">
+            @for (type of types; track type.id) {
+              <button class="option-btn" (click)="selectType(type)">
+                <lucide-icon [name]="type.icon" [size]="28" class="option-btn__icon"></lucide-icon>
+                <span class="option-btn__name">{{ type.name | translate }}</span>
+                <span class="option-btn__hint">{{ 'PRICING.' + type.id.toUpperCase() + '_HINT' | translate }}</span>
+              </button>
+            }
+          </div>
+        </div>
+      }
+
+      <!-- Step 2: Scale -->
+      @if (step === 2) {
+        <div class="step">
+          <h2>{{ 'PRICING.WIZARD_STEP_2' | translate }}</h2>
+          <p class="step-desc">{{ 'PRICING.WIZARD_STEP_2_DESC' | translate }}</p>
+          <div class="options-grid">
+            @for (scale of scales; track scale.id) {
+              <button class="option-btn" (click)="selectScale(scale)">
+                <lucide-icon [name]="scale.icon" [size]="28" class="option-btn__icon"></lucide-icon>
+                <span class="option-btn__name">{{ scale.name | translate }}</span>
+                <span class="option-btn__hint">{{ 'PRICING.' + scale.id.toUpperCase() + '_HINT' | translate }}</span>
+              </button>
+            }
+          </div>
+          <button class="wizard-back-btn" (click)="prevStep()">
+            <lucide-icon name="ArrowLeft" [size]="16"></lucide-icon>
+            {{ 'PRICING.BACK' | translate }}
+          </button>
+        </div>
+      }
+
+      <!-- Step 3: Features -->
+      @if (step === 3) {
+        <div class="step">
+          <h2>{{ 'PRICING.WIZARD_STEP_3' | translate }}</h2>
+          <p class="step-desc">{{ 'PRICING.WIZARD_STEP_3_DESC' | translate }}</p>
+          <div class="options-grid">
+            @for (feat of features; track feat.id) {
+              <button class="option-btn"
+                      [class.selected]="selections.features.includes(feat)"
+                      (click)="toggleFeature(feat)">
+                <lucide-icon [name]="feat.icon" [size]="28" class="option-btn__icon"></lucide-icon>
+                <span class="option-btn__name">{{ feat.name | translate }}</span>
+                <span class="option-btn__price">+${{ feat.price | number }}</span>
+              </button>
+            }
+          </div>
+          <div class="wizard-actions">
+            <button class="wizard-back-btn" (click)="prevStep()">
+              <lucide-icon name="ArrowLeft" [size]="16"></lucide-icon>
+              {{ 'PRICING.BACK' | translate }}
+            </button>
+            <button class="btn-primary" (click)="nextStep()">
+              {{ 'PRICING.CALCULATE' | translate }}
+              <lucide-icon name="ArrowRight" [size]="16"></lucide-icon>
+            </button>
+          </div>
+        </div>
+      }
+
+      <!-- Step 4: Result -->
+      @if (step === 4) {
+        <div class="step result">
+          <div class="result-header">
+            <lucide-icon name="CheckCircle" [size]="48" class="result-icon"></lucide-icon>
+            <h2>{{ 'PRICING.ESTIMATE' | translate }}</h2>
+          </div>
+
+          <div class="price-display">
+            <span class="price-from">{{ 'PRICING.PRICE_FROM' | translate }}</span>
+            <strong class="price-value">${{ estimatedPrice | number }}</strong>
+            <span class="price-to">{{ 'PRICING.PRICE_TO' | translate }} ${{ (estimatedPrice * 1.2) | number }}</span>
+          </div>
+
+          <div class="result-summary">
+            <div class="summary-item">
+              <lucide-icon name="Package" [size]="16"></lucide-icon>
+              <span>{{ selections.type?.name | translate }}</span>
+            </div>
+            <div class="summary-item">
+              <lucide-icon name="Building2" [size]="16"></lucide-icon>
+              <span>{{ selections.scale?.name | translate }}</span>
+            </div>
+            @if (selections.features.length > 0) {
+              <div class="summary-item">
+                <lucide-icon name="Zap" [size]="16"></lucide-icon>
+                <span>{{ selections.features.length }} {{ 'PRICING.ADD_ONS' | translate }}</span>
+              </div>
+            }
+          </div>
+
+          <p class="disclaimer">{{ 'PRICING.DISCLAIMER' | translate }}</p>
+
+          <div class="result-actions">
+            <a [routerLink]="['/', currentLang, 'contact']" class="btn-primary">
+              <lucide-icon name="MessageSquare" [size]="18"></lucide-icon>
+              {{ 'PRICING.GET_QUOTE' | translate }}
+            </a>
+            <button class="btn-outline" (click)="restart()">
+              <lucide-icon name="ArrowLeft" [size]="16"></lucide-icon>
+              {{ 'PRICING.RESTART' | translate }}
+            </button>
+          </div>
+        </div>
+      }
+
+    </div>
+  </div>
+</section>
+
+<!-- Comparison Table -->
+<section class="comparison-section">
+  <div class="container">
+    <div class="section-header" style="text-align:center; margin-bottom:2rem;">
+      <span class="section-eyebrow">{{ 'PRICING.COMPARE_EYEBROW' | translate }}</span>
+      <h2>{{ 'PRICING.VS_OTHERS' | translate }}</h2>
+      <p class="section-subtitle">{{ 'PRICING.VS_OTHERS_DESC' | translate }}</p>
+    </div>
+    <div class="comparison-table">
+      <div class="header-row">
+        <div class="cell feature">{{ 'PRICING.FEATURE' | translate }}</div>
+        <div class="cell virteex">
+          <lucide-icon name="Database" [size]="16"></lucide-icon>
+          {{ 'PRICING.PRODUCT_NAME' | translate }}
+        </div>
+        <div class="cell others">{{ 'PRICING.OTHERS' | translate }}</div>
+      </div>
+      @for (row of comparison; track row.feature) {
+        <div class="row">
+          <div class="cell feature">{{ row.feature | translate }}</div>
+          <div class="cell virteex">
+            @if (row.virteex === true) { <span class="check">✓</span> }
+            @if (row.virteex === false) { <span class="cross">✕</span> }
+            @if (row.virteex !== true && row.virteex !== false) { <span>{{ row.virteex | translate }}</span> }
+          </div>
+          <div class="cell others">
+            @if (row.others === true) { <span class="check">✓</span> }
+            @if (row.others === false) { <span class="cross">✕</span> }
+            @if (row.others !== true && row.others !== false) { <span>{{ row.others | translate }}</span> }
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Talk to Sales -->
+<section class="pricing-talk-sales">
+  <div class="container">
+    <div class="talk-sales-card">
+      <lucide-icon name="MessageCircle" [size]="32"></lucide-icon>
+      <div class="talk-sales-content">
+        <h3>{{ 'PRICING.TALK_SALES_TITLE' | translate }}</h3>
+        <p>{{ 'PRICING.TALK_SALES_DESC' | translate }}</p>
+      </div>
+      <a [routerLink]="['/', currentLang, 'contact']" class="btn-primary">
+        {{ 'PRICING.TALK_SALES_CTA' | translate }}
+        <lucide-icon name="ArrowRight" [size]="16"></lucide-icon>
+      </a>
+    </div>
+  </div>
+</section>
+
+<jsl-cta-section
+  eyebrowKey="PRICING.CTA_EYEBROW"
+  titleKey="PRICING.CTA_TITLE"
+  subtitleKey="PRICING.CTA_SUBTITLE">
+</jsl-cta-section>

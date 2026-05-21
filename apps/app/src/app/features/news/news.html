@@ -1,0 +1,112 @@
+<!-- Hero -->
+<section class="news-hero">
+  <div class="container">
+    <span class="section-eyebrow" jslAnimateOnScroll>{{ 'NEWS_PAGE.EYEBROW' | translate }}</span>
+    <h1 jslAnimateOnScroll>{{ 'NEWS_PAGE.TITLE' | translate }}</h1>
+    <p class="subtitle" jslAnimateOnScroll>{{ 'NEWS_PAGE.SUBTITLE' | translate }}</p>
+  </div>
+</section>
+
+<!-- Featured Article -->
+@if (featuredPost(); as featured) {
+  <section class="news-featured">
+    <div class="container">
+      <div class="section-label" jslAnimateOnScroll>
+        <lucide-icon name="Star" [size]="14"></lucide-icon>
+        {{ 'NEWS_PAGE.FEATURED' | translate }}
+      </div>
+      <a [routerLink]="['/', currentLang, 'blog', featured.slug]" class="featured-card" jslAnimateOnScroll>
+        <div class="featured-card__image">
+          <img [src]="featured.imageUrl" [alt]="'BLOG.' + featured.key + '_TITLE' | translate"
+               loading="eager" fetchpriority="high" width="800" height="450">
+        </div>
+        <div class="featured-card__content">
+          <div class="featured-card__meta">
+            @for (tag of featured.tags.slice(0,2); track tag) {
+              <span class="news-tag">{{ tag | titlecase }}</span>
+            }
+            <time>{{ featured.date | date:'mediumDate' }}</time>
+          </div>
+          <h2>{{ 'BLOG.' + featured.key + '_TITLE' | translate }}</h2>
+          <p>{{ 'BLOG.' + featured.key + '_EXCERPT' | translate }}</p>
+          <span class="read-more">
+            {{ 'NEWS_PAGE.READ_MORE' | translate }}
+            <lucide-icon name="ArrowRight" [size]="16"></lucide-icon>
+          </span>
+        </div>
+      </a>
+    </div>
+  </section>
+}
+
+<!-- Latest Articles Grid -->
+<section class="news-articles">
+  <div class="container">
+    <div class="section-header" jslAnimateOnScroll>
+      <span class="section-eyebrow">{{ 'NEWS_PAGE.LATEST_EYEBROW' | translate }}</span>
+      <h2 class="section-title">{{ 'NEWS_PAGE.LATEST_TITLE' | translate }}</h2>
+    </div>
+    <div class="news-grid">
+      @for (post of recentPosts(); track post.key) {
+        <a [routerLink]="['/', currentLang, 'blog', post.slug]" class="news-card" jslAnimateOnScroll>
+          <div class="news-card__image">
+            <img [src]="post.imageUrl" [alt]="'BLOG.' + post.key + '_TITLE' | translate"
+                 loading="lazy" width="400" height="225">
+          </div>
+          <div class="news-card__body">
+            <div class="news-card__meta">
+              @for (tag of post.tags.slice(0,1); track tag) {
+                <span class="news-tag">{{ tag | titlecase }}</span>
+              }
+              <time>{{ post.date | date:'mediumDate' }}</time>
+              <span class="read-time">
+                <lucide-icon name="Clock" [size]="12"></lucide-icon>
+                {{ post.readTime }} min
+              </span>
+            </div>
+            <h3>{{ 'BLOG.' + post.key + '_TITLE' | translate }}</h3>
+            <p>{{ 'BLOG.' + post.key + '_EXCERPT' | translate }}</p>
+          </div>
+        </a>
+      }
+    </div>
+    <div class="news-view-all" jslAnimateOnScroll>
+      <a [routerLink]="['/', currentLang, 'blog']" class="btn-outline">
+        {{ 'NEWS_PAGE.VIEW_ALL' | translate }}
+        <lucide-icon name="ArrowRight" [size]="16"></lucide-icon>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Press Highlights -->
+<section class="news-press">
+  <div class="container">
+    <div class="section-header" jslAnimateOnScroll>
+      <span class="section-eyebrow">{{ 'NEWS_PAGE.PRESS_EYEBROW' | translate }}</span>
+      <h2 class="section-title">{{ 'NEWS_PAGE.PRESS_TITLE' | translate }}</h2>
+    </div>
+    <div class="press-highlights-grid">
+      @for (item of pressHighlights; track item.outlet) {
+        <div class="press-highlight-card" jslAnimateOnScroll>
+          <div class="press-outlet">{{ item.outlet }}</div>
+          <p class="press-headline">{{ item.titleKey | translate }}</p>
+          <time class="press-date">{{ item.date }}</time>
+        </div>
+      }
+    </div>
+    <div class="news-view-all" jslAnimateOnScroll>
+      <a [routerLink]="['/', currentLang, 'press']" class="btn-outline">
+        {{ 'NEWS_PAGE.VIEW_PRESS' | translate }}
+        <lucide-icon name="Newspaper" [size]="16"></lucide-icon>
+      </a>
+    </div>
+  </div>
+</section>
+
+<jsl-cta-section
+  eyebrowKey="NEWS_PAGE.CTA_EYEBROW"
+  titleKey="NEWS_PAGE.CTA_TITLE"
+  subtitleKey="NEWS_PAGE.CTA_SUBTITLE"
+  [ctaLink]="['/', currentLang, 'contact']">
+</jsl-cta-section>

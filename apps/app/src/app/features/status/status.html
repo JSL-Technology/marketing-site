@@ -1,0 +1,77 @@
+<section class="status-hero">
+  <div class="container">
+    <div class="status-indicator" [class]="overallStatus">
+      <div class="status-indicator__dot"></div>
+      <lucide-icon [name]="overallIcon" [size]="28"></lucide-icon>
+      <h1>{{ overallLabel | translate }}</h1>
+    </div>
+    <p class="status-last-updated">
+      <lucide-icon name="Clock" [size]="14"></lucide-icon>
+      {{ 'STATUS.LAST_UPDATED' | translate }} {{ lastUpdated }}
+    </p>
+  </div>
+</section>
+
+<section class="status-content">
+  <div class="container">
+
+    <div class="systems-grid">
+      @for (sys of systems; track sys.name) {
+        <div class="system-card" [class]="'system-card--' + sys.status">
+          <div class="sys-header">
+            <span class="sys-name">{{ sys.name }}</span>
+            <span class="sys-badge sys-badge--{{ sys.status }}">
+              {{ 'STATUS.' + sys.status.toUpperCase() | translate }}
+            </span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" [style.width.%]="sys.uptime" [class]="'progress-fill--' + sys.status"></div>
+          </div>
+          <div class="uptime-label">
+            <span>{{ 'STATUS.UPTIME_LABEL' | translate }} (90 {{ 'STATUS.DAYS' | translate }})</span>
+            <strong>{{ sys.uptime }}%</strong>
+          </div>
+        </div>
+      }
+    </div>
+
+    <div class="incidents-section">
+      <h2>{{ 'STATUS.INCIDENTS' | translate }}</h2>
+      @if (incidents.length > 0) {
+        @for (inc of incidents; track inc.title) {
+          <div class="incident-item" [class]="'incident-item--' + inc.severity">
+            <div class="inc-date">
+              <lucide-icon name="Calendar" [size]="14"></lucide-icon>
+              {{ inc.date }}
+            </div>
+            <div class="inc-info">
+              <h3>{{ inc.title }}</h3>
+              <p>{{ inc.desc }}</p>
+            </div>
+            <div class="inc-status inc-status--{{ inc.resolved ? 'resolved' : 'ongoing' }}">
+              <lucide-icon [name]="inc.resolved ? 'CheckCircle' : 'Clock'" [size]="14"></lucide-icon>
+              {{ inc.status }}
+            </div>
+          </div>
+        }
+      } @else {
+        <div class="no-incidents">
+          <lucide-icon name="CheckCircle" [size]="20"></lucide-icon>
+          <p>{{ 'STATUS.NO_INCIDENTS' | translate }}</p>
+        </div>
+      }
+    </div>
+
+    <div class="subscribe-section">
+      <lucide-icon name="MessageCircle" [size]="24"></lucide-icon>
+      <div>
+        <h3>{{ 'STATUS.SUBSCRIBE_TITLE' | translate }}</h3>
+        <p>{{ 'STATUS.SUBSCRIBE_DESC' | translate }}</p>
+      </div>
+      <a href="mailto:status@jsl.technology" class="btn-outline">
+        {{ 'STATUS.SUBSCRIBE_CTA' | translate }}
+      </a>
+    </div>
+
+  </div>
+</section>

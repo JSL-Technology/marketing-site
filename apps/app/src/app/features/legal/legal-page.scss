@@ -1,0 +1,42 @@
+/* src/app/features/legal/legal-page.scss */
+.legal-page {
+  .page-title {
+    text-align: center;
+  }
+  .page-subtitle {
+    text-align: center;
+    font-style: italic;
+    color: var(--text-muted);
+    margin-bottom: 4rem;
+  }
+
+  section {
+    margin-bottom: 2.5rem;
+    max-width: 800px;
+    margin-inline: auto;
+  }
+
+  h2 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--text-main);
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5rem;
+  }
+
+  p, ul {
+    font-size: 1rem;
+    color: var(--text-muted);
+    line-height: 1.8;
+    margin-bottom: 1rem;
+  }
+  
+  ul {
+    padding-inline-start: 2rem;
+  }
+
+  li {
+    margin-bottom: 0.5rem;
+  }
+}

@@ -1,0 +1,53 @@
+<div class="lang-switcher" (jslClickOutside)="closeDropdown()">
+  <!-- Trigger Button -->
+  <button
+    class="lang-switcher__button"
+    (click)="toggleDropdown()"
+    [attr.aria-label]="'ARIA.SELECT_LANGUAGE' | translate"
+    [class.is-open]="isDropdownOpen"
+  >
+    <lucide-icon name="Globe" class="lang-switcher__button-icon"></lucide-icon>
+    <span>{{ currentLang | uppercase }}</span>
+    <lucide-icon name="ChevronDown" class="lang-switcher__caret"></lucide-icon>
+  </button>
+
+  <!-- Desktop Dropdown -->
+  <div
+    *ngIf="!breakpointService.isMobile()"
+    class="lang-switcher__container"
+    [class.is-open]="isDropdownOpen"
+    [class.opens-up]="opensUp">
+
+    <div class="lang-switcher__header">
+      <div class="lang-switcher__header-content">
+        <h3>{{ 'LANGUAGE_SELECTOR.TITLE' | translate }}</h3>
+        <p>{{ 'LANGUAGE_SELECTOR.SUBTITLE' | translate }}</p>
+      </div>
+    </div>
+
+    <jsl-language-list
+      [currentLang]="currentLang"
+      [featuredLanguages]="featuredLanguages"
+      [otherLanguages]="otherLanguages"
+      [routeWithoutLang]="currentRouteWithoutLang"
+      (select)="setLanguage($event); closeDropdown()"
+    ></jsl-language-list>
+  </div>
+
+  <!-- Mobile Bottom Sheet -->
+  <jsl-bottom-sheet
+    *ngIf="breakpointService.isMobile()"
+    [isOpen]="isDropdownOpen"
+    [title]="'LANGUAGE_SELECTOR.TITLE' | translate"
+    [subtitle]="'LANGUAGE_SELECTOR.SUBTITLE' | translate"
+    (close)="closeDropdown()"
+  >
+    <jsl-language-list
+      [currentLang]="currentLang"
+      [featuredLanguages]="featuredLanguages"
+      [otherLanguages]="otherLanguages"
+      [routeWithoutLang]="currentRouteWithoutLang"
+      (select)="setLanguage($event); closeDropdown()"
+    ></jsl-language-list>
+  </jsl-bottom-sheet>
+</div>

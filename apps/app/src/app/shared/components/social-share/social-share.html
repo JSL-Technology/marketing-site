@@ -1,0 +1,72 @@
+<div class="social-share-modal">
+  <div class="modal-header">
+    <h3>{{ 'SHARE.LABEL' | translate }}</h3>
+    <button class="close-btn" (click)="onClose()" [attr.aria-label]="'COMMON.CLOSE' | translate">
+      <lucide-icon [name]="icons.X" [size]="24"></lucide-icon>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <div class="share-grid">
+      <button (click)="share('whatsapp')" class="share-item whatsapp" [title]="'SHARE.WHATSAPP' | translate">
+        <div class="icon-wrapper">
+          <img src="assets/imgs/WhatsApp.svg" alt="WhatsApp" />
+        </div>
+        <span>{{ 'SHARE.WHATSAPP' | translate }}</span>
+      </button>
+
+      <button (click)="share('facebook')" class="share-item facebook" [title]="'SHARE.FACEBOOK' | translate">
+        <div class="icon-wrapper">
+          <img src="assets/imgs/Facebook.svg" alt="Facebook" />
+        </div>
+        <span>{{ 'SHARE.FACEBOOK' | translate }}</span>
+      </button>
+
+      <button (click)="share('linkedin')" class="share-item linkedin" [title]="'SHARE.LINKEDIN' | translate">
+        <div class="icon-wrapper">
+          <img src="assets/imgs/LinkedIn.svg" alt="LinkedIn" />
+        </div>
+        <span>{{ 'SHARE.LINKEDIN' | translate }}</span>
+      </button>
+
+      <button (click)="share('pinterest')" class="share-item pinterest" [title]="'SHARE.PINTEREST' | translate">
+        <div class="icon-wrapper">
+          <img src="assets/imgs/Pinterest.svg" alt="Pinterest" />
+        </div>
+        <span>{{ 'SHARE.PINTEREST' | translate }}</span>
+      </button>
+
+      <button (click)="share('reddit')" class="share-item reddit" [title]="'SHARE.REDDIT' | translate">
+        <div class="icon-wrapper">
+          <img src="assets/imgs/Reddit.svg" alt="Reddit" />
+        </div>
+        <span>{{ 'SHARE.REDDIT' | translate }}</span>
+      </button>
+
+      <button (click)="share('messages')" class="share-item messages" [title]="'SHARE.MESSAGES' | translate">
+        <div class="icon-wrapper">
+          <img src="assets/imgs/Messages.svg" alt="Messages" />
+        </div>
+        <span>{{ 'SHARE.MESSAGES' | translate }}</span>
+      </button>
+
+      <button (click)="share('mail')" class="share-item email" [title]="'SHARE.EMAIL' | translate">
+        <div class="icon-wrapper">
+          <img src="assets/imgs/Email.svg" alt="Email" />
+        </div>
+        <span>{{ 'SHARE.EMAIL' | translate }}</span>
+      </button>
+    </div>
+
+    <div class="copy-link-section">
+      <label class="copy-label">{{ 'SHARE.COPY_LINK' | translate }}</label>
+      <div class="copy-input-wrapper">
+        <input type="text" [value]="shareUrl" readonly #urlInput (click)="urlInput.select()" />
+        <button (click)="copyLink()" class="copy-action-btn" [class.copied]="copied()">
+          <lucide-icon [name]="copied() ? icons.Check : icons.Copy" [size]="18"></lucide-icon>
+          <span>{{ (copied() ? 'COMMON.COPIED' : 'COMMON.COPY') | translate }}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

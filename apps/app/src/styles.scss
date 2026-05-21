@@ -1,0 +1,343 @@
+/* src/styles.scss */
+
+// 1. Definición de Variables CSS (Design Tokens)
+:root {
+  // Colores principales
+  --primary: #ff4b2b;
+  --primary-rgb: 255, 75, 43;
+  --secondary: #ff416c;
+  --secondary-rgb: 255, 65, 108;
+  --accent-gradient: linear-gradient(90deg, var(--primary), var(--secondary));
+
+  // Fondos
+  --bg-primary: #0d0d0d;
+  --bg-primary-rgb: 13, 13, 13;
+  --bg-secondary: #1a1a1a;
+  --bg-secondary-rgb: 26, 26, 26;
+  --bg-card: #242424;
+  --border-color: #2c2c2c;
+
+  // Texto
+  --text-main: #f5f5f5;
+  --text-muted: #a0a0a0;
+  --text-inverse: #0d0d0d;
+
+  // Tipografía
+  --font-family-base: 'Poppins', sans-serif;
+  // Arabic font stack: Noto Sans Arabic for Arabic glyphs, Poppins for Latin/numeric fallback
+  --font-family-arabic: 'Noto Sans Arabic', 'Poppins', sans-serif;
+
+  // Layout & Spacing
+  --max-width: 1200px;
+  --top-bar-height: 40px;
+  --header-height: 75px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+
+  // Interacciones
+  --transition-speed: 0.3s;
+  --transition-timing: ease;
+  --focus-ring: 0 0 0 3px rgba(var(--primary-rgb), 0.5);
+
+  // Accent Secondary (derived from "tech" palette complementary to warm primary)
+  --accent-secondary: #00d2ff;
+  --accent-secondary-rgb: 0, 210, 255;
+  --bg-tertiary: #2a2a2a;
+
+  // Spacing Scale
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 3rem;
+  --space-2xl: 4rem;
+
+  // Typography Scale
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+  --font-size-4xl: 2.25rem;
+  --font-size-5xl: 3rem;
+
+  // Shadows & Motion
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.3);
+  --transition-base: all var(--transition-speed) var(--transition-timing);
+
+  // Layout & Offset
+  --page-top-offset: calc(var(--header-height) + var(--top-bar-height));
+
+  // Aliases (for backward compatibility & consistency)
+  --text-primary: var(--text-main);
+  --text-secondary: var(--text-muted);
+  --accent-primary: var(--primary);
+  --accent-primary-rgb: var(--primary-rgb);
+  --border-radius: var(--radius-md);
+  --bg-body: var(--bg-primary);
+}
+
+// 2. Reseteo Básico y Estilos Globales
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  * {
+    cursor: default !important;
+  }
+}
+
+html,
+body {
+  height: auto;
+  overscroll-behavior-x: none;
+}
+
+// Scroll-lock: aplicado por OverlayManagerService cuando hay overlays activos.
+// El complemento Lenis usa .lenis-stopped internamente; esta clase cubre
+// el caso sin Lenis y sirve como contrato CSS explícito.
+html.scroll-locked,
+html.scroll-locked body {
+  overflow: hidden;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+  // Restaurar selección de texto (UX)
+  user-select: auto;
+  -webkit-user-select: auto;
+}
+
+// Accesibilidad: Foco consistente
+:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--transition-speed) var(--transition-timing);
+
+  &:hover {
+    color: var(--primary);
+  }
+}
+
+// Componentes Base
+.container {
+  width: 90%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+// Accesibilidad: Clase utilitaria para contenido solo-lectura de pantalla.
+// Definida globalmente para que sea accesible en cualquier contexto,
+// sin depender de que un componente concreto esté en el DOM.
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.page-container {
+  margin-top: var(--page-top-offset);
+  padding: var(--space-xl) 0;
+  min-height: calc(100vh - var(--page-top-offset) - 400px); // Aproximado para footer
+}
+
+// Scrollbar
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: var(--radius-sm);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+// Utilidades de Animación
+[jslAnimateOnScroll] {
+  opacity: 0;
+  transform: translateY(30px);
+  transition:
+    opacity 0.6s ease-out,
+    transform 0.6s ease-out;
+
+  &.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+lucide-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Utility Classes (Minimal set to avoid full framework)
+.mx-auto {
+  margin-inline: auto;
+}
+.px-4 {
+  padding-inline: 1rem;
+}
+.mt-20 {
+  margin-top: 5rem;
+}
+.text-center {
+  text-align: center;
+}
+
+@media (min-width: 1024px) {
+  .lg\:mt-24 {
+    margin-top: 6rem;
+  }
+}
+
+/* ─── RTL / Bidirectional Support ─────────────────────────────── */
+
+// ── Direction multiplier token ────────────────────────────────────────────────
+// Use in transforms: translateX(calc(var(--dir) * Xpx))
+// 1 = LTR (default), -1 = RTL
+:root {
+  --dir: 1;
+}
+
+[dir='rtl'] {
+  // Token override — consumed by DirectionService and any calc()-based rules
+  --dir: -1;
+
+  // ── Font family ─────────────────────────────────────────────────────────────
+  // Override the base font token so every element that uses var(--font-family-base)
+  // automatically picks up the Arabic font stack. Poppins remains as Latin/numeric
+  // fallback inside the Arabic stack, keeping numbers and Latin words styled.
+  --font-family-base: var(--font-family-arabic);
+
+  // ── Arabic typography ───────────────────────────────────────────────────────
+  // Arabic script has tall ascenders/descenders that need extra leading.
+  // 1.9 prevents clipping without breaking card/badge layouts.
+  p,
+  li,
+  dt,
+  dd,
+  blockquote,
+  td,
+  th,
+  label,
+  figcaption,
+  .body-text,
+  .lead,
+  .description,
+  .section-subtitle,
+  .section-text {
+    line-height: 1.9;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    line-height: 1.4;
+    // Arabic has no inter-character spacing; positive letter-spacing breaks the script.
+    letter-spacing: 0;
+  }
+
+  // Arabic is a connected script — never break mid-word.
+  p,
+  li,
+  blockquote {
+    word-break: normal;
+    overflow-wrap: break-word;
+    hyphens: none;
+  }
+
+  // ── Form inputs ──────────────────────────────────────────────────────────────
+  // unicode-bidi: plaintext lets the browser infer direction from the first
+  // strongly-directional character, enabling natural mixed-language typing.
+  // direction: rtl sets the base direction for the placeholder and caret.
+  input:not([type='checkbox']):not([type='radio']):not([type='range']):not([type='color']):not(
+      [type='file']
+    ):not([type='image']):not([type='submit']):not([type='reset']):not([type='button']),
+  textarea,
+  select,
+  [contenteditable='true'],
+  [contenteditable=''] {
+    direction: rtl;
+    unicode-bidi: plaintext;
+    text-align: start;
+  }
+
+  // ── Directional icon mirroring ───────────────────────────────────────────────
+  // scaleX(-1) is preferred over rotate(180deg): it preserves the icon's
+  // vertical centre, prevents layout shift, and works with currentColor.
+  lucide-icon[name='ArrowRight'],
+  lucide-icon[name='ArrowLeft'],
+  lucide-icon[name='ChevronRight'],
+  lucide-icon[name='ChevronLeft'],
+  lucide-icon[name='ArrowRightCircle'],
+  lucide-icon[name='ArrowLeftCircle'],
+  lucide-icon[name='MoveRight'],
+  lucide-icon[name='MoveLeft'],
+  lucide-icon[name='ChevronsLeftRight'] {
+    transform: scaleX(-1);
+  }
+
+  // CSS-class-based icon selectors (breadcrumbs, pagination rendered without [name])
+  .lucide-chevron-right,
+  .lucide-chevron-left,
+  .lucide-arrow-right,
+  .lucide-arrow-left {
+    transform: scaleX(-1);
+  }
+}

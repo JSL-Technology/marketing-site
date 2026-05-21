@@ -1,0 +1,141 @@
+.virteex-hero {
+  background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-primary) 100%);
+  padding: 6rem 0;
+  text-align: center;
+  margin-bottom: 4rem;
+
+  .logo-container {
+    margin-bottom: 2rem;
+
+    .virteex-logo {
+      height: 80px;
+      width: auto;
+    }
+  }
+
+  h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  p {
+    font-size: 1.25rem;
+    color: var(--text-muted);
+    max-width: 600px;
+    margin: 0 auto 2rem;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius-md);
+    background: var(--primary);
+    color: white;
+    font-weight: 600;
+    text-decoration: none;
+    transition: opacity 0.2s;
+
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+}
+
+.ecosystem-section {
+  text-align: center;
+  margin-bottom: 5rem;
+
+  .section-title {
+    margin-bottom: 4rem;
+  }
+}
+
+.ecosystem-diagram {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+
+  .core-system {
+    background: var(--bg-card);
+    padding: 2rem;
+    border-radius: 50%;
+    border: 4px solid var(--primary);
+    width: 200px;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 30px rgba(var(--primary-rgb), 0.2);
+    z-index: 2;
+
+    .system-icon {
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+      transform: scale(1.5);
+    }
+
+    h3 {
+      font-size: 1.1rem;
+      margin: 0;
+    }
+  }
+
+  .connections {
+    display: none; // Hide on mobile for simplicity
+
+    @media (min-width: 768px) {
+      display: flex;
+      justify-content: space-between;
+      width: 300px;
+      margin-top: -100px; // Overlap
+      margin-bottom: -50px;
+      z-index: 1;
+
+      .connection-line {
+        width: 2px;
+        height: 100px;
+        background: var(--border-color);
+      }
+    }
+  }
+
+  .satellites {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+
+    @media (min-width: 768px) {
+      gap: 4rem;
+      margin-top: 2rem;
+    }
+
+    .satellite {
+      background: var(--bg-card);
+      padding: 1.5rem;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      min-width: 120px;
+
+      lucide-icon {
+        color: var(--text-muted);
+      }
+
+      span {
+        font-weight: 600;
+        font-size: 0.9rem;
+      }
+    }
+  }
+}

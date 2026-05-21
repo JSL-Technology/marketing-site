@@ -1,0 +1,148 @@
+<footer class="footer">
+  <div class="footer__container container">
+    
+    <div class="footer__col footer__col--main">
+      <a [routerLink]="[currentLang(), 'home']" class="footer__logo">{{ 'COMMON.BRAND_NAME' | translate }}</a>
+      <p class="footer__slogan">{{ 'FOOTER.SLOGAN' | translate }}</p>
+      
+      <ul class="footer__links footer__links--contact">
+        <li>
+          <a href="tel:+18092641693">
+            <lucide-icon name="Phone"></lucide-icon>
+            <span>{{ 'CONTACT.PHONE_DISPLAY' | translate }}</span>
+          </a>
+        </li>
+        <li>
+          <a href="mailto:info@jsl.technology">
+            <lucide-icon name="Mail"></lucide-icon>
+            <span>{{ 'CONTACT.EMAIL_DISPLAY' | translate }}</span>
+          </a>
+        </li>
+      </ul>
+
+      <h3 class="footer__col-title footer__col-title--follow">{{ 'FOOTER.FOLLOW_US' | translate }}</h3>
+      <div class="footer__socials">
+        <a href="https://linkedin.com" target="_blank" [attr.aria-label]="'SHARE.LINKEDIN' | translate" class="social-link social-link--linkedin">
+          <lucide-icon name="Linkedin"></lucide-icon>
+        </a>
+        <a href="https://github.com/jsl-technology" target="_blank" [attr.aria-label]="'SOCIAL.GITHUB' | translate" class="social-link social-link--github">
+          <lucide-icon name="Github"></lucide-icon>
+        </a>
+        <a href="https://twitter.com/jsl_tech" target="_blank" [attr.aria-label]="'SHARE.TWITTER' | translate" class="social-link social-link--twitter">
+          <lucide-icon name="Twitter"></lucide-icon>
+        </a>
+        <a href="https://instagram.com/jsl_tech" target="_blank" [attr.aria-label]="'SOCIAL.INSTAGRAM' | translate" class="social-link social-link--instagram">
+          <lucide-icon name="Instagram"></lucide-icon>
+        </a>
+        </div>
+    </div>
+
+    <div class="footer__col">
+      <h3 class="footer__col-title">{{ 'FOOTER.SOLUTIONS' | translate }}</h3>
+      <ul class="footer__links">
+        <li><a [routerLink]="[currentLang(), 'solutions', 'web-development']">{{ 'SERVICES_LIST.WEB' | translate }}</a></li>
+        <li><a [routerLink]="[currentLang(), 'solutions', 'mobile-apps']">{{ 'SERVICES_LIST.MOBILE' | translate }}</a></li>
+        <li><a [routerLink]="[currentLang(), 'solutions', 'desktop-software']">{{ 'SERVICES_LIST.DESKTOP' | translate }}</a></li>
+        <li><a [routerLink]="[currentLang(), 'solutions', 'cloud-architecture']">{{ 'SERVICES_LIST.CLOUD' | translate }}</a></li>
+        <li><a [routerLink]="[currentLang(), 'products']">{{ 'PRODUCTS_LIST.ERP' | translate }}</a></li>
+        <li><a [routerLink]="[currentLang(), 'products']">{{ 'PRODUCTS_LIST.POS' | translate }}</a></li>
+        <li><a [routerLink]="[currentLang(), 'virteex-ecosystem']">{{ 'HEADER.VIRTEEX_ECOSYSTEM' | translate }}</a></li>
+        <li><a [routerLink]="[currentLang(), 'pricing']">{{ 'HEADER.PRICING' | translate }}</a></li>
+      </ul>
+    </div>
+
+    <div class="footer__col">
+      <h3 class="footer__col-title">{{ 'FOOTER.COMPANY' | translate }}</h3>
+      <ul class="footer__links">
+        <li><a [routerLink]="[currentLang(), 'about-us']">{{ 'HEADER.ABOUT' | translate }}</a></li>
+        <li><a [routerLink]="[currentLang(), 'process']">{{ 'HEADER.PROCESS' | translate }}</a></li>
+        <li><a [routerLink]="[currentLang(), 'careers']">{{ 'HEADER.CAREERS' | translate }}</a></li>
+        <li><a [routerLink]="[currentLang(), 'life-at-jsl']">{{ 'HEADER.LIFE_AT_JSL' | translate }}</a></li>
+        <li><a [routerLink]="[currentLang(), 'partners']">{{ 'HEADER.PARTNERS' | translate }}</a></li>
+        <li><a [routerLink]="[currentLang(), 'investors']">{{ 'HEADER.INVESTORS' | translate }}</a></li>
+        <li><a [routerLink]="[currentLang(), 'ventures']">{{ 'HEADER.VENTURES' | translate }}</a></li>
+        <li><a [routerLink]="[currentLang(), 'security']">{{ 'HEADER.SECURITY' | translate }}</a></li>
+      </ul>
+    </div>
+
+    <div class="footer__col">
+      <h3 class="footer__col-title">{{ 'FOOTER.RESOURCES' | translate }}</h3>
+      <ul class="footer__links">
+        <li><a [routerLink]="[currentLang(), 'blog']">{{ 'HEADER.BLOG' | translate }}</a></li>
+        <li><a [routerLink]="[currentLang(), 'projects']">{{ 'HEADER.PROJECTS' | translate }}</a></li>
+        <li><a [routerLink]="[currentLang(), 'industries']">{{ 'HEADER.INDUSTRIES' | translate }}</a></li>
+        <li><a [routerLink]="[currentLang(), 'events']">{{ 'HEADER.EVENTS' | translate }}</a></li>
+        <li><a [routerLink]="[currentLang(), 'news']">{{ 'HEADER.NEWS' | translate }}</a></li>
+        <li><a [routerLink]="[currentLang(), 'press']">{{ 'HEADER.PRESS' | translate }}</a></li>
+        <li><a [routerLink]="[currentLang(), 'roadmap']">{{ 'HEADER.ROADMAP' | translate }}</a></li>
+        <li><a [routerLink]="[currentLang(), 'faq']">{{ 'HEADER.FAQ' | translate }}</a></li>
+        <li><a [routerLink]="[currentLang(), 'tech-stack']">{{ 'HEADER.TECH_STACK' | translate }}</a></li>
+        <li><a [routerLink]="[currentLang(), 'developers']">{{ 'HEADER.DEVELOPERS' | translate }}</a></li>
+        <li><a [routerLink]="[currentLang(), 'contact']">{{ 'HEADER.CONTACT' | translate }}</a></li>
+      </ul>
+    </div>
+
+    <div class="footer__col footer__col--newsletter">
+      <h3 class="footer__col-title">{{ 'FOOTER.NEWSLETTER_TITLE' | translate }}</h3>
+      <p class="footer__newsletter-subtitle">{{ 'FOOTER.NEWSLETTER_SUBTITLE' | translate }}</p>
+      
+      <form class="footer__newsletter-form" [formGroup]="newsletterForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <input 
+            type="email" 
+            class="form-control" 
+            [placeholder]="'FOOTER.NEWSLETTER_PLACEHOLDER' | translate" 
+            formControlName="email"
+            [class.is-invalid]="nf['email'].invalid && (nf['email'].dirty || nf['email'].touched)">
+          
+          <button 
+            type="submit" 
+            class="submit-btn" 
+            [disabled]="isSubmitting() || newsletterForm.invalid"
+            [attr.aria-label]="'FOOTER.NEWSLETTER_SUBMIT' | translate">
+          @if (!isSubmitting()) {
+              <lucide-icon name="Send"></lucide-icon>
+            } @else {
+              <span class="spinner"></span>
+            }
+          </button>
+        </div>
+        
+        @if (nf['email'].invalid && (nf['email'].dirty || nf['email'].touched)) {
+          <div class="form-error">
+            @if (nf['email'].errors?.['required']) {
+              <span>{{ 'CONTACT.FORM.ERRORS.REQUIRED' | translate }}</span>
+            }
+            @if (nf['email'].errors?.['email']) {
+              <span>{{ 'FOOTER.NEWSLETTER_EMAIL_INVALID' | translate }}</span>
+            }
+          </div>
+        }
+
+        @if (submitSuccess()) {
+          <div class="submit-success">
+            {{ 'FOOTER.NEWSLETTER_SUCCESS' | translate }}
+          </div>
+        }
+        @if (submitError()) {
+          <div class="submit-error">
+            {{ 'FOOTER.NEWSLETTER_ERROR' | translate }}
+          </div>
+        }
+      </form>
+    </div>
+
+  </div>
+  
+  <div class="footer__bottom container">
+    <p>&copy; {{ currentYear }} {{ 'COMMON.BRAND_NAME' | translate }}. {{ 'FOOTER.COPYRIGHT' | translate }}</p>
+    
+    <jsl-language-switcher></jsl-language-switcher>
+
+    <div class="footer__bottom-links">
+      <a [routerLink]="[currentLang(), 'privacy-policy']">{{ 'LEGAL.PRIVACY_TITLE' | translate }}</a>
+      <a [routerLink]="[currentLang(), 'terms-of-service']">{{ 'LEGAL.TERMS_TITLE' | translate }}</a>
+      <a [routerLink]="[currentLang(), 'cookie-policy']">{{ 'LEGAL.COOKIE_TITLE' | translate }}</a>
+    </div>
+  </div>
+</footer>

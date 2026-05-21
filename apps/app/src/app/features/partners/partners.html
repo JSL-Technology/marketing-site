@@ -1,0 +1,168 @@
+<!-- Hero -->
+<section class="partners-hero">
+  <div class="container">
+    <span class="section-eyebrow" jslAnimateOnScroll>{{ 'PARTNERS_PAGE.EYEBROW' | translate }}</span>
+    <h1 jslAnimateOnScroll>{{ 'PARTNERS_PAGE.TITLE' | translate }}</h1>
+    <p class="subtitle" jslAnimateOnScroll>{{ 'PARTNERS_PAGE.SUBTITLE' | translate }}</p>
+  </div>
+</section>
+
+<!-- Technology Partners -->
+<section class="partners-tech">
+  <div class="container">
+    <div class="section-header" jslAnimateOnScroll>
+      <span class="section-eyebrow">{{ 'PARTNERS_PAGE.TECH_EYEBROW' | translate }}</span>
+      <h2 class="section-title">{{ 'PARTNERS_PAGE.TECH_TITLE' | translate }}</h2>
+      <p class="section-subtitle">{{ 'PARTNERS_PAGE.TECH_SUBTITLE' | translate }}</p>
+    </div>
+
+    <div class="tech-partners-grid">
+      @for (partner of technologyPartners; track partner.name) {
+        <div class="tech-partner-card" jslAnimateOnScroll>
+          <div class="tech-partner-card__header">
+            <img [src]="partner.logo" [alt]="partner.name" width="120" height="48" loading="lazy">
+            <span class="tier-badge tier-badge--{{ partner.tier }}">{{ partner.tier | titlecase }}</span>
+          </div>
+          <p class="tech-partner-card__desc">{{ partner.desc | translate }}</p>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Partner Network -->
+@if (allPartners().length > 0) {
+  <section class="partners-network">
+    <div class="container">
+      <div class="section-header" jslAnimateOnScroll>
+        <span class="section-eyebrow">{{ 'PARTNERS_PAGE.NETWORK_EYEBROW' | translate }}</span>
+        <h2 class="section-title">{{ 'PARTNERS_PAGE.NETWORK_TITLE' | translate }}</h2>
+      </div>
+      <div class="partner-logos-grid">
+        @for (partner of allPartners(); track partner.name) {
+          <div class="partner-logo-card" jslAnimateOnScroll>
+            @if (partner.imageUrl) {
+              <img [src]="partner.imageUrl" [alt]="partner.name" width="140" height="56" loading="lazy">
+            } @else {
+              <span class="partner-name-text">{{ partner.name }}</span>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+}
+
+<!-- Partner Benefits -->
+<section class="partners-benefits">
+  <div class="container">
+    <div class="section-header" jslAnimateOnScroll>
+      <span class="section-eyebrow">{{ 'PARTNERS_PAGE.BENEFITS_EYEBROW' | translate }}</span>
+      <h2 class="section-title">{{ 'PARTNERS_PAGE.BENEFITS_TITLE' | translate }}</h2>
+      <p class="section-subtitle">{{ 'PARTNERS_PAGE.BENEFITS_SUBTITLE' | translate }}</p>
+    </div>
+    <div class="benefits-grid">
+      @for (benefit of benefits; track benefit.key) {
+        <div class="benefit-card" jslAnimateOnScroll>
+          <div class="benefit-card__icon">
+            <lucide-icon [name]="benefit.icon" [size]="28"></lucide-icon>
+          </div>
+          <h3>{{ 'PARTNERS_PAGE.BENEFIT_' + benefit.key + '_TITLE' | translate }}</h3>
+          <p>{{ 'PARTNERS_PAGE.BENEFIT_' + benefit.key + '_DESC' | translate }}</p>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Partner Tiers -->
+<section class="partners-tiers">
+  <div class="container">
+    <div class="section-header" jslAnimateOnScroll>
+      <span class="section-eyebrow">{{ 'PARTNERS_PAGE.TIERS_EYEBROW' | translate }}</span>
+      <h2 class="section-title">{{ 'PARTNERS_PAGE.TIERS_TITLE' | translate }}</h2>
+    </div>
+    <div class="tiers-grid">
+      <div class="tier-card" jslAnimateOnScroll>
+        <div class="tier-card__badge tier-card__badge--member">
+          <lucide-icon name="Award" [size]="24"></lucide-icon>
+          {{ 'PARTNERS_PAGE.TIER_MEMBER' | translate }}
+        </div>
+        <ul class="tier-card__features">
+          <li><lucide-icon name="CheckCircle" [size]="16"></lucide-icon> {{ 'PARTNERS_PAGE.TIER_MEMBER_F1' | translate }}</li>
+          <li><lucide-icon name="CheckCircle" [size]="16"></lucide-icon> {{ 'PARTNERS_PAGE.TIER_MEMBER_F2' | translate }}</li>
+          <li><lucide-icon name="CheckCircle" [size]="16"></lucide-icon> {{ 'PARTNERS_PAGE.TIER_MEMBER_F3' | translate }}</li>
+        </ul>
+      </div>
+      <div class="tier-card tier-card--featured" jslAnimateOnScroll>
+        <div class="tier-card__badge tier-card__badge--gold">
+          <lucide-icon name="Star" [size]="24"></lucide-icon>
+          {{ 'PARTNERS_PAGE.TIER_GOLD' | translate }}
+        </div>
+        <ul class="tier-card__features">
+          <li><lucide-icon name="CheckCircle" [size]="16"></lucide-icon> {{ 'PARTNERS_PAGE.TIER_GOLD_F1' | translate }}</li>
+          <li><lucide-icon name="CheckCircle" [size]="16"></lucide-icon> {{ 'PARTNERS_PAGE.TIER_GOLD_F2' | translate }}</li>
+          <li><lucide-icon name="CheckCircle" [size]="16"></lucide-icon> {{ 'PARTNERS_PAGE.TIER_GOLD_F3' | translate }}</li>
+          <li><lucide-icon name="CheckCircle" [size]="16"></lucide-icon> {{ 'PARTNERS_PAGE.TIER_GOLD_F4' | translate }}</li>
+        </ul>
+      </div>
+      <div class="tier-card" jslAnimateOnScroll>
+        <div class="tier-card__badge tier-card__badge--advanced">
+          <lucide-icon name="Zap" [size]="24"></lucide-icon>
+          {{ 'PARTNERS_PAGE.TIER_ADVANCED' | translate }}
+        </div>
+        <ul class="tier-card__features">
+          <li><lucide-icon name="CheckCircle" [size]="16"></lucide-icon> {{ 'PARTNERS_PAGE.TIER_ADVANCED_F1' | translate }}</li>
+          <li><lucide-icon name="CheckCircle" [size]="16"></lucide-icon> {{ 'PARTNERS_PAGE.TIER_ADVANCED_F2' | translate }}</li>
+          <li><lucide-icon name="CheckCircle" [size]="16"></lucide-icon> {{ 'PARTNERS_PAGE.TIER_ADVANCED_F3' | translate }}</li>
+          <li><lucide-icon name="CheckCircle" [size]="16"></lucide-icon> {{ 'PARTNERS_PAGE.TIER_ADVANCED_F4' | translate }}</li>
+          <li><lucide-icon name="CheckCircle" [size]="16"></lucide-icon> {{ 'PARTNERS_PAGE.TIER_ADVANCED_F5' | translate }}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Become a Partner -->
+<section class="partners-apply">
+  <div class="container">
+    <div class="apply-card" jslAnimateOnScroll>
+      <div class="apply-card__content">
+        <span class="section-eyebrow">{{ 'PARTNERS_PAGE.APPLY_EYEBROW' | translate }}</span>
+        <h2>{{ 'PARTNERS_PAGE.APPLY_TITLE' | translate }}</h2>
+        <p>{{ 'PARTNERS_PAGE.APPLY_DESC' | translate }}</p>
+        <div class="apply-card__actions">
+          <a [routerLink]="['/', currentLang, 'contact']" class="btn-primary">
+            {{ 'PARTNERS_PAGE.APPLY_CTA' | translate }}
+            <lucide-icon name="ArrowRight" [size]="18"></lucide-icon>
+          </a>
+          <a href="mailto:partners@jsl.technology" class="btn-outline">
+            <lucide-icon name="Mail" [size]="18"></lucide-icon>
+            partners&#64;jsl.technology
+          </a>
+        </div>
+      </div>
+      <div class="apply-card__stats">
+        <div class="apply-stat">
+          <span class="apply-stat__value">{{ 'PARTNERS_PAGE.STAT_PARTNERS_VAL' | translate }}</span>
+          <span class="apply-stat__label">{{ 'PARTNERS_PAGE.STAT_PARTNERS' | translate }}</span>
+        </div>
+        <div class="apply-stat">
+          <span class="apply-stat__value">{{ 'PARTNERS_PAGE.STAT_COUNTRIES_VAL' | translate }}</span>
+          <span class="apply-stat__label">{{ 'PARTNERS_PAGE.STAT_COUNTRIES' | translate }}</span>
+        </div>
+        <div class="apply-stat">
+          <span class="apply-stat__value">{{ 'PARTNERS_PAGE.STAT_REVENUE_VAL' | translate }}</span>
+          <span class="apply-stat__label">{{ 'PARTNERS_PAGE.STAT_REVENUE' | translate }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<jsl-cta-section
+  eyebrowKey="PARTNERS_PAGE.CTA_EYEBROW"
+  titleKey="PARTNERS_PAGE.CTA_TITLE"
+  subtitleKey="PARTNERS_PAGE.CTA_SUBTITLE"
+  [ctaLink]="['/', currentLang, 'contact']">
+</jsl-cta-section>

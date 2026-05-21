@@ -1,0 +1,179 @@
+<div class="mobile-menu-container">
+  <!-- Overlay para menú móvil -->
+  <!-- R4 — .visible is managed exclusively via imperative classList calls in
+            openDrawer()/closeDrawer(), which run with precise timing relative to
+            the animation. The Angular binding [class.visible]="isMobileMenuOpen"
+            was removed to eliminate the dual source of truth. -->
+  <div
+    #overlayElement
+    class="jsl-mm-overlay"
+  ></div>
+
+  <!-- Menú móvil tipo Drawer Navigation -->
+  <div
+    #menuElement
+    class="header__nav-links-mobile"
+    [class.open]="isMobileMenuOpen"
+    [style.transform]="'translateX(' + menuTranslateX + 'px) scaleX(' + menuScaleX + ')'"
+    [style.transform-origin]="menuTransformOrigin"
+    [style.transition]="menuTransition"
+    role="dialog"
+    aria-modal="true"
+    [attr.aria-labelledby]="menuTitleId"
+    [attr.inert]="isDrawerClosed ? '' : null"
+  >
+    <!-- Focus sentinel (inicio): recibe el foco cuando el usuario hace Shift+Tab
+         desde el primer elemento del menú. El handler redirige el foco al último
+         elemento real. NO tiene aria-hidden para cumplir con la especificación
+         ARIA (los elementos interactivos no deben tener aria-hidden). -->
+    <button
+      type="button"
+      class="sr-only focus-sentinel"
+      (focus)="onSentinelFocus($event, 'start')"
+      tabindex="0"
+    ></button>
+
+    <h2 [id]="menuTitleId" class="sr-only">{{ 'ARIA.MOBILE_MENU_TITLE' | translate }}</h2>
+
+    <!-- Mobile Menu Header -->
+    <div class="mobile-menu-top">
+      <div class="mobile-logo-container">
+        <!-- routerLink drives routerLinkActive; click closes menu and lets routerLink navigate -->
+        <a
+          [routerLink]="[currentLang, 'home']"
+          class="header__logo mobile-logo"
+          [attr.aria-label]="('COMMON.BRAND_NAME' | translate) + ' — ' + ('ARIA.GO_HOME' | translate)"
+          (click)="closeMobileMenu('navigation')"
+        >
+          {{ 'COMMON.BRAND_NAME' | translate }}
+        </a>
+      </div>
+      <button
+        type="button"
+        class="mobile-close-btn"
+        (pointerdown)="$event.stopPropagation()"
+        (click)="closeMobileMenu('button', $event)"
+        [attr.aria-label]="'ARIA.CLOSE_MENU' | translate"
+      >
+        <lucide-icon name="X"></lucide-icon>
+      </button>
+    </div>
+
+    <!-- Mobile Menu Content -->
+    <div class="mobile-menu-content">
+      <jsl-mobile-menu-quick-access
+        [currentLang]="currentLang"
+        (close)="closeMobileMenu('navigation')"
+      ></jsl-mobile-menu-quick-access>
+
+      <jsl-mobile-menu-search
+        [searchQuery]="searchController.searchQuery()"
+        [searchResultsCount]="searchController.searchResultsCount()"
+        (searchChange)="onSearchChange($event)"
+      ></jsl-mobile-menu-search>
+
+      <!-- ARIA Live region para anuncios de búsqueda.
+           Se actualiza con debounce (ariaAnnouncement signal) para evitar
+           anuncios intermedios mientras el usuario escribe. -->
+      <div class="sr-only" aria-live="polite" aria-atomic="true">
+        {{ ariaAnnouncement() }}
+      </div>
+
+      <!-- No Results State -->
+      @if (searchController.searchQuery() && searchController.searchResultsCount() === 0) {
+        <div class="mobile-menu-no-results">
+          <div class="no-results-icon">
+            <lucide-icon name="SearchX"></lucide-icon>
+          </div>
+          <p class="no-results-text">{{ 'SEARCH.NO_RESULTS_FOUND' | translate }}</p>
+          <button type="button" class="clear-search-link" (click)="onSearchChange('')">
+            {{ 'SEARCH.CLEAR_SEARCH' | translate }}
+          </button>
+        </div>
+      }
+
+      @for (section of menuSections; track section.id) {
+        @if (searchController.shouldShowSection(section.titleKey, section.links)) {
+          <jsl-mobile-menu-section
+            [sectionId]="section.id"
+            [sectionTitleKey]="section.titleKey"
+            [isExpanded]="searchController.isSectionExpanded(section.id)"
+            [links]="section.links"
+            [searchQuery]="searchController.searchQuery()"
+            [shouldShowLinkFn]="searchController.shouldShowLink"
+            (toggle)="toggleSection($event)"
+            (close)="closeMobileMenu('navigation')"
+            (routeNavigate)="onMenuRouteNavigate($event.route, $event.source)"
+          ></jsl-mobile-menu-section>
+        }
+      }
+
+      <!-- Contact Button -->
+      @if (searchController.shouldShowLink('HEADER.CONTACT')) {
+        <div class="mobile-cta-container">
+          <!-- routerLink drives routerLinkActive; click closes menu and lets routerLink navigate -->
+          <a
+            [routerLink]="[currentLang, 'contact']"
+            routerLinkActive="active"
+            class="mobile-cta-btn"
+            (click)="closeMobileMenu('navigation')"
+          >
+            <lucide-icon name="Mail"></lucide-icon>
+            {{ 'HEADER.CONTACT' | translate }}
+          </a>
+        </div>
+      }
+    </div>
+
+    <!-- Mobile Menu Footer -->
+    <div class="mobile-menu-footer">
+      <div class="mobile-socials">
+        <a
+          [href]="socialLinks.linkedin"
+          target="_blank"
+          rel="noopener noreferrer"
+          [attr.aria-label]="'SOCIAL.LINKEDIN' | translate"
+        >
+          <lucide-icon name="Linkedin"></lucide-icon>
+        </a>
+        <a
+          [href]="socialLinks.github"
+          target="_blank"
+          rel="noopener noreferrer"
+          [attr.aria-label]="'SOCIAL.GITHUB' | translate"
+        >
+          <lucide-icon name="Github"></lucide-icon>
+        </a>
+        <a
+          [href]="socialLinks.twitter"
+          target="_blank"
+          rel="noopener noreferrer"
+          [attr.aria-label]="'SOCIAL.TWITTER' | translate"
+        >
+          <lucide-icon name="Twitter"></lucide-icon>
+        </a>
+        <a
+          [href]="socialLinks.instagram"
+          target="_blank"
+          rel="noopener noreferrer"
+          [attr.aria-label]="'SOCIAL.INSTAGRAM' | translate"
+        >
+          <lucide-icon name="Instagram"></lucide-icon>
+        </a>
+      </div>
+      <div class="mobile-copyright">
+        © {{ currentYear }} {{ 'COMMON.BRAND_NAME' | translate }}.
+      </div>
+    </div>
+
+    <!-- Focus sentinel (fin): recibe el foco cuando el usuario hace Tab desde
+         el último elemento del menú. El handler redirige el foco al primer
+         elemento real. -->
+    <button
+      type="button"
+      class="sr-only focus-sentinel"
+      (focus)="onSentinelFocus($event, 'end')"
+      tabindex="0"
+    ></button>
+  </div>
+</div>

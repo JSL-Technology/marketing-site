@@ -1,0 +1,44 @@
+<div class="bottom-sheet-wrapper" *ngIf="isRendered" role="dialog" [attr.aria-modal]="true">
+  <!-- Backdrop -->
+  <div
+    class="bottom-sheet-backdrop"
+    (click)="onClose()"
+    #backdropElement
+    [style.opacity]="overlayOpacity"
+    [style.transition]="transitionStyle"
+  ></div>
+
+  <!-- Sheet Container -->
+  <div
+    class="bottom-sheet-container"
+    #sheetContainer
+    [style.transform]="'translateY(' + translateY + (isDragging ? 'px)' : '%)')"
+    [style.transition]="transitionStyle"
+  >
+    <!-- Handle for mobile feel -->
+    <div class="bottom-sheet-handle-wrapper" (click)="onClose()">
+      <div class="bottom-sheet-handle"></div>
+    </div>
+
+    <!-- Header (Optional) -->
+    <div class="bottom-sheet-header" *ngIf="title || showCloseButton">
+      <div class="bottom-sheet-header-content" *ngIf="title || subtitle">
+        <h3 *ngIf="title">{{ title }}</h3>
+        <p *ngIf="subtitle">{{ subtitle }}</p>
+      </div>
+      <button
+        *ngIf="showCloseButton"
+        class="bottom-sheet-close"
+        (click)="onClose()"
+        [attr.aria-label]="'COMMON.CLOSE' | translate"
+      >
+        <lucide-icon name="X"></lucide-icon>
+      </button>
+    </div>
+
+    <!-- Content -->
+    <div class="bottom-sheet-content" #sheetContent>
+      <ng-content></ng-content>
+    </div>
+  </div>
+</div>

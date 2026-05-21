@@ -1,0 +1,30 @@
+@if (isOpen) {
+  <div class="modal-overlay" @overlayAnimation (click)="onClose()">
+    <div class="modal-container" @modalAnimation (click)="$event.stopPropagation()">
+      <button class="modal-close" (click)="onClose()" [attr.aria-label]="'ARIA.CLOSE_MODAL' | translate">
+        <lucide-icon name="X"></lucide-icon>
+      </button>
+
+      <div class="modal-content">
+        <div class="modal-icon">
+          <lucide-icon name="FileText" size="48"></lucide-icon>
+        </div>
+
+        <h2 class="modal-title">{{ 'EXIT_MODAL.TITLE' | translate }}</h2>
+        <p class="modal-subtitle">{{ 'EXIT_MODAL.SUBTITLE' | translate }}</p>
+
+        <ul class="modal-benefits">
+            <li><lucide-icon name="Check" size="16"></lucide-icon> {{ 'EXIT_MODAL.BENEFIT_1' | translate }}</li>
+            <li><lucide-icon name="Check" size="16"></lucide-icon> {{ 'EXIT_MODAL.BENEFIT_2' | translate }}</li>
+            <li><lucide-icon name="Check" size="16"></lucide-icon> {{ 'EXIT_MODAL.BENEFIT_3' | translate }}</li>
+        </ul>
+
+        <button class="modal-cta" (click)="onConfirm()">
+          {{ 'EXIT_MODAL.CTA' | translate }}
+        </button>
+
+        <p class="modal-disclaimer">{{ 'EXIT_MODAL.DISCLAIMER' | translate }}</p>
+      </div>
+    </div>
+  </div>
+}

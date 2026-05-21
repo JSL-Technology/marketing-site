@@ -1,0 +1,87 @@
+<div class="page-container container">
+  <h1 class="page-title" jslAnimateOnScroll>{{ 'CAREERS.TITLE' | translate }}</h1>
+  <p class="page-subtitle" jslAnimateOnScroll>{{ 'CAREERS.SUBTITLE' | translate }}</p>
+</div>
+
+<!-- Sección de Cultura/Beneficios -->
+<section class="careers-intro container">
+  <div class="careers-intro__text" jslAnimateOnScroll>
+    <span class="section-eyebrow">{{ 'CAREERS.WHY_US_EYEBROW' | translate }}</span>
+    <h2 class="section-title">{{ 'CAREERS.WHY_US_TITLE' | translate }}</h2>
+    <p class="section-subtitle">{{ 'CAREERS.WHY_US_DESC_1' | translate }}</p>
+    <p class="section-subtitle">{{ 'CAREERS.WHY_US_DESC_2' | translate }}</p>
+  </div>
+  <div class="careers-intro__image" jslAnimateOnScroll>
+    <img ngSrc="https://images.unsplash.com/photo-1543269865-cbf427effbad?fit=crop&w=600&q=80" 
+         alt="{{ 'CAREERS.WHY_US_TITLE' | translate }}"
+         width="600"
+         height="400"
+         priority>
+  </div>
+</section>
+
+<!-- Grid de Beneficios -->
+<section class="benefits-section">
+  <div class="container">
+    <div class="benefits-grid">
+      @for (benefit of benefits; track benefit.key) {
+        <div class="benefit-card" jslAnimateOnScroll>
+          <div class="benefit-card__icon">
+            <lucide-icon [name]="benefit.icon"></lucide-icon>
+          </div>
+          <h3 class="benefit-card__title">{{ 'CAREERS.' + benefit.key + '_TITLE' | translate }}</h3>
+          <p class="benefit-card__desc">{{ 'CAREERS.' + benefit.key + '_DESC' | translate }}</p>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Sección de Posiciones Abiertas -->
+<section class="open-positions-section container">
+  <div class="open-positions-header" jslAnimateOnScroll>
+    <span class="section-eyebrow">{{ 'CAREERS.OPENINGS_EYEBROW' | translate }}</span>
+    <h2 class="section-title">{{ 'CAREERS.OPENINGS_TITLE' | translate }}</h2>
+    <p class="section-subtitle">{{ 'CAREERS.OPENINGS_SUBTITLE' | translate }}</p>
+  </div>
+
+  <div class="positions-list">
+    @if (positions$ | async; as positions) {
+      @if (positions.length > 0) {
+        @for (pos of positions; track pos.key) {
+          <div class="job-card" jslAnimateOnScroll>
+            <div class="job-card__info">
+              <h3 class="job-card__title">{{ 'CAREERS.' + pos.key + '_TITLE' | translate }}</h3>
+              <div class="job-card__meta">
+                <span class="meta-item">
+                  <lucide-icon name="MapPin"></lucide-icon>
+                  {{ pos.locationKey | translate }}
+                </span>
+                <span class="meta-item">
+                  <lucide-icon name="Clock"></lucide-icon>
+                  {{ pos.typeKey | translate }}
+                </span>
+              </div>
+              <p class="job-card__desc">{{ 'CAREERS.' + pos.key + '_DESC' | translate }}</p>
+            </div>
+            <div class="job-card__cta">
+              <a [href]="'mailto:rrhh@jsl.technology?subject=' + ('CAREERS.APPLY_SUBJECT' | translate) + ' ' + ('CAREERS.' + pos.key + '_TITLE' | translate)" class="hero-slide__cta">
+                {{ 'CAREERS.APPLY_NOW' | translate }}
+                <lucide-icon name="ArrowRight"></lucide-icon>
+              </a>
+            </div>
+          </div>
+        }
+      } @else {
+        <p class="no-positions" jslAnimateOnScroll>{{ 'CAREERS.NO_OPENINGS' | translate }}</p>
+      }
+    }
+  </div>
+</section>
+
+<!-- CTA al final -->
+<jsl-cta-section
+  eyebrowKey="CAREERS.CTA_EYEBROW"
+  titleKey="CAREERS.CTA_TITLE"
+  subtitleKey="CAREERS.CTA_SUBTITLE">
+</jsl-cta-section>

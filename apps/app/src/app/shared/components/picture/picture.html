@@ -1,0 +1,28 @@
+<picture>
+  <!-- AVIF source — best compression, modern browsers -->
+  <source
+    [attr.srcset]="avifSrcset || avifSrc"
+    [attr.sizes]="sizes || null"
+    type="image/avif"
+  >
+  <!-- WebP source — wide browser support -->
+  @if (webpSrc || webpSrcset) {
+    <source
+      [attr.srcset]="webpSrcset || webpSrc"
+      [attr.sizes]="sizes || null"
+      type="image/webp"
+    >
+  }
+  <!-- Fallback JPEG/PNG — universal support -->
+  <img
+    [src]="resolvedFallbackSrc"
+    [attr.srcset]="fallbackSrcset || null"
+    [attr.sizes]="fallbackSrcset ? (sizes || null) : null"
+    [alt]="alt"
+    [attr.fetchpriority]="priority ? 'high' : null"
+    [attr.loading]="priority ? 'eager' : 'lazy'"
+    [attr.decoding]="priority ? 'sync' : 'async'"
+    [attr.width]="!fill && width ? width : null"
+    [attr.height]="!fill && height ? height : null"
+  >
+</picture>

@@ -1,0 +1,62 @@
+// src/app/shared/components/cta/cta.scss
+
+// Reutilizamos estilos de home.scss y styles.scss
+:host {
+  display: block; // Asegura que la sección ocupe espacio
+}
+
+.final-cta-section {
+  padding: 6rem 0;
+  margin-top: 4rem;
+  background-color: var(--bg-primary);
+  border-top: 1px solid var(--border-color);
+  text-align: center;
+}
+
+.final-cta__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+
+  .section-title {
+    font-size: 2.5rem;
+  }
+  .section-subtitle {
+    margin-bottom: 1.5rem;
+  }
+
+  // Estilos del botón (copiados de home.scss)
+  .hero-slide__cta {
+    display: inline-block;
+    padding: 1rem 2.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    background: var(--accent-gradient);
+    border-radius: var(--radius-md);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+    animation: none; // Sin animación de entrada por defecto
+
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(255, 65, 108, 0.2);
+    }
+    
+    &:active {
+      transform: translateY(-1px);
+      box-shadow: 0 5px 10px rgba(255, 65, 108, 0.2);
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .final-cta-section {
+    padding: 4rem 0;
+  }
+  .final-cta__content .section-title {
+    font-size: 2rem;
+  }
+}

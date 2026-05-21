@@ -1,0 +1,16 @@
+// src/app/features/solution-detail/solution-detail.scss
+
+// Modernizar la sintaxis a @use y usar rutas directas desde 'src'
+@use "app/styles/variables" as *;
+
+// Importar parciales de estilos específicos de la página.
+@use "app/features/solution-detail/styles/page-header";
+@use "app/features/solution-detail/styles/intro";
+@use "app/features/solution-detail/styles/benefits";
+@use "app/features/solution-detail/styles/approach";
+@use "app/features/solution-detail/styles/tech-stack";
+
+:host {
+  display: block;
+  padding-top: var(--header-height);
+}

@@ -1,0 +1,23 @@
+{
+  "version": "1.0.0",
+  "required_base_properties": ["event_id", "event_name", "lang", "route", "segment", "source", "device", "interaction_id"],
+  "events": {
+    "funnel_landing_view": [],
+    "experiment_exposure": ["experiment_name", "variant"],
+    "cta_click": ["cta_name", "cta_position"],
+    "trust_block_view": ["block_name"],
+    "scroll_depth": ["percentile"],
+    "form_start": ["form_name"],
+    "form_attempt": ["form_name", "attempt_number"],
+    "form_field_error": ["form_name", "field", "error_type", "value_length"],
+    "form_api_error": ["form_name", "error_code"],
+    "form_recaptcha_error": ["form_name"],
+    "form_honeypot_triggered": ["form_name"],
+    "form_submit_success": ["form_name"],
+    "form_submit_error": ["form_name", "error_code"],
+    "form_abandon": ["form_name", "last_field_focused", "interaction_time"],
+    "whitepaper_start": ["source"],
+    "error_tracking_missing": ["missing_property"],
+    "error_event_schema_mismatch": ["schema_issue"]
+  }
+}

@@ -1,0 +1,118 @@
+// src/app/features/tech-stack/tech-stack.scss
+.page-title {
+  text-align: center;
+}
+.page-subtitle {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 3rem; // Reducido el margen inferior
+}
+
+// --- 1. Estilos para las Pestañas (Tabs) ---
+.tech-tabs {
+  display: flex;
+  flex-wrap: wrap; // Permitir que bajen en pantallas pequeñas
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 3rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 1.5rem;
+
+  button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1.5rem;
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    font-weight: 500;
+    font-family: var(--font-family-base);
+    cursor: pointer;
+    transition: all var(--transition-speed) ease;
+
+    lucide-icon {
+      width: 18px;
+      height: 18px;
+      transition: color var(--transition-speed) ease;
+    }
+
+    &:hover {
+      background-color: var(--bg-secondary);
+      color: var(--text-main);
+      border-color: var(--text-muted);
+    }
+
+    // Estado activo de la pestaña
+    &.active {
+      color: #fff;
+      background: var(--accent-gradient);
+      border-color: var(--primary);
+      box-shadow: 0 5px 15px rgba(var(--primary-rgb), 0.2);
+      transform: translateY(-2px);
+
+      lucide-icon {
+        color: #fff;
+      }
+    }
+  }
+}
+
+// --- 2. Estilos para el Contenido de la Pestaña ---
+.tech-content-area {
+  // Damos una altura mínima para evitar saltos de layout al cambiar de pestaña
+  min-height: 300px; 
+
+  // Animación de fundido de entrada
+  // Usamos un selector complejo para reiniciar la animación
+  // cuando cambia el elemento hijo directo
+  > div {
+    animation: fadeIn 0.4s ease-out;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// El header dentro del contenido (ahora solo descripción)
+.category-header {
+  border-bottom: none; // Ya no necesitamos la línea
+  padding-bottom: 0;
+  margin-bottom: 1.5rem;
+  
+  h2 { display: none; } // Oculto, ya está en la pestaña
+  
+  lucide-icon { display: none; } // Oculto, ya está en la pestaña
+}
+
+.category-subtitle {
+  font-size: 1.1rem;
+  text-align: center;
+  color: var(--text-muted);
+  line-height: 1.7;
+  max-width: 800px;
+  margin: 0 auto 2.5rem;
+}
+
+// --- 3. Estilos del Grid (Más espacio) ---
+.tech-grid {
+  display: grid;
+  // Un poco más de espacio para las tarjetas mejoradas
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 1.5rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 1rem;
+  }
+}

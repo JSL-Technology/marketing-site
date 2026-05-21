@@ -1,0 +1,45 @@
+<div class="maturity-selector">
+  <div class="maturity-content">
+
+    @if (step() < questions.length) {
+      <div class="question-container fade-in">
+        <div class="progress-bar">
+          <div class="progress-fill" [style.width.%]="((step() + 1) / questions.length) * 100"></div>
+        </div>
+
+        <span class="step-indicator">{{ 'MATURITY.STEP' | translate }} {{ step() + 1 }}/{{ questions.length }}</span>
+
+        <h3 class="question-title">{{ questions[step()].titleKey | translate }}</h3>
+
+        <div class="options-grid">
+          @for (opt of questions[step()].options; track opt.value) {
+            <button class="option-btn" (click)="selectOption(questions[step()].id, opt.value)">
+              <div class="option-icon">
+                <lucide-icon [name]="opt.icon" [size]="24"></lucide-icon>
+              </div>
+              <span class="option-label">{{ opt.labelKey | translate }}</span>
+            </button>
+          }
+        </div>
+      </div>
+    } @else {
+      <div class="result-container fade-in">
+        <div class="result-icon">
+          <lucide-icon name="CheckCircle" [size]="48"></lucide-icon>
+        </div>
+        <h3 class="result-title">{{ result()?.titleKey | translate }}</h3>
+        <p class="result-desc">{{ result()?.descKey | translate }}</p>
+
+        <div class="result-actions">
+          <a [routerLink]="result()?.ctaLink" class="cta-btn primary">
+            {{ 'MATURITY.CTA_CONTACT' | translate }}
+          </a>
+          <button class="cta-btn secondary" (click)="reset()">
+            {{ 'MATURITY.CTA_RESTART' | translate }}
+          </button>
+        </div>
+      </div>
+    }
+
+  </div>
+</div>

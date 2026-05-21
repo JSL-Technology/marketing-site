@@ -1,0 +1,47 @@
+<section class="events-hero">
+  <div class="container">
+    <h1>{{ 'EVENTS.TITLE' | translate }}</h1>
+    <p class="subtitle">{{ 'EVENTS.SUBTITLE' | translate }}</p>
+  </div>
+</section>
+
+<section class="events-list">
+  <div class="container">
+    <h2 class="section-title">{{ 'EVENTS.UPCOMING' | translate }}</h2>
+    <div class="events-grid">
+      @for (event of upcomingEvents; track event.startDate) {
+        <article class="event-card" [attr.itemscope]="''" itemtype="https://schema.org/Event">
+          <div class="event-image" [style.backgroundImage]="'url(' + event.image + ')'">
+            <meta itemprop="image" [attr.content]="event.image">
+          </div>
+          <div class="event-content">
+            <div class="event-date" itemprop="startDate" [attr.datetime]="event.startDate">
+              {{ formatDisplayDate(event.startDate) }}
+            </div>
+            <h3 itemprop="name">{{ event.title }}</h3>
+            <p itemprop="description">{{ event.description }}</p>
+            <a [href]="event.registrationUrl || '#'" class="btn-register" target="_blank" rel="noopener noreferrer">
+              {{ 'EVENTS.REGISTER' | translate }}
+            </a>
+          </div>
+        </article>
+      }
+    </div>
+
+    <h2 class="section-title mt-5">{{ 'EVENTS.PAST' | translate }}</h2>
+    <div class="events-grid">
+      @for (event of pastEvents; track event.title) {
+        <div class="event-card">
+          <div class="event-image grayscale" [style.backgroundImage]="'url(' + event.image + ')'"></div>
+          <div class="event-content">
+            <div class="event-date">{{ event.date }}</div>
+            <h3>{{ event.title }}</h3>
+            <button class="btn-outline">{{ 'EVENTS.WATCH_RECORDING' | translate }}</button>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<jsl-cta-section></jsl-cta-section>

@@ -1,0 +1,52 @@
+<div class="page-container container">
+  <h1 class="page-title">{{ 'VENTURES.TITLE' | translate }}</h1>
+  <p class="page-subtitle">{{ 'VENTURES.SUBTITLE' | translate }}</p>
+</div>
+
+<!-- Lifecycle Section -->
+<section class="lifecycle-section container">
+  <h2 class="section-title">{{ 'VENTURES.LIFECYCLE_TITLE' | translate }}</h2>
+  <div class="lifecycle-steps">
+    <div class="step">
+      <div class="step-icon"><lucide-icon name="Lightbulb"></lucide-icon></div>
+      <h3>{{ 'VENTURES.STEP1_TITLE' | translate }}</h3>
+      <p>{{ 'VENTURES.STEP1_DESC' | translate }}</p>
+    </div>
+    <div class="arrow"><lucide-icon name="ArrowRight"></lucide-icon></div>
+    <div class="step">
+      <div class="step-icon"><lucide-icon name="Rocket"></lucide-icon></div>
+      <h3>{{ 'VENTURES.STEP2_TITLE' | translate }}</h3>
+      <p>{{ 'VENTURES.STEP2_DESC' | translate }}</p>
+    </div>
+    <div class="arrow"><lucide-icon name="ArrowRight"></lucide-icon></div>
+    <div class="step">
+      <div class="step-icon"><lucide-icon name="TrendingUp"></lucide-icon></div>
+      <h3>{{ 'VENTURES.STEP3_TITLE' | translate }}</h3>
+      <p>{{ 'VENTURES.STEP3_DESC' | translate }}</p>
+    </div>
+  </div>
+</section>
+
+<!-- Portfolio Section -->
+<section class="ventures-list container">
+  <h2 class="section-title">{{ 'VENTURES.PORTFOLIO_TITLE' | translate }}</h2>
+  <div class="ventures-grid">
+    @for (venture of ventures$ | async; track venture.key) {
+      <div class="venture-card">
+        <div class="venture-status" [class]="venture.status.toLowerCase()">{{ venture.status }}</div>
+        <img [src]="venture.logoUrl" [alt]="venture.name" class="venture-logo" width="120" height="40" loading="lazy">
+        <h3>{{ venture.name }}</h3>
+        <p>{{ venture.descriptionKey | translate }}</p>
+        <a [href]="venture.website" target="_blank" class="venture-link">
+          {{ 'COMMON.VISIT_WEBSITE' | translate }} <lucide-icon name="ExternalLink" size="16"></lucide-icon>
+        </a>
+      </div>
+    }
+  </div>
+</section>
+
+<jsl-cta-section
+  eyebrowKey="VENTURES.CTA_EYEBROW"
+  titleKey="VENTURES.CTA_TITLE"
+  subtitleKey="VENTURES.CTA_SUBTITLE">
+</jsl-cta-section>

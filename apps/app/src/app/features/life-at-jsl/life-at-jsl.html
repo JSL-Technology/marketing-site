@@ -1,0 +1,119 @@
+<section class="life-hero">
+  <div class="container">
+    <span class="section-eyebrow" jslAnimateOnScroll>{{ 'LIFE_AT_JSL.EYEBROW' | translate }}</span>
+    <h1 jslAnimateOnScroll>{{ 'LIFE_AT_JSL.TITLE' | translate }}</h1>
+    <p class="subtitle" jslAnimateOnScroll>{{ 'LIFE_AT_JSL.SUBTITLE' | translate }}</p>
+    <div class="hero-actions" jslAnimateOnScroll>
+      <a [routerLink]="['/', currentLang, 'careers']" class="btn-primary">
+        <lucide-icon name="Briefcase" [size]="18"></lucide-icon>
+        {{ 'LIFE_AT_JSL.VIEW_OPENINGS' | translate }}
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Culture Statement -->
+<section class="culture-section container" jslAnimateOnScroll>
+  <div class="culture-text">
+    <span class="section-eyebrow">{{ 'LIFE_AT_JSL.CULTURE_EYEBROW' | translate }}</span>
+    <h2 class="section-title">{{ 'LIFE_AT_JSL.CULTURE_TITLE' | translate }}</h2>
+    <p>{{ 'LIFE_AT_JSL.CULTURE_DESC_1' | translate }}</p>
+    <p>{{ 'LIFE_AT_JSL.CULTURE_DESC_2' | translate }}</p>
+  </div>
+  <div class="culture-stats">
+    @for (stat of cultureStats; track stat.key) {
+      <div class="culture-stat">
+        <strong>{{ 'LIFE_AT_JSL.STAT_' + stat.key + '_VAL' | translate }}</strong>
+        <span>{{ 'LIFE_AT_JSL.STAT_' + stat.key | translate }}</span>
+      </div>
+    }
+  </div>
+</section>
+
+<!-- Values Grid -->
+<section class="values-section">
+  <div class="container">
+    <div class="section-header" jslAnimateOnScroll>
+      <span class="section-eyebrow">{{ 'LIFE_AT_JSL.VALUES_EYEBROW' | translate }}</span>
+      <h2 class="section-title">{{ 'LIFE_AT_JSL.VALUES_TITLE' | translate }}</h2>
+    </div>
+    <div class="values-grid">
+      @for (v of values; track v.key) {
+        <div class="value-card" jslAnimateOnScroll>
+          <div class="value-card__icon">
+            <lucide-icon [name]="v.icon" [size]="24"></lucide-icon>
+          </div>
+          <h3>{{ 'LIFE_AT_JSL.VALUE_' + v.key + '_TITLE' | translate }}</h3>
+          <p>{{ 'LIFE_AT_JSL.VALUE_' + v.key + '_DESC' | translate }}</p>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Photo Gallery -->
+<section class="gallery-section">
+  <div class="container">
+    <div class="section-header" jslAnimateOnScroll>
+      <span class="section-eyebrow">{{ 'LIFE_AT_JSL.GALLERY_EYEBROW' | translate }}</span>
+      <h2 class="section-title">{{ 'LIFE_AT_JSL.GALLERY' | translate }}</h2>
+    </div>
+    <div class="gallery-grid">
+      @for (img of moments; track $index) {
+        <div class="gallery-item" jslAnimateOnScroll>
+          <img [src]="img" [alt]="'LIFE_AT_JSL.GALLERY_ALT' | translate" loading="lazy" width="600" height="400">
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Benefits -->
+<section class="benefits-section">
+  <div class="container">
+    <div class="section-header" jslAnimateOnScroll>
+      <span class="section-eyebrow">{{ 'LIFE_AT_JSL.BENEFITS_EYEBROW' | translate }}</span>
+      <h2 class="section-title">{{ 'LIFE_AT_JSL.BENEFITS' | translate }}</h2>
+      <p class="section-subtitle">{{ 'LIFE_AT_JSL.BENEFITS_SUBTITLE' | translate }}</p>
+    </div>
+    <div class="benefits-grid">
+      @for (b of benefits; track b.key) {
+        <div class="benefit-card" jslAnimateOnScroll>
+          <div class="benefit-card__icon">
+            <lucide-icon [name]="b.icon" [size]="24"></lucide-icon>
+          </div>
+          <h3>{{ 'LIFE_AT_JSL.BENEFIT_' + b.key + '_TITLE' | translate }}</h3>
+          <p>{{ 'LIFE_AT_JSL.BENEFIT_' + b.key + '_DESC' | translate }}</p>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Employee Testimonials -->
+<section class="team-voices-section">
+  <div class="container">
+    <div class="section-header" jslAnimateOnScroll>
+      <span class="section-eyebrow">{{ 'LIFE_AT_JSL.VOICES_EYEBROW' | translate }}</span>
+      <h2 class="section-title">{{ 'LIFE_AT_JSL.VOICES_TITLE' | translate }}</h2>
+    </div>
+    <div class="voices-grid">
+      @for (v of [1,2,3]; track v) {
+        <blockquote class="voice-card" jslAnimateOnScroll>
+          <p class="voice-quote">{{ 'LIFE_AT_JSL.VOICE_' + v + '_TEXT' | translate }}</p>
+          <footer class="voice-footer">
+            <strong>{{ 'LIFE_AT_JSL.VOICE_' + v + '_NAME' | translate }}</strong>
+            <span>{{ 'LIFE_AT_JSL.VOICE_' + v + '_ROLE' | translate }}</span>
+          </footer>
+        </blockquote>
+      }
+    </div>
+  </div>
+</section>
+
+<jsl-cta-section
+  eyebrowKey="LIFE_AT_JSL.CTA_EYEBROW"
+  titleKey="LIFE_AT_JSL.CTA_TITLE"
+  subtitleKey="LIFE_AT_JSL.CTA_SUBTITLE"
+  [ctaLink]="['/', currentLang, 'careers']">
+</jsl-cta-section>

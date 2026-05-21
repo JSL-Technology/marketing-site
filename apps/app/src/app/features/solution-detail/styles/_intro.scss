@@ -1,0 +1,41 @@
+// src/app/features/solution-detail/styles/_intro.scss
+@use "app/styles/variables" as *;
+
+.intro-section {
+  padding: 5rem 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+
+  .intro-content {
+    h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      line-height: 1.3;
+    }
+
+    p {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+  }
+
+  .intro-image {
+    img {
+      width: 100%;
+      height: auto;
+      border-radius: $border-radius-lg;
+      box-shadow: $box-shadow-lg;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-lg) {
+  .intro-section {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+}

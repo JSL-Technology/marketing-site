@@ -1,0 +1,403 @@
+<section class="contact-hero">
+  <div class="contact-hero__bg">
+    <div class="contact-hero__glow contact-hero__glow--1"></div>
+    <div class="contact-hero__glow contact-hero__glow--2"></div>
+  </div>
+
+  <div class="container contact-hero__container">
+    <div class="contact-hero__content">
+      <span class="section-eyebrow" jslAnimateOnScroll>{{ 'CONTACT.EYEBROW' | translate }}</span>
+      <h1 class="contact-hero__title" jslAnimateOnScroll>{{ 'CONTACT.TITLE' | translate }}</h1>
+      <p class="contact-hero__subtitle" jslAnimateOnScroll>{{ 'CONTACT.SUBTITLE' | translate }}</p>
+
+      <!-- Urgency & trust signals -->
+      <div class="contact-urgency-bar" jslAnimateOnScroll>
+        <span class="urgency-item urgency-item--green">
+          <lucide-icon name="Zap" [size]="14"></lucide-icon>
+          {{ 'CONTACT.URGENCY_RESPONSE' | translate }}
+        </span>
+        <span class="urgency-item">
+          <lucide-icon name="Phone" [size]="14"></lucide-icon>
+          {{ 'CONTACT.URGENCY_FREE_CALL' | translate }}
+        </span>
+        <span class="urgency-item">
+          <lucide-icon name="Shield" [size]="14"></lucide-icon>
+          {{ 'CONTACT.URGENCY_NO_COMMITMENT' | translate }}
+        </span>
+      </div>
+
+      <div class="contact-meta" jslAnimateOnScroll>
+        <span class="contact-meta__item">
+          <lucide-icon name="Clock" [size]="16"></lucide-icon>
+          {{ 'CONTACT.RESPONSE_TIME' | translate }}
+        </span>
+        <span class="contact-meta__item">
+          <lucide-icon name="Globe" [size]="16"></lucide-icon>
+          {{ 'CONTACT.BUSINESS_HOURS' | translate }}
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="page-container container">
+  <div class="contact-grid">
+
+    <!-- Columna 1: Información de Contacto -->
+    <div class="contact-info" jslAnimateOnScroll>
+      <div class="contact-info__header">
+        <h3 class="contact-info__title">{{ 'CONTACT.INFO_TITLE' | translate }}</h3>
+        <p class="contact-info__desc">{{ 'CONTACT.INFO_DESC' | translate }}</p>
+      </div>
+
+      <div class="contact-info__cards">
+        <div class="info-card">
+          <div class="info-card__icon"><lucide-icon name="Mail"></lucide-icon></div>
+          <div class="info-card__content">
+            <h4>{{ 'CONTACT.EMAIL' | translate }}</h4>
+            <a href="mailto:contact@jsl.technology" class="info-card__link">{{ 'CONTACT.EMAIL_DISPLAY' | translate }}</a>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <div class="info-card__icon"><lucide-icon name="Phone"></lucide-icon></div>
+          <div class="info-card__content">
+            <h4>{{ 'CONTACT.PHONE' | translate }}</h4>
+            <a href="tel:+18092641693" class="info-card__link">{{ 'CONTACT.PHONE_DISPLAY' | translate }}</a>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <div class="info-card__icon"><lucide-icon name="MapPin"></lucide-icon></div>
+          <div class="info-card__content">
+            <h4>{{ 'CONTACT.LOCATION' | translate }}</h4>
+            <p class="info-card__text">{{ 'CONTACT.LOCATION_ADDRESS' | translate }}</p>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <div class="info-card__icon"><lucide-icon name="Clock"></lucide-icon></div>
+          <div class="info-card__content">
+            <h4>{{ 'CONTACT.HOURS_LABEL' | translate }}</h4>
+            <p class="info-card__text">{{ 'CONTACT.HOURS_VALUE' | translate }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Response time badge -->
+      <div class="response-badge">
+        <lucide-icon name="MessageSquare" [size]="18"></lucide-icon>
+        <span>{{ 'CONTACT.RESPONSE_BADGE' | translate }}</span>
+      </div>
+    </div>
+
+    <!-- Columna 2: Formulario multi-step -->
+    <div class="contact-form-container" jslAnimateOnScroll>
+
+      <!-- Step indicator -->
+      <div class="form-steps">
+        @for (s of [1, 2, 3]; track s) {
+          <div class="form-step" [class.form-step--active]="currentStep() === s" [class.form-step--done]="currentStep() > s">
+            <div class="form-step__bubble">
+              @if (currentStep() > s) {
+                <lucide-icon name="Check" [size]="14"></lucide-icon>
+              } @else {
+                {{ s }}
+              }
+            </div>
+            <span class="form-step__label">{{ 'CONTACT.STEP_' + s + '_LABEL' | translate }}</span>
+          </div>
+          @if (s < 3) {
+            <div class="form-step__connector" [class.form-step__connector--done]="currentStep() > s"></div>
+          }
+        }
+      </div>
+
+      <!-- Progress bar -->
+      <div class="form-progress">
+        <div class="form-progress__bar" [style.width.%]="progressPercent()"></div>
+      </div>
+
+      <form class="contact-form" [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+
+        <!-- Honeypot (hidden) -->
+        <div style="display:none;">
+          <input type="text" formControlName="honeypot" autocomplete="off">
+        </div>
+
+        <!-- STEP 1 — Identity -->
+        @if (currentStep() === 1) {
+          <div class="form-step-content" aria-label="Step 1 of 3: Your identity">
+            <h4 class="form-step-content__title">{{ 'CONTACT.STEP_1_TITLE' | translate }}</h4>
+            <p class="form-step-content__desc">{{ 'CONTACT.STEP_1_DESC' | translate }}</p>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="name">{{ 'CONTACT.FORM.NAME' | translate }}</label>
+                <div class="input-wrapper">
+                  <lucide-icon name="User" [size]="18" class="input-icon"></lucide-icon>
+                  <input type="text" id="name" class="form-control" formControlName="name"
+                         [placeholder]="'CONTACT.FORM.NAME' | translate"
+                         [class.is-invalid]="f['name'].invalid && (f['name'].dirty || f['name'].touched)">
+                </div>
+                @if (f['name'].invalid && (f['name'].dirty || f['name'].touched)) {
+                  <div class="form-error">
+                    @if (f['name'].errors?.['required']) { <span>{{ 'CONTACT.FORM.ERRORS.REQUIRED' | translate }}</span> }
+                    @if (f['name'].errors?.['minlength']) { <span>{{ 'CONTACT.FORM.ERRORS.MINLENGTH' | translate:{value:3} }}</span> }
+                  </div>
+                }
+              </div>
+
+              <div class="form-group">
+                <label for="email">{{ 'CONTACT.FORM.EMAIL' | translate }}</label>
+                <div class="input-wrapper">
+                  <lucide-icon name="Mail" [size]="18" class="input-icon"></lucide-icon>
+                  <input type="email" id="email" class="form-control" formControlName="email"
+                         [placeholder]="'CONTACT.FORM.EMAIL' | translate"
+                         [class.is-invalid]="f['email'].invalid && (f['email'].dirty || f['email'].touched)">
+                </div>
+                @if (f['email'].invalid && (f['email'].dirty || f['email'].touched)) {
+                  <div class="form-error">
+                    @if (f['email'].errors?.['required']) { <span>{{ 'CONTACT.FORM.ERRORS.REQUIRED' | translate }}</span> }
+                    @if (f['email'].errors?.['email']) { <span>{{ 'CONTACT.FORM.ERRORS.EMAIL' | translate }}</span> }
+                  </div>
+                }
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="company">{{ 'CONTACT.FORM.COMPANY_OPTIONAL' | translate }}</label>
+              <div class="input-wrapper">
+                <lucide-icon name="Building2" [size]="18" class="input-icon"></lucide-icon>
+                <input type="text" id="company" class="form-control" formControlName="company"
+                       [placeholder]="'CONTACT.FORM.COMPANY_PLACEHOLDER' | translate">
+              </div>
+            </div>
+
+            <div class="form-actions form-actions--next">
+              <button type="button" class="submit-btn" (click)="nextStep()">
+                {{ 'CONTACT.FORM.NEXT' | translate }}
+                <lucide-icon name="ArrowRight" [size]="18"></lucide-icon>
+              </button>
+            </div>
+          </div>
+        }
+
+        <!-- STEP 2 — Project -->
+        @if (currentStep() === 2) {
+          <div class="form-step-content" aria-label="Step 2 of 3: Your project">
+            <h4 class="form-step-content__title">{{ 'CONTACT.STEP_2_TITLE' | translate }}</h4>
+            <p class="form-step-content__desc">{{ 'CONTACT.STEP_2_DESC' | translate }}</p>
+
+            <div class="form-group">
+              <label for="service">{{ 'CONTACT.FORM.SERVICE' | translate }}</label>
+              <div class="input-wrapper">
+                <lucide-icon name="LayoutGrid" [size]="18" class="input-icon"></lucide-icon>
+                <select id="service" class="form-control" formControlName="service"
+                        [class.is-invalid]="f['service'].invalid && (f['service'].dirty || f['service'].touched)">
+                  <option value="" disabled>{{ 'CONTACT.FORM.SERVICE_PROMPT' | translate }}</option>
+                  <option value="web_dev">{{ 'SERVICES_LIST.WEB' | translate }}</option>
+                  <option value="mobile_dev">{{ 'SERVICES_LIST.MOBILE' | translate }}</option>
+                  <option value="desktop_dev">{{ 'SERVICES_LIST.DESKTOP' | translate }}</option>
+                  <option value="erp">{{ 'SERVICES_LIST.ERP' | translate }}</option>
+                  <option value="ai_ml">{{ 'SERVICES_LIST.AI_ML' | translate }}</option>
+                  <option value="other">{{ 'CONTACT.FORM.SERVICE_OTHER' | translate }}</option>
+                </select>
+              </div>
+              @if (f['service'].invalid && (f['service'].dirty || f['service'].touched)) {
+                <div class="form-error">
+                  @if (f['service'].errors?.['required']) { <span>{{ 'CONTACT.FORM.ERRORS.REQUIRED' | translate }}</span> }
+                </div>
+              }
+            </div>
+
+            @if (f['service'].value === 'other') {
+              <div class="form-group">
+                <label for="serviceOther">{{ 'CONTACT.FORM.SERVICE_OTHER_DETAILS' | translate }}</label>
+                <div class="input-wrapper">
+                  <lucide-icon name="Pencil" [size]="18" class="input-icon"></lucide-icon>
+                  <input type="text" id="serviceOther" class="form-control" formControlName="serviceOther"
+                         [placeholder]="'CONTACT.FORM.SERVICE_OTHER_DETAILS_PLACEHOLDER' | translate"
+                         [class.is-invalid]="f['serviceOther'].invalid && (f['serviceOther'].dirty || f['serviceOther'].touched)">
+                </div>
+              </div>
+            }
+
+            <div class="form-group">
+              <label for="budget">{{ 'CONTACT.FORM.BUDGET_OPTIONAL' | translate }}</label>
+              <div class="input-wrapper">
+                <lucide-icon name="DollarSign" [size]="18" class="input-icon"></lucide-icon>
+                <select id="budget" class="form-control" formControlName="budget">
+                  <option value="">{{ 'CONTACT.FORM.BUDGET_PROMPT' | translate }}</option>
+                  <option value="<10k">{{ 'CONTACT.FORM.BUDGET_LESS_10K' | translate }}</option>
+                  <option value="10k-25k">{{ 'CONTACT.FORM.BUDGET_10K_25K' | translate }}</option>
+                  <option value="25k-50k">{{ 'CONTACT.FORM.BUDGET_25K_50K' | translate }}</option>
+                  <option value="50k-100k">{{ 'CONTACT.FORM.BUDGET_50K_100K' | translate }}</option>
+                  <option value=">100k">{{ 'CONTACT.FORM.BUDGET_MORE_100K' | translate }}</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="message">{{ 'CONTACT.FORM.MESSAGE' | translate }}</label>
+              <div class="input-wrapper">
+                <textarea id="message" class="form-control" rows="4" formControlName="message"
+                          [placeholder]="'CONTACT.FORM.MESSAGE_PLACEHOLDER' | translate"
+                          [class.is-invalid]="f['message'].invalid && (f['message'].dirty || f['message'].touched)"></textarea>
+              </div>
+              @if (f['message'].invalid && (f['message'].dirty || f['message'].touched)) {
+                <div class="form-error">
+                  @if (f['message'].errors?.['required']) { <span>{{ 'CONTACT.FORM.ERRORS.REQUIRED' | translate }}</span> }
+                  @if (f['message'].errors?.['minlength']) { <span>{{ 'CONTACT.FORM.ERRORS.MINLENGTH' | translate:{value:10} }}</span> }
+                </div>
+              }
+            </div>
+
+            <div class="form-actions form-actions--split">
+              <button type="button" class="btn-outline" (click)="prevStep()">
+                <lucide-icon name="ArrowLeft" [size]="18"></lucide-icon>
+                {{ 'CONTACT.FORM.BACK' | translate }}
+              </button>
+              <button type="button" class="submit-btn" (click)="nextStep()">
+                {{ 'CONTACT.FORM.NEXT' | translate }}
+                <lucide-icon name="ArrowRight" [size]="18"></lucide-icon>
+              </button>
+            </div>
+          </div>
+        }
+
+        <!-- STEP 3 — Final -->
+        @if (currentStep() === 3) {
+          <div class="form-step-content" aria-label="Step 3 of 3: Final details">
+            <h4 class="form-step-content__title">{{ 'CONTACT.STEP_3_TITLE' | translate }}</h4>
+            <p class="form-step-content__desc">{{ 'CONTACT.STEP_3_DESC' | translate }}</p>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="phone">{{ 'CONTACT.FORM.PHONE_OPTIONAL' | translate }}</label>
+                <div class="input-wrapper">
+                  <lucide-icon name="Phone" [size]="18" class="input-icon"></lucide-icon>
+                  <input type="tel" id="phone" class="form-control" formControlName="phone"
+                         [placeholder]="'CONTACT.FORM.PHONE_PLACEHOLDER' | translate"
+                         [class.is-invalid]="f['phone'].invalid && (f['phone'].dirty || f['phone'].touched)">
+                </div>
+                @if (f['phone'].invalid && (f['phone'].dirty || f['phone'].touched)) {
+                  <div class="form-error"><span>{{ 'CONTACT.FORM.ERRORS.PHONE' | translate }}</span></div>
+                }
+              </div>
+
+              <div class="form-group">
+                <label for="referralSource">{{ 'CONTACT.FORM.REFERRAL' | translate }}</label>
+                <div class="input-wrapper">
+                  <lucide-icon name="Megaphone" [size]="18" class="input-icon"></lucide-icon>
+                  <select id="referralSource" class="form-control" formControlName="referralSource">
+                    <option value="">{{ 'CONTACT.FORM.REFERRAL_PROMPT' | translate }}</option>
+                    <option value="google">{{ 'CONTACT.FORM.REFERRAL_OPTIONS.GOOGLE' | translate }}</option>
+                    <option value="social_media">{{ 'CONTACT.FORM.REFERRAL_OPTIONS.SOCIAL_MEDIA' | translate }}</option>
+                    <option value="recommendation">{{ 'CONTACT.FORM.REFERRAL_OPTIONS.RECOMMENDATION' | translate }}</option>
+                    <option value="event">{{ 'CONTACT.FORM.REFERRAL_OPTIONS.EVENT' | translate }}</option>
+                    <option value="blog">{{ 'CONTACT.FORM.REFERRAL_OPTIONS.BLOG' | translate }}</option>
+                    <option value="linkedin">LinkedIn</option>
+                    <option value="other">{{ 'CONTACT.FORM.SERVICE_OTHER' | translate }}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group form-checkbox">
+              <span class="consent-label">{{ 'CONTACT.FORM.CONSENT_LABEL' | translate }}</span>
+              <label class="checkbox-container">
+                <input type="checkbox" formControlName="privacy" class="checkbox-input">
+                <span class="checkbox-text">
+                  {{ 'CONTACT.FORM.PRIVACY' | translate }}
+                  <a routerLink="../privacy-policy" target="_blank">{{ 'CONTACT.FORM.PRIVACY_LINK' | translate }}</a>
+                </span>
+              </label>
+              @if (f['privacy'].invalid && (f['privacy'].dirty || f['privacy'].touched)) {
+                <div class="form-error"><span>{{ 'CONTACT.FORM.ERRORS.REQUIRED' | translate }}</span></div>
+              }
+            </div>
+
+            <div class="recaptcha-container" aria-hidden="true"></div>
+
+            <div class="form-actions form-actions--split">
+              <button type="button" class="btn-outline" (click)="prevStep()">
+                <lucide-icon name="ArrowLeft" [size]="18"></lucide-icon>
+                {{ 'CONTACT.FORM.BACK' | translate }}
+              </button>
+              <button type="submit" class="submit-btn" [disabled]="isSubmitting">
+                @if (isSubmitting) {
+                  <span class="spinner"></span>
+                  <span>{{ 'HOME.LEAD_MAGNET_SENDING' | translate }}</span>
+                } @else {
+                  <span>{{ 'CONTACT.FORM.SUBMIT' | translate }}</span>
+                  <lucide-icon name="Send"></lucide-icon>
+                }
+              </button>
+            </div>
+
+            <p class="recaptcha-disclaimer">
+              {{ 'CONTACT.FORM.RECAPTCHA_NOTICE_PREFIX' | translate }}
+              <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">{{ 'CONTACT.FORM.RECAPTCHA_PRIVACY' | translate }}</a>
+              {{ 'CONTACT.FORM.RECAPTCHA_NOTICE_MIDDLE' | translate }}
+              <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer">{{ 'CONTACT.FORM.RECAPTCHA_TERMS' | translate }}</a>
+              {{ 'CONTACT.FORM.RECAPTCHA_NOTICE_SUFFIX' | translate }}
+            </p>
+
+            @if (submitSuccess) {
+              <div class="submit-success fade-in">
+                <lucide-icon name="CheckCircle"></lucide-icon>
+                {{ 'CONTACT.FORM.SUCCESS' | translate }}
+              </div>
+            }
+            @if (submitError) {
+              <div class="submit-error fade-in">
+                <lucide-icon name="XCircle"></lucide-icon>
+                {{ 'CONTACT.FORM.ERROR' | translate }}
+              </div>
+            }
+          </div>
+        }
+
+      </form>
+    </div>
+
+  </div>
+</div>
+
+<!-- Alternatives / Social proof -->
+<section class="contact-alternatives">
+  <div class="container">
+    <div class="alternatives-grid" jslAnimateOnScroll>
+      <div class="alternative-card">
+        <div class="alternative-card__icon"><lucide-icon name="MessageCircle" [size]="32"></lucide-icon></div>
+        <h3 class="alternative-card__title">{{ 'CONTACT.ALT_WHATSAPP_TITLE' | translate }}</h3>
+        <p class="alternative-card__desc">{{ 'CONTACT.ALT_WHATSAPP_DESC' | translate }}</p>
+        <a href="https://wa.me/18092641693" target="_blank" rel="noopener" class="alternative-card__cta">
+          {{ 'CONTACT.ALT_WHATSAPP_CTA' | translate }}
+          <lucide-icon name="ArrowRight" [size]="16"></lucide-icon>
+        </a>
+      </div>
+
+      <div class="alternative-card">
+        <div class="alternative-card__icon"><lucide-icon name="Calendar" [size]="32"></lucide-icon></div>
+        <h3 class="alternative-card__title">{{ 'CONTACT.ALT_CALL_TITLE' | translate }}</h3>
+        <p class="alternative-card__desc">{{ 'CONTACT.ALT_CALL_DESC' | translate }}</p>
+        <a href="https://calendly.com/jsl-technology" target="_blank" rel="noopener" class="alternative-card__cta">
+          {{ 'CONTACT.ALT_CALL_CTA' | translate }}
+          <lucide-icon name="ArrowRight" [size]="16"></lucide-icon>
+        </a>
+      </div>
+
+      <div class="alternative-card">
+        <div class="alternative-card__icon"><lucide-icon name="Headphones" [size]="32"></lucide-icon></div>
+        <h3 class="alternative-card__title">{{ 'CONTACT.ALT_SUPPORT_TITLE' | translate }}</h3>
+        <p class="alternative-card__desc">{{ 'CONTACT.ALT_SUPPORT_DESC' | translate }}</p>
+        <a href="mailto:support@jsl.technology" class="alternative-card__cta">
+          {{ 'CONTACT.ALT_SUPPORT_CTA' | translate }}
+          <lucide-icon name="ArrowRight" [size]="16"></lucide-icon>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,152 @@
+@if (solution$ | async; as solution) {
+  <header class="detail-page-header">
+    <div class="container">
+      <nav class="detail-page-breadcrumb" [attr.aria-label]="'ARIA.BREADCRUMB' | translate">
+        <a [routerLink]="['/', currentLang, 'home']">{{ 'COMMON.BREADCRUMB_HOME' | translate }}</a>
+        <lucide-icon name="ChevronRight"></lucide-icon>
+        <a [routerLink]="['/', currentLang, 'solutions']">{{ 'HEADER.SERVICES' | translate }}</a>
+        <lucide-icon name="ChevronRight"></lucide-icon>
+        <span>{{ 'SOLUTIONS.' + solution.key + '_TITLE' | translate }}</span>
+      </nav>
+
+      <div class="header-main-content">
+        <h1 class="detail-page-title">{{ 'SOLUTIONS.' + solution.key + '_TITLE' | translate }}</h1>
+        <p class="page-subtitle">{{ 'SOLUTIONS.' + solution.key + '_DESC' | translate }}</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="solution-detail-container">
+    <!-- Sección de Introducción -->
+    <section class="intro-section container">
+      <div class="intro-content">
+        <h2 class="section-title">{{ 'SOLUTIONS.' + solution.key + '_SECTION_INTRO_TITLE' | translate }}</h2>
+        <p>{{ 'SOLUTIONS.' + solution.key + '_SECTION_INTRO_DESC' | translate }}</p>
+      </div>
+      <div class="intro-image">
+        <img [src]="solution.heroImage"
+             alt="{{ 'SOLUTIONS.' + solution.key + '_SECTION_INTRO_TITLE' | translate }}"
+             fetchpriority="high"
+             loading="eager"
+             width="800"
+             height="500">
+      </div>
+    </section>
+
+    <!-- Sección de Enfoque -->
+    <section class="approach-section">
+      <div class="container">
+        <h2 class="section-title">{{ 'SOLUTIONS.' + solution.key + '_SECTION_APPROACH_TITLE' | translate }}</h2>
+        <div class="approach-steps">
+          <!-- Paso 1 -->
+          <div class="step-card">
+            <div class="step-icon">
+              <lucide-icon name="LayoutTemplate"></lucide-icon>
+            </div>
+            <h3>{{ 'SOLUTIONS.' + solution.key + '_SECTION_APPROACH_STEP_1_TITLE' | translate }}</h3>
+            <p>{{ 'SOLUTIONS.' + solution.key + '_SECTION_APPROACH_STEP_1_DESC' | translate }}</p>
+          </div>
+          <!-- Paso 2 -->
+          <div class="step-card">
+            <div class="step-icon">
+              <lucide-icon name="Zap"></lucide-icon>
+            </div>
+            <h3>{{ 'SOLUTIONS.' + solution.key + '_SECTION_APPROACH_STEP_2_TITLE' | translate }}</h3>
+            <p>{{ 'SOLUTIONS.' + solution.key + '_SECTION_APPROACH_STEP_2_DESC' | translate }}</p>
+          </div>
+          <!-- Paso 3 -->
+          <div class="step-card">
+            <div class="step-icon">
+              <lucide-icon name="ShieldCheck"></lucide-icon>
+            </div>
+            <h3>{{ 'SOLUTIONS.' + solution.key + '_SECTION_APPROACH_STEP_3_TITLE' | translate }}</h3>
+            <p>{{ 'SOLUTIONS.' + solution.key + '_SECTION_APPROACH_STEP_3_DESC' | translate }}</p>
+          </div>
+          <!-- Paso 4 -->
+          <div class="step-card">
+            <div class="step-icon">
+              <lucide-icon name="CloudCog"></lucide-icon>
+            </div>
+            <h3>{{ 'SOLUTIONS.' + solution.key + '_SECTION_APPROACH_STEP_4_TITLE' | translate }}</h3>
+            <p>{{ 'SOLUTIONS.' + solution.key + '_SECTION_APPROACH_STEP_4_DESC' | translate }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección de Tecnologías -->
+    <section class="tech-stack-section">
+      <div class="container">
+        <h2 class="section-title">{{ 'SOLUTIONS.' + solution.key + '_SECTION_TECH_TITLE' | translate }}</h2>
+        <p class="section-subtitle">{{ 'SOLUTIONS.' + solution.key + '_SECTION_TECH_DESC' | translate }}</p>
+        <div class="tech-logos">
+          @for (tech of solution.technologies; track tech) {
+            <div class="tech-logo">
+              <img [src]="getTechLogo(tech)" [alt]="tech" width="48" height="48" loading="lazy">
+              <span>{{ tech }}</span>
+            </div>
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección de Beneficios Clave -->
+    <section class="benefits-section">
+      <div class="container">
+        <h2 class="section-title">{{ 'SOLUTIONS.' + solution.key + '_SECTION_BENEFITS_TITLE' | translate }}</h2>
+        <div class="benefits-grid">
+          <!-- Beneficio 1 -->
+          <div class="feature-card">
+            <div class="feature-icon">
+              <lucide-icon name="TrendingUp"></lucide-icon>
+            </div>
+            <h3>{{ 'SOLUTIONS.' + solution.key + '_SECTION_BENEFITS_1_TITLE' | translate }}</h3>
+            <p>{{ 'SOLUTIONS.' + solution.key + '_SECTION_BENEFITS_1_DESC' | translate }}</p>
+          </div>
+          <!-- Beneficio 2 -->
+          <div class="feature-card">
+            <div class="feature-icon">
+              <lucide-icon name="Gauge"></lucide-icon>
+            </div>
+            <h3>{{ 'SOLUTIONS.' + solution.key + '_SECTION_BENEFITS_2_TITLE' | translate }}</h3>
+            <p>{{ 'SOLUTIONS.' + solution.key + '_SECTION_BENEFITS_2_DESC' | translate }}</p>
+          </div>
+          <!-- Beneficio 3 -->
+          <div class="feature-card">
+            <div class="feature-icon">
+              <lucide-icon name="Lock"></lucide-icon>
+            </div>
+            <h3>{{ 'SOLUTIONS.' + solution.key + '_SECTION_BENEFITS_3_TITLE' | translate }}</h3>
+            <p>{{ 'SOLUTIONS.' + solution.key + '_SECTION_BENEFITS_3_DESC' | translate }}</p>
+          </div>
+          <!-- Beneficio 4 -->
+          <div class="feature-card">
+            <div class="feature-icon">
+              <lucide-icon name="Code"></lucide-icon>
+            </div>
+            <h3>{{ 'SOLUTIONS.' + solution.key + '_SECTION_BENEFITS_4_TITLE' | translate }}</h3>
+            <p>{{ 'SOLUTIONS.' + solution.key + '_SECTION_BENEFITS_4_DESC' | translate }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="container mb-24">
+    <app-related-content
+      [items]="otherSolutions"
+      type="solution"
+      [title]="'SOLUTIONS.RELATED' | translate">
+    </app-related-content>
+  </div>
+
+  <jsl-cta-section></jsl-cta-section>
+} @else {
+  <div class="page-container container">
+    <h2 class="page-title h1">{{ 'NOT_FOUND.SOLUTION_TITLE' | translate }}</h2>
+    <p class="page-subtitle">
+      {{ 'NOT_FOUND.SOLUTION_SUBTITLE' | translate }} 
+      <a [routerLink]="['/', currentLang, 'solutions']">{{ 'HEADER.SERVICES' | translate }}</a>.
+    </p>
+  </div>
+}

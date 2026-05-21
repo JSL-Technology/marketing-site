@@ -1,0 +1,23 @@
+:host {
+  display: contents;
+
+  &.jsl-picture--fill {
+    picture {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+  }
+}
+
+picture {
+  display: block;
+}

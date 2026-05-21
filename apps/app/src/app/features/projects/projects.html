@@ -1,0 +1,130 @@
+<!-- ══════════════════════════════════════════════
+     HERO
+     ══════════════════════════════════════════════ -->
+<section class="projects-hero">
+  <div class="projects-hero__orbs" aria-hidden="true">
+    <span class="orb orb--primary"></span>
+    <span class="orb orb--secondary"></span>
+  </div>
+  <div class="container">
+    <span class="section-eyebrow" jslAnimateOnScroll>{{ 'PROJECTS.EYEBROW' | translate }}</span>
+    <h1 jslAnimateOnScroll>{{ 'PROJECTS.TITLE' | translate }}</h1>
+    <p class="projects-hero__subtitle" jslAnimateOnScroll>{{ 'PROJECTS.SUBTITLE' | translate }}</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     FEATURED CASE STUDY
+     ══════════════════════════════════════════════ -->
+@if (featuredProject()) {
+  <section class="projects-featured">
+    <div class="container">
+      <span class="section-eyebrow" jslAnimateOnScroll>{{ 'PROJECTS.FEATURED_EYEBROW' | translate }}</span>
+      <a [routerLink]="['/', currentLang, 'projects', featuredProject()!.slug]"
+         class="featured-card"
+         jslAnimateOnScroll>
+
+        <div class="featured-card__visual">
+          <img
+            [src]="featuredProject()!.imageUrl"
+            [alt]="'PROJECTS.' + featuredProject()!.key + '_TITLE' | translate"
+            loading="lazy" width="700" height="400">
+          <span class="featured-card__badge">{{ featuredProject()!.category }}</span>
+        </div>
+
+        <div class="featured-card__body">
+          <div class="featured-card__body-top">
+            <h2 class="featured-card__title">
+              {{ 'PROJECTS.' + featuredProject()!.key + '_TITLE' | translate }}
+            </h2>
+            <p class="featured-card__desc">
+              {{ 'PROJECTS.' + featuredProject()!.key + '_DESC' | translate }}
+            </p>
+            @if (featuredProject()!.metrics && featuredProject()!.metrics!.length) {
+              <div class="featured-card__metrics">
+                @for (metric of featuredProject()!.metrics!; track metric) {
+                  <span class="metric-chip">
+                    <lucide-icon name="TrendingUp" [size]="12"></lucide-icon>
+                    {{ metric }}
+                  </span>
+                }
+              </div>
+            }
+          </div>
+          <span class="btn btn--primary featured-card__cta">
+            {{ 'PROJECTS.VIEW_STUDY' | translate }}
+            <lucide-icon name="ArrowRight" [size]="15"></lucide-icon>
+          </span>
+        </div>
+
+      </a>
+    </div>
+  </section>
+}
+
+<!-- ══════════════════════════════════════════════
+     ALL PROJECTS — FILTER + GRID
+     ══════════════════════════════════════════════ -->
+<section class="projects-grid-section">
+  <div class="container">
+
+    <div class="projects-section-header" jslAnimateOnScroll>
+      <h2 class="projects-section-title">{{ 'PROJECTS.ALL_TITLE' | translate }}</h2>
+      <span class="projects-count-badge">{{ filteredProjects().length }}</span>
+    </div>
+
+    <!-- Category Filter Pills -->
+    <div class="filter-tabs" role="tablist" jslAnimateOnScroll>
+      @for (cat of categories; track cat.key) {
+        <button
+          role="tab"
+          class="filter-tab"
+          [class.active]="activeCategory() === cat.key"
+          [attr.aria-selected]="activeCategory() === cat.key"
+          (click)="setCategory(cat.key)">
+          {{ cat.labelKey | translate }}
+        </button>
+      }
+    </div>
+
+    <!-- Projects Grid -->
+    <div class="projects-grid">
+      @for (project of paginatedProjects(); track project.key; let i = $index) {
+        <div class="project-card-slot" [style.--stagger]="i" jslAnimateOnScroll>
+          <jsl-card
+            [imageUrl]="project.imageUrl"
+            [title]="'PROJECTS.' + project.key + '_TITLE' | translate"
+            [description]="'PROJECTS.' + project.key + '_DESC' | translate"
+            [link]="['/', currentLang, 'projects', project.slug]"
+            [metrics]="project.metrics || []"
+            [meta]="{ tags: [project.category] }">
+          </jsl-card>
+        </div>
+      } @empty {
+        <div class="projects-empty" jslAnimateOnScroll>
+          <div class="projects-empty__icon">
+            <lucide-icon name="FolderKanban" [size]="36"></lucide-icon>
+          </div>
+          <p class="projects-empty__text">{{ 'PROJECTS.EMPTY_STATE' | translate }}</p>
+        </div>
+      }
+    </div>
+
+    @if (filteredProjects().length > itemsPerPage) {
+      <app-pagination
+        [totalItems]="filteredProjects().length"
+        [itemsPerPage]="itemsPerPage"
+        [currentPage]="currentPage()"
+        (pageChange)="onPageChange($event)">
+      </app-pagination>
+    }
+
+  </div>
+</section>
+
+<jsl-cta-section
+  eyebrowKey="PROJECTS.CTA_EYEBROW"
+  titleKey="PROJECTS.CTA_TITLE"
+  subtitleKey="PROJECTS.CTA_SUBTITLE"
+  [ctaLink]="['/', currentLang, 'contact']">
+</jsl-cta-section>

@@ -1,0 +1,73 @@
+<div class="chat-bubble-widget">
+  @if (showPreview()) {
+  <div class="chat-preview-bubble" role="status" aria-live="polite">
+    <p>{{ previewTeaser() }}</p>
+  </div>
+  }
+
+  @if (isOpen()) {
+  <div class="chat-window" jslAnimateOnScroll>
+    <header class="chat-header">
+      <div class="chat-header-avatar">{{ 'CHAT.AVATAR_TEXT' | translate }}</div>
+      <div class="chat-header-info">
+        <h3>{{ 'CHAT.TITLE' | translate }}</h3>
+        <span>{{ 'CHAT.STATUS_ONLINE' | translate }}</span>
+      </div>
+      <button
+        (click)="toggleChat()"
+        class="chat-close-btn"
+        [attr.aria-label]="'CHAT.CLOSE' | translate"
+      >
+        <lucide-icon name="X"></lucide-icon>
+      </button>
+    </header>
+
+    <main class="chat-body" #chatBody>
+      @for (msg of messages(); track msg.timestamp) {
+      <div
+        class="chat-message"
+        [class.chat-message--user]="msg.sender === 'user'"
+        [class.chat-message--operator]="msg.sender === 'operator'"
+      >
+        <div class="message-content">
+          <p>{{ msg.text }}</p>
+          <div class="message-status">
+            <span>{{ msg.timestamp | date : 'HH:mm' }}</span>
+            @if(msg.sender === 'user') {
+            <lucide-icon name="CheckCheck" size="16"></lucide-icon>
+            }
+          </div>
+        </div>
+      </div>
+      }
+    </main>
+
+    <form class="chat-footer" (ngSubmit)="sendMessage()">
+      <textarea
+        [formControl]="chatInput"
+        [placeholder]="'CHAT.PLACEHOLDER' | translate"
+        (keydown.enter)="onEnterPress($event)"
+        rows="1"
+      ></textarea>
+      <button
+        type="submit"
+        class="chat-send-btn"
+        [attr.aria-label]="'CHAT.SEND' | translate"
+        [disabled]="chatInput.invalid"
+      >
+        <lucide-icon name="Send"></lucide-icon>
+      </button>
+    </form>
+  </div>
+  }
+
+  @if (!isOpen()) {
+  <button
+    class="chat-bubble-button"
+    (click)="toggleChat()"
+    [attr.aria-label]="'CHAT.OPEN' | translate"
+  >
+    <lucide-icon name="MessageCircle"></lucide-icon>
+  </button>
+  }
+</div>

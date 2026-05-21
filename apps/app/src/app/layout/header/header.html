@@ -1,0 +1,365 @@
+<header class="header">
+  <!-- Top Bar - Solo visible en desktop -->
+  @if (breakpointService.isDesktop()) {
+  <jsl-top-bar></jsl-top-bar>
+  }
+  
+  <!-- Navegación principal -->
+  <nav class="header__nav container">
+    <!-- Logo -->
+    <a [routerLink]="[currentLang, 'home']" class="header__logo" (click)="closeMobileMenu()" [attr.aria-label]="'ARIA.HOME_LINK' | translate">
+      {{ 'COMMON.BRAND_NAME' | translate }}
+    </a>
+
+    <!-- Navegación desktop -->
+    <ul class="header__nav-links" [attr.aria-label]="'ARIA.DESKTOP_NAV' | translate">
+      <!-- Dropdown: Soluciones/Servicios -->
+      <li class="dropdown" [class.open]="openDropdown === 'solutions'">
+        <button
+          class="dropdown-toggle"
+          (click)="toggleDropdown('solutions', $event)"
+          aria-haspopup="true"
+          [attr.aria-expanded]="openDropdown === 'solutions'"
+        >
+          {{ 'HEADER.SERVICES' | translate }}
+          <lucide-icon name="ChevronDown"></lucide-icon>
+        </button>
+        <div class="dropdown-menu" [class.open]="openDropdown === 'solutions'">
+          <a
+            [routerLink]="[currentLang, 'solutions']"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            (click)="closeDropdowns()"
+          >
+            <lucide-icon name="LayoutGrid" size="18"></lucide-icon>
+            {{ 'HEADER.VIEW_ALL_SERVICES' | translate }}
+          </a>
+          <a
+            [routerLink]="[currentLang, 'solutions', 'web-development']"
+            routerLinkActive="active"
+            (click)="closeDropdowns()"
+          >
+            <lucide-icon name="Monitor" size="18"></lucide-icon>
+            {{ 'SERVICES_LIST.WEB' | translate }}
+          </a>
+          <a
+            [routerLink]="[currentLang, 'solutions', 'mobile-apps']"
+            routerLinkActive="active"
+            (click)="closeDropdowns()"
+          >
+            <lucide-icon name="Smartphone" size="18"></lucide-icon>
+            {{ 'SERVICES_LIST.MOBILE' | translate }}
+          </a>
+          <a
+            [routerLink]="[currentLang, 'solutions', 'desktop-software']"
+            routerLinkActive="active"
+            (click)="closeDropdowns()"
+          >
+            <lucide-icon name="Laptop" size="18"></lucide-icon>
+            {{ 'SERVICES_LIST.DESKTOP' | translate }}
+          </a>
+          <a
+            [routerLink]="[currentLang, 'solutions', 'cloud-architecture']"
+            routerLinkActive="active"
+            (click)="closeDropdowns()"
+          >
+            <lucide-icon name="CloudCog" size="18"></lucide-icon>
+            {{ 'SERVICES_LIST.CLOUD' | translate }}
+          </a>
+        </div>
+      </li>
+      
+      <!-- Dropdown: Productos -->
+      <li class="dropdown" [class.open]="openDropdown === 'products'">
+        <button
+          class="dropdown-toggle"
+          (click)="toggleDropdown('products', $event)"
+          aria-haspopup="true"
+          [attr.aria-expanded]="openDropdown === 'products'"
+        >
+          {{ 'HEADER.PRODUCTS' | translate }}
+          <lucide-icon name="ChevronDown"></lucide-icon>
+        </button>
+        <div class="dropdown-menu" [class.open]="openDropdown === 'products'">
+          <a
+            [routerLink]="[currentLang, 'products']"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            (click)="closeDropdowns()"
+          >
+            <lucide-icon name="Package" size="18"></lucide-icon>
+            {{ 'HEADER.VIEW_ALL_PRODUCTS' | translate }}
+          </a>
+          <a
+            href="https://virtex.com"
+            target="_blank"
+            (click)="closeDropdowns()"
+          >
+            <lucide-icon name="ExternalLink" size="18"></lucide-icon>
+            {{ 'PRODUCTS_LIST.ERP' | translate }}
+          </a>
+          <a
+            href="https://pos.jsl.technology"
+            target="_blank"
+            (click)="closeDropdowns()"
+          >
+            <lucide-icon name="ExternalLink" size="18"></lucide-icon>
+            {{ 'PRODUCTS_LIST.POS' | translate }}
+          </a>
+          <a
+            href="https://apps.jsl.technology"
+            target="_blank"
+            (click)="closeDropdowns()"
+          >
+            <lucide-icon name="ExternalLink" size="18"></lucide-icon>
+            {{ 'PRODUCTS_LIST.MOBILE' | translate }}
+          </a>
+          <div class="dropdown-divider"></div>
+          <a
+            [routerLink]="[currentLang, 'virteex-ecosystem']"
+            routerLinkActive="active"
+            (click)="closeDropdowns()"
+          >
+            <lucide-icon name="Layers" size="18"></lucide-icon>
+            {{ 'HEADER.VIRTEEX_ECOSYSTEM' | translate }}
+          </a>
+          <a
+            [routerLink]="[currentLang, 'pricing']"
+            routerLinkActive="active"
+            (click)="closeDropdowns()"
+          >
+            <lucide-icon name="CircleDollarSign" size="18"></lucide-icon>
+            {{ 'HEADER.PRICING' | translate }}
+          </a>
+        </div>
+      </li>
+
+      <!-- Dropdown: Compañía -->
+      <li class="dropdown" [class.open]="openDropdown === 'company'">
+        <button
+          class="dropdown-toggle"
+          (click)="toggleDropdown('company', $event)"
+          aria-haspopup="true"
+          [attr.aria-expanded]="openDropdown === 'company'"
+        >
+          {{ 'FOOTER.COMPANY' | translate }}
+          <lucide-icon name="ChevronDown"></lucide-icon>
+        </button>
+        <div class="dropdown-menu" [class.open]="openDropdown === 'company'">
+          <a
+            [routerLink]="[currentLang, 'about-us']"
+            routerLinkActive="active"
+            (click)="closeDropdowns()"
+          >
+            <lucide-icon name="Users" size="18"></lucide-icon>
+            {{ 'HEADER.ABOUT' | translate }}
+          </a>
+          <a
+            [routerLink]="[currentLang, 'process']"
+            routerLinkActive="active"
+            (click)="closeDropdowns()"
+          >
+            <lucide-icon name="Workflow" size="18"></lucide-icon>
+            {{ 'HEADER.PROCESS' | translate }}
+          </a>
+          <a
+            [routerLink]="[currentLang, 'careers']"
+            routerLinkActive="active"
+            (click)="closeDropdowns()"
+          >
+            <lucide-icon name="Briefcase" size="18"></lucide-icon>
+            {{ 'HEADER.CAREERS' | translate }}
+          </a>
+          <a
+            [routerLink]="[currentLang, 'life-at-jsl']"
+            routerLinkActive="active"
+            (click)="closeDropdowns()"
+          >
+            <lucide-icon name="Heart" size="18"></lucide-icon>
+            {{ 'HEADER.LIFE_AT_JSL' | translate }}
+          </a>
+          <a
+            [routerLink]="[currentLang, 'partners']"
+            routerLinkActive="active"
+            (click)="closeDropdowns()"
+          >
+            <lucide-icon name="Handshake" size="18"></lucide-icon>
+            {{ 'HEADER.PARTNERS' | translate }}
+          </a>
+          <a
+            [routerLink]="[currentLang, 'security']"
+            routerLinkActive="active"
+            (click)="closeDropdowns()"
+          >
+            <lucide-icon name="ShieldCheck" size="18"></lucide-icon>
+            {{ 'HEADER.SECURITY' | translate }}
+          </a>
+          <div class="dropdown-divider"></div>
+          <a
+            [routerLink]="[currentLang, 'investors']"
+            routerLinkActive="active"
+            (click)="closeDropdowns()"
+          >
+            <lucide-icon name="TrendingUp" size="18"></lucide-icon>
+            {{ 'HEADER.INVESTORS' | translate }}
+          </a>
+          <a
+            [routerLink]="[currentLang, 'ventures']"
+            routerLinkActive="active"
+            (click)="closeDropdowns()"
+          >
+            <lucide-icon name="Rocket" size="18"></lucide-icon>
+            {{ 'HEADER.VENTURES' | translate }}
+          </a>
+          <div class="dropdown-divider"></div>
+          <a
+            href="https://portal.jsl.technology"
+            target="_blank"
+            (click)="closeDropdowns()"
+          >
+            <lucide-icon name="ExternalLink" size="18"></lucide-icon>
+            {{ 'HEADER.LOGIN' | translate }}
+          </a>
+        </div>
+      </li>
+
+      <!-- Dropdown: Recursos -->
+      <li class="dropdown" [class.open]="openDropdown === 'resources'">
+        <button
+          class="dropdown-toggle"
+          (click)="toggleDropdown('resources', $event)"
+          aria-haspopup="true"
+          [attr.aria-expanded]="openDropdown === 'resources'"
+        >
+          {{ 'FOOTER.RESOURCES' | translate }}
+          <lucide-icon name="ChevronDown"></lucide-icon>
+        </button>
+        <div class="dropdown-menu" [class.open]="openDropdown === 'resources'">
+          <a
+            [routerLink]="[currentLang, 'projects']"
+            routerLinkActive="active"
+            (click)="closeDropdowns()"
+          >
+            <lucide-icon name="Lightbulb" size="18"></lucide-icon>
+            {{ 'HEADER.PROJECTS' | translate }}
+          </a>
+          <a
+            [routerLink]="[currentLang, 'blog']"
+            routerLinkActive="active"
+            (click)="closeDropdowns()"
+          >
+            <lucide-icon name="Newspaper" size="18"></lucide-icon>
+            {{ 'HEADER.BLOG' | translate }}
+          </a>
+          <a
+            [routerLink]="[currentLang, 'industries']"
+            routerLinkActive="active"
+            (click)="closeDropdowns()"
+          >
+            <lucide-icon name="Building2" size="18"></lucide-icon>
+            {{ 'HEADER.INDUSTRIES' | translate }}
+          </a>
+          <a
+            [routerLink]="[currentLang, 'events']"
+            routerLinkActive="active"
+            (click)="closeDropdowns()"
+          >
+            <lucide-icon name="CalendarDays" size="18"></lucide-icon>
+            {{ 'HEADER.EVENTS' | translate }}
+          </a>
+          <a
+            [routerLink]="[currentLang, 'news']"
+            routerLinkActive="active"
+            (click)="closeDropdowns()"
+          >
+            <lucide-icon name="Radio" size="18"></lucide-icon>
+            {{ 'HEADER.NEWS' | translate }}
+          </a>
+          <a
+            [routerLink]="[currentLang, 'press']"
+            routerLinkActive="active"
+            (click)="closeDropdowns()"
+          >
+            <lucide-icon name="BookOpen" size="18"></lucide-icon>
+            {{ 'HEADER.PRESS' | translate }}
+          </a>
+          <a
+            [routerLink]="[currentLang, 'roadmap']"
+            routerLinkActive="active"
+            (click)="closeDropdowns()"
+          >
+            <lucide-icon name="Map" size="18"></lucide-icon>
+            {{ 'HEADER.ROADMAP' | translate }}
+          </a>
+          <div class="dropdown-divider"></div>
+          <a
+            [routerLink]="[currentLang, 'faq']"
+            routerLinkActive="active"
+            (click)="closeDropdowns()"
+          >
+            <lucide-icon name="HelpCircle" size="18"></lucide-icon>
+            {{ 'HEADER.FAQ' | translate }}
+          </a>
+          <a
+            [routerLink]="[currentLang, 'tech-stack']"
+            routerLinkActive="active"
+            (click)="closeDropdowns()"
+          >
+            <lucide-icon name="Cpu" size="18"></lucide-icon>
+            {{ 'HEADER.TECH_STACK' | translate }}
+          </a>
+          <a
+            [routerLink]="[currentLang, 'developers']"
+            routerLinkActive="active"
+            (click)="closeDropdowns()"
+          >
+            <lucide-icon name="Code" size="18"></lucide-icon>
+            {{ 'HEADER.DEVELOPERS' | translate }}
+          </a>
+        </div>
+      </li>
+
+      <!-- Botón CTA: Contacto -->
+      <li class="header__nav-cta">
+        <a
+          [routerLink]="[currentLang, 'contact']"
+          routerLinkActive="active"
+          (click)="closeDropdowns()"
+          [attr.aria-label]="'HEADER.CONTACT' | translate"
+        >
+          {{ 'HEADER.CONTACT' | translate }}
+        </a>
+      </li>
+    </ul>
+    
+    <!-- Header Controls -->
+    <div class="header__controls">
+      <button class="header__search-btn" (click)="toggleSearch()" [attr.aria-label]="'ARIA.SEARCH' | translate">
+        <lucide-icon name="Search" [size]="20"></lucide-icon>
+      </button>
+
+      <jsl-language-switcher class="header__mobile-lang-switcher"></jsl-language-switcher>
+      <button
+        class="header__mobile-toggle jsl-mm-toggle"
+        (click)="toggleMobileMenu($event)"
+        [attr.aria-label]="'ARIA.TOGGLE_MENU' | translate"
+        [attr.aria-expanded]="isMobileMenuOpen"
+        [class.open]="isMobileMenuOpen"
+      >
+        @if (!isMobileMenuOpen) {
+        <lucide-icon name="Menu"></lucide-icon>
+        } @else {
+        <lucide-icon name="X"></lucide-icon>
+        }
+      </button>
+    </div>
+  </nav>
+
+  @if (!breakpointService.isDesktop()) {
+    <jsl-mobile-menu></jsl-mobile-menu>
+  }
+</header>
+
+@if (isSearchOpen) {
+  <app-search-overlay (close)="toggleSearch()"></app-search-overlay>
+}

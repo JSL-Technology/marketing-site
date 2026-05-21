@@ -1,0 +1,404 @@
+/* src/app/layout/footer/footer.scss */
+@use 'sass:color';
+
+.footer {
+  // 1. Efecto "Aurora" de fondo.
+  background: 
+    // Gradiente de acento izquierdo (Rojo)
+    radial-gradient(
+      600px circle at 0% 0%, 
+      rgba(var(--primary-rgb), 0.15),
+      transparent 40%
+    ),
+    // Gradiente de acento derecho (Rosado)
+    radial-gradient(
+      600px circle at 100% 0%, 
+      rgba(var(--accent-secondary-rgb), 0.15),
+      transparent 40%
+    ),
+    // Color de fondo base
+    var(--bg-secondary);
+  
+  [dir="rtl"] & {
+    background:
+      radial-gradient(
+        600px circle at 100% 0%,
+        rgba(var(--primary-rgb), 0.15),
+        transparent 40%
+      ),
+      radial-gradient(
+        600px circle at 0% 0%,
+        rgba(var(--accent-secondary-rgb), 0.15),
+        transparent 40%
+      ),
+      var(--bg-secondary);
+  }
+
+  padding-top: 5rem;
+  border-top: 1px solid var(--border-color);
+  margin-top: 6rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.footer__container {
+  display: grid;
+
+  // 5 columnas: brand | offerings | company | resources | newsletter
+  grid-template-columns: 1.4fr 1fr 1fr 1fr 1.2fr;
+  grid-template-areas: "main links1 links2 links3 newsletter";
+  gap: 2.5rem;
+
+  // --- Adaptación para tablets grandes (3 cols) ---
+  @media (max-width: 1100px) {
+    grid-template-columns: 1.5fr 1fr 1fr;
+    grid-template-areas:
+      "main links1 links2"
+      "newsletter newsletter links3";
+    gap: 2rem;
+  }
+
+  // --- Adaptación para tablets pequeñas (2 cols) ---
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-areas:
+      "main main"
+      "links1 links2"
+      "links3 newsletter";
+    gap: 2rem;
+  }
+
+  // --- Adaptación para móviles ---
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "main"
+      "newsletter"
+      "links1"
+      "links2"
+      "links3";
+    text-align: center;
+  }
+}
+
+// --- 3. Columnas del Grid ---
+.footer__col {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+
+  // Asignación de áreas de grid
+  &.footer__col--main {
+    grid-area: main;
+    // Ya no se necesita el min-width
+  }
+  &.footer__col--newsletter {
+    grid-area: newsletter;
+  }
+  &:nth-of-type(2) { grid-area: links1; }
+  &:nth-of-type(3) { grid-area: links2; }
+  &:nth-of-type(4) { grid-area: links3; }
+}
+
+.footer__logo {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-main);
+  text-decoration: none;
+  &::first-letter {
+    color: var(--primary);
+  }
+}
+
+.footer__slogan {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  max-width: 300px;
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+
+.footer__col-title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 0.5rem;
+  position: relative;
+  
+  // Pequeño subrayado de acento
+  &::after {
+    content: '';
+    display: block;
+    width: 25px;
+    height: 2px;
+    background: var(--accent-gradient);
+    margin-top: 0.5rem;
+  }
+
+  &.footer__col-title--follow {
+    margin-top: 1rem;
+  }
+}
+
+.footer__links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  a {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    transition: color var(--transition-speed) ease, padding-inline-start var(--transition-speed) ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+
+    lucide-icon {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      color: var(--border-color);
+      transition: color var(--transition-speed) ease;
+    }
+
+    &:hover {
+      color: var(--text-main);
+      padding-inline-start: 5px;
+      
+      lucide-icon {
+        color: var(--primary);
+      }
+    }
+  }
+  
+  // Ocultar icono para enlaces de navegación puros
+  &:not(.footer__links--contact) a {
+    gap: 0;
+    lucide-icon { display: none; }
+  }
+  // Quitar padding en hover para enlaces de contacto
+  &.footer__links--contact a:hover {
+    padding-inline-start: 0;
+  }
+}
+
+// Iconos Sociales (Refinados)
+.footer__socials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+
+  .social-link {
+    color: var(--text-muted);
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-speed) ease;
+
+    lucide-icon {
+      width: 18px;
+      height: 18px;
+    }
+
+    &:hover {
+      color: #fff;
+      transform: translateY(-3px) scale(1.05); // Efecto de hover mejorado
+      border-color: var(--primary);
+
+      // Colores de marca
+      &.social-link--linkedin { border-color: #0A66C2; background-color: #0A66C2; }
+      &.social-link--github { border-color: #C9D1D9; background-color: #24292F; }
+      &.social-link--twitter { border-color: #1DA1F2; background-color: #1DA1F2; }
+      &.social-link--instagram { border-color: #E4405F; background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D); }
+    }
+  }
+}
+
+// Formulario de Newsletter (Refinado)
+.footer__newsletter-subtitle {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.footer__newsletter-form {
+  width: 100%;
+  
+  .form-group {
+    margin-bottom: 0.5rem;
+    position: relative;
+    display: flex; // Para unir input y botón
+    
+    .form-control {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      font-size: 0.9rem;
+      font-family: var(--font-family-base);
+      color: var(--text-main);
+      background-color: var(--bg-primary); // Más oscuro
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      border-start-end-radius: 0;
+      border-end-end-radius: 0;
+      transition: border-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+  
+      &:focus {
+        outline: none;
+        // Efecto "glow" al enfocar
+        border-color: rgba(var(--primary-rgb), 0.5);
+        box-shadow: 0 0 10px rgba(var(--primary-rgb), 0.2);
+        z-index: 2;
+      }
+  
+      &.is-invalid {
+        border-color: #e74c3c;
+      }
+  
+      &::placeholder {
+        color: var(--text-muted);
+      }
+    }
+    
+    .submit-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      padding: 0.8rem 1.25rem;
+      color: #fff;
+      background: var(--accent-gradient);
+      border: 1px solid var(--primary);
+      border-radius: var(--radius-md);
+      border-start-start-radius: 0;
+      border-end-start-radius: 0;
+      cursor: pointer;
+      transition: all var(--transition-speed) ease;
+      margin-inline-start: -1px; // Solapamiento
+      z-index: 1;
+
+      lucide-icon {
+        width: 18px;
+      }
+  
+      &:hover:not(:disabled) {
+        // Sutil "glow" al pasar el ratón
+        box-shadow: 0 5px 15px rgba(var(--primary-rgb), 0.3);
+      }
+  
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+    }
+  }
+}
+
+// Mensajes de estado
+.form-error,
+.submit-success,
+.submit-error {
+  font-size: 0.8rem;
+  font-weight: 500;
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  text-align: center;
+}
+.form-error {
+  color: #e74c3c;
+  text-align: start;
+  padding: 0;
+}
+.submit-success, .submit-error {
+  border-radius: 4px;
+  width: 100%;
+}
+.submit-success {
+  background-color: rgba(46, 204, 113, 0.1);
+  border: 1px solid #2ecc71;
+  color: #2ecc71;
+}
+.submit-error {
+  background-color: rgba(231, 76, 60, 0.1);
+  border: 1px solid #e74c3c;
+  color: #e74c3c;
+}
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+// Barra Inferior
+.footer__bottom {
+  border-top: 1px solid var(--border-color);
+  margin-top: 4rem;
+  padding: 2rem 0;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+
+  jsl-language-switcher {
+    // This pushes the language switcher and subsequent elements to the right
+    margin-inline-start: auto;
+  }
+
+  // --- Mobile adjustment ---
+  @media (max-width: 768px) {
+    jsl-language-switcher {
+      margin-inline-start: 0; // Reset margin for centered column layout
+    }
+  }
+}
+
+.footer__bottom-links {
+  display: flex;
+  gap: 1.5rem;
+  a {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    text-decoration: none;
+    &:hover {
+      color: var(--text-main);
+      text-decoration: underline;
+    }
+  }
+}
+
+// Ajustes finales para móvil
+@media (max-width: 480px) {
+  .footer__logo, .footer__slogan, .footer__col-title {
+    margin-inline: auto;
+  }
+  .footer__col-title::after {
+    margin-inline: auto;
+  }
+  .footer__links a {
+    justify-content: center;
+    padding-inline-start: 0 !important;
+  }
+  .footer__socials {
+    justify-content: center;
+  }
+  .footer__bottom {
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+  }
+}

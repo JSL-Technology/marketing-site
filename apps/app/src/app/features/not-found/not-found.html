@@ -1,0 +1,51 @@
+<div class="page-container container">
+  <div class="not-found-grid" jslAnimateOnScroll>
+
+    <div class="not-found-content">
+      <span class="not-found-eyebrow">{{ 'NOT_FOUND.EYEBROW' | translate }}</span>
+      <h1>{{ 'NOT_FOUND.TITLE' | translate }}</h1>
+      <p>{{ 'NOT_FOUND.SUBTITLE' | translate }}</p>
+
+      <!-- Search -->
+      <div class="not-found-search">
+        <input
+          type="search"
+          class="not-found-search__input"
+          [placeholder]="'NOT_FOUND.SEARCH_PLACEHOLDER' | translate"
+          [(ngModel)]="searchQuery"
+          (keyup.enter)="onSearch()">
+        <button class="not-found-search__btn" (click)="onSearch()">
+          <lucide-icon name="Search" [size]="18"></lucide-icon>
+        </button>
+      </div>
+
+      <a [routerLink]="['/', currentLang, 'home']" class="hero-slide__cta">
+        <span>{{ 'NOT_FOUND.CTA' | translate }}</span>
+        <lucide-icon name="Home" [size]="18"></lucide-icon>
+      </a>
+    </div>
+
+    <div class="not-found-image">
+      <img [src]="illustrationUrl"
+           [alt]="'NOT_FOUND.ALT' | translate"
+           width="500" height="500"
+           loading="eager">
+    </div>
+
+  </div>
+</div>
+
+<!-- Suggested Pages -->
+<section class="not-found-suggestions">
+  <div class="container">
+    <h2 class="not-found-suggestions__title" jslAnimateOnScroll>{{ 'NOT_FOUND.SUGGESTIONS_TITLE' | translate }}</h2>
+    <div class="suggestions-grid">
+      @for (page of suggestedPages; track page.route) {
+        <a [routerLink]="['/', currentLang, page.route]" class="suggestion-card" jslAnimateOnScroll>
+          <lucide-icon [name]="page.icon" [size]="24"></lucide-icon>
+          <span>{{ page.labelKey | translate }}</span>
+        </a>
+      }
+    </div>
+  </div>
+</section>

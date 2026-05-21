@@ -1,0 +1,297 @@
+@if (post$ | async; as post) {
+  <div class="blog-detail-page">
+    <header class="detail-page-header">
+      <div class="header-background">
+        <div class="gradient-overlay"></div>
+        <div class="ambient-glow"></div>
+      </div>
+
+      <div class="container">
+        <div class="title-section" jslAnimateOnScroll>
+          @if (post.featured) {
+            <div class="post-badge">
+              <span class="badge-dot"></span>
+              {{ 'BLOG.FEATURED_ARTICLE' | translate }}
+            </div>
+          }
+          <h1 class="detail-page-title fade-in-up">
+            {{ 'BLOG.' + post.key + '_TITLE' | translate }}
+          </h1>
+          <p class="post-excerpt fade-in-up" style="animation-delay: 0.1s">
+            {{ 'BLOG.' + post.key + '_EXCERPT' | translate }}
+          </p>
+        </div>
+
+        <div class="detail-page-meta" jslAnimateOnScroll>
+          <div class="meta-row">
+            <div class="meta-item">
+              <img [src]="(author$ | async)?.imageUrl || 'assets/images/default-avatar.png'" class="meta-author-img" [alt]="'ALT.AUTHOR' | translate" />
+              <div class="meta-text">
+                <span class="meta-label">{{ 'COMMON.AUTHOR' | translate }}</span>
+                <span class="meta-value">{{ (author$ | async)?.nameKey | translate }}</span>
+              </div>
+            </div>
+            
+            <div class="meta-divider"></div>
+
+            <div class="meta-item">
+              <lucide-icon name="Calendar" class="meta-icon"></lucide-icon>
+              <div class="meta-text">
+                <span class="meta-label">{{ 'COMMON.PUBLISHED_DATE' | translate }}</span>
+                <span class="meta-value">{{ post.date | date: 'longDate' }}</span>
+              </div>
+            </div>
+
+            <div class="meta-divider"></div>
+            
+            <div class="meta-item">
+              <lucide-icon name="Clock" class="meta-icon"></lucide-icon>
+              <div class="meta-text">
+                <span class="meta-label">{{ 'BLOG.READ_TIME' | translate }}</span>
+                <span class="meta-value">{{ post.readTime }} min</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </header>
+
+    <div class="container">
+      <div class="banner-container" jslAnimateOnScroll>
+        <div class="banner-frame">
+          <img
+            [src]="post.imageUrl"
+            [alt]="'BLOG.' + post.key + '_TITLE' | translate"
+            class="detail-page-banner"
+            (load)="onImageLoad()"
+            fetchpriority="high"
+            loading="eager"
+            width="1200"
+            height="600"
+            #bannerImage
+          />
+        </div>
+      </div>
+
+      <div class="content-layout">
+        <main class="detail-page-content blog-content" jslAnimateOnScroll>
+          <article class="content-article">
+            <div class="content-body" [innerHTML]="'BLOG.' + post.key + '_CONTENT' | translate"></div>
+
+            <div class="article-footer-interactions">
+              <div class="consolidated-bar">
+                <button class="interaction-item" [class.active]="isLiked()" (click)="toggleLike()" [attr.aria-label]="'BLOG.LIKE' | translate">
+                  <lucide-icon name="Heart" [class.filled]="isLiked()" [size]="22"></lucide-icon>
+                  <span class="count">{{ likes() }}</span>
+                </button>
+
+                <div class="item-divider"></div>
+
+                <button class="interaction-item" (click)="toggleCommentsModal()" [attr.aria-label]="'BLOG.COMMENTS' | translate">
+                  <lucide-icon name="MessageSquare" [size]="22"></lucide-icon>
+                  <span class="count">{{ comments().length }}</span>
+                </button>
+
+                <div class="item-divider"></div>
+
+                <div class="share-trigger-wrapper">
+                  <button class="interaction-item" (click)="sharePost(post)" [attr.aria-label]="'BLOG.SHARE' | translate">
+                    <lucide-icon name="Share2" [size]="22"></lucide-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="post-tags-footer">
+              <span class="tags-label">
+                <lucide-icon name="Tag" [size]="14"></lucide-icon>
+              </span>
+              @for (tag of post.tags; track tag) {
+                <span class="tag-pill">#{{ tag }}</span>
+              }
+            </div>
+
+            <div class="whitepaper-section">
+              <jsl-whitepaper-download></jsl-whitepaper-download>
+            </div>
+          </article>
+        </main>
+
+        <aside class="sidebar-right">
+          <div class="sticky-tools">
+            <button class="back-to-top-btn" (click)="scrollToTop()" [title]="'BLOG.BACK_TO_TOP' | translate">
+              <lucide-icon name="ArrowUp" [size]="18"></lucide-icon>
+              <span class="back-to-top-label">{{ 'TOP_BAR.TOP' | translate }}</span>
+            </button>
+            <div class="reading-progress-circle">
+              <svg viewBox="0 0 36 36" class="progress-ring">
+                <path class="progress-ring__bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                <path class="progress-ring__fill" [style.stroke-dasharray]="scrollProgress + ', 100'" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+              </svg>
+              <span class="progress-ring__label">{{ scrollProgress | number: '1.0-0' }}%</span>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      @if (author$ | async; as author) {
+        <div class="author-card" jslAnimateOnScroll>
+          <div class="author-card__content">
+            <div class="author-card__image">
+              <img [src]="author.imageUrl" [alt]="author.nameKey | translate" width="100" height="100" loading="lazy" />
+            </div>
+            <div class="author-card__info">
+              <span class="author-card__eyebrow">{{ 'BLOG.WRITTEN_BY' | translate }}</span>
+              <h3 class="author-card__name">{{ author.nameKey | translate }}</h3>
+              <p class="author-card__role">{{ author.roleKey | translate }}</p>
+              @if (author.bioKey) {
+                <p class="author-card__bio">{{ author.bioKey | translate }}</p>
+              }
+              <div class="author-card__social">
+                @if (author.linkedIn) {
+                  <a [href]="author.linkedIn" target="_blank" class="author-social-link" [title]="'SHARE.LINKEDIN' | translate">
+                    <lucide-icon name="Linkedin"></lucide-icon>
+                  </a>
+                }
+                @if (author.twitter) {
+                  <a [href]="author.twitter" target="_blank" class="author-social-link" [title]="'SHARE.TWITTER' | translate">
+                    <lucide-icon name="Twitter"></lucide-icon>
+                  </a>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+
+    <section class="related-posts-section">
+      <div class="container">
+        <div class="section-header" jslAnimateOnScroll>
+          <span class="section-eyebrow">{{ 'BLOG.MIGHT_INTEREST_YOU' | translate }}</span>
+          <h2>{{ 'BLOG.RELATED_POSTS' | translate }}</h2>
+        </div>
+      </div>
+
+      <div class="related-posts-slider-container">
+        <swiper-container
+          init="false"
+          class="related-posts-slider"
+          jslAnimateOnScroll
+          [attr.dir]="directionService.isRtl() ? 'rtl' : 'ltr'"
+        >
+          @for (relatedPost of (relatedPosts$ | async) || []; track trackBySlug($index, relatedPost)) {
+            <swiper-slide class="related-post-slide">
+              <jsl-card
+                [imageUrl]="relatedPost.imageUrl"
+                [title]="'BLOG.' + relatedPost.key + '_TITLE' | translate"
+                [description]="'BLOG.' + relatedPost.key + '_EXCERPT' | translate"
+                [link]="['/', currentLang, 'blog', relatedPost.slug]"
+                [meta]="{
+                  date: relatedPost.date,
+                  readTime: relatedPost.readTime,
+                  tags: relatedPost.tags
+                }"
+              ></jsl-card>
+            </swiper-slide>
+          }
+        </swiper-container>
+      </div>
+    </section>
+
+    <div class="progress-indicator">
+      <div class="progress-bar-container">
+        <div class="progress-fill" [style.width.%]="scrollProgress"></div>
+      </div>
+    </div>
+
+    <jsl-cta-section
+      eyebrowKey="BLOG.CTA_EYEBROW"
+      titleKey="BLOG.CTA_TITLE"
+      subtitleKey="BLOG.CTA_SUBTITLE"
+    ></jsl-cta-section>
+  </div>
+
+  @if (showSideShareMenu()) {
+    <div class="share-modal-overlay" (click)="toggleSideShareMenu()">
+      <div class="share-modal-container" (click)="$event.stopPropagation()">
+        <app-social-share
+          [url]="'/blog/' + post.slug"
+          [title]="'BLOG.' + post.key + '_TITLE' | translate"
+          (close)="toggleSideShareMenu()"
+        ></app-social-share>
+      </div>
+    </div>
+  }
+
+  @if (showCommentsModal()) {
+    <div class="comments-modal-overlay" (click)="toggleCommentsModal()">
+      <div class="comments-modal-container" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h3>{{ 'BLOG.COMMENTS' | translate }} ({{ comments().length }})</h3>
+          <button class="close-modal-btn" (click)="toggleCommentsModal()" aria-label="Close">
+            <lucide-icon name="X" [size]="24"></lucide-icon>
+          </button>
+        </div>
+
+        <div class="modal-body custom-scrollbar">
+          <div class="comment-form-container">
+            <div class="form-group">
+              <label for="comment-textarea" class="sr-only">{{ 'BLOG.SUBMIT_COMMENT' | translate }}</label>
+              <textarea
+                id="comment-textarea"
+                [placeholder]="'BLOG.COMMENT_PLACEHOLDER' | translate"
+                [(ngModel)]="newCommentText"
+                (keydown)="handleCommentKeydown($event)"
+              ></textarea>
+              <div class="form-footer">
+                <span class="hint">Ctrl + Enter to send</span>
+                <button class="submit-comment-btn" (click)="submitComment()">
+                  {{ 'BLOG.SUBMIT_COMMENT' | translate }}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="comments-list">
+            @for (comment of comments(); track comment.date) {
+              <div class="comment-item">
+                <div class="comment-avatar">
+                  <div class="avatar-placeholder">{{ comment.author[0] }}</div>
+                </div>
+                <div class="comment-content">
+                  <div class="comment-meta">
+                    <span class="comment-author">{{ comment.author }}</span>
+                    <span class="comment-date">{{ comment.date | date: 'short' }}</span>
+                  </div>
+                  <p class="comment-text">{{ comment.text }}</p>
+                </div>
+              </div>
+            } @empty {
+              <div class="empty-comments">
+                <p>{{ 'BLOG.NO_COMMENTS' | translate }}</p>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+} @else {
+  <div class="not-found-container">
+    <div class="container">
+      <div class="not-found-content">
+        <lucide-icon name="FileText" class="not-found-icon"></lucide-icon>
+        <h2 class="h1">{{ 'NOT_FOUND.BLOG_TITLE' | translate }}</h2>
+        <p class="not-found-subtitle">
+          {{ 'NOT_FOUND.BLOG_SUBTITLE' | translate }}
+        </p>
+        <a [routerLink]="['/', currentLang, 'blog']" class="back-to-blog-btn">
+          <lucide-icon name="ArrowLeft"></lucide-icon>
+          {{ 'BLOG.BACK_TO_BLOG' | translate }}
+        </a>
+      </div>
+    </div>
+  </div>
+}

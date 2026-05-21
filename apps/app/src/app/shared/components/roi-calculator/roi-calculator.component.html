@@ -1,0 +1,75 @@
+<div class="roi-calculator-card">
+  <div class="roi-header">
+    <div class="icon-wrapper">
+      <lucide-icon [name]="icons.Calculator"></lucide-icon>
+    </div>
+    <h3>{{ 'MATURITY.ROI_CALCULATOR.TITLE' | translate }}</h3>
+    <p>{{ 'MATURITY.ROI_CALCULATOR.SUBTITLE' | translate }}</p>
+  </div>
+
+  <div class="roi-content">
+    <div class="inputs-section">
+      <div class="input-group">
+        <label>
+          <lucide-icon [name]="icons.Clock" size="16"></lucide-icon>
+          {{ 'MATURITY.ROI_CALCULATOR.HOURS_SAVED' | translate }}
+        </label>
+        <div class="range-wrapper">
+          <input
+            type="range"
+            [ngModel]="hoursSaved()"
+            (ngModelChange)="hoursSaved.set($event)"
+            (change)="onSliderChange()"
+            min="1" max="40" step="1">
+          <span class="value">{{ hoursSaved() }} hrs</span>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label>
+          <lucide-icon [name]="icons.DollarSign" size="16"></lucide-icon>
+          {{ 'MATURITY.ROI_CALCULATOR.HOURLY_RATE' | translate }}
+        </label>
+        <div class="range-wrapper">
+          <input
+            type="range"
+            [ngModel]="hourlyRate()"
+            (ngModelChange)="hourlyRate.set($event)"
+            (change)="onSliderChange()"
+            min="10" max="200" step="5">
+          <span class="value">${{ hourlyRate() }}</span>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label>
+          <lucide-icon [name]="icons.Users" size="16"></lucide-icon>
+          {{ 'MATURITY.ROI_CALCULATOR.EMPLOYEES' | translate }}
+        </label>
+        <div class="range-wrapper">
+          <input
+            type="range"
+            [ngModel]="employees()"
+            (ngModelChange)="employees.set($event)"
+            (change)="onSliderChange()"
+            min="1" max="100" step="1">
+          <span class="value">{{ employees() }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="results-section">
+      <div class="result-item">
+        <span class="label">{{ 'MATURITY.ROI_CALCULATOR.MONTHLY_SAVINGS' | translate }}</span>
+        <span class="amount">{{ formatCurrency(monthlySavings()) }}</span>
+      </div>
+      <div class="result-item highlight">
+        <span class="label">{{ 'MATURITY.ROI_CALCULATOR.ANNUAL_SAVINGS' | translate }}</span>
+        <span class="amount">{{ formatCurrency(annualSavings()) }}</span>
+      </div>
+      <p class="disclaimer">
+        {{ 'MATURITY.ROI_CALCULATOR.DISCLAIMER' | translate }}
+      </p>
+    </div>
+  </div>
+</div>

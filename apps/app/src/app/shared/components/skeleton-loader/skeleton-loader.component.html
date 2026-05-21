@@ -1,0 +1,8 @@
+@for (item of [].constructor(count); track $index) {
+  <div
+    class="skeleton-loader"
+    [class.circle]="shape === 'circle'"
+    [style.width]="width"
+    [style.height]="height">
+  </div>
+}

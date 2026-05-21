@@ -1,0 +1,71 @@
+// src/app/features/solution-detail/styles/_page-header.scss
+@use "app/styles/variables" as *;
+
+.detail-page-header {
+  padding: 4rem 0;
+  background-color: var(--background-alt);
+  border-bottom: 1px solid var(--border-color);
+  text-align: center;
+
+  .detail-page-breadcrumb {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+
+    a,
+    span {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    a {
+      &:hover {
+        color: var(--primary-color);
+      }
+    }
+
+    span {
+      font-weight: 500;
+      color: var(--text-main);
+    }
+
+    lucide-icon {
+      width: 16px;
+      height: 16px;
+      color: var(--text-muted);
+    }
+  }
+
+  .detail-page-title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+    color: var(--text-main);
+  }
+
+  .page-subtitle {
+    font-size: 1.25rem;
+    color: var(--text-muted);
+    max-width: 700px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: $breakpoint-md) {
+  .detail-page-header {
+    padding: 3rem 0;
+
+    .detail-page-title {
+      font-size: 2.5rem;
+    }
+
+    .page-subtitle {
+      font-size: 1.1rem;
+    }
+  }
+}

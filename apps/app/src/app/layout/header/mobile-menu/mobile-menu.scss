@@ -1,0 +1,768 @@
+// ─── Layout & animation variables ─────────────────────────────────────────────
+// These variables are now primarily driven by CSS Custom Properties set in mobile-menu.ts
+// to ensure a single source of truth. The SCSS variables below are used for media queries
+// and as fallbacks.
+$mm-drawer-max-width:   var(--mm-drawer-max-width, 380px);
+$mm-mobile-breakpoint:  992px; // Keep as SCSS variable for media queries
+$mm-drawer-duration:    var(--mm-drawer-duration, 400ms);
+$mm-drawer-easing:      var(--mm-drawer-easing, cubic-bezier(0.16, 1, 0.3, 1));
+$mm-overlay-duration:   0.3s;
+
+.mobile-menu-container {
+  .header__logo {
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: -0.72px;
+    font-family: 'Montserrat', var(--font-family-base);
+    background-image: linear-gradient(45deg, #365899 0%, #992a09 35%, #a76c51 85%, #a76c51 100%);
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: #fff;
+    padding-inline-end: 5px;
+    position: relative;
+    z-index: 1200;
+  }
+
+  // Nota: .sr-only se define en styles.scss (global). Esta definición se eliminó
+  // del scope del componente para que la clase sea disponible en cualquier contexto
+  // sin depender de que jsl-mobile-menu esté en el DOM (MEJORA-05).
+
+  .header__nav-links-mobile {
+    position: fixed;
+    top: 0;
+    inset-inline-start: 0;
+    width: 85%;
+    max-width: $mm-drawer-max-width;
+    // height: 100svh; /* small viewport height — never hidden by browser UI */
+    height: 100dvh; /* fallback for browsers without svh support */
+    // background: rgba(18, 18, 18, 0.92);
+    background: rgba(45 , 45 , 45 );
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border-inline-end: 1px solid rgba(255, 255, 255, 0.12);
+
+    display: flex;
+    flex-direction: column;
+    z-index: 1300;
+    // P5 — initial transform is controlled exclusively via Angular inline style;
+    //      no CSS transform declaration needed (it would be overridden anyway).
+    //      The CSS-only fallback for SSR is preserved through the initial inline value set in .ts.
+    will-change: transform;
+    box-shadow:
+      15px 0 50px rgba(0, 0, 0, 0.6),
+      inset -1px 0 0 rgba(255, 255, 255, 0.05);
+
+    touch-action: pan-y;
+
+    // Ensure the drawer is hidden from the rendering tree when fully closed (P7)
+    // This also helps Playwright's to_be_visible assertion.
+    visibility: visible;
+    &[inert] {
+      visibility: hidden;
+      transition: visibility $mm-drawer-duration;
+    }
+
+
+
+// ----------------------------------------------
+
+  backdrop-filter: blur(30px);
+  background-color: #09090b;
+
+// ---------s-------------------------------------
+
+
+
+
+
+
+
+
+
+    @media (prefers-reduced-motion: reduce) {
+      // R5 — suppress the slide-in/out transform animation for users who prefer
+      // reduced motion. The TS layer (prefersReducedMotion()) also sets
+      // menuTransition = 'none' and resolves handleTransitionEnd immediately,
+      // so the state machine does not stall waiting for transitionend.
+      transition: none !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      background: rgb(18, 18, 18) !important;
+    }
+
+    // Performance tuning for low-power devices
+    @media screen and (max-width: #{$mm-mobile-breakpoint}) and (update: slow) {
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      background: rgb(18, 18, 18) !important;
+    }
+
+    &.dragging {
+      transition: none !important;
+      overflow: hidden;
+      a {
+        pointer-events: none;
+      }
+    }
+  }
+
+  .mobile-menu-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: max(24px, env(safe-area-inset-top)) 24px 20px 24px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    flex-shrink: 0;
+
+    .mobile-logo-container {
+      .header__logo.mobile-logo {
+        font-size: 1.4rem;
+        padding: 0;
+        margin: 0;
+        filter: drop-shadow(0 0 8px rgba(var(--primary-rgb), 0.3));
+      }
+    }
+
+    .mobile-close-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #d0d0d0;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      // Animar solo las propiedades que cambian; evitar `transition: all`
+      // que anima también propiedades de layout y genera repaints costosos.
+      transition:
+        background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      backdrop-filter: blur(4px);
+
+      &:hover,
+      &:active {
+        background: rgba(255, 255, 255, 0.12);
+        color: var(--text-main);
+        transform: scale(1.1) rotate(90deg);
+        border-color: rgba(255, 255, 255, 0.2);
+      }
+
+      lucide-icon {
+        width: 18px;
+        height: 18px;
+      }
+    }
+  }
+
+  .external-icon-inline {
+    width: 14px;
+    height: 14px;
+    margin-inline-start: auto;
+    opacity: 0.6;
+  }
+
+  .external-icon-sm {
+    position: absolute;
+    top: 10px;
+    inset-inline-end: 10px;
+    width: 12px;
+    height: 12px;
+    opacity: 0.5;
+    transition: opacity 0.2s ease;
+  }
+
+  .mobile-menu-no-results {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 24px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 20px;
+    border: 1px dashed rgba(255, 255, 255, 0.1);
+    margin: 12px 4px;
+
+    .no-results-icon {
+      width: 80px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 50%;
+      margin-bottom: 20px;
+      color: #d0d0d0;
+      position: relative;
+
+      &::after {
+        content: '';
+        position: absolute;
+        inset: -5px;
+        border: 1px solid rgba(var(--primary-rgb), 0.2);
+        border-radius: 50%;
+        animation: mm-no-results-pulse 2s infinite;
+      }
+
+      lucide-icon {
+        width: 36px;
+        height: 36px;
+      }
+    }
+
+    .no-results-text {
+      font-size: 1rem;
+      color: var(--text-main);
+      font-weight: 500;
+      margin-bottom: 12px;
+    }
+
+    .clear-search-link {
+      background: transparent;
+      border: none;
+      color: var(--primary);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: underline;
+      padding: 8px 16px;
+      border-radius: 8px;
+      transition: background-color 0.2s ease;
+
+      &:hover,
+      &:active {
+        background: rgba(var(--primary-rgb), 0.1);
+      }
+    }
+  }
+
+  .mobile-menu-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    touch-action: pan-y;
+
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+    }
+  }
+
+  .mobile-quick-access {
+    margin-bottom: 8px;
+    padding: 0 4px;
+
+    .quick-access-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #d0d0d0;
+      margin-bottom: 12px;
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .quick-access-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .quick-tile {
+      touch-action: pan-y;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 20px 8px;
+      background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.08) 0%,
+        rgba(255, 255, 255, 0.02) 100%
+      );
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.02);
+      border-radius: 24px;
+      text-decoration: none;
+      // Animar solo las propiedades visuales que cambian en hover/active
+      transition:
+        background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        box-shadow 0.3s ease;
+      position: relative;
+      overflow: hidden;
+
+      &:active,
+      &.active {
+        transform: scale(0.94);
+        background: rgba(var(--primary-rgb), 0.15);
+        border-color: rgba(var(--primary-rgb), 0.4);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      .tile-icon {
+        width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 14px;
+        color: #d0d0d0;
+        transition:
+          background-color 0.3s ease,
+          color 0.3s ease,
+          transform 0.3s ease,
+          box-shadow 0.3s ease;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+
+        lucide-icon {
+          width: 22px;
+          height: 22px;
+        }
+      }
+
+      span {
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: #d0d0d0;
+        text-align: center;
+        line-height: 1.2;
+        transition: color 0.3s ease;
+      }
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(255, 255, 255, 0.15);
+
+        .tile-icon {
+          background: var(--accent-gradient);
+          color: white;
+          transform: translateY(-2px);
+          box-shadow: 0 6px 15px rgba(var(--primary-rgb), 0.3);
+        }
+
+        span {
+          color: var(--text-main);
+        }
+      }
+    }
+  }
+
+  .mobile-menu-search {
+    padding: 0 4px 4px 4px;
+
+    .search-input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 18px;
+      padding: 0 16px;
+      transition:
+        background-color 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
+        border-color 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
+        box-shadow 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
+        transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+
+      &:focus-within {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.2);
+        transform: translateY(-1px);
+      }
+
+      .search-icon {
+        width: 18px;
+        height: 18px;
+        color: #d0d0d0;
+        margin-inline-end: 10px;
+      }
+
+      input {
+        flex: 1;
+        background: transparent;
+        border: none;
+        color: var(--text-main);
+        padding: 12px 0;
+        font-size: 0.95rem;
+        outline: none;
+        // P2 — Explicitly allow vertical scrolling/panning but favor horizontal gestures
+        // for the drawer. 'pan-y' prevents the browser from taking over horizontal swipes.
+        touch-action: pan-y;
+
+        &::placeholder {
+          color: #d0d0d0;
+        }
+      }
+
+      .clear-search {
+        background: rgba(255, 255, 255, 0.1);
+        border: none;
+        color: #d0d0d0;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        margin-inline-start: 8px;
+
+        lucide-icon {
+          width: 14px;
+          height: 14px;
+        }
+      }
+    }
+  }
+
+  .mobile-accordion {
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    overflow: hidden;
+    transition:
+      background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+      border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+      box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-bottom: 8px;
+
+    &.expanded {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+
+      .accordion-header {
+        color: var(--text-main);
+        background: rgba(255, 255, 255, 0.02);
+
+        .chevron {
+          transform: rotate(180deg);
+          color: var(--primary);
+        }
+      }
+
+    }
+
+    .accordion-header {
+      touch-action: pan-y;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: transparent;
+      border: none;
+      padding: 20px 24px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #d0d0d0;
+      cursor: pointer;
+      text-align: start;
+      transition:
+        color 0.3s ease,
+        background-color 0.3s ease;
+
+      &:hover {
+        color: var(--text-main);
+        background: rgba(255, 255, 255, 0.04);
+      }
+
+      span {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        letter-spacing: 0.01em;
+      }
+
+      .chevron {
+        width: 18px;
+        height: 18px;
+        color: #888;
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s ease;
+        flex-shrink: 0;
+      }
+    }
+
+    // El contenido solo existe en el DOM cuando isExpanded=true (@if en la plantilla).
+    // Se aplica una animación de entrada para suavizar la aparición.
+    .accordion-content {
+      animation: mm-accordion-expand $mm-drawer-duration cubic-bezier(0.4, 0, 0.2, 1) both;
+
+      > * {
+        overflow: hidden;
+        min-height: 0;
+        padding-bottom: 16px;
+      }
+    }
+  }
+
+  .mobile-links-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      a {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 16px 24px;
+        color: #b0b0b0;
+        font-size: 0.9rem;
+        font-weight: 500;
+        text-decoration: none;
+        transition:
+          color 0.3s ease,
+          background-color 0.3s ease,
+          padding-inline-start 0.3s ease;
+        border-inline-start: 4px solid transparent;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+
+        lucide-icon:not(.external-icon-inline) {
+          width: 18px;
+          height: 18px;
+          opacity: 0.6;
+          transition: opacity 0.3s ease, color 0.3s ease, transform 0.3s ease;
+          flex-shrink: 0;
+        }
+
+        &:hover {
+          color: var(--text-main);
+          background: rgba(255, 255, 255, 0.05);
+          padding-inline-start: 28px;
+
+          lucide-icon:not(.external-icon-inline) {
+            opacity: 1;
+            color: var(--primary);
+            transform: scale(1.1);
+          }
+        }
+
+        &:active {
+          background: rgba(var(--primary-rgb), 0.08);
+        }
+
+        &.active {
+          color: var(--text-main);
+          font-weight: 700;
+          background: rgba(var(--primary-rgb), 0.1);
+          border-inline-start-color: var(--primary);
+
+          lucide-icon:not(.external-icon-inline) {
+            opacity: 1;
+            color: var(--primary);
+          }
+        }
+      }
+    }
+  }
+
+  .mobile-cta-container {
+    margin-top: 16px;
+    padding: 0 4px;
+
+    .mobile-cta-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      width: 100%;
+      padding: 18px;
+      background: var(--accent-gradient);
+      color: white;
+      font-size: 1.05rem;
+      font-weight: 700;
+      border-radius: 20px;
+      text-decoration: none;
+      box-shadow: 0 8px 25px rgba(var(--primary-rgb), 0.3);
+      transition:
+        transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+        box-shadow 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+        filter 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      overflow: hidden;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        inset-inline-start: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: inset-inline-start 0.5s ease;
+      }
+
+      &:hover::before {
+        inset-inline-start: 100%;
+      }
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 30px rgba(var(--primary-rgb), 0.4);
+        filter: brightness(1.1);
+      }
+
+      &:active,
+      &.active {
+        transform: scale(0.96);
+        box-shadow: 0 4px 10px rgba(var(--primary-rgb), 0.3);
+      }
+
+      lucide-icon {
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+
+  .mobile-menu-footer {
+    padding-inline: 24px;
+    padding-block-start: 32px;
+    padding-block-end: max(32px, env(safe-area-inset-bottom));
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(20px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    flex-shrink: 0;
+
+    .mobile-socials {
+      display: flex;
+      gap: 14px;
+
+      a {
+        color: #999;
+        transition:
+          color 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+          background-color 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+          border-color 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+          transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+          box-shadow 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+
+        &:hover,
+        &:active {
+          color: white;
+          background: var(--accent-gradient);
+          border-color: transparent;
+          transform: translateY(-4px) rotate(8deg);
+          box-shadow: 0 8px 20px rgba(var(--primary-rgb), 0.3);
+        }
+
+        lucide-icon {
+          width: 18px;
+          height: 18px;
+        }
+      }
+    }
+
+    .mobile-copyright {
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: #777;
+      text-align: center;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+  }
+}
+
+// ─── Animations ───────────────────────────────────────────────────────────────
+// Defined at root level to avoid potential SCSS/PostCSS nesting issues and to
+// prevent name collisions with other "pulse" animations in the project.
+@keyframes mm-accordion-expand {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-menu-container .accordion-content {
+    animation: none !important;
+  }
+}
+
+@keyframes mm-no-results-pulse {
+  0%   { transform: scale(1);   opacity: 0.5; }
+  50%  { transform: scale(1.1); opacity: 0.2; }
+  100% { transform: scale(1);   opacity: 0.5; }
+}
+
+// Overlay backdrop:
+// - Always in the DOM (never display:none) so JS can drive opacity at any time,
+//   including during gesture drags before the drawer is fully open.
+// - `visibility: hidden` (base) + `.visible` (pointer-active) separate
+//   interactivity from rendering: the overlay IS rendered when .visible,
+//   with opacity driven by --mm-overlay-progress via CSS calc.
+// - The transition on the base rule applies in BOTH open and close directions.
+.jsl-mm-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 1200;
+  pointer-events: none;
+  cursor: pointer;
+  touch-action: none;
+
+  // Eased progress: quadratic ease-in so opacity accelerates as drawer opens.
+  --mm-overlay-eased: calc(1 - (1 - var(--mm-overlay-progress, 0)) * (1 - var(--mm-overlay-progress, 0)));
+
+  opacity: calc(0.08 + var(--mm-overlay-eased) * 0.62);
+  backdrop-filter: blur(calc(var(--mm-overlay-eased) * 8px));
+  -webkit-backdrop-filter: blur(calc(var(--mm-overlay-eased) * 8px));
+
+  // Transition on base state so it fires in BOTH directions (open and close)
+  transition:
+    opacity $mm-overlay-duration ease,
+    backdrop-filter $mm-overlay-duration ease,
+    visibility $mm-overlay-duration ease;
+
+  visibility: hidden;
+
+  &.visible {
+    pointer-events: auto;
+    visibility: visible;
+  }
+
+  @media (prefers-reduced-motion: reduce), (update: slow) {
+    transition: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+}

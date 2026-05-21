@@ -1,0 +1,206 @@
+<section class="developers-hero">
+  <div class="container">
+    <div class="hero-content" jslAnimateOnScroll>
+      <span class="section-eyebrow">{{ 'DEVELOPERS.EYEBROW' | translate }}</span>
+      <h1>{{ 'DEVELOPERS.TITLE' | translate }}</h1>
+      <p class="subtitle">{{ 'DEVELOPERS.SUBTITLE' | translate }}</p>
+      <div class="actions">
+        <a [routerLink]="['/', currentLang, 'status']" class="status-link">
+          <span class="dot"></span>
+          {{ 'DEVELOPERS.STATUS' | translate }}
+        </a>
+        <span class="api-version">API v1.4.2</span>
+      </div>
+    </div>
+
+    <!-- Quick nav cards -->
+    <div class="dev-quick-nav" jslAnimateOnScroll>
+      @for (item of [
+        { icon: 'Rocket',     key: 'QUICKSTART',   anchor: '#quickstart' },
+        { icon: 'FileKey',    key: 'AUTH',          anchor: '#auth'       },
+        { icon: 'Code',       key: 'ENDPOINTS',     anchor: '#endpoints'  },
+        { icon: 'Globe',      key: 'WEBHOOKS',      anchor: '#webhooks'   },
+        { icon: 'BookOpen',   key: 'SDKS',          anchor: '#sdks'       },
+        { icon: 'HelpCircle', key: 'SUPPORT',       anchor: '#support'    }
+      ]; track item.key) {
+        <a [href]="item.anchor" class="dev-nav-card">
+          <lucide-icon [name]="item.icon" [size]="22"></lucide-icon>
+          <span>{{ 'DEVELOPERS.' + item.key | translate }}</span>
+        </a>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Quickstart -->
+<section id="quickstart" class="dev-section">
+  <div class="container">
+    <div class="dev-section__header" jslAnimateOnScroll>
+      <span class="section-eyebrow">{{ 'DEVELOPERS.QUICKSTART_EYEBROW' | translate }}</span>
+      <h2>{{ 'DEVELOPERS.QUICKSTART_TITLE' | translate }}</h2>
+      <p>{{ 'DEVELOPERS.QUICKSTART_DESC' | translate }}</p>
+    </div>
+    <div class="dev-grid" jslAnimateOnScroll>
+      <div class="dev-content">
+        <ol class="steps-list">
+          @for (step of [1,2,3]; track step) {
+            <li>
+              <span class="step-num">{{ step }}</span>
+              <div>
+                <strong>{{ 'DEVELOPERS.QS_STEP_' + step + '_TITLE' | translate }}</strong>
+                <p>{{ 'DEVELOPERS.QS_STEP_' + step + '_DESC' | translate }}</p>
+              </div>
+            </li>
+          }
+        </ol>
+      </div>
+      <jsl-code-block [code]="quickstartCode" language="typescript"></jsl-code-block>
+    </div>
+  </div>
+</section>
+
+<!-- Authentication -->
+<section id="auth" class="dev-section dev-section--alt">
+  <div class="container">
+    <div class="dev-section__header" jslAnimateOnScroll>
+      <span class="section-eyebrow">{{ 'DEVELOPERS.AUTH_EYEBROW' | translate }}</span>
+      <h2>{{ 'DEVELOPERS.AUTH_TITLE' | translate }}</h2>
+      <p>{{ 'DEVELOPERS.AUTH_DESC' | translate }}</p>
+    </div>
+    <div class="dev-grid" jslAnimateOnScroll>
+      <div class="dev-content">
+        <div class="info-cards">
+          @for (info of [
+            { icon: 'FileKey',    key: 'AUTH_INFO_KEY'    },
+            { icon: 'Lock',       key: 'AUTH_INFO_TLS'    },
+            { icon: 'Clock',      key: 'AUTH_INFO_EXPIRY' }
+          ]; track info.key) {
+            <div class="info-card">
+              <lucide-icon [name]="info.icon" [size]="18"></lucide-icon>
+              <p>{{ 'DEVELOPERS.' + info.key | translate }}</p>
+            </div>
+          }
+        </div>
+        <a href="mailto:developers@jsl.technology" class="btn-primary mt-4">
+          <lucide-icon name="FileKey" [size]="16"></lucide-icon>
+          {{ 'DEVELOPERS.GET_KEY' | translate }}
+        </a>
+      </div>
+      <jsl-code-block [code]="authCode" language="typescript"></jsl-code-block>
+    </div>
+  </div>
+</section>
+
+<!-- API Endpoints -->
+<section id="endpoints" class="dev-section">
+  <div class="container">
+    <div class="dev-section__header" jslAnimateOnScroll>
+      <span class="section-eyebrow">{{ 'DEVELOPERS.EP_EYEBROW' | translate }}</span>
+      <h2>{{ 'DEVELOPERS.EP_TITLE' | translate }}</h2>
+      <p>{{ 'DEVELOPERS.EP_DESC' | translate }}</p>
+    </div>
+    <div class="endpoints-table" jslAnimateOnScroll>
+      @for (ep of endpoints; track ep.path) {
+        <div class="endpoint-row">
+          <span class="method method--{{ ep.method.toLowerCase() }}">{{ ep.method }}</span>
+          <code class="endpoint-path">{{ ep.path }}</code>
+          <span class="endpoint-desc">{{ ep.desc | translate }}</span>
+        </div>
+      }
+    </div>
+    <p class="endpoints-note" jslAnimateOnScroll>{{ 'DEVELOPERS.EP_NOTE' | translate }}</p>
+  </div>
+</section>
+
+<!-- Webhooks -->
+<section id="webhooks" class="dev-section dev-section--alt">
+  <div class="container">
+    <div class="dev-section__header" jslAnimateOnScroll>
+      <span class="section-eyebrow">{{ 'DEVELOPERS.WEBHOOKS_EYEBROW' | translate }}</span>
+      <h2>{{ 'DEVELOPERS.WEBHOOKS_TITLE' | translate }}</h2>
+      <p>{{ 'DEVELOPERS.WEBHOOKS_DESC' | translate }}</p>
+    </div>
+    <div class="dev-grid" jslAnimateOnScroll>
+      <div class="dev-content">
+        <ul class="webhook-events">
+          @for (ev of [
+            'invoice.paid', 'invoice.overdue', 'customer.created',
+            'payment.failed', 'product.updated', 'subscription.renewed'
+          ]; track ev) {
+            <li><code>{{ ev }}</code></li>
+          }
+        </ul>
+      </div>
+      <jsl-code-block [code]="webhookCode" language="typescript"></jsl-code-block>
+    </div>
+  </div>
+</section>
+
+<!-- SDKs -->
+<section id="sdks" class="dev-section">
+  <div class="container">
+    <div class="dev-section__header" jslAnimateOnScroll>
+      <span class="section-eyebrow">{{ 'DEVELOPERS.SDKS_EYEBROW' | translate }}</span>
+      <h2>{{ 'DEVELOPERS.SDKS_TITLE' | translate }}</h2>
+      <p>{{ 'DEVELOPERS.SDKS_DESC' | translate }}</p>
+    </div>
+    <div class="sdks-grid">
+      @for (sdk of sdks; track sdk.name) {
+        <div class="sdk-card" jslAnimateOnScroll>
+          <lucide-icon name="Code" [size]="28"></lucide-icon>
+          <h3>{{ sdk.name }}</h3>
+          <code class="sdk-pkg">{{ sdk.pkg }}</code>
+          <div class="sdk-install">
+            <jsl-code-block [code]="sdk.install" language="bash"></jsl-code-block>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Rate Limits & Support -->
+<section id="support" class="dev-section dev-section--alt">
+  <div class="container">
+    <div class="dev-two-col">
+      <div class="dev-support-card" jslAnimateOnScroll>
+        <lucide-icon name="Gauge" [size]="28"></lucide-icon>
+        <h3>{{ 'DEVELOPERS.RATE_TITLE' | translate }}</h3>
+        <p>{{ 'DEVELOPERS.RATE_DESC' | translate }}</p>
+        <ul>
+          @for (tier of [
+            { key: 'RATE_FREE', val: '100 req/min' },
+            { key: 'RATE_PRO',  val: '1000 req/min'},
+            { key: 'RATE_ENT',  val: 'Unlimited'   }
+          ]; track tier.key) {
+            <li>
+              <span>{{ 'DEVELOPERS.' + tier.key | translate }}</span>
+              <strong>{{ tier.val }}</strong>
+            </li>
+          }
+        </ul>
+      </div>
+      <div class="dev-support-card" jslAnimateOnScroll>
+        <lucide-icon name="HelpCircle" [size]="28"></lucide-icon>
+        <h3>{{ 'DEVELOPERS.SUPPORT_TITLE' | translate }}</h3>
+        <p>{{ 'DEVELOPERS.SUPPORT_DESC' | translate }}</p>
+        <div class="support-links">
+          <a href="mailto:developers@jsl.technology" class="btn-outline">
+            <lucide-icon name="Mail" [size]="16"></lucide-icon>
+            developers&#64;jsl.technology
+          </a>
+          <a [routerLink]="['/', currentLang, 'status']" class="support-link">
+            <lucide-icon name="CheckCircle" [size]="14"></lucide-icon>
+            {{ 'DEVELOPERS.STATUS' | translate }}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<jsl-cta-section
+  eyebrowKey="DEVELOPERS.CTA_EYEBROW"
+  titleKey="DEVELOPERS.CTA_TITLE"
+  subtitleKey="DEVELOPERS.CTA_SUBTITLE">
+</jsl-cta-section>

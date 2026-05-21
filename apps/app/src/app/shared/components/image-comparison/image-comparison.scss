@@ -1,0 +1,95 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.comparison-container {
+  position: relative;
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: ew-resize;
+  user-select: none;
+  aspect-ratio: 16/9;
+  background-color: var(--bg-secondary);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.3);
+}
+
+.image-wrapper {
+  position: absolute;
+  top: 0;
+  inset-inline-start: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none; // Prevent image dragging
+  }
+}
+
+.label {
+  position: absolute;
+  top: 1rem;
+  padding: 0.25rem 0.75rem;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  backdrop-filter: blur(4px);
+  z-index: 2;
+}
+
+.before-label {
+  inset-inline-start: 1rem;
+}
+
+.after-label {
+  inset-inline-end: 1rem;
+}
+
+.before-image {
+  z-index: 1;
+}
+
+.slider-handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background-color: var(--primary);
+  z-index: 3;
+  transform: translateX(calc(var(--dir) * -50%));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+
+  &:focus-visible {
+    box-shadow: 0 0 0 4px rgba(var(--primary-rgb), 0.5);
+  }
+}
+
+.handle-circle {
+  width: 40px;
+  height: 40px;
+  background-color: var(--primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  border: 2px solid white;
+
+  lucide-icon {
+    width: 18px;
+    height: 18px;
+  }
+}

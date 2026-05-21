@@ -1,0 +1,198 @@
+<!-- ============================================================
+  HERO
+============================================================ -->
+<section class="press-hero">
+  <div class="press-hero__aurora" aria-hidden="true"></div>
+  <div class="container press-hero__inner">
+    <div class="press-hero__content" jslAnimateOnScroll>
+      <span class="section-eyebrow">{{ 'PRESS.EYEBROW' | translate }}</span>
+      <h1 class="press-hero__title">{{ 'PRESS.TITLE' | translate }}</h1>
+      <p class="press-hero__subtitle">{{ 'PRESS.SUBTITLE' | translate }}</p>
+      <div class="press-hero__ctas">
+        <a href="#press-kit" class="press-hero__cta-primary">
+          <lucide-icon name="Download" [size]="18"></lucide-icon>
+          {{ 'PRESS.HERO_CTA_PRIMARY' | translate }}
+        </a>
+        <a href="mailto:press@jsl.technology" class="press-hero__cta-secondary">
+          <lucide-icon name="Mail" [size]="18"></lucide-icon>
+          {{ 'PRESS.HERO_CTA_SECONDARY' | translate }}
+        </a>
+      </div>
+    </div>
+
+    <!-- Ticker de medios -->
+    <div class="press-hero__outlets" aria-hidden="true">
+      <p class="press-hero__outlets-label">{{ 'PRESS.MENTIONS' | translate }}</p>
+      <div class="press-outlets-ticker">
+        <div class="press-outlets-ticker__track">
+          @for (mention of mediaMentions; track mention.id) {
+            <span class="outlet-badge">{{ mention.outlet }}</span>
+          }
+          @for (mention of mediaMentions; track mention.id) {
+            <span class="outlet-badge" aria-hidden="true">{{ mention.outlet }}</span>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+  STATS
+============================================================ -->
+<section class="press-stats">
+  <div class="container press-stats__grid">
+    @for (stat of stats; track stat.labelKey) {
+      <div class="press-stat" jslAnimateOnScroll>
+        <div class="press-stat__icon">
+          <lucide-icon [name]="stat.icon" [size]="22"></lucide-icon>
+        </div>
+        <p class="press-stat__value">{{ stat.valueKey | translate }}</p>
+        <p class="press-stat__label">{{ stat.labelKey | translate }}</p>
+      </div>
+    }
+  </div>
+</section>
+
+<!-- ============================================================
+  PRESS RELEASES
+============================================================ -->
+<section class="press-releases">
+  <div class="container">
+    <div class="press-section-header" jslAnimateOnScroll>
+      <div>
+        <span class="section-eyebrow">{{ 'PRESS.RELEASES_EYEBROW' | translate }}</span>
+        <h2 class="section-title">{{ 'PRESS.RELEASES_TITLE' | translate }}</h2>
+      </div>
+    </div>
+
+    <div class="releases-list">
+      @for (release of pressReleases; track release.id) {
+        <article class="release-card" jslAnimateOnScroll>
+          <div class="release-card__aside">
+            <time class="release-card__date">{{ release.date }}</time>
+            <span class="release-card__category">{{ release.categoryKey | translate }}</span>
+          </div>
+          <div class="release-card__body">
+            <h3 class="release-card__title">{{ release.title }}</h3>
+            <p class="release-card__excerpt">{{ release.excerpt }}</p>
+            <a [href]="release.url" class="release-card__link" rel="noopener">
+              {{ 'PRESS.RELEASES_READ' | translate }}
+              <lucide-icon name="ArrowRight" [size]="16"></lucide-icon>
+            </a>
+          </div>
+        </article>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+  MEDIA COVERAGE
+============================================================ -->
+<section class="press-coverage">
+  <div class="container">
+    <div class="press-section-header" jslAnimateOnScroll>
+      <div>
+        <span class="section-eyebrow">{{ 'PRESS.COVERAGE_EYEBROW' | translate }}</span>
+        <h2 class="section-title">{{ 'PRESS.COVERAGE_TITLE' | translate }}</h2>
+      </div>
+    </div>
+
+    <div class="coverage-grid">
+      @for (mention of mediaMentions; track mention.id) {
+        <a [href]="mention.url" class="coverage-card" [class.coverage-card--featured]="mention.featured"
+           target="_blank" rel="noopener noreferrer" jslAnimateOnScroll>
+          <div class="coverage-card__header">
+            <div class="coverage-card__outlet-badge">{{ getOutletInitial(mention.outlet) }}</div>
+            <div class="coverage-card__outlet-info">
+              <span class="coverage-card__outlet-name">{{ mention.outlet }}</span>
+              <span class="coverage-card__category">{{ mention.category }}</span>
+            </div>
+          </div>
+          <p class="coverage-card__title">{{ mention.title }}</p>
+          <div class="coverage-card__footer">
+            <time class="coverage-card__date">{{ mention.date }}</time>
+            <span class="coverage-card__read">
+              {{ 'PRESS.COVERAGE_READ' | translate }}
+              <lucide-icon name="ExternalLink" [size]="13"></lucide-icon>
+            </span>
+          </div>
+        </a>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+  PRESS KIT / ASSETS
+============================================================ -->
+<section id="press-kit" class="press-kit">
+  <div class="container">
+    <div class="press-section-header press-section-header--center" jslAnimateOnScroll>
+      <span class="section-eyebrow">{{ 'PRESS.ASSETS_EYEBROW' | translate }}</span>
+      <h2 class="section-title">{{ 'PRESS.ASSETS_TITLE' | translate }}</h2>
+      <p class="section-subtitle">{{ 'PRESS.ASSETS_SUBTITLE' | translate }}</p>
+    </div>
+
+    <div class="assets-grid">
+      @for (asset of pressAssets; track asset.name) {
+        <div class="asset-card" jslAnimateOnScroll>
+          <div class="asset-card__icon">
+            <lucide-icon [name]="asset.icon" [size]="28"></lucide-icon>
+          </div>
+          <div class="asset-card__body">
+            <h3 class="asset-card__name">{{ asset.name }}</h3>
+            <p class="asset-card__desc">{{ asset.description }}</p>
+            <span class="asset-card__meta">
+              <lucide-icon name="Tag" [size]="12"></lucide-icon>
+              {{ asset.type }} &bull; {{ asset.size }}
+            </span>
+          </div>
+          <button class="asset-card__btn" type="button" [attr.aria-label]="'PRESS.DOWNLOAD' | translate">
+            <lucide-icon name="Download" [size]="16"></lucide-icon>
+            {{ 'PRESS.DOWNLOAD' | translate }}
+          </button>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+  PRESS CONTACT
+============================================================ -->
+<section class="press-contact">
+  <div class="container">
+    <div class="press-contact__card" jslAnimateOnScroll>
+      <div class="press-contact__body">
+        <span class="section-eyebrow">{{ 'PRESS.CONTACT_EYEBROW' | translate }}</span>
+        <h2 class="press-contact__title">{{ 'PRESS.CONTACT_TITLE' | translate }}</h2>
+        <p class="press-contact__subtitle">{{ 'PRESS.CONTACT_SUBTITLE' | translate }}</p>
+        <p class="press-contact__response">
+          <lucide-icon name="Clock" [size]="15"></lucide-icon>
+          {{ 'PRESS.CONTACT_RESPONSE' | translate }}
+        </p>
+      </div>
+      <div class="press-contact__action">
+        <a href="mailto:press@jsl.technology" class="press-contact__email-btn">
+          <lucide-icon name="Mail" [size]="20"></lucide-icon>
+          {{ 'PRESS.CONTACT_CTA' | translate }}
+        </a>
+        <p class="press-contact__email-address">press&#64;jsl.technology</p>
+        <div class="press-contact__socials">
+          <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer"
+             [attr.aria-label]="'SHARE.LINKEDIN' | translate" class="press-social-link">
+            <lucide-icon name="Linkedin" [size]="18"></lucide-icon>
+          </a>
+          <a href="https://twitter.com/jsl_tech" target="_blank" rel="noopener noreferrer"
+             [attr.aria-label]="'SHARE.TWITTER' | translate" class="press-social-link">
+            <lucide-icon name="Twitter" [size]="18"></lucide-icon>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<jsl-cta-section></jsl-cta-section>

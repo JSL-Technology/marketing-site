@@ -1,0 +1,82 @@
+<div class="page-container">
+  <div class="container">
+    <div class="thank-you-page" jslAnimateOnScroll>
+      <div class="thank-you-page__icon-container">
+        <lucide-icon name="CheckCircle" [size]="64"></lucide-icon>
+      </div>
+
+      <h1 class="thank-you-page__title">{{ 'THANK_YOU.TITLE' | translate }}</h1>
+      <h2 class="thank-you-page__message-title">{{ 'THANK_YOU.MSG_TITLE' | translate }}</h2>
+      <p class="thank-you-page__message-desc">{{ 'THANK_YOU.MSG_DESC' | translate }}</p>
+    </div>
+
+    <!-- Personalized insight for the selected service -->
+    @if (serviceConfig().insightKey) {
+      <div class="thank-you-insight" jslAnimateOnScroll>
+        <div class="thank-you-insight__icon">
+          <lucide-icon name="Lightbulb" [size]="24"></lucide-icon>
+        </div>
+        <p>{{ serviceConfig().insightKey | translate }}</p>
+      </div>
+    }
+
+    <!-- Next Steps -->
+    <div class="thank-you-next-steps" jslAnimateOnScroll>
+      <h3>{{ 'THANK_YOU.NEXT_STEPS_TITLE' | translate }}</h3>
+      <div class="next-steps-grid">
+        @for (step of nextSteps; track step.key) {
+          <div class="next-step-card">
+            <lucide-icon [name]="step.icon" [size]="28"></lucide-icon>
+            <h4>{{ 'THANK_YOU.STEP_' + step.key + '_TITLE' | translate }}</h4>
+            <p>{{ 'THANK_YOU.STEP_' + step.key + '_DESC' | translate }}</p>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Personalized CTA: booking + case study -->
+    <div class="thank-you-ctas" jslAnimateOnScroll>
+      <a href="https://calendly.com/jsl-technology" target="_blank" rel="noopener" class="submit-btn">
+        <lucide-icon name="Calendar" [size]="18"></lucide-icon>
+        {{ 'THANK_YOU.CTA_BOOKING' | translate }}
+      </a>
+
+      <a [routerLink]="['/', currentLang, serviceConfig().caseStudyRoute]" class="btn-outline">
+        <lucide-icon name="ArrowRight" [size]="18"></lucide-icon>
+        {{ serviceConfig().caseStudyKey | translate }}
+      </a>
+
+      <!-- Show whitepaper CTA only if not yet downloaded -->
+      @if (!whitepaperDownloaded()) {
+        <a [routerLink]="['/', currentLang, 'home']" fragment="whitepaper" class="btn-outline">
+          <lucide-icon name="FileText" [size]="18"></lucide-icon>
+          {{ 'THANK_YOU.CTA_WHITEPAPER' | translate }}
+        </a>
+      }
+    </div>
+
+    <!-- Social Follow -->
+    <div class="thank-you-social" jslAnimateOnScroll>
+      <p>{{ 'THANK_YOU.FOLLOW_TITLE' | translate }}</p>
+      <div class="social-links">
+        @for (social of socials; track social.label) {
+          <a [href]="social.href" target="_blank" rel="noopener noreferrer" class="social-link" [attr.aria-label]="social.label">
+            <lucide-icon [name]="social.icon" [size]="24"></lucide-icon>
+          </a>
+        }
+      </div>
+    </div>
+
+    <!-- Return Home -->
+    <div class="thank-you-actions" jslAnimateOnScroll>
+      <a [routerLink]="['/', currentLang, 'home']" class="thank-you-page__button">
+        <lucide-icon name="Home" [size]="18"></lucide-icon>
+        {{ 'THANK_YOU.GO_HOME' | translate }}
+      </a>
+      <a [routerLink]="['/', currentLang, 'blog']" class="btn-outline">
+        <lucide-icon name="BookOpen" [size]="18"></lucide-icon>
+        {{ 'THANK_YOU.READ_BLOG' | translate }}
+      </a>
+    </div>
+  </div>
+</div>

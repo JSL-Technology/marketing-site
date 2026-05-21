@@ -1,0 +1,70 @@
+@if (items.length > 0) {
+  <section class="rc-section" jslAnimateOnScroll>
+
+    <div class="rc-header">
+      <div class="rc-header-text">
+        <span class="rc-eyebrow">{{ 'SOLUTIONS.RELATED_EYEBROW' | translate }}</span>
+        <h2 class="rc-title">{{ title | translate }}</h2>
+      </div>
+      @if (items.length > 1) {
+        <div class="rc-nav">
+          <button class="rc-nav-prev rc-nav-btn" [attr.aria-label]="'ARIA.PREVIOUS_SLIDE' | translate">
+            <lucide-icon name="ChevronLeft" [size]="20"></lucide-icon>
+          </button>
+          <button class="rc-nav-next rc-nav-btn" [attr.aria-label]="'ARIA.NEXT_SLIDE' | translate">
+            <lucide-icon name="ChevronRight" [size]="20"></lucide-icon>
+          </button>
+        </div>
+      }
+    </div>
+
+    <div class="rc-slider-wrap">
+      <swiper-container init="false" class="rc-swiper" [attr.dir]="directionService.isRtl() ? 'rtl' : 'ltr'">
+        @for (item of items; track item.slug) {
+          <swiper-slide class="rc-slide">
+            <a [routerLink]="getItemLink(item)" class="rc-card">
+
+              <!-- Background image -->
+              <div class="rc-card-img">
+                <img
+                  [src]="getItemImage(item)"
+                  [alt]="getTitleKey(item) | translate"
+                  loading="lazy"
+                  width="480"
+                  height="320"
+                />
+                <div class="rc-card-overlay"></div>
+              </div>
+
+              <!-- Icon badge -->
+              <div class="rc-card-badge">
+                <lucide-icon [name]="getIcon(item)" [size]="18"></lucide-icon>
+              </div>
+
+              <!-- Content panel -->
+              <div class="rc-card-body">
+                <h3 class="rc-card-title">{{ getTitleKey(item) | translate }}</h3>
+                <p class="rc-card-desc">{{ getDescKey(item) | translate }}</p>
+
+                @if (getTechs(item).length > 0) {
+                  <div class="rc-card-tags">
+                    @for (tech of getTechs(item); track tech) {
+                      <span class="rc-tag">{{ tech }}</span>
+                    }
+                  </div>
+                }
+
+                <span class="rc-card-cta">
+                  {{ 'SOLUTIONS.EXPLORE' | translate }}
+                  <lucide-icon name="ArrowRight" [size]="14"></lucide-icon>
+                </span>
+              </div>
+
+            </a>
+          </swiper-slide>
+        }
+      </swiper-container>
+    </div>
+
+  </section>
+}

@@ -1,0 +1,131 @@
+.lifecycle-section {
+  margin-bottom: 4rem;
+  text-align: center;
+}
+
+.lifecycle-steps {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+
+    .arrow {
+      transform: rotate(90deg);
+    }
+  }
+}
+
+.step {
+  flex: 1;
+  max-width: 300px;
+  background: var(--bg-card);
+  padding: 2rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  text-align: center;
+
+  .step-icon {
+    display: inline-flex;
+    padding: 1rem;
+    background: var(--primary-light);
+    color: var(--primary);
+    border-radius: 50%;
+    margin-bottom: 1rem;
+  }
+
+  h3 {
+    margin-bottom: 0.5rem;
+    font-size: 1.25rem;
+  }
+
+  p {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+  }
+}
+
+.arrow {
+  color: var(--text-muted);
+}
+
+.ventures-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.venture-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary);
+  }
+
+  .venture-status {
+    position: absolute;
+    top: 1rem;
+    inset-inline-end: 1rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    text-transform: uppercase;
+
+    &.incubate {
+      background: #e0f2fe;
+      color: #0284c7;
+    }
+    &.accelerate {
+      background: #fef3c7;
+      color: #d97706;
+    }
+    &.scale {
+      background: #dcfce7;
+      color: #16a34a;
+    }
+  }
+
+  .venture-logo {
+    height: 60px;
+    width: auto;
+    margin-bottom: 1.5rem;
+  }
+
+  h3 {
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+    flex-grow: 1;
+  }
+
+  .venture-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--primary);
+    font-weight: 500;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
