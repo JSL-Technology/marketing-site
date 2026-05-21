@@ -174,7 +174,9 @@
 // Highlights
 .investors-highlights {
   @include section-padding;
-  background: radial-gradient(circle at 50% 0%, rgba(var(--primary-rgb), 0.05), transparent 70%);
+  & {
+    background: radial-gradient(circle at 50% 0%, rgba(var(--primary-rgb), 0.05), transparent 70%);
+  }
 
   .section-header {
     margin-bottom: 4rem;

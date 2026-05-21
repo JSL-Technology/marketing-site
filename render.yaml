@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: marketing-site
+    runtime: node
+    plan: free
+    buildCommand: npm ci && npx nx build app
+    startCommand: node dist/apps/app/server/server.mjs
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: 22.16.0
+      - key: NX_DAEMON
+        value: "false"
