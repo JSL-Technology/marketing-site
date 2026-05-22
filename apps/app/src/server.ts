@@ -24,10 +24,28 @@ import {
 } from './app/core/constants/tokens';
 import { detectPreferredLanguage } from './app/core/utils/language-url';
 
+// --- SSR Security: Allowed Hosts ---
+const ALLOWED_HOSTS =
+  'localhost,127.0.0.1,localhost:4000,127.0.0.1:4000,localhost:4100,127.0.0.1:4100,localhost:4200,127.0.0.1:4200,www.jsl.technology,jsl.technology';
+process.env['NG_ALLOWED_HOSTS'] = process.env['NG_ALLOWED_HOSTS'] || ALLOWED_HOSTS;
+
 const browserDistFolder = join(import.meta.dirname, '../browser');
 
 const app = express();
-const angularApp = new AngularNodeAppEngine();
+const angularApp = new AngularNodeAppEngine({
+  allowedHosts: [
+    'localhost',
+    '127.0.0.1',
+    'localhost:4000',
+    '127.0.0.1:4000',
+    'localhost:4100',
+    '127.0.0.1:4100',
+    'localhost:4200',
+    '127.0.0.1:4200',
+    'www.jsl.technology',
+    'jsl.technology',
+  ],
+});
 
 type SeoHealthSnapshot = {
   generatedAt: string;
@@ -56,7 +74,10 @@ const ENV_FEATURE_FLAGS: Record<string, boolean> = (() => {
   }
 })();
 const CANONICAL_HOSTS = new Set(
-  (process.env['CANONICAL_HOSTS'] ?? 'www.jsl.technology,jsl.technology')
+  (
+    process.env['CANONICAL_HOSTS'] ??
+    'www.jsl.technology,jsl.technology,localhost:4100,127.0.0.1:4100,localhost:4200,127.0.0.1:4200'
+  )
     .split(',')
     .map((host) => host.trim().toLowerCase())
     .filter(Boolean),
@@ -199,7 +220,12 @@ function shouldSkipLanguageRedirect(pathname: string): boolean {
   if (pathname === '/') return true;
   if (pathname.startsWith('/api/') || pathname === '/api') return true;
   if (pathname.startsWith('/assets/')) return true;
-  if (pathname === '/robots.txt' || pathname === '/sitemap.xml' || pathname === '/favicon.ico')
+  if (
+    pathname === '/robots.txt' ||
+    pathname === '/sitemap.xml' ||
+    pathname === '/favicon.ico' ||
+    pathname.includes('/seo/health')
+  )
     return true;
   return /\.[a-z0-9]+$/i.test(pathname);
 }
@@ -391,7 +417,7 @@ app.get('/sitemap.xml', (req, res) => {
   res.send(sitemap);
 });
 
-app.get('/seo/health', (req, res) => {
+app.get(['/seo/health', '/:lang/seo/health'], (req, res) => {
   const canonicalBaseUrl = resolveCanonicalBaseUrl(req);
   if (!latestSeoHealthSnapshot) {
     const dynamicEntriesCount = DYNAMIC_SITEMAP_COLLECTIONS.reduce(
@@ -472,7 +498,7 @@ app.use((req, res, next) => {
   );
 
   const dynamicBaseUrl = resolveCanonicalBaseUrl(req);
-  const requestHost = req.get('host');
+  const requestHost = req.get('host') || '';
 
   angularApp
     .handle(req, {
@@ -486,7 +512,6 @@ app.use((req, res, next) => {
         { provide: FEATURE_FLAGS, useValue: ENV_FEATURE_FLAGS },
         { provide: CLARITY_PROJECT_ID, useValue: ENV_CLARITY_PROJECT_ID },
       ],
-      allowedHosts: ['127.0.0.1', 'localhost', '127.0.0.1:4000', 'localhost:4000', requestHost],
     })
     .then((response) => (response ? writeResponseToNodeResponse(response, res) : next()))
     .catch(next);
