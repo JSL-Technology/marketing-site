@@ -6,25 +6,6 @@
   
   <!-- Navegación principal -->
   <nav class="header__nav container">
-    <button
-      class="header__mobile-toggle jsl-mm-toggle"
-      (click)="toggleMobileMenu($event)"
-      [attr.aria-label]="'ARIA.TOGGLE_MENU' | translate"
-      [attr.aria-expanded]="isMobileMenuOpen"
-      [class.open]="isMobileMenuOpen"
-    >
-      @if (!isMobileMenuOpen) {
-      <span class="header__mobile-toggle-icon" aria-hidden="true">
-        <svg viewBox="0 0 296 161" focusable="false">
-          <rect x="0" y="0" width="296" height="46" rx="23" ry="23"></rect>
-          <rect x="0" y="115" width="197" height="46" rx="23" ry="23"></rect>
-        </svg>
-      </span>
-      } @else {
-      <lucide-icon name="X" [size]="22"></lucide-icon>
-      }
-    </button>
-
     <!-- Logo -->
     <a [routerLink]="[currentLang, 'home']" class="header__logo" (click)="closeMobileMenu()" [attr.aria-label]="'ARIA.HOME_LINK' | translate">
       {{ 'COMMON.BRAND_NAME' | translate }}
@@ -358,6 +339,19 @@
       </button>
 
       <jsl-language-switcher class="header__mobile-lang-switcher"></jsl-language-switcher>
+      <button
+        class="header__mobile-toggle jsl-mm-toggle"
+        (click)="toggleMobileMenu($event)"
+        [attr.aria-label]="'ARIA.TOGGLE_MENU' | translate"
+        [attr.aria-expanded]="isMobileMenuOpen"
+        [class.open]="isMobileMenuOpen"
+      >
+        @if (!isMobileMenuOpen) {
+        <lucide-icon name="Menu"></lucide-icon>
+        } @else {
+        <lucide-icon name="X"></lucide-icon>
+        }
+      </button>
     </div>
   </nav>
 
