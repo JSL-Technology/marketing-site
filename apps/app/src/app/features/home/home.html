@@ -143,7 +143,7 @@
       @for (stat of stats; track stat.valueKey) {
         <div class="stat-card" jslAnimateOnScroll>
           <div class="stat-card__icon">
-            <lucide-icon [name]="stat.icon" [size]="20"></lucide-icon>
+            <lucide-icon [name]="stat.icon" [size]="20" aria-hidden="true"></lucide-icon>
           </div>
           <h3 class="stat-card__value">{{ stat.valueKey | translate }}</h3>
           <p class="stat-card__label">{{ stat.labelKey | translate }}</p>

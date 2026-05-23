@@ -24,11 +24,6 @@ import {
 } from './app/core/constants/tokens';
 import { detectPreferredLanguage } from './app/core/utils/language-url';
 
-// --- SSR Security: Allowed Hosts ---
-const ALLOWED_HOSTS =
-  'localhost,127.0.0.1,localhost:4000,127.0.0.1:4000,localhost:4100,127.0.0.1:4100,localhost:4200,127.0.0.1:4200,www.jsl.technology,jsl.technology';
-process.env['NG_ALLOWED_HOSTS'] = process.env['NG_ALLOWED_HOSTS'] || ALLOWED_HOSTS;
-
 const browserDistFolder = join(import.meta.dirname, '../browser');
 
 const app = express();
@@ -511,6 +506,19 @@ app.use((req, res, next) => {
         { provide: CALENDLY_URL, useValue: ENV_CALENDLY_URL },
         { provide: FEATURE_FLAGS, useValue: ENV_FEATURE_FLAGS },
         { provide: CLARITY_PROJECT_ID, useValue: ENV_CLARITY_PROJECT_ID },
+      ],
+      allowedHosts: [
+        'localhost',
+        '127.0.0.1',
+        'localhost:4000',
+        '127.0.0.1:4000',
+        'localhost:4100',
+        '127.0.0.1:4100',
+        'localhost:4200',
+        '127.0.0.1:4200',
+        'www.jsl.technology',
+        'jsl.technology',
+        requestHost,
       ],
     })
     .then((response) => (response ? writeResponseToNodeResponse(response, res) : next()))

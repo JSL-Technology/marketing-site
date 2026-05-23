@@ -416,7 +416,7 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
   });
   public isReturningVisitor = signal(false);
   public isSubmitting = signal(false);
-  public isLoading = signal(true); // For skeleton loader demo
+  public isLoading = signal(false); // Default to false for better SEO/Performance
   public showScrollIndicator = signal(true);
   public isMobileExitSheetOpen = signal(false);
 
