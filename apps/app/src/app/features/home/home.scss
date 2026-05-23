@@ -31,10 +31,17 @@
   background-color: var(--bg-primary);
   position: relative;
   overflow: hidden;
+  contain: layout; // Prevent reflows affecting outer elements
 
   .swiper {
     width: 100%;
     height: 100%;
+  }
+
+  // Prevent CLS: ensure swiper-container has initial dimensions
+  swiper-container {
+    display: block;
+    min-height: 100%;
   }
 
   @media (max-width: 1024px) {
@@ -57,6 +64,8 @@ swiper-container {
 .hero-slide {
   width: 100%;
   height: 100%;
+  // Ensure visibility during initial load before Swiper JS attaches
+  visibility: visible !important;
   background-size: cover;
   background-position: center;
   position: relative;
@@ -549,6 +558,8 @@ swiper-container {
 
   .offerings-swiper-button-next,
   .offerings-swiper-button-prev {
+    border: none;
+    padding: 0;
     position: absolute;
     top: calc(50% - 1.5rem); // offset above pagination area
     transform: translateY(-50%);
@@ -748,6 +759,8 @@ swiper-container {
 // --- 1.2. Hero Swiper Custom Navigation (BOTONES PERSONALIZADOS MODERNOS) ---
 .hero-swiper-button-next,
 .hero-swiper-button-prev {
+  border: none;
+  padding: 0;
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -1135,6 +1148,7 @@ swiper-container {
 
 // Custom nav buttons
 .testimonial-nav-btn {
+  padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1479,6 +1493,8 @@ swiper-container {
 
 .projects-swiper-button-next,
 .projects-swiper-button-prev {
+  border: none;
+  padding: 0;
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -2169,6 +2185,8 @@ swiper-container {
 // Replicating Hero-style Navigation for Insights Slider
 .insights-swiper-button-next,
 .insights-swiper-button-prev {
+  border: none;
+  padding: 0;
   position: absolute;
   top: 50%;
   transform: translateY(-50%);

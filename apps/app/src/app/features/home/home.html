@@ -85,26 +85,20 @@
   </swiper-container>
 
   <!-- Custom Navigation Buttons - MODERNOS Y DISCRETOS -->
-  <div
+  <button
+    type="button"
     class="hero-swiper-button-prev"
     [attr.aria-label]="'ARIA.PREVIOUS_SLIDE' | translate"
-    role="button"
-    tabindex="0"
-    (click)="onPrevNav()"
-    (keydown.enter)="onPrevNav()"
-    (keydown.space)="onPrevNav()">
+    (click)="onPrevNav()">
     <lucide-icon name="ChevronLeft"></lucide-icon>
-  </div>
-  <div
+  </button>
+  <button
+    type="button"
     class="hero-swiper-button-next"
     [attr.aria-label]="'ARIA.NEXT_SLIDE' | translate"
-    role="button"
-    tabindex="0"
-    (click)="onNextNav()"
-    (keydown.enter)="onNextNav()"
-    (keydown.space)="onNextNav()">
+    (click)="onNextNav()">
     <lucide-icon name="ChevronRight"></lucide-icon>
-  </div>
+  </button>
 
   <div class="hero-bottom-bar">
     <div class="hero-bottom-bar__container container">
@@ -123,7 +117,7 @@
   </div>
 
   <!-- NUEVO: Scroll Down Indicator -->
-  <div class="scroll-indicator" [class.hidden]="!showScrollIndicator()">
+  <div class="scroll-indicator" [class.hidden]="!showScrollIndicator()" aria-hidden="true">
     <div class="mouse">
       <div class="wheel"></div>
     </div>
@@ -145,8 +139,8 @@
           <div class="stat-card__icon">
             <lucide-icon [name]="stat.icon" [size]="20" aria-hidden="true"></lucide-icon>
           </div>
-          <h3 class="stat-card__value">{{ stat.valueKey | translate }}</h3>
-          <p class="stat-card__label">{{ stat.labelKey | translate }}</p>
+          <p class="stat-card__value">{{ stat.valueKey | translate }}</p>
+          <h3 class="stat-card__label">{{ stat.labelKey | translate }}</h3>
           <p class="stat-card__sub">{{ stat.subtitleKey | translate }}</p>
         </div>
       }
@@ -285,30 +279,24 @@
         </swiper-container>
 
         <!-- Custom Navigation Buttons -->
-        <div
+        <button
+          type="button"
           class="offerings-swiper-button-prev"
           [class.is-disabled]="!canOfferingsPrev()"
           [attr.aria-disabled]="!canOfferingsPrev()"
           [attr.aria-label]="'ARIA.PREVIOUS_SLIDE' | translate"
-          role="button"
-          tabindex="0"
-          (keydown.enter)="onPrevOfferings()"
-          (keydown.space)="onPrevOfferings()"
           (click)="onPrevOfferings()">
           <lucide-icon name="ChevronLeft"></lucide-icon>
-        </div>
-        <div
+        </button>
+        <button
+          type="button"
           class="offerings-swiper-button-next"
           [class.is-disabled]="!canOfferingsNext()"
           [attr.aria-disabled]="!canOfferingsNext()"
           [attr.aria-label]="'ARIA.NEXT_SLIDE' | translate"
-          role="button"
-          tabindex="0"
-          (keydown.enter)="onNextOfferings()"
-          (keydown.space)="onNextOfferings()"
           (click)="onNextOfferings()">
           <lucide-icon name="ChevronRight"></lucide-icon>
-        </div>
+        </button>
       </div>
     }
   </div>
@@ -421,30 +409,24 @@
     </swiper-container>
 
     <!-- Custom Navigation Buttons -->
-    <div
+    <button
+      type="button"
       class="projects-swiper-button-prev"
       [class.is-disabled]="!canProjectsPrev()"
       [attr.aria-disabled]="!canProjectsPrev()"
       [attr.aria-label]="'ARIA.PREVIOUS_SLIDE' | translate"
-      role="button"
-      tabindex="0"
-      (click)="onPrevProjects()"
-      (keydown.enter)="onPrevProjects()"
-      (keydown.space)="onPrevProjects()">
+      (click)="onPrevProjects()">
       <lucide-icon name="ChevronLeft"></lucide-icon>
-    </div>
-    <div
+    </button>
+    <button
+      type="button"
       class="projects-swiper-button-next"
       [class.is-disabled]="!canProjectsNext()"
       [attr.aria-disabled]="!canProjectsNext()"
       [attr.aria-label]="'ARIA.NEXT_SLIDE' | translate"
-      role="button"
-      tabindex="0"
-      (click)="onNextProjects()"
-      (keydown.enter)="onNextProjects()"
-      (keydown.space)="onNextProjects()">
+      (click)="onNextProjects()">
       <lucide-icon name="ChevronRight"></lucide-icon>
-    </div>
+    </button>
   </div>
 </section>
 
