@@ -84,6 +84,10 @@
   .header__logo {
     font-size: 1.3rem;
   }
+
+  .header__nav {
+    gap: 0.5rem;
+  }
 }
 
 .header__nav-links {
@@ -297,22 +301,50 @@ li.dropdown {
 
 .header__mobile-toggle {
   display: none;
-  background: none;
-  border: none;
-  color: var(--text-main);
+  align-items: center;
+  justify-content: center;
+  inline-size: 2.5rem;
+  block-size: 2.5rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.03);
+  color: #e9eefc;
   cursor: pointer;
   z-index: 1300;
+  transition: transform 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+
+  &:hover,
+  &:focus-visible {
+    background: rgba(54, 88, 153, 0.2);
+    border-color: rgba(54, 88, 153, 0.45);
+    color: #f5f8ff;
+    outline: none;
+  }
+
+  .header__mobile-toggle-icon {
+    display: inline-flex;
+    inline-size: 1.5rem;
+    block-size: 1.5rem;
+
+    svg {
+      inline-size: 100%;
+      block-size: 100%;
+      display: block;
+
+      rect {
+        fill: currentColor;
+      }
+    }
+  }
 
   lucide-icon {
-    width: 28px;
-    height: 28px;
+    width: 22px;
+    height: 22px;
   }
 
   &.open {
     transform: rotate(90deg);
   }
-
-  transition: transform 0.3s ease;
 }
 
 // Media Queries
@@ -322,7 +354,9 @@ li.dropdown {
   }
 
   .header__mobile-toggle {
-    display: block;
+    display: inline-flex;
+    margin-inline-end: 0.625rem;
+    order: -1;
   }
 
   .header__mobile-lang-switcher {
