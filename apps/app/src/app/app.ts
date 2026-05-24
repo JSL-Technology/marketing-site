@@ -1,4 +1,4 @@
-import { Component, HostListener, Inject, PLATFORM_ID, OnInit, OnDestroy, inject } from '@angular/core';
+import { Component, HostListener, Inject, PLATFORM_ID, OnInit, OnDestroy, inject, signal } from '@angular/core';
 import { map, filter } from 'rxjs';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterOutlet, Router, NavigationEnd, NavigationStart } from '@angular/router';
@@ -43,7 +43,7 @@ import Lenis from 'lenis';
 })
 export class App implements OnInit, OnDestroy {
   title = 'jsl-technology-web';
-  isScrolled = false;
+  isScrolled = signal<boolean>(false);
   private isBrowser: boolean;
   private lenis: Lenis | null = null;
   private rafId: number | null = null;
@@ -178,6 +178,7 @@ export class App implements OnInit, OnDestroy {
   }
 
   private checkPassiveSupport() {
+    if (!this.isBrowser) return;
     try {
       const opts = Object.defineProperty({}, 'passive', {
         get: () => { this.supportsPassive = true; return true; }
@@ -305,16 +306,28 @@ export class App implements OnInit, OnDestroy {
     this.translate.use(finalLang);
   }
 
+  private scrollResizePending = false;
+
   @HostListener('window:scroll', [])
   onWindowScroll() {
-    // Ejecutar al hacer scroll
-    this.updateScrollAndResize();
+    if (!this.scrollResizePending) {
+      this.scrollResizePending = true;
+      requestAnimationFrame(() => {
+        this.scrollResizePending = false;
+        this.updateScrollAndResize();
+      });
+    }
   }
 
   @HostListener('window:resize', [])
   onWindowResize() {
-    // Ejecutar al redimensionar la ventana
-    this.updateScrollAndResize();
+    if (!this.scrollResizePending) {
+      this.scrollResizePending = true;
+      requestAnimationFrame(() => {
+        this.scrollResizePending = false;
+        this.updateScrollAndResize();
+      });
+    }
   }
 
   /**
@@ -324,18 +337,18 @@ export class App implements OnInit, OnDestroy {
   private updateScrollAndResize() {
     if (this.isBrowser) {
       const verticalOffset =
-        window.pageYOffset ||
-        document.documentElement.scrollTop ||
-        document.body.scrollTop ||
+        window.scrollY ??
+        document.documentElement.scrollTop ??
+        document.body.scrollTop ??
         0;
       const isDesktop = window.innerWidth > 992; // El breakpoint de tu CSS
 
       if (isDesktop) {
         // Comportamiento para PC: aplicar clase solo al hacer scroll
-        this.isScrolled = verticalOffset > 50;
+        this.isScrolled.set(verticalOffset > 50);
       } else {
         // Comportamiento para Móvil: nunca aplicar la clase
-        this.isScrolled = false;
+        this.isScrolled.set(false);
       }
     }
   }

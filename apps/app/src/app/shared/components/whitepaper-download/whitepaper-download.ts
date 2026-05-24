@@ -1,5 +1,5 @@
-import { Component, Input, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, Input, inject, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LucideAngularModule } from 'lucide-angular';
 import { FormsModule } from '@angular/forms';
@@ -19,6 +19,7 @@ export class WhitepaperDownloadComponent {
   private translate = inject(TranslateService);
   private apiService = inject(ApiService);
   private analytics = inject(AnalyticsService);
+  private platformId = inject(PLATFORM_ID);
 
   @Input() titleKey = 'WHITEPAPER.DEFAULT_TITLE';
   @Input() descriptionKey = 'WHITEPAPER.DEFAULT_DESC';
@@ -76,7 +77,9 @@ export class WhitepaperDownloadComponent {
         this.toastService.show(this.translate.instant('WHITEPAPER.SUCCESS_MSG'), 'success');
         const url = this.resolvedPdfUrl;
         if (url && url !== '#') {
-          setTimeout(() => window.open(url, '_blank'), 800);
+          if (isPlatformBrowser(this.platformId)) {
+            setTimeout(() => window.open(url, '_blank'), 800);
+          }
         }
       },
       error: (err: any) => {

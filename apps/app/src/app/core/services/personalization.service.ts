@@ -73,7 +73,7 @@ export class PersonalizationService {
           utmSource === 'linkedin' || utmMedium === 'linkedin' ||
           utmCampaign.includes('enterprise') || utmCampaign.includes('b2b') ||
           utmSource === 'salesforce' || utmSource === 'hubspot' ||
-          utmMedium === 'cpc' && utmCampaign.includes('enterprise')
+          (utmMedium === 'cpc' && utmCampaign.includes('enterprise'))
         ) {
           this.setSegment('enterprise');
           return;

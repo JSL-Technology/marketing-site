@@ -79,7 +79,7 @@ export class ScrollEngineService {
       if (typeof target === 'number') {
         top = target;
       } else {
-        const el = typeof target === 'string' ? document.getElementById(target) : target;
+        const el = typeof target === 'string' ? document.querySelector(target) : target;
         if (el) {
           const rect = el.getBoundingClientRect();
           top = rect.top + window.scrollY;

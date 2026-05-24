@@ -10,7 +10,6 @@ import {
   AfterViewChecked,
   AfterViewInit,
   ElementRef,
-  Inject,
   PLATFORM_ID,
   ViewChild,
   HostListener,
@@ -69,7 +68,7 @@ export class BlogDetail
   private dataService = inject(DataService);
   private titleService = inject(Title);
   private el = inject(ElementRef);
-  @Inject(PLATFORM_ID) private platformId = inject(PLATFORM_ID);
+  private platformId = inject(PLATFORM_ID);
   private seoService = inject(Seo);
   public directionService = inject(DirectionService);
   private scrollEngine = inject(ScrollEngineService);
@@ -272,7 +271,7 @@ export class BlogDetail
       const tooltip = this.copyTooltip?.nativeElement;
       if (tooltip) {
         const originalText = tooltip.textContent;
-        tooltip.textContent = '¡Copiado!';
+        tooltip.textContent = this.translate.instant('BLOG.COPIED');
         
         setTimeout(() => {
           tooltip.textContent = originalText;

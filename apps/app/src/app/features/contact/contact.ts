@@ -143,7 +143,7 @@ export class Contact implements OnInit, OnDestroy {
     // Pre-fill segment from personalization service
     const segment = this.personalizationService.userSegment();
     if (segment && segment !== 'unknown') {
-      this.contactForm.patchValue({ referralSource: '' }, { emitEvent: false });
+      this.contactForm.patchValue({ referralSource: segment }, { emitEvent: false });
     }
   }
 
@@ -294,7 +294,8 @@ export class Contact implements OnInit, OnDestroy {
           this.analytics.trackEvent('lead_synced', { form_name: 'contact', lead_status: response?.success ? 'synced' : 'pending_sync' });
           this.analytics.trackConversion('contact_form_submit');
           this.analytics.trackEvent('generate_lead', { method: 'contact_form' });
-          this.router.navigate(['/thank-you']);
+          const currentLang = this.router.url.split('/')[1] || 'en';
+          this.router.navigate(['/', currentLang, 'thank-you']);
         },
         error: (err: any) => {
           this.submitError = true;
@@ -323,6 +324,7 @@ export class Contact implements OnInit, OnDestroy {
   }
 
   private injectRecaptchaScript(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
     if (!this.recaptchaSiteKey || document.getElementById('recaptcha-enterprise-script')) return;
     const script = document.createElement('script');
     script.id = 'recaptcha-enterprise-script';
