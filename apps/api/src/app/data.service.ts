@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 // For a real app, we would use a database.
-// For this task, we will use the shared mock-data logic.
+// Using a backend-local copy of mock data to avoid cross-app imports (SEG-18).
 import {
   SOLUTIONS,
   PRODUCTS,
@@ -10,7 +10,7 @@ import {
   TESTIMONIALS,
   TECH_STACK,
   VENTURES
-} from '../../../app/src/app/core/data/mock-data';
+} from './data/mock-data';
 
 @Injectable()
 export class DataService {
