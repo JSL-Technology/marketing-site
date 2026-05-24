@@ -106,10 +106,8 @@ export class Seo {
                             route.snapshot.url.some(s => s.path === 'server-error');
 
         if (isNotFound) {
-          console.log('SEO: Setting status to 404 for', fullPath);
           this.response.status(404);
         } else if (isServerError) {
-          console.log('SEO: Setting status to 500 for', fullPath);
           this.response.status(500);
         }
       }

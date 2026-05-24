@@ -156,8 +156,7 @@ export const serverRoutes: ServerRoute[] = [
   },
   {
     path: ':lang/thank-you',
-    renderMode: RenderMode.Prerender,
-    getPrerenderParams: async () => supportedLangs.map(lang => ({ lang })),
+    renderMode: RenderMode.Server,
   },
 
   // --- RUTAS DINÁMICAS CORREGIDAS ---

@@ -333,8 +333,8 @@ export const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: 'home',
-        pathMatch: 'full'
+        loadComponent: () => import('./features/home/home').then(c => c.Home),
+        data: { title: 'HEADER.HOME', description: 'HOME.HERO1_SUBTITLE', robots: 'index, follow' }
       },
       { 
         path: '**',

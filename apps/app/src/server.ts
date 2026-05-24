@@ -244,7 +244,7 @@ function generateSitemap(domain: string): string {
     0,
   );
   const indexedRouteCount = staticRoutes.length + dynamicEntriesCount;
-  const sitemapEntryCount = indexedRouteCount * supportedLangs.length;
+  const sitemapEntryCount = indexedRouteCount; // one <url> per canonical route
 
   latestSeoHealthSnapshot = {
     generatedAt: new Date().toISOString(),
@@ -314,6 +314,8 @@ function generateDynamicEntriesXml(
 
 /**
  * Helper para generar una entrada <url> con hreflang, priority, changefreq e image:image opcionales.
+ * Generates ONE <url> per route (not per lang×route) with all language alternates inside.
+ * The canonical <loc> uses the default language (en).
  */
 function generateUrlEntry(
   route: string,
@@ -323,40 +325,35 @@ function generateUrlEntry(
   changefreq = 'monthly',
   images: SitemapImage[] = [],
 ): string {
-  let entryXml = '';
+  const canonicalUrl = `${domain}/${defaultLang}${route ? '/' + route : ''}`;
 
-  supportedLangs.forEach((lang) => {
-    const url = `${domain}/${lang}${route ? '/' + route : ''}`;
+  let entryXml = '<url>';
+  entryXml += `<loc>${canonicalUrl}</loc>`;
+  entryXml += `<lastmod>${lastmod}</lastmod>`;
+  entryXml += `<changefreq>${changefreq}</changefreq>`;
+  entryXml += `<priority>${priority}</priority>`;
 
-    entryXml += '<url>';
-    entryXml += `<loc>${url}</loc>`;
-    entryXml += `<lastmod>${lastmod}</lastmod>`;
-    entryXml += `<changefreq>${changefreq}</changefreq>`;
-    entryXml += `<priority>${priority}</priority>`;
-
-    // image:image extensions (only on the canonical lang entry to avoid duplication)
-    if (lang === defaultLang && images.length > 0) {
-      images.forEach((img) => {
-        entryXml += '<image:image>';
-        entryXml += `<image:loc>${escapeXml(img.loc)}</image:loc>`;
-        if (img.title) entryXml += `<image:title>${escapeXml(img.title)}</image:title>`;
-        if (img.caption) entryXml += `<image:caption>${escapeXml(img.caption)}</image:caption>`;
-        entryXml += '</image:image>';
-      });
-    }
-
-    // hreflang alternates
-    supportedLangs.forEach((altLang) => {
-      const altUrl = `${domain}/${altLang}${route ? '/' + route : ''}`;
-      entryXml += `<xhtml:link rel="alternate" hreflang="${altLang}" href="${altUrl}" />`;
+  // image:image extensions
+  if (images.length > 0) {
+    images.forEach((img) => {
+      entryXml += '<image:image>';
+      entryXml += `<image:loc>${escapeXml(img.loc)}</image:loc>`;
+      if (img.title) entryXml += `<image:title>${escapeXml(img.title)}</image:title>`;
+      if (img.caption) entryXml += `<image:caption>${escapeXml(img.caption)}</image:caption>`;
+      entryXml += '</image:image>';
     });
+  }
 
-    // x-default
-    const defaultUrl = `${domain}/${defaultLang}${route ? '/' + route : ''}`;
-    entryXml += `<xhtml:link rel="alternate" hreflang="x-default" href="${defaultUrl}" />`;
-
-    entryXml += '</url>';
+  // hreflang alternates for all supported languages
+  supportedLangs.forEach((altLang) => {
+    const altUrl = `${domain}/${altLang}${route ? '/' + route : ''}`;
+    entryXml += `<xhtml:link rel="alternate" hreflang="${altLang}" href="${altUrl}" />`;
   });
+
+  // x-default points to the default language URL
+  entryXml += `<xhtml:link rel="alternate" hreflang="x-default" href="${canonicalUrl}" />`;
+
+  entryXml += '</url>';
 
   return entryXml;
 }

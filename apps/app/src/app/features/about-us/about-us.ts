@@ -1,12 +1,11 @@
-import { Component, Inject, OnDestroy, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LucideAngularModule } from 'lucide-angular';
 import { RouterLink } from '@angular/router';
 import { AnimateOnScroll } from '@shared/directives/animate-on-scroll';
 import { DataService } from '@core/services/data.service';
 import { CtaComponent } from '@shared/components/cta/cta';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { Subscription } from 'rxjs';
+import { toSignal, takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'jsl-about-us',
@@ -15,11 +14,13 @@ import { Subscription } from 'rxjs';
   templateUrl: './about-us.html',
   styleUrl: './about-us.scss'
 })
-export class AboutUs implements OnDestroy {
-  currentLang: string;
-  private langSub: Subscription;
+export class AboutUs {
+  private readonly translate = inject(TranslateService);
+  private readonly dataService = inject(DataService);
 
-  private dataService = inject(DataService);
+  public currentLang = signal<string>(
+    this.translate.currentLang || this.translate.defaultLang || 'es'
+  );
   public teamMembers = toSignal(this.dataService.getTeamMembers(), { initialValue: [] });
 
   coreValues = [
@@ -41,10 +42,9 @@ export class AboutUs implements OnDestroy {
     { icon: 'ThumbsUp', key: 'FORBES' },
   ];
 
-  constructor(@Inject(TranslateService) private translate: TranslateService) {
-    this.currentLang = this.translate.currentLang || this.translate.defaultLang || 'es';
-    this.langSub = this.translate.onLangChange.subscribe(e => this.currentLang = e.lang);
+  constructor() {
+    this.translate.onLangChange
+      .pipe(takeUntilDestroyed())
+      .subscribe(e => this.currentLang.set(e.lang));
   }
-
-  ngOnDestroy() { this.langSub?.unsubscribe(); }
 }

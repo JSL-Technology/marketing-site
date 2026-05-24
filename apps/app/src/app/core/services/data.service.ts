@@ -307,51 +307,43 @@ export class DataService {
 
   // --- Método de Búsqueda Global ---
   search(query: string): Observable<{ type: string; item: any }[]> {
+    return this.http.get<{ type: string; item: any }[]>(
+      `${this.apiUrl}/search`,
+      { params: { q: query } }
+    ).pipe(
+      catchError(() => of(this.searchMockData(query)))
+    );
+  }
+
+  private searchMockData(query: string): { type: string; item: any }[] {
     const q = query.toLowerCase();
     const results: { type: string; item: any }[] = [];
 
-    // Search in Ventures
     VENTURES.forEach(v => {
-      if (v.name.toLowerCase().includes(q) || v.slug.includes(q)) {
+      if (v.name.toLowerCase().includes(q) || v.slug.includes(q))
         results.push({ type: 'venture', item: v });
-      }
     });
-
-    // Search in Solutions
     SOLUTIONS.forEach(s => {
-      if (s.slug.includes(q) || s.key.toLowerCase().includes(q)) {
+      if (s.slug.includes(q) || s.key.toLowerCase().includes(q))
         results.push({ type: 'solution', item: s });
-      }
     });
-
-    // Search in Products
     PRODUCTS.forEach(p => {
-      if (p.slug.includes(q) || p.key.toLowerCase().includes(q)) {
+      if (p.slug.includes(q) || p.key.toLowerCase().includes(q))
         results.push({ type: 'product', item: p });
-      }
     });
-
-    // Search in Blog
     BLOG_POSTS.forEach(b => {
-      if (b.slug.includes(q) || b.key.toLowerCase().includes(q) || b.tags.some(t => t.toLowerCase().includes(q))) {
+      if (b.slug.includes(q) || b.key.toLowerCase().includes(q) || b.tags.some(t => t.toLowerCase().includes(q)))
         results.push({ type: 'blog', item: b });
-      }
     });
-
-    // Search in Projects
     PROJECTS.forEach(p => {
-      if (p.slug.includes(q) || p.key.toLowerCase().includes(q)) {
+      if (p.slug.includes(q) || p.key.toLowerCase().includes(q))
         results.push({ type: 'project', item: p });
-      }
     });
-
-    // Search in Static Pages
     STATIC_PAGES.forEach(p => {
-      if (p.slug.includes(q) || p.key.toLowerCase().includes(q)) {
+      if (p.slug.includes(q) || p.key.toLowerCase().includes(q))
         results.push({ type: 'page', item: p });
-      }
     });
 
-    return of(results);
+    return results;
   }
 }
