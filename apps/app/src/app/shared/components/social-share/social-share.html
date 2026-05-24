@@ -59,13 +59,33 @@
     </div>
 
     <div class="copy-link-section">
-      <label class="copy-label">{{ 'SHARE.COPY_LINK' | translate }}</label>
+      <label class="copy-label" for="share-url-input">{{ 'SHARE.COPY_LINK' | translate }}</label>
       <div class="copy-input-wrapper">
-        <input type="text" [value]="shareUrl" readonly #urlInput (click)="urlInput.select()" />
-        <button (click)="copyLink()" class="copy-action-btn" [class.copied]="copied()">
-          <lucide-icon [name]="copied() ? icons.Check : icons.Copy" [size]="18"></lucide-icon>
+        <input
+          id="share-url-input"
+          type="text"
+          [value]="shareUrl"
+          readonly
+          #urlInput
+          (click)="urlInput.select()"
+          [attr.aria-label]="'SHARE.COPY_LINK' | translate" />
+        <button
+          (click)="copyLink()"
+          class="copy-action-btn"
+          [class.copied]="copied()"
+          [attr.aria-label]="(copied() ? 'COMMON.COPIED' : 'COMMON.COPY') | translate">
+          <lucide-icon [name]="copied() ? icons.Check : icons.Copy" [size]="18" aria-hidden="true"></lucide-icon>
           <span>{{ (copied() ? 'COMMON.COPIED' : 'COMMON.COPY') | translate }}</span>
         </button>
+      </div>
+      <!-- Live region to announce copy success to screen readers -->
+      <div
+        class="sr-only"
+        aria-live="assertive"
+        aria-atomic="true">
+        @if (copied()) {
+          {{ 'COMMON.COPIED' | translate }}
+        }
       </div>
     </div>
   </div>

@@ -148,31 +148,35 @@
       <h2>{{ 'PRICING.VS_OTHERS' | translate }}</h2>
       <p class="section-subtitle">{{ 'PRICING.VS_OTHERS_DESC' | translate }}</p>
     </div>
-    <div class="comparison-table">
-      <div class="header-row">
-        <div class="cell feature">{{ 'PRICING.FEATURE' | translate }}</div>
-        <div class="cell virteex">
-          <lucide-icon name="Database" [size]="16"></lucide-icon>
-          {{ 'PRICING.PRODUCT_NAME' | translate }}
-        </div>
-        <div class="cell others">{{ 'PRICING.OTHERS' | translate }}</div>
-      </div>
-      @for (row of comparison; track row.feature) {
-        <div class="row">
-          <div class="cell feature">{{ row.feature | translate }}</div>
-          <div class="cell virteex">
-            @if (row.virteex === true) { <span class="check">✓</span> }
-            @if (row.virteex === false) { <span class="cross">✕</span> }
-            @if (row.virteex !== true && row.virteex !== false) { <span>{{ row.virteex | translate }}</span> }
-          </div>
-          <div class="cell others">
-            @if (row.others === true) { <span class="check">✓</span> }
-            @if (row.others === false) { <span class="cross">✕</span> }
-            @if (row.others !== true && row.others !== false) { <span>{{ row.others | translate }}</span> }
-          </div>
-        </div>
-      }
-    </div>
+    <table class="comparison-table" [attr.aria-label]="'PRICING.VS_OTHERS' | translate">
+      <thead>
+        <tr class="header-row">
+          <th scope="col" class="cell feature">{{ 'PRICING.FEATURE' | translate }}</th>
+          <th scope="col" class="cell virteex">
+            <lucide-icon name="Database" [size]="16" aria-hidden="true"></lucide-icon>
+            {{ 'PRICING.PRODUCT_NAME' | translate }}
+          </th>
+          <th scope="col" class="cell others">{{ 'PRICING.OTHERS' | translate }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (row of comparison; track row.feature) {
+          <tr class="row">
+            <td class="cell feature">{{ row.feature | translate }}</td>
+            <td class="cell virteex">
+              @if (row.virteex === true) { <span class="check" aria-label="Yes">✓</span> }
+              @if (row.virteex === false) { <span class="cross" aria-label="No">✕</span> }
+              @if (row.virteex !== true && row.virteex !== false) { <span>{{ row.virteex | translate }}</span> }
+            </td>
+            <td class="cell others">
+              @if (row.others === true) { <span class="check" aria-label="Yes">✓</span> }
+              @if (row.others === false) { <span class="cross" aria-label="No">✕</span> }
+              @if (row.others !== true && row.others !== false) { <span>{{ row.others | translate }}</span> }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
   </div>
 </section>
 

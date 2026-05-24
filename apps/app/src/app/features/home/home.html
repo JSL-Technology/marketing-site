@@ -368,11 +368,12 @@
     <p class="section-subtitle">{{ 'HOME.PROJECTS_SUBTITLE' | translate }}</p>
   </div>
 
-  <div class="projects-filter">
+  <div class="projects-filter" role="group" [attr.aria-label]="'HOME.PROJECTS_FILTER_LABEL' | translate">
     @for (category of projectCategories; track category) {
       <button
         class="filter-pill"
         [class.active]="selectedProjectCategory() === category"
+        [attr.aria-pressed]="selectedProjectCategory() === category"
         (click)="setProjectCategory(category)">
         {{ category }}
       </button>

@@ -229,6 +229,8 @@ export class Contact implements OnInit, OnDestroy {
 
   get f() { return this.contactForm.controls; }
 
+  get currentLang(): string { return this.router.url.split('/')[1] || 'en'; }
+
   async onSubmit(): Promise<void> {
     if (this.isSubmitting) return;
     this.isSubmitting = true;

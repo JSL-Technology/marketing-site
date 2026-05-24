@@ -320,7 +320,7 @@
                 <input type="checkbox" formControlName="privacy" class="checkbox-input">
                 <span class="checkbox-text">
                   {{ 'CONTACT.FORM.PRIVACY' | translate }}
-                  <a routerLink="../privacy-policy" target="_blank">{{ 'CONTACT.FORM.PRIVACY_LINK' | translate }}</a>
+                  <a [routerLink]="['/', currentLang, 'legal', 'privacy']" target="_blank" rel="noopener noreferrer">{{ 'CONTACT.FORM.PRIVACY_LINK' | translate }}</a>
                 </span>
               </label>
               @if (f['privacy'].invalid && (f['privacy'].dirty || f['privacy'].touched)) {
