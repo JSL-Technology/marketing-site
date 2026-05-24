@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, inject } from '@angular/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LucideAngularModule } from 'lucide-angular';
@@ -6,8 +6,8 @@ import { AnimateOnScroll } from '@shared/directives/animate-on-scroll';
 import { CtaComponent } from '@shared/components/cta/cta';
 import { DataService, CareerPosition } from '@core/services/data.service';
 import { Seo } from '@core/services/seo';
-import { Observable } from 'rxjs';
-import { switchMap, map } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { switchMap, map, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'jsl-careers',
@@ -24,11 +24,12 @@ import { switchMap, map } from 'rxjs/operators';
   styleUrl: './careers.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class Careers implements OnInit {
+export class Careers implements OnInit, OnDestroy {
 
   private dataService = inject(DataService);
   private translate = inject(TranslateService);
   private seo = inject(Seo);
+  private readonly destroy$ = new Subject<void>();
   public positions$!: Observable<CareerPosition[]>;
 
   // Beneficios de trabajar en JSL
@@ -42,6 +43,11 @@ export class Careers implements OnInit {
   ngOnInit() {
     this.positions$ = this.dataService.getCareersPositions();
     this.injectJobPostingsSchema();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   private injectJobPostingsSchema(): void {
@@ -65,7 +71,8 @@ export class Careers implements OnInit {
             datePosted: p.postedDate || '2025-01-01',
           })))
         );
-      })
+      }),
+      takeUntil(this.destroy$)
     ).subscribe(enrichedJobs => {
       this.seo.setJobPostingsSchema(enrichedJobs);
     });

@@ -344,6 +344,9 @@ export class BlogDetail
   }
 
   ngOnDestroy(): void {
+    if (isPlatformBrowser(this.platformId) && typeof window.speechSynthesis !== 'undefined') {
+      window.speechSynthesis.cancel();
+    }
     this.langSub?.unsubscribe();
   }
 

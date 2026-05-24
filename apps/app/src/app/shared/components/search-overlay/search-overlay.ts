@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, HostListener, ElementRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Output, HostListener, ElementRef, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -7,7 +7,7 @@ import { LucideAngularModule } from 'lucide-angular';
 import { ALL_ICONS } from '@core/constants/icons';
 import { DataService, BlogPost, Solution, Product, Project, StaticPage, Venture } from '@core/services/data.service';
 import { Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-search-overlay',
@@ -16,7 +16,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
   templateUrl: './search-overlay.html',
   styleUrls: ['./search-overlay.scss']
 })
-export class SearchOverlayComponent {
+export class SearchOverlayComponent implements AfterViewInit, OnDestroy {
   @Output() close = new EventEmitter<void>();
   @ViewChild('searchInput') searchInput!: ElementRef;
 
@@ -26,11 +26,13 @@ export class SearchOverlayComponent {
 
   readonly icons = ALL_ICONS;
   private searchSubject = new Subject<string>();
+  private destroy$ = new Subject<void>();
 
   constructor(private dataService: DataService) {
     this.searchSubject.pipe(
       debounceTime(300),
-      distinctUntilChanged()
+      distinctUntilChanged(),
+      takeUntil(this.destroy$)
     ).subscribe(q => {
       this.performSearch(q);
     });
@@ -38,6 +40,12 @@ export class SearchOverlayComponent {
 
   ngAfterViewInit() {
     this.searchInput.nativeElement.focus();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+    this.searchSubject.complete();
   }
 
   onSearchInput(q: string): void {

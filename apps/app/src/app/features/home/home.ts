@@ -449,6 +449,8 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
   private unlistenProjectsMouseMove: (() => void) | null = null;
   private unlistenProjectsMouseLeave: (() => void) | null = null;
   private socialProofInterval: any;
+  private socialProofTimeout: ReturnType<typeof setTimeout> | null = null;
+  private mobileExitScrollHandler: (() => void) | null = null;
   private isBrowser: boolean;
   private destroy$ = new Subject<void>();
 
@@ -476,7 +478,7 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.translate.onLangChange.subscribe((event) => {
+    this.translate.onLangChange.pipe(takeUntil(this.destroy$)).subscribe((event) => {
       this.currentLang = event.lang;
       // Re-generate schema on lang change if needed, but for now simple init
     });
@@ -513,6 +515,10 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
+    if (this.mobileExitScrollHandler) {
+      window.removeEventListener('scroll', this.mobileExitScrollHandler);
+      this.mobileExitScrollHandler = null;
+    }
     if (this.unlistenExitIntent) {
       this.unlistenExitIntent();
     }
@@ -539,6 +545,10 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
     }
     if (this.unlistenProjectsMouseLeave) {
       this.unlistenProjectsMouseLeave();
+    }
+    if (this.socialProofTimeout) {
+      clearTimeout(this.socialProofTimeout);
+      this.socialProofTimeout = null;
     }
     if (this.socialProofInterval) {
       clearInterval(this.socialProofInterval);
@@ -891,7 +901,8 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
     if (!this.isBrowser) return;
 
     // Initial delay then periodic
-    setTimeout(() => {
+    this.socialProofTimeout = setTimeout(() => {
+      this.socialProofTimeout = null;
       this.showRandomSocialProof();
       this.socialProofInterval = setInterval(() => {
         this.showRandomSocialProof();
@@ -961,8 +972,8 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
       lastScrollTime = now;
     };
 
+    this.mobileExitScrollHandler = onScroll;
     window.addEventListener('scroll', onScroll, { passive: true });
-    this.destroy$.subscribe(() => window.removeEventListener('scroll', onScroll));
   }
 
   closeMobileExitSheet(): void {
