@@ -32,9 +32,17 @@
 
   .event-image {
     height: 200px;
-    background-size: cover;
-    background-position: center;
+    overflow: hidden; // needed for object-fit on img
+    // ACC-35: background-image replaced with <img> for a11y + schema.org
     &.grayscale { filter: grayscale(100%); }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
   }
 
   .event-content {

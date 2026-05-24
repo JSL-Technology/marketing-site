@@ -11,8 +11,15 @@
     <div class="events-grid">
       @for (event of upcomingEvents; track event.startDate) {
         <article class="event-card" [attr.itemscope]="''" itemtype="https://schema.org/Event">
-          <div class="event-image" [style.backgroundImage]="'url(' + event.image + ')'">
-            <meta itemprop="image" [attr.content]="event.image">
+          <!-- ACC-35: use <img> instead of background-image for schema.org + a11y -->
+          <div class="event-image">
+            <img
+              [src]="event.image"
+              [attr.alt]="event.title"
+              itemprop="image"
+              width="800"
+              height="200"
+              loading="lazy">
           </div>
           <div class="event-content">
             <div class="event-date" itemprop="startDate" [attr.datetime]="event.startDate">
@@ -38,7 +45,9 @@
     <div class="events-grid">
       @for (event of pastEvents; track event.title) {
         <div class="event-card">
-          <div class="event-image grayscale" [style.backgroundImage]="'url(' + event.image + ')'"></div>
+          <div class="event-image grayscale">
+            <img [src]="event.image" [attr.alt]="event.title" width="800" height="200" loading="lazy">
+          </div>
           <div class="event-content">
             <div class="event-date">{{ event.date }}</div>
             <h3>{{ event.title }}</h3>

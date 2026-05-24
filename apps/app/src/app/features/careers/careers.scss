@@ -1,9 +1,8 @@
 // src/app/features/careers/careers.scss
 
-// Importar estilos reutilizables
-@use '../about-us/about-us.scss';
-// --- CORRECCIÓN: Se eliminó el bloque 'with' que causaba el error ---
-@use '../home/home.scss';
+// ACC-31: Replaced cross-component @use imports with a shared partial.
+// Previously imported about-us.scss + home.scss (caused CSS duplication in bundle).
+@use '../../../shared/styles/page-sections';
 
 .page-title {
   text-align: center;
@@ -19,7 +18,6 @@
   @extend .about-intro;
 }
 .careers-intro__text {
-  // --- CORRECCIÓN: Se añadió !optional para evitar el error de compilación ---
   @extend .about-intro__text !optional;
 }
 .careers-intro__image {
@@ -129,19 +127,36 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
 
-  // Reutilizar el botón del hero pero más pequeño
-  .hero-slide__cta {
-    @extend .hero-slide__cta; // Heredar estilos
-    animation: none; // Sin animación de entrada
-    padding: 0.8rem 1.5rem;
-    font-size: 0.9rem;
-    text-transform: none; // Sin mayúsculas
-    gap: 0.5rem;
-    
-    lucide-icon {
-      width: 18px;
-    }
+// ACC-31: Inlined from home.scss .hero-slide__cta to remove @use '../home/home.scss'.
+// This button appears in careers.html on Apply-Now links.
+.hero-slide__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 48px;
+  padding: 0.8rem 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fff;
+  background: var(--accent-gradient);
+  border-radius: var(--radius-md);
+  text-transform: none;
+  letter-spacing: 0.5px;
+  transition:
+    transform var(--transition-speed) ease,
+    box-shadow var(--transition-speed) ease;
+  animation: none;
+
+  lucide-icon {
+    width: 18px;
+  }
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(255, 65, 108, 0.2);
   }
 }
 

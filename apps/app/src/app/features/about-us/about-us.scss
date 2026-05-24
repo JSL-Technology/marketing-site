@@ -1,4 +1,4 @@
-// ─────────────────────────────────────────────────────────────────────────────
+﻿// ─────────────────────────────────────────────────────────────────────────────
 // HERO
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -125,7 +125,7 @@
 }
 
 .stat-item__label {
-  font-size: 0.68rem;
+  font-size: 0.75rem; // ACC-27: was 0.68rem (<12px)
   color: #555;
   letter-spacing: 0.15em;
   text-transform: uppercase;
@@ -133,68 +133,10 @@
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// INTRO SECTION
+// INTRO SECTION — shared with careers.scss via _page-sections.scss (ACC-31)
 // ─────────────────────────────────────────────────────────────────────────────
+@use '../../../shared/styles/page-sections';
 
-.about-intro {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0;
-  margin-bottom: 0;
-  padding-top: 0;
-  padding-bottom: 0;
-
-  @media (max-width: 992px) {
-    grid-template-columns: 1fr;
-  }
-}
-
-.about-intro__text {
-  padding: clamp(2.5rem, 5vw, 4rem) clamp(1.5rem, 4vw, 3rem);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 0.9rem;
-}
-
-.about-intro__image {
-  position: relative;
-  overflow: hidden;
-  border-left: 1px solid var(--border-color);
-  min-height: 340px;
-
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    filter: brightness(0.82) contrast(1.05);
-    transition: transform 0.65s ease;
-  }
-
-  &::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      160deg,
-      transparent 55%,
-      rgba(10, 10, 15, 0.55) 100%
-    );
-    pointer-events: none;
-  }
-
-  &:hover img {
-    transform: scale(1.04);
-  }
-
-  @media (max-width: 992px) {
-    min-height: 240px;
-    border-left: none;
-    border-top: 1px solid var(--border-color);
-    order: -1;
-  }
-}
 
 .about-gradient-divider {
   height: 1px;
@@ -213,7 +155,7 @@
 
 .section-eyebrow {
   display: block;
-  font-size: 0.68rem;
+  font-size: 0.75rem; // ACC-27: was 0.68rem (<12px)
   color: var(--primary);
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -272,78 +214,10 @@
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// CORE VALUES
+// CORE VALUES — shared with careers.scss via _page-sections.scss (ACC-31)
+// Definitions moved to apps/app/src/app/shared/styles/_page-sections.scss
 // ─────────────────────────────────────────────────────────────────────────────
 
-.core-values-section {
-  padding: clamp(3rem, 6vw, 5rem) 0;
-  background: var(--bg-secondary);
-  background-image: radial-gradient(ellipse 70% 45% at 50% 0%, rgba(255, 75, 43, 0.05), transparent);
-  border-top: 1px solid var(--border-color);
-  border-bottom: 1px solid var(--border-color);
-}
-
-.core-values-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.25rem;
-
-  @media (max-width: 992px) {
-    grid-template-columns: 1fr;
-    max-width: 480px;
-    margin-inline: auto;
-  }
-}
-
-.core-value-card {
-  background: rgba(255, 255, 255, 0.025);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  border-radius: 12px;
-  padding: 2rem 1.75rem;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  transition:
-    border-color 0.25s ease,
-    transform 0.25s ease,
-    box-shadow 0.25s ease;
-
-  &:hover {
-    border-color: rgba(255, 75, 43, 0.28);
-    transform: translateY(-4px);
-    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.28);
-  }
-}
-
-.core-value-card__icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
-  background: var(--accent-gradient);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 1.25rem;
-  color: #fff;
-
-  lucide-icon {
-    width: 20px;
-    height: 20px;
-  }
-}
-
-.core-value-card__title {
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--text-main);
-  margin-bottom: 0.7rem;
-  letter-spacing: -0.01em;
-}
-
-.core-value-card__desc {
-  font-size: 0.875rem;
-  color: var(--text-muted);
-  line-height: 1.7;
-}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // AWARDS
@@ -497,7 +371,7 @@
 }
 
 .cert-badge {
-  font-size: 0.68rem;
+  font-size: 0.75rem; // ACC-27: was 0.68rem (<12px)
   font-weight: 600;
   padding: 0.2rem 0.5rem;
   border-radius: 4px;
