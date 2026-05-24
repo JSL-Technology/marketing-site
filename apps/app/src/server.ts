@@ -99,6 +99,10 @@ const limiter = rateLimit({
   max: 100, // Production limit: 100 requests per 15-minute window per IP
   standardHeaders: true, // Devuelve info en cabeceras `RateLimit-*`
   legacyHeaders: false, // Deshabilita cabeceras `X-RateLimit-*`
+  skip: (req) => {
+    const ip = req.ip || req.get('x-forwarded-for') || req.socket.remoteAddress || '';
+    return ip === '127.0.0.1' || ip === '::1' || ip === '::ffff:127.0.0.1';
+  },
 });
 // Aplicar rate limiting a todas las rutas
 app.use(limiter);
