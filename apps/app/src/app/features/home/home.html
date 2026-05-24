@@ -122,8 +122,8 @@
     </div>
   </div>
 
-  <!-- NUEVO: Scroll Down Indicator -->
-  <div class="scroll-indicator" [class.hidden]="!showScrollIndicator()">
+  <!-- Scroll Down Indicator — purely decorative -->
+  <div class="scroll-indicator" [class.hidden]="!showScrollIndicator()" aria-hidden="true" role="presentation">
     <div class="mouse">
       <div class="wheel"></div>
     </div>
@@ -215,16 +215,24 @@
     <h2 class="section-title">{{ 'HOME.OFFERINGS_TITLE' | translate }}</h2>
 
     <div class="search-trigger-container">
-      <div class="search-trigger" (click)="openSearch()">
-        <lucide-icon name="Search"></lucide-icon>
+      <button
+        class="search-trigger"
+        (click)="openSearch()"
+        type="button"
+        [attr.aria-label]="'HOME.SEARCH_PLACEHOLDER' | translate">
+        <lucide-icon name="Search" aria-hidden="true"></lucide-icon>
         <span>{{ 'HOME.SEARCH_PLACEHOLDER' | translate }}</span>
-      </div>
+      </button>
     </div>
 
     <div class="offerings-tabs-container">
-      <div class="offerings-tabs">
+      <div class="offerings-tabs" role="tablist" [attr.aria-label]="'HOME.OFFERINGS_TITLE' | translate">
         <button
           class="tab-btn"
+          role="tab"
+          id="tab-services"
+          aria-controls="tabpanel-services"
+          [attr.aria-selected]="activeTab() === 'services'"
           [class.active]="activeTab() === 'services'"
           (click)="setActiveTab('services')"
         >
@@ -232,6 +240,10 @@
         </button>
         <button
           class="tab-btn"
+          role="tab"
+          id="tab-products"
+          aria-controls="tabpanel-products"
+          [attr.aria-selected]="activeTab() === 'products'"
           [class.active]="activeTab() === 'products'"
           (click)="setActiveTab('products')"
         >
@@ -241,7 +253,11 @@
     </div>
   </div>
 
-  <div class="offerings-content">
+  <div
+    class="offerings-content"
+    role="tabpanel"
+    [id]="activeTab() === 'services' ? 'tabpanel-services' : 'tabpanel-products'"
+    [attr.aria-labelledby]="activeTab() === 'services' ? 'tab-services' : 'tab-products'">
     @if (isLoading()) {
       <div class="solutions-grid">
          @for (i of [1,2,3]; track $index) {

@@ -146,8 +146,9 @@ body {
 
 // Accesibilidad: Foco consistente
 :focus-visible {
-  outline: none;
-  box-shadow: var(--focus-ring);
+  outline: 2px solid var(--primary, #0066cc);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(var(--primary-rgb, 0, 102, 204), 0.25);
 }
 
 /* Skip to main content — accessible keyboard shortcut */
@@ -236,6 +237,16 @@ a {
   &.is-visible {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [jslAnimateOnScroll],
+  [jslAnimateOnScroll].animated {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
   }
 }
 

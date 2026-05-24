@@ -2,11 +2,19 @@
   <header class="detail-page-header">
     <div class="container">
       <nav class="detail-page-breadcrumb" [attr.aria-label]="'ARIA.BREADCRUMB' | translate">
-        <a [routerLink]="['/', currentLang, 'home']">{{ 'COMMON.BREADCRUMB_HOME' | translate }}</a>
-        <lucide-icon name="ChevronRight"></lucide-icon>
-        <a [routerLink]="['/', currentLang, 'solutions']">{{ 'HEADER.SERVICES' | translate }}</a>
-        <lucide-icon name="ChevronRight"></lucide-icon>
-        <span>{{ 'SOLUTIONS.' + solution.key + '_TITLE' | translate }}</span>
+        <ol class="detail-page-breadcrumb__list">
+          <li>
+            <a [routerLink]="['/', currentLang, 'home']">{{ 'COMMON.BREADCRUMB_HOME' | translate }}</a>
+          </li>
+          <li aria-hidden="true" class="detail-page-breadcrumb__separator"><lucide-icon name="ChevronRight"></lucide-icon></li>
+          <li>
+            <a [routerLink]="['/', currentLang, 'solutions']">{{ 'HEADER.SERVICES' | translate }}</a>
+          </li>
+          <li aria-hidden="true" class="detail-page-breadcrumb__separator"><lucide-icon name="ChevronRight"></lucide-icon></li>
+          <li aria-current="page">
+            <span>{{ 'SOLUTIONS.' + solution.key + '_TITLE' | translate }}</span>
+          </li>
+        </ol>
       </nav>
 
       <div class="header-main-content">

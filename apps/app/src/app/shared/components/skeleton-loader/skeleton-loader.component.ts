@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, HostBinding } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -13,4 +13,7 @@ export class SkeletonLoaderComponent {
   @Input() height = '20px';
   @Input() shape: 'rectangle' | 'circle' = 'rectangle';
   @Input() count = 1;
+
+  @HostBinding('attr.aria-busy') readonly ariaBusy = 'true';
+  @HostBinding('attr.aria-label') readonly ariaLabel = 'Loading content';
 }

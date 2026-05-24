@@ -61,7 +61,12 @@
     <div class="gallery-grid">
       @for (img of moments; track $index) {
         <div class="gallery-item" jslAnimateOnScroll>
-          <img [src]="img" [alt]="'LIFE_AT_JSL.GALLERY_ALT' | translate" loading="lazy" width="600" height="400">
+          <img
+            [src]="img"
+            [alt]="('LIFE_AT_JSL.GALLERY_ALT_' + ($index + 1) | translate) || ('LIFE_AT_JSL.GALLERY_ALT' | translate)"
+            loading="lazy"
+            width="600"
+            height="400">
         </div>
       }
     </div>

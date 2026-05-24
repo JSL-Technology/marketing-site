@@ -1,7 +1,11 @@
-<div class="toast-container">
+<div class="toast-container" aria-live="polite" aria-atomic="false" aria-relevant="additions removals">
   @for (toast of toastService.toasts$ | async; track toast.id) {
-    <div class="toast" [ngClass]="toast.type">
-      <div class="toast-icon">
+    <div
+      class="toast"
+      [ngClass]="toast.type"
+      [attr.role]="toast.type === 'error' ? 'alert' : 'status'"
+      [attr.aria-live]="toast.type === 'error' ? 'assertive' : 'polite'">
+      <div class="toast-icon" aria-hidden="true">
         @if (toast.type === 'success') {
           <lucide-icon [name]="icons.Check" [size]="20"></lucide-icon>
         } @else if (toast.type === 'error') {
@@ -12,7 +16,7 @@
       </div>
       <div class="toast-message">{{ toast.message | translate }}</div>
       <button class="toast-close" (click)="remove(toast.id)" [attr.aria-label]="'ARIA.CLOSE' | translate">
-        <lucide-icon [name]="icons.X" [size]="16"></lucide-icon>
+        <lucide-icon [name]="icons.X" [size]="16" aria-hidden="true"></lucide-icon>
       </button>
     </div>
   }

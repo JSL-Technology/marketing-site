@@ -429,6 +429,26 @@ swiper-container {
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .scroll-indicator {
+    display: none;
+  }
+
+  .wheel,
+  .arrow {
+    animation: none !important;
+  }
+
+  /* Disable all other animations */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 // --- NUEVO: Offerings Tabs Section ---
 .offerings-section {
   --home-slider-card-shadow: 0 10px 26px rgba(7, 10, 18, 0.1);
@@ -1138,8 +1158,10 @@ swiper-container {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 42px;
-  height: 42px;
+  min-width: 44px;
+  min-height: 44px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -1427,7 +1449,7 @@ swiper-container {
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     white-space: nowrap;
     flex-shrink: 0;
-    min-height: 36px;
+    min-height: 44px;
 
     &:hover:not(.active) {
       background: var(--bg-secondary);
@@ -1876,8 +1898,10 @@ swiper-container {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  min-width: 44px;
+  min-height: 44px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   background: var(--bg-card);
   border: 1px solid var(--border-color);

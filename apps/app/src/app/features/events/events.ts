@@ -45,7 +45,7 @@ export class Events implements OnInit {
     }
   ];
 
-  pastEvents = [
+  pastEvents: { title: string; date: string; image: string; recordingUrl?: string }[] = [
     {
       title: 'Scaling Node.js Microservices',
       date: 'Oct 10, 2025',
