@@ -1,4 +1,5 @@
 import { Injectable, inject, PLATFORM_ID, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { isPlatformBrowser } from '@angular/common';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
@@ -23,7 +24,7 @@ export class PersonalizationService {
   constructor() {
     const translate = inject(TranslateService);
     this.currentLang.set(translate.currentLang || translate.defaultLang || 'es');
-    translate.onLangChange.subscribe((event: any) => {
+    translate.onLangChange.pipe(takeUntilDestroyed()).subscribe((event: any) => {
       this.currentLang.set(event.lang);
     });
 
