@@ -27,6 +27,10 @@ import { detectPreferredLanguage } from './app/core/utils/language-url';
 const browserDistFolder = join(import.meta.dirname, '../browser');
 
 const app = express();
+
+// Running behind Render/other reverse proxies: trust forwarded headers for client IP/proto.
+app.set('trust proxy', true);
+
 const angularApp = new AngularNodeAppEngine();
 
 type SeoHealthSnapshot = {
@@ -503,12 +507,19 @@ app.use((req, res, next) => {
   );
 
   const dynamicBaseUrl = resolveCanonicalBaseUrl(req);
-  const requestHost = req.get('host');
-  const allowedHosts = [
-    '127.0.0.1', 'localhost', '127.0.0.1:4000', 'localhost:4000',
-    ...CANONICAL_HOSTS,
-    ...(requestHost ? [requestHost] : []),
-  ];
+  const requestHost = req.get('host')?.toLowerCase();
+  const forwardedHost = req.get('x-forwarded-host')?.split(',')[0]?.trim().toLowerCase();
+  const allowedHosts = Array.from(
+    new Set([
+      '127.0.0.1',
+      'localhost',
+      '127.0.0.1:4000',
+      'localhost:4000',
+      ...CANONICAL_HOSTS,
+      ...(requestHost ? [requestHost] : []),
+      ...(forwardedHost ? [forwardedHost] : []),
+    ]),
+  );
 
   angularApp
     .handle(req, {
@@ -523,6 +534,7 @@ app.use((req, res, next) => {
         { provide: CLARITY_PROJECT_ID, useValue: ENV_CLARITY_PROJECT_ID },
       ],
       allowedHosts,
+      trustProxyHeaders: true,
     })
     .then((response) => (response ? writeResponseToNodeResponse(response, res) : next()))
     .catch(next);
