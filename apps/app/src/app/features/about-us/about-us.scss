@@ -2,6 +2,8 @@
 // HERO
 // ─────────────────────────────────────────────────────────────────────────────
 
+@use '../../shared/styles/page-sections';
+
 .about-hero {
   position: relative;
   overflow: hidden;
@@ -135,9 +137,6 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // INTRO SECTION — shared with careers.scss via _page-sections.scss (ACC-31)
 // ─────────────────────────────────────────────────────────────────────────────
-@use '../../../shared/styles/page-sections';
-
-
 .about-gradient-divider {
   height: 1px;
   background: linear-gradient(

@@ -2,7 +2,7 @@
 
 // ACC-31: Replaced cross-component @use imports with a shared partial.
 // Previously imported about-us.scss + home.scss (caused CSS duplication in bundle).
-@use '../../../shared/styles/page-sections';
+@use '../../shared/styles/page-sections';
 
 .page-title {
   text-align: center;
