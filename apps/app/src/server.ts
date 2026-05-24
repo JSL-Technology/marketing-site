@@ -60,7 +60,7 @@ const ENV_FEATURE_FLAGS: Record<string, boolean> = (() => {
   }
 })();
 const CANONICAL_HOSTS = new Set(
-  (process.env['CANONICAL_HOSTS'] ?? 'www.jsl.technology,jsl.technology')
+  (process.env['CANONICAL_HOSTS'] ?? 'www.jsl.technology,jsl.technology,jsl-technology.onrender.com')
     .split(',')
     .map((host) => host.trim().toLowerCase())
     .filter(Boolean),
