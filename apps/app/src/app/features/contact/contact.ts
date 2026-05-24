@@ -226,10 +226,14 @@ export class Contact implements OnInit, OnDestroy {
   get f() { return this.contactForm.controls; }
 
   async onSubmit(): Promise<void> {
+    if (this.isSubmitting) return;
+    this.isSubmitting = true;
+
     this.contactForm.get('privacy')!.markAsTouched();
     this.contactForm.get('phone')!.markAsTouched();
 
     if (this.contactForm.invalid) {
+      this.isSubmitting = false;
       this.contactForm.markAllAsTouched();
       this.toastService.show('CONTACT.FORM.ERROR', 'error');
       Object.keys(this.contactForm.controls).forEach(key => {
@@ -242,6 +246,7 @@ export class Contact implements OnInit, OnDestroy {
     }
 
     if (this.contactForm.value.honeypot) {
+      this.isSubmitting = false;
       this.submitSuccess = true;
       this.contactForm.reset({ privacy: false, serviceOther: '', referralSource: '', honeypot: '' });
       this.toastService.show('CONTACT.FORM.SUCCESS', 'success');
@@ -250,11 +255,11 @@ export class Contact implements OnInit, OnDestroy {
 
     const recaptchaToken = await this.getRecaptchaToken();
     if (!recaptchaToken) {
+      this.isSubmitting = false;
       this.toastService.show('CONTACT.FORM.RECAPTCHA_ERROR', 'error');
       return;
     }
 
-    this.isSubmitting = true;
     this.submitSuccess = false;
     this.submitError = false;
 

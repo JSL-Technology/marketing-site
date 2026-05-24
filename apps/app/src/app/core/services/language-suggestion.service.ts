@@ -24,6 +24,7 @@ export class LanguageSuggestionService {
   private readonly PREFERRED_LANG_COOKIE = 'jsl_user_preferred_lang';
   private readonly DISMISSED_STORAGE_KEY = 'jsl_lang_suggestion_dismissed';
   private autoDismissTimer: ReturnType<typeof setTimeout> | null = null;
+  private checkTimer: ReturnType<typeof setTimeout> | null = null;
 
   private onboardingFlow = inject(OnboardingFlowService);
 
@@ -37,8 +38,15 @@ export class LanguageSuggestionService {
       // Coordinate with onboarding flow instead of window.load
       effect(() => {
         if (this.onboardingFlow.isLanguageStep()) {
+          // Debounce: cancel any pending check timer before creating a new one
+          if (this.checkTimer) {
+            clearTimeout(this.checkTimer);
+          }
           // Delay suggestion to feel like an assistant, not an interruption
-          setTimeout(() => this.checkSuggestion(), 2000);
+          this.checkTimer = setTimeout(() => {
+            this.checkTimer = null;
+            this.checkSuggestion();
+          }, 2000);
         }
       });
     }
@@ -132,6 +140,10 @@ export class LanguageSuggestionService {
   }
 
   dismiss() {
+    if (this.checkTimer) {
+      clearTimeout(this.checkTimer);
+      this.checkTimer = null;
+    }
     this.clearAutoDismissTimer();
     localStorage.setItem(this.DISMISSED_STORAGE_KEY, Date.now().toString());
     this.suggestionSubject.next(null);

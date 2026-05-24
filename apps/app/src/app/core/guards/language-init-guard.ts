@@ -1,7 +1,7 @@
 import { Injectable, inject, PLATFORM_ID, Inject } from '@angular/core';
 // --- 1. IMPORTAR DOCUMENT ---
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
-import { CanActivateFn, ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
+import { CanActivateFn, ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { CookieService } from 'ngx-cookie-service';
 import { SUPPORTED_LANGUAGES } from '../constants/languages';
@@ -21,7 +21,7 @@ export class LanguageInitService {
     @Optional() @Inject(REQUEST) private request: any
   ) {}
 
-  initLanguage(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+  initLanguage(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree {
     const lang = normalizeLang(route.params['lang']);
     const supportedLangs = this.translate.getLangs().length ? this.translate.getLangs() : SUPPORTED_LANGUAGES;
 
@@ -68,12 +68,11 @@ export class LanguageInitService {
       // state.url contiene la ruta completa empezando por '/'.
       const targetUrl = buildLocalizedUrl(state.url, langToUse, supportedLangs);
 
-      this.router.navigateByUrl(targetUrl, { replaceUrl: true });
-      return false;
+      return this.router.parseUrl(targetUrl);
     }
   }
 }
 
-export const languageInitGuard: CanActivateFn = (route, state) => {
+export const languageInitGuard: CanActivateFn = (route, state): boolean | UrlTree => {
   return inject(LanguageInitService).initLanguage(route, state);
 };

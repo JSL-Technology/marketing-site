@@ -500,13 +500,11 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
         localStorage.setItem('jsl_visited', 'true');
       }
 
-      // Simulate initial loading
-      setTimeout(() => {
-        this.isLoading.set(false);
-        // El slider de offerings no existe en el DOM mientras se muestra el skeleton
-        // por eso lo inicializamos cuando termina la carga simulada.
-        setTimeout(() => this.initializeOfferingsSlider(), 0);
-      }, 1500);
+      // Remove artificial delay — set loading false immediately and allow change detection
+      // to run before initializing the slider (skeleton disappears synchronously).
+      this.isLoading.set(false);
+      // Use setTimeout(0) to allow change detection to render the slider DOM first.
+      setTimeout(() => this.initializeOfferingsSlider(), 0);
     }
 
     this.addSchemaData();
@@ -569,7 +567,10 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
   }
 
 
+  private offeringsSliderInitialized = false;
+
   private initializeOfferingsSlider() {
+    if (this.offeringsSliderInitialized) return;
     if (!this.isBrowser || this.isLoading()) return;
 
     const offeringsSwiperEl = this.el.nativeElement.querySelector('.offerings-section swiper-container');
@@ -579,6 +580,7 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
 
     if (!offeringsSwiperEl.swiper) {
       offeringsSwiperEl.initialize();
+      this.offeringsSliderInitialized = true;
       this.setupOfferingsNavigationVisibility();
       this.bindSliderBoundaryState(
         offeringsSwiperEl,
@@ -586,6 +588,7 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
         this.canOfferingsNext
       );
     } else {
+      this.offeringsSliderInitialized = true;
       offeringsSwiperEl.swiper.update();
       this.refreshSliderBoundaryState(
         offeringsSwiperEl,
