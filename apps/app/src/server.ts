@@ -79,7 +79,7 @@ app.use((req, res, next) => {
 // --- SEGURIDAD: Rate Limiting ---
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutos
-  max: 10000, // Límite aumentado significativamente para permitir tests E2E paralelos sin bloqueos 429
+  max: 100, // Production limit: 100 requests per 15-minute window per IP
   standardHeaders: true, // Devuelve info en cabeceras `RateLimit-*`
   legacyHeaders: false, // Deshabilita cabeceras `X-RateLimit-*`
 });
@@ -392,6 +392,15 @@ app.get('/sitemap.xml', (req, res) => {
 });
 
 app.get('/seo/health', (req, res) => {
+  const secret = process.env['HEALTH_CHECK_SECRET'];
+  if (secret) {
+    const provided = req.headers['x-health-secret'];
+    if (provided !== secret) {
+      res.status(401).json({ error: 'Unauthorized' });
+      return;
+    }
+  }
+
   const canonicalBaseUrl = resolveCanonicalBaseUrl(req);
   if (!latestSeoHealthSnapshot) {
     const dynamicEntriesCount = DYNAMIC_SITEMAP_COLLECTIONS.reduce(
@@ -421,6 +430,21 @@ app.get('/seo/health', (req, res) => {
 });
 
 /**
+ * Standalone security headers middleware — applied to ALL responses including static assets.
+ */
+function applySecurityHeaders(req: express.Request, res: express.Response, next: express.NextFunction): void {
+  res.setHeader('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
+  res.setHeader('Vary', 'Accept-Language');
+  next();
+}
+
+app.use(applySecurityHeaders);
+
+/**
  * Serve static files from /browser
  */
 app.use(
@@ -444,13 +468,6 @@ app.use(
  * Handle all other requests by rendering the Angular application.
  */
 app.use((req, res, next) => {
-  res.setHeader('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
-  res.setHeader('X-Content-Type-Options', 'nosniff');
-  res.setHeader('X-Frame-Options', 'DENY');
-  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
-  res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
-  res.setHeader('Vary', 'Accept-Language');
-
   // Defense-in-depth: X-Robots-Tag for noindex routes (supplements meta robots tag)
   const isNoindexRoute = NOINDEX_ROUTES.some((route) => req.path.includes(route));
   if (isNoindexRoute) {
@@ -461,7 +478,10 @@ app.use((req, res, next) => {
     'Content-Security-Policy',
     [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ https://connect.facebook.net https://www.clarity.ms",
+      // 'unsafe-inline' is required for Angular SSR inline bootstrap scripts.
+      // 'strict-dynamic' is included to prepare for nonce migration — in browsers
+      // that support strict-dynamic, 'unsafe-inline' is ignored for script execution.
+      "script-src 'self' 'unsafe-inline' 'strict-dynamic' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ https://connect.facebook.net https://www.clarity.ms",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",
       "img-src 'self' data: https: https://www.google-analytics.com https://www.facebook.com",
@@ -473,6 +493,11 @@ app.use((req, res, next) => {
 
   const dynamicBaseUrl = resolveCanonicalBaseUrl(req);
   const requestHost = req.get('host');
+  const allowedHosts = [
+    '127.0.0.1', 'localhost', '127.0.0.1:4000', 'localhost:4000',
+    ...CANONICAL_HOSTS,
+    ...(requestHost ? [requestHost] : []),
+  ];
 
   angularApp
     .handle(req, {
@@ -486,7 +511,7 @@ app.use((req, res, next) => {
         { provide: FEATURE_FLAGS, useValue: ENV_FEATURE_FLAGS },
         { provide: CLARITY_PROJECT_ID, useValue: ENV_CLARITY_PROJECT_ID },
       ],
-      allowedHosts: ['127.0.0.1', 'localhost', '127.0.0.1:4000', 'localhost:4000', requestHost],
+      allowedHosts,
     })
     .then((response) => (response ? writeResponseToNodeResponse(response, res) : next()))
     .catch(next);
