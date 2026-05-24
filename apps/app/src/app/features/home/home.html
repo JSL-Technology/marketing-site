@@ -477,7 +477,14 @@
 
       <div class="lead-magnet-form-wrapper">
         <div class="lead-magnet-form">
-          <input type="email" [placeholder]="'HOME.LEAD_MAGNET_PLACEHOLDER' | translate" class="lead-magnet-input" />
+          <label for="lead-magnet-email" class="sr-only">{{ 'HOME.LEAD_MAGNET_PLACEHOLDER' | translate }}</label>
+          <input
+            id="lead-magnet-email"
+            type="email"
+            [placeholder]="'HOME.LEAD_MAGNET_PLACEHOLDER' | translate"
+            class="lead-magnet-input"
+            [attr.aria-label]="'HOME.LEAD_MAGNET_PLACEHOLDER' | translate"
+          />
           <button (click)="downloadLeadMagnet()" class="lead-magnet-btn" [disabled]="isSubmitting()">
             @if (isSubmitting()) {
                <span>{{ 'HOME.LEAD_MAGNET_SENDING' | translate }}</span>

@@ -1,7 +1,7 @@
 <div class="app-shell">
   <jsl-header [class.is-scrolled]="isScrolled()"></jsl-header>
 
-  <main class="main-content">
+  <main id="main-content" class="main-content" tabindex="-1">
     <!-- Breadcrumbs disabled: navigation structure uses contextual breadcrumbs per page via schema.org markup instead -->
     <router-outlet></router-outlet>
   </main>

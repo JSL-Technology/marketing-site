@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { LucideAngularModule } from 'lucide-angular';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { A11yModule } from '@angular/cdk/a11y';
 
 @Component({
   selector: 'jsl-exit-intent-modal',
   standalone: true,
-  imports: [CommonModule, TranslateModule, LucideAngularModule],
+  imports: [CommonModule, TranslateModule, LucideAngularModule, A11yModule],
   templateUrl: './exit-intent-modal.html',
   styleUrl: './exit-intent-modal.scss',
   animations: [

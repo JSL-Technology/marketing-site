@@ -1,5 +1,13 @@
-<div class="search-overlay" (click)="closeOverlay()">
-  <div class="search-container" (click)="$event.stopPropagation()">
+<div class="search-overlay" (click)="closeOverlay()" role="presentation">
+  <div
+    class="search-container"
+    (click)="$event.stopPropagation()"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="search-dialog-title"
+    cdkTrapFocus
+    cdkTrapFocusAutoCapture>
+    <h2 id="search-dialog-title" class="sr-only">{{ 'ARIA.SEARCH' | translate }}</h2>
     <header class="search-header">
       <div class="search-input-wrapper">
         <lucide-icon name="Search" class="search-icon"></lucide-icon>

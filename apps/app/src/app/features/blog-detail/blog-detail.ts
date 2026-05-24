@@ -21,6 +21,7 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LucideAngularModule } from 'lucide-angular';
+import { A11yModule } from '@angular/cdk/a11y';
 import { Subscription, Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { DataService, BlogPost, TeamMember } from '@core/services/data.service';
@@ -52,7 +53,8 @@ register();
     CtaComponent,
     WhitepaperDownloadComponent,
     Card,
-    SocialShareComponent
+    SocialShareComponent,
+    A11yModule
   ],
   templateUrl: './blog-detail.html',
   styleUrl: './blog-detail.scss',

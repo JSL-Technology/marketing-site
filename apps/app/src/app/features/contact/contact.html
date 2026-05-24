@@ -95,10 +95,14 @@
     <div class="contact-form-container" jslAnimateOnScroll>
 
       <!-- Step indicator -->
-      <div class="form-steps">
+      <nav class="form-steps" [attr.aria-label]="'CONTACT.FORM_STEPS_NAV' | translate">
         @for (s of [1, 2, 3]; track s) {
-          <div class="form-step" [class.form-step--active]="currentStep() === s" [class.form-step--done]="currentStep() > s">
-            <div class="form-step__bubble">
+          <div
+            class="form-step"
+            [class.form-step--active]="currentStep() === s"
+            [class.form-step--done]="currentStep() > s"
+            [attr.aria-current]="currentStep() === s ? 'step' : null">
+            <div class="form-step__bubble" aria-hidden="true">
               @if (currentStep() > s) {
                 <lucide-icon name="Check" [size]="14"></lucide-icon>
               } @else {
@@ -108,13 +112,19 @@
             <span class="form-step__label">{{ 'CONTACT.STEP_' + s + '_LABEL' | translate }}</span>
           </div>
           @if (s < 3) {
-            <div class="form-step__connector" [class.form-step__connector--done]="currentStep() > s"></div>
+            <div class="form-step__connector" [class.form-step__connector--done]="currentStep() > s" aria-hidden="true"></div>
           }
         }
-      </div>
+      </nav>
 
       <!-- Progress bar -->
-      <div class="form-progress">
+      <div
+        class="form-progress"
+        role="progressbar"
+        [attr.aria-valuenow]="progressPercent()"
+        aria-valuemin="0"
+        aria-valuemax="100"
+        [attr.aria-label]="'CONTACT.FORM_PROGRESS' | translate">
         <div class="form-progress__bar" [style.width.%]="progressPercent()"></div>
       </div>
 
@@ -127,7 +137,7 @@
 
         <!-- STEP 1 — Identity -->
         @if (currentStep() === 1) {
-          <div class="form-step-content" aria-label="Step 1 of 3: Your identity">
+          <div class="form-step-content" [attr.aria-label]="'CONTACT.STEP_1_ARIA' | translate">
             <h4 class="form-step-content__title">{{ 'CONTACT.STEP_1_TITLE' | translate }}</h4>
             <p class="form-step-content__desc">{{ 'CONTACT.STEP_1_DESC' | translate }}</p>
 
@@ -185,7 +195,7 @@
 
         <!-- STEP 2 — Project -->
         @if (currentStep() === 2) {
-          <div class="form-step-content" aria-label="Step 2 of 3: Your project">
+          <div class="form-step-content" [attr.aria-label]="'CONTACT.STEP_2_ARIA' | translate">
             <h4 class="form-step-content__title">{{ 'CONTACT.STEP_2_TITLE' | translate }}</h4>
             <p class="form-step-content__desc">{{ 'CONTACT.STEP_2_DESC' | translate }}</p>
 
@@ -268,7 +278,7 @@
 
         <!-- STEP 3 — Final -->
         @if (currentStep() === 3) {
-          <div class="form-step-content" aria-label="Step 3 of 3: Final details">
+          <div class="form-step-content" [attr.aria-label]="'CONTACT.STEP_3_ARIA' | translate">
             <h4 class="form-step-content__title">{{ 'CONTACT.STEP_3_TITLE' | translate }}</h4>
             <p class="form-step-content__desc">{{ 'CONTACT.STEP_3_DESC' | translate }}</p>
 
