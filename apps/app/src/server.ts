@@ -383,11 +383,25 @@ function escapeXml(str: string): string {
  * ```
  */
 
+const sitemapCache = new Map<string, { xml: string; generatedAt: number }>();
+const SITEMAP_CACHE_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
+
 app.get('/sitemap.xml', (req, res) => {
   const domain = resolveCanonicalBaseUrl(req);
+  const cached = sitemapCache.get(domain);
+  const now = Date.now();
+
+  if (cached && (now - cached.generatedAt) < SITEMAP_CACHE_TTL_MS) {
+    res.header('Content-Type', 'application/xml');
+    res.header('Cache-Control', 'public, max-age=86400');
+    res.send(cached.xml);
+    return;
+  }
 
   const sitemap = generateSitemap(domain);
+  sitemapCache.set(domain, { xml: sitemap, generatedAt: now });
   res.header('Content-Type', 'application/xml');
+  res.header('Cache-Control', 'public, max-age=86400');
   res.send(sitemap);
 });
 

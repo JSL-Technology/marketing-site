@@ -18,6 +18,7 @@ export class Seo {
   private siteName = 'JSL Technology';
   private defaultImageUrl: string;
   private supportedLangs = SUPPORTED_LANGUAGES;
+  private resourceHintsInitialized = false;
 
   constructor(
     private titleService: Title,
@@ -385,8 +386,11 @@ export class Seo {
 
   /**
    * Inyecta Resource Hints (preconnect, dns-prefetch) para optimizar carga.
+   * Only runs once per app lifecycle — no-op on subsequent NavigationEnd events.
    */
   public setResourceHints(): void {
+    if (this.resourceHintsInitialized) return;
+    this.resourceHintsInitialized = true;
     const domains = [
       'https://fonts.googleapis.com',
       'https://fonts.gstatic.com'

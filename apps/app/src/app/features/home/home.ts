@@ -1090,8 +1090,13 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
     projectsSection.style.setProperty('--projects-nav-right-visibility', '0');
   }
 
+  private starsCache = new Map<number, any[]>();
+
   getStars(count: number): any[] {
-    return new Array(count);
+    if (!this.starsCache.has(count)) {
+      this.starsCache.set(count, new Array(count).fill(null));
+    }
+    return this.starsCache.get(count)!;
   }
 
   toggleFaq(index: number) {

@@ -12,7 +12,7 @@ import { Seo } from '@core/services/seo';
 import { Router, RouterLink } from '@angular/router';
 import { AnimateOnScroll } from '@shared/directives/animate-on-scroll';
 import { Subject } from 'rxjs';
-import { takeUntil, finalize, distinctUntilChanged } from 'rxjs/operators';
+import { takeUntil, finalize, distinctUntilChanged, debounceTime } from 'rxjs/operators';
 import { ALL_ICONS } from '@core/constants/icons';
 
 @Component({
@@ -149,7 +149,11 @@ export class Contact implements OnInit, OnDestroy {
 
   private setupFormStartTracking(): void {
     this.contactForm.valueChanges
-      .pipe(takeUntil(this.destroy$))
+      .pipe(
+        debounceTime(500),
+        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
+        takeUntil(this.destroy$)
+      )
       .subscribe((value) => {
         const lastField = this.getLastMeaningfulField(value);
         if (lastField) {

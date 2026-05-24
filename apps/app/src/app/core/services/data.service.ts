@@ -3,7 +3,7 @@ import { Injectable, inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformServer } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { map, catchError, shareReplay } from 'rxjs/operators';
 
 // Fallback data in case API is not reachable during SSR or development
 import {
@@ -170,6 +170,14 @@ export class DataService {
   private platformId = inject(PLATFORM_ID);
   private isServer = isPlatformServer(this.platformId);
   private apiUrl = '/api/data';
+  private cache = new Map<string, Observable<any>>();
+
+  private getCached<T>(key: string, request: Observable<T>): Observable<T> {
+    if (!this.cache.has(key)) {
+      this.cache.set(key, request.pipe(shareReplay(1)));
+    }
+    return this.cache.get(key) as Observable<T>;
+  }
 
   // --- Métodos de Ventures ---
   getVentures(): Observable<Venture[]> {
@@ -182,8 +190,8 @@ export class DataService {
   // --- Métodos de Soluciones ---
   getSolutions(): Observable<Solution[]> {
     if (this.isServer) return of(SOLUTIONS);
-    return this.http.get<Solution[]>(`${this.apiUrl}/solutions`).pipe(
-      catchError(() => of(SOLUTIONS))
+    return this.getCached('solutions',
+      this.http.get<Solution[]>(`${this.apiUrl}/solutions`).pipe(catchError(() => of(SOLUTIONS)))
     );
   }
 
@@ -197,8 +205,8 @@ export class DataService {
   // --- Métodos de Productos ---
   getProducts(): Observable<Product[]> {
     if (this.isServer) return of(PRODUCTS);
-    return this.http.get<Product[]>(`${this.apiUrl}/products`).pipe(
-      catchError(() => of(PRODUCTS))
+    return this.getCached('products',
+      this.http.get<Product[]>(`${this.apiUrl}/products`).pipe(catchError(() => of(PRODUCTS)))
     );
   }
 
@@ -209,8 +217,8 @@ export class DataService {
   // --- Métodos de Proyectos (Casos de Éxito) ---
   getProjects(): Observable<Project[]> {
     if (this.isServer) return of(PROJECTS);
-    return this.http.get<Project[]>(`${this.apiUrl}/projects`).pipe(
-      catchError(() => of(PROJECTS))
+    return this.getCached('projects',
+      this.http.get<Project[]>(`${this.apiUrl}/projects`).pipe(catchError(() => of(PROJECTS)))
     );
   }
 
@@ -221,8 +229,8 @@ export class DataService {
   // --- Métodos de Blog ---
   getBlogPosts(): Observable<BlogPost[]> {
     if (this.isServer) return of(BLOG_POSTS);
-    return this.http.get<BlogPost[]>(`${this.apiUrl}/blog`).pipe(
-      catchError(() => of(BLOG_POSTS))
+    return this.getCached('blog',
+      this.http.get<BlogPost[]>(`${this.apiUrl}/blog`).pipe(catchError(() => of(BLOG_POSTS)))
     );
   }
 
@@ -236,8 +244,8 @@ export class DataService {
   // --- Métodos de Equipo ---
   getTeamMembers(): Observable<TeamMember[]> {
     if (this.isServer) return of(TEAM_MEMBERS);
-    return this.http.get<TeamMember[]>(`${this.apiUrl}/team`).pipe(
-      catchError(() => of(TEAM_MEMBERS))
+    return this.getCached('team',
+      this.http.get<TeamMember[]>(`${this.apiUrl}/team`).pipe(catchError(() => of(TEAM_MEMBERS)))
     );
   }
 
@@ -248,8 +256,8 @@ export class DataService {
   // --- Métodos de Testimonios ---
   getTestimonials(): Observable<Testimonial[]> {
     if (this.isServer) return of(TESTIMONIALS);
-    return this.http.get<Testimonial[]>(`${this.apiUrl}/testimonials`).pipe(
-      catchError(() => of(TESTIMONIALS))
+    return this.getCached('testimonials',
+      this.http.get<Testimonial[]>(`${this.apiUrl}/testimonials`).pipe(catchError(() => of(TESTIMONIALS)))
     );
   }
 
@@ -261,8 +269,8 @@ export class DataService {
   // --- Métodos de Stack Tecnológico ---
   getTechStack(): Observable<TechCategory[]> {
     if (this.isServer) return of(TECH_STACK);
-    return this.http.get<TechCategory[]>(`${this.apiUrl}/tech-stack`).pipe(
-      catchError(() => of(TECH_STACK))
+    return this.getCached('tech-stack',
+      this.http.get<TechCategory[]>(`${this.apiUrl}/tech-stack`).pipe(catchError(() => of(TECH_STACK)))
     );
   }
 
