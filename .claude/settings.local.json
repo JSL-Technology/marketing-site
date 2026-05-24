@@ -29,7 +29,8 @@
       "Skill(superpowers:brainstorming)",
       "Skill(superpowers:writing-plans)",
       "PowerShell(Get-Content *)",
-      "PowerShell(\\(Get-Content \"C:\\\\Users\\\\Usuario\\\\Downloads\\\\jules_session_1391041394126519322 \\(3\\)\\\\apps\\\\app\\\\src\\\\app\\\\features\\\\home\\\\home.scss\" | Select-Object -Last 20\\) -join \"`n\")"
+      "PowerShell(\\(Get-Content \"C:\\\\Users\\\\Usuario\\\\Downloads\\\\jules_session_1391041394126519322 \\(3\\)\\\\apps\\\\app\\\\src\\\\app\\\\features\\\\home\\\\home.scss\" | Select-Object -Last 20\\) -join \"`n\")",
+      "Bash(git commit *)"
     ]
   }
 }
