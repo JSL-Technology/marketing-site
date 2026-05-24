@@ -1,9 +1,9 @@
-<section class="status-hero">
+﻿<section class="status-hero" aria-labelledby="status-hero-heading">
   <div class="container">
     <div class="status-indicator" [class]="overallStatus">
       <div class="status-indicator__dot"></div>
       <lucide-icon [name]="overallIcon" [size]="28"></lucide-icon>
-      <h1>{{ overallLabel | translate }}</h1>
+      <h1 id="status-hero-heading">{{ overallLabel | translate }}</h1>
     </div>
     <p class="status-last-updated">
       <lucide-icon name="Clock" [size]="14"></lucide-icon>

@@ -1,7 +1,7 @@
-<section class="life-hero">
+﻿<section class="life-hero" aria-labelledby="life-hero-heading">
   <div class="container">
     <span class="section-eyebrow" jslAnimateOnScroll>{{ 'LIFE_AT_JSL.EYEBROW' | translate }}</span>
-    <h1 jslAnimateOnScroll>{{ 'LIFE_AT_JSL.TITLE' | translate }}</h1>
+    <h1 jslAnimateOnScroll id="life-hero-heading">{{ 'LIFE_AT_JSL.TITLE' | translate }}</h1>
     <p class="subtitle" jslAnimateOnScroll>{{ 'LIFE_AT_JSL.SUBTITLE' | translate }}</p>
     <div class="hero-actions" jslAnimateOnScroll>
       <a [routerLink]="['/', currentLang, 'careers']" class="btn-primary">

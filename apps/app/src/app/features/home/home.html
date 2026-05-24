@@ -1,4 +1,4 @@
-<section class="hero-slider">
+﻿<section class="hero-slider" aria-labelledby="hero-main-heading">
   <!-- Añadido #heroSwiper para referencia en TypeScript -->
   <swiper-container 
     #heroSwiper
@@ -21,7 +21,7 @@
         } @else {
           <p class="hero-slide__eyebrow">{{ 'HOME.WELCOME_EYEBROW' | translate }}</p>
         }
-        <h1 class="hero-slide__title">{{ personalizedHeroTitle() | translate }}</h1>
+        <h1 class="hero-slide__title" id="hero-main-heading">{{ personalizedHeroTitle() | translate }}</h1>
         <p class="hero-slide__subtitle">{{ personalizedHeroSubtitle() | translate }}</p>
 
         @if (heroVariant() === 'B') {
