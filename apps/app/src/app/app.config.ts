@@ -87,7 +87,7 @@ export const appConfig: ApplicationConfig = {
       Internal scroll containers (overflow: auto/scroll) are not covered by this solution.
     */
     provideHttpClient(withFetch()),
-    provideClientHydration(withHttpTransferCacheOptions()),
+    provideClientHydration(withHttpTransferCacheOptions({})),
     provideAnimationsAsync(),
     provideTranslateService({
       fallbackLang: 'en',

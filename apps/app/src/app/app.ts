@@ -31,7 +31,7 @@ import Lenis from 'lenis';
     RouterOutlet,
     Header,
     Footer,
-    BreadcrumbsComponent,
+    // BreadcrumbsComponent,
     // ChatBubbleComponent,
     WhatsAppButtonComponent,
     ToastComponent,
