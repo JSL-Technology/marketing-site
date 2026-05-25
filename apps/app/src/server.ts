@@ -107,6 +107,15 @@ const limiter = rateLimit({
   standardHeaders: true, // Devuelve info en cabeceras `RateLimit-*`
   legacyHeaders: false, // Deshabilita cabeceras `X-RateLimit-*`
   validate: false,
+  skip: (req) => {
+    const ip = req.ip || req.connection.remoteAddress || '';
+    return (
+      ip === '127.0.0.1' ||
+      ip === '::1' ||
+      ip === '::ffff:127.0.0.1' ||
+      req.path.startsWith('/seo/')
+    );
+  },
 });
 // Aplicar rate limiting a todas las rutas
 app.use(limiter);
