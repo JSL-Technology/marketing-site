@@ -23,7 +23,27 @@ import { RouterLink, Router } from '@angular/router';
 import { map, switchMap, timer, fromEvent, merge, takeUntil, Subject, filter, startWith } from 'rxjs';
 import { Card } from '@shared/components/card/card';
 import { AnimateOnScroll } from '@shared/directives/animate-on-scroll';
-import { DataService, Technology, Testimonial, Project, Solution, Product, ProcessStep, Partner, BlogPost } from '@core/services/data.service';
+import {
+  DataService,
+  Technology,
+  Testimonial,
+  Project,
+  Solution,
+  Product,
+  ProcessStep,
+  Partner,
+  BlogPost,
+} from '@core/services/data.service';
+import {
+  SOLUTIONS,
+  PRODUCTS,
+  PROCESS_STEPS,
+  TESTIMONIALS,
+  PROJECTS,
+  BLOG_POSTS,
+  PARTNERS,
+  TECH_STACK,
+} from '@core/data/mock-data';
 import { Seo } from '@core/services/seo';
 import { AnalyticsService } from '@core/services/analytics.service';
 import { ToastService } from '@core/services/toast.service';
@@ -319,8 +339,12 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
     { titleKey: 'FAQ.Q3_TITLE', descKey: 'FAQ.Q3_DESC', isOpen: false },
   ];
 
-  public testimonials: Signal<Testimonial[]> = toSignal(this.dataService.getTestimonials(), { initialValue: [] as Testimonial[] });
-  public projects: Signal<Project[]> = toSignal(this.dataService.getProjects(), { initialValue: [] as Project[] });
+  public testimonials: Signal<Testimonial[]> = toSignal(this.dataService.getTestimonials(), {
+    initialValue: TESTIMONIALS as Testimonial[],
+  });
+  public projects: Signal<Project[]> = toSignal(this.dataService.getProjects(), {
+    initialValue: PROJECTS as Project[],
+  });
 
   // New filtering logic for projects
   public selectedProjectCategory = signal<string>('All');
@@ -372,10 +396,18 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
     return 'HOME.HERO1_SUBTITLE';
   });
 
-  public solutions: Signal<Solution[]> = toSignal(this.dataService.getSolutions(), { initialValue: [] as Solution[] });
-  public products: Signal<Product[]> = toSignal(this.dataService.getProducts(), { initialValue: [] as Product[] });
-  public processSteps: Signal<ProcessStep[]> = toSignal(this.dataService.getProcessSteps(), { initialValue: [] as ProcessStep[] });
-  public partners: Signal<Partner[]> = toSignal(this.dataService.getPartners(), { initialValue: [] as Partner[] });
+  public solutions: Signal<Solution[]> = toSignal(this.dataService.getSolutions(), {
+    initialValue: SOLUTIONS as Solution[],
+  });
+  public products: Signal<Product[]> = toSignal(this.dataService.getProducts(), {
+    initialValue: PRODUCTS as Product[],
+  });
+  public processSteps: Signal<ProcessStep[]> = toSignal(this.dataService.getProcessSteps(), {
+    initialValue: PROCESS_STEPS as ProcessStep[],
+  });
+  public partners: Signal<Partner[]> = toSignal(this.dataService.getPartners(), {
+    initialValue: PARTNERS as Partner[],
+  });
 
   // Modal signals
   public isVideoModalOpen = signal(false);
@@ -399,14 +431,28 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
           });
         });
         return allTechs;
-      })
+      }),
     ),
-    { initialValue: [] as Technology[] }
+    {
+      initialValue: (() => {
+        const allTechs: Technology[] = [];
+        const seen = new Set<string>();
+        TECH_STACK.forEach((cat) => {
+          cat.technologies.forEach((tech) => {
+            if (!seen.has(tech.name)) {
+              allTechs.push(tech);
+              seen.add(tech.name);
+            }
+          });
+        });
+        return allTechs;
+      })() as Technology[],
+    },
   );
 
   public latestBlogPosts: Signal<BlogPost[]> = toSignal(
     this.dataService.getBlogPosts().pipe(map((posts) => posts.slice(0, 3))),
-    { initialValue: [] as BlogPost[] }
+    { initialValue: BLOG_POSTS.slice(0, 3) as BlogPost[] }
   );
 
   public activeTab = signal<'services' | 'products'>('services');
@@ -416,7 +462,7 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
   });
   public isReturningVisitor = signal(false);
   public isSubmitting = signal(false);
-  public isLoading = signal(true); // For skeleton loader demo
+  public isLoading = signal(false); // Default to false for better SEO/Performance
   public showScrollIndicator = signal(true);
   public isMobileExitSheetOpen = signal(false);
 
@@ -498,13 +544,9 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
         localStorage.setItem('jsl_visited', 'true');
       }
 
-      // Simulate initial loading
-      setTimeout(() => {
-        this.isLoading.set(false);
-        // El slider de offerings no existe en el DOM mientras se muestra el skeleton
-        // por eso lo inicializamos cuando termina la carga simulada.
-        setTimeout(() => this.initializeOfferingsSlider(), 0);
-      }, 1500);
+      // No artificial delay for better Lighthouse/FCP/LCP
+      this.isLoading.set(false);
+      setTimeout(() => this.initializeOfferingsSlider(), 0);
     }
 
     this.addSchemaData();

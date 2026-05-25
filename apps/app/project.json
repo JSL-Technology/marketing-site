@@ -78,7 +78,15 @@
       "defaultConfiguration": "development",
       "options": {
         "prebundle": false,
-        "allowedHosts": ["waters-members-examinations-atlas.trycloudflare.com", "localhost", "127.0.0.1"]
+        "allowedHosts": [
+          "waters-members-examinations-atlas.trycloudflare.com",
+          "localhost",
+          "127.0.0.1",
+          "localhost:4100",
+          "127.0.0.1:4100",
+          "localhost:4200",
+          "127.0.0.1:4200"
+        ]
       }
     },
     "extract-i18n": {
