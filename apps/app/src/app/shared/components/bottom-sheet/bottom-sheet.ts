@@ -107,7 +107,10 @@ export class BottomSheetComponent implements OnInit, OnChanges, OnDestroy {
           } else {
             // Reset to reactive state
             this.ngZone.run(() => {
-              this.translateY = y;
+              // `y` is produced in pixels by the gesture engine. Once drag ends we
+              // return to declarative state that uses percentage-based translateY
+              // in the template, so we must snap back to semantic open/closed values.
+              this.translateY = this.isOpen ? 0 : 100;
               this.isDragging = false;
               this.overlayOpacity = this.isOpen ? 1 : 0;
               this.transitionStyle = this.isOpen
