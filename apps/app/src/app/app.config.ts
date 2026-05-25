@@ -6,7 +6,7 @@ import {
   isDevMode,
 } from '@angular/core';
 import { provideRouter, withInMemoryScrolling } from '@angular/router';
-import { provideHttpClient, withFetch, withHttpTransferCache } from '@angular/common/http';
+import { provideHttpClient, withFetch } from '@angular/common/http';
 import { provideServiceWorker } from '@angular/service-worker';
 import { BASE_URL } from './core/constants/tokens';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
@@ -14,6 +14,7 @@ import { TranslateLoader, provideTranslateService } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import { LucideAngularModule } from 'lucide-angular';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { provideClientHydration, withHttpTransferCacheOptions } from '@angular/platform-browser';
 import { CookieService } from 'ngx-cookie-service';
 import { ALL_ICONS } from './core/constants/icons';
 
@@ -85,7 +86,8 @@ export const appConfig: ApplicationConfig = {
       NOTE: Native scroll restoration only handles the main window scroll.
       Internal scroll containers (overflow: auto/scroll) are not covered by this solution.
     */
-    provideHttpClient(withFetch(), withHttpTransferCache()),
+    provideHttpClient(withFetch()),
+    provideClientHydration(withHttpTransferCacheOptions()),
     provideAnimationsAsync(),
     provideTranslateService({
       fallbackLang: 'en',
