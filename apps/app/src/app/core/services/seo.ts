@@ -55,6 +55,14 @@ export class Seo {
         this.setPaginationLinks(); // limpia prev/next en cada navegación
       }),
       map(() => this.getDeepestRoute(this.activatedRoute)),
+      map(route => {
+        // Find the nearest route that actually has SEO data (handles nested indexing routes)
+        let seoRoute = route;
+        while (seoRoute && !seoRoute.snapshot.data['title']) {
+          seoRoute = seoRoute.parent!;
+        }
+        return seoRoute || route;
+      }),
       filter(route => !!route.snapshot.data['title']),
       switchMap(route => {
         const titleKey = route.snapshot.data['title'];
@@ -122,7 +130,14 @@ export class Seo {
         ? this.baseTitle
         : `${translatedTitle} | ${this.baseTitle}`;
       
-      const currentLang = route.parent?.snapshot.params['lang'];
+      // Find 'lang' parameter by traversing up the tree
+      let currentLang = route.snapshot.params['lang'];
+      let parent = route.parent;
+      while (!currentLang && parent) {
+        currentLang = parent.snapshot.params['lang'];
+        parent = parent.parent;
+      }
+
       const pathSegments = route.snapshot.pathFromRoot
         .flatMap(r => r.url.map(segment => segment.path))
         .filter(path => path !== currentLang); // Exclude language segment from path

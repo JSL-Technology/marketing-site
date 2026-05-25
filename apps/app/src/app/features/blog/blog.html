@@ -67,7 +67,9 @@
                       {{ post.readTime }} {{ 'BLOG.READ_TIME_UNIT' | translate }}
                     </span>
                   </div>
-                  <a [routerLink]="['/', currentLang, 'blog', post.slug]" class="featured-post__cta">
+                  <a [routerLink]="['/', currentLang, 'blog', post.slug]"
+                     class="featured-post__cta"
+                     [attr.aria-label]="('COMMON.READ_MORE' | translate) + ': ' + ('BLOG.' + post.key + '_TITLE' | translate)">
                     {{ 'COMMON.READ_MORE' | translate }} <lucide-icon name="ArrowRight"></lucide-icon>
                   </a>
                 </div>

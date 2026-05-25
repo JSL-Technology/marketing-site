@@ -448,7 +448,8 @@ const sitemapCache = new Map<string, { xml: string; generatedAt: number }>();
 const SITEMAP_CACHE_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
 
 app.get('/sitemap.xml', (req, res) => {
-  const domain = resolveCanonicalBaseUrl(req);
+  // Always use production canonical URL for sitemap to avoid local/staging host leakage.
+  const domain = CANONICAL_BASE_URL;
   const cached = sitemapCache.get(domain);
   const now = Date.now();
 
