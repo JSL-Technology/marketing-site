@@ -203,6 +203,26 @@ a {
   background: var(--text-muted);
 }
 
+// ── Performance: content-visibility ──────────────────────────────────────────
+// Sections below the fold skip paint+layout until they scroll into view.
+// contain-intrinsic-size prevents scrollbar jump (approximate height reserve).
+// Only applied to page-level sections, NOT to header/hero/first visible content.
+.stats-section,
+.partners-section,
+.tech-stack-slider,
+.welcome-section,
+.offerings-section,
+.maturity-section,
+.featured-projects,
+.lead-magnet-section,
+.testimonials-section,
+.process-section,
+.latest-insights,
+.faq-preview-section {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 600px; // reserve ~600px height to prevent CLS from reflow
+}
+
 // Utilidades de Animación
 [jslAnimateOnScroll] {
   opacity: 0;

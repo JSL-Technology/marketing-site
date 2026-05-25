@@ -3,9 +3,7 @@
 @use 'swiper/css' as *;
 @use 'swiper/css/effect-fade' as *;
 @use 'swiper/css/pagination' as *;
-@use 'swiper/css/effect-creative' as *;
-// --- NUEVO: Imports para el slider de testimonios ---
-@use 'swiper/css/effect-coverflow' as *;
+// effect-creative y effect-coverflow eliminados: ningún slider activo los usa
 @use 'swiper/css/navigation' as *; // â† AÃ‘ADIDO: Para estilos base de navegaciÃ³n
 
 @use '../solutions/solutions.scss';
@@ -1005,7 +1003,12 @@ swiper-container {
 }
 
 .welcome-section__cta {
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+  /* avoid 'transition: all' — animating layout props causes non-composited paint */
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+              box-shadow 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+              color 0.3s ease,
+              border-color 0.3s ease,
+              background-color 0.3s ease !important;
 
   &:hover {
     transform: translateY(-4px) scale(1.02);
@@ -1026,7 +1029,11 @@ swiper-container {
   border: 2px solid var(--border-color);
   padding: 0.8rem 1.8rem;
   border-radius: var(--radius-md);
-  transition: all var(--transition-speed) ease;
+  transition: transform var(--transition-speed) ease,
+              box-shadow var(--transition-speed) ease,
+              color var(--transition-speed) ease,
+              border-color var(--transition-speed) ease,
+              background-color var(--transition-speed) ease;
   cursor: pointer;
 
   lucide-icon {
@@ -1089,6 +1096,7 @@ swiper-container {
     inset-inline-start: -100px;
     background: radial-gradient(circle, rgba(255, 75, 43, 0.08) 0%, transparent 65%);
     filter: blur(60px);
+    will-change: transform; // promote to compositor layer, avoids repaint on scroll
   }
 
   &--2 {
@@ -1495,7 +1503,7 @@ swiper-container {
   justify-content: center;
   color: rgba(255, 255, 255, 0.9);
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity 0.3s ease, background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
   opacity: 0.6;
 
   &.swiper-button-disabled {
@@ -2185,7 +2193,7 @@ swiper-container {
   justify-content: center;
   color: rgba(255, 255, 255, 0.9);
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity 0.3s ease, background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
   opacity: 0.6;
 
   &.swiper-button-disabled {
@@ -2682,6 +2690,7 @@ swiper-container {
 }
 
 /* Stats Section */
+/* content-visibility defers render of off-screen sections, reducing main-thread work */
 .stats-section {
   position: relative;
   background: var(--bg-secondary);

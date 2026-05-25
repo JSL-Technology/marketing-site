@@ -6,7 +6,7 @@ import {
   isDevMode,
 } from '@angular/core';
 import { provideRouter, withInMemoryScrolling } from '@angular/router';
-import { provideHttpClient, withFetch } from '@angular/common/http';
+import { provideHttpClient, withFetch, withHttpTransferCache } from '@angular/common/http';
 import { provideServiceWorker } from '@angular/service-worker';
 import { BASE_URL } from './core/constants/tokens';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
@@ -85,7 +85,7 @@ export const appConfig: ApplicationConfig = {
       NOTE: Native scroll restoration only handles the main window scroll.
       Internal scroll containers (overflow: auto/scroll) are not covered by this solution.
     */
-    provideHttpClient(withFetch()),
+    provideHttpClient(withFetch(), withHttpTransferCache()),
     provideAnimationsAsync(),
     provideTranslateService({
       fallbackLang: 'en',

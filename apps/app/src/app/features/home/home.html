@@ -477,7 +477,15 @@
 
       <div class="lead-magnet-form-wrapper">
         <div class="lead-magnet-form">
-          <input type="email" [placeholder]="'HOME.LEAD_MAGNET_PLACEHOLDER' | translate" class="lead-magnet-input" />
+          <!-- Label visually hidden but accessible — fixes Lighthouse "Form elements have associated labels" -->
+          <label for="lead-magnet-email" class="sr-only">{{ 'HOME.LEAD_MAGNET_PLACEHOLDER' | translate }}</label>
+          <input
+            id="lead-magnet-email"
+            type="email"
+            [placeholder]="'HOME.LEAD_MAGNET_PLACEHOLDER' | translate"
+            class="lead-magnet-input"
+            autocomplete="email"
+          />
           <button (click)="downloadLeadMagnet()" class="lead-magnet-btn" [disabled]="isSubmitting()">
             @if (isSubmitting()) {
                <span>{{ 'HOME.LEAD_MAGNET_SENDING' | translate }}</span>
@@ -540,9 +548,10 @@
           <div class="testimonial-card">
             <span class="testimonial-card__deco" aria-hidden="true">"</span>
 
-            <div class="testimonial-card__stars" aria-label="5 out of 5 stars">
+            <!-- aria-label describes the rating; icons are decorative -->
+            <div class="testimonial-card__stars" aria-label="5 out of 5 stars" role="img">
               @for (star of getStars(5); track $index) {
-                <lucide-icon name="Star" [size]="14"></lucide-icon>
+                <lucide-icon name="Star" [size]="14" aria-hidden="true"></lucide-icon>
               }
             </div>
 
@@ -573,7 +582,7 @@
       <div class="sp-widget">
         <div class="sp-widget__stars" aria-hidden="true">
           @for (star of getStars(5); track $index) {
-            <lucide-icon name="Star" [size]="12"></lucide-icon>
+            <lucide-icon name="Star" [size]="12" aria-hidden="true"></lucide-icon>
           }
         </div>
         <span class="sp-score">{{ 'HOME.CLUTCH_SCORE' | translate }}</span>
@@ -584,7 +593,7 @@
       <div class="sp-widget">
         <div class="sp-widget__stars" aria-hidden="true">
           @for (star of getStars(5); track $index) {
-            <lucide-icon name="Star" [size]="12"></lucide-icon>
+            <lucide-icon name="Star" [size]="12" aria-hidden="true"></lucide-icon>
           }
         </div>
         <span class="sp-score">{{ 'HOME.GOOGLE_SCORE' | translate }}</span>
@@ -735,11 +744,24 @@
   <div class="faq-list">
     @for (item of faqPreview; track $index) {
       <div class="faq-item" [class.open]="item.isOpen">
-        <button class="faq-question" (click)="toggleFaq($index)" [attr.aria-expanded]="item.isOpen">
+        <!-- aria-controls links button to its panel; aria-expanded signals open/close state -->
+        <button
+          class="faq-question"
+          (click)="toggleFaq($index)"
+          [attr.aria-expanded]="item.isOpen"
+          [attr.aria-controls]="'faq-answer-' + $index"
+          [id]="'faq-btn-' + $index"
+        >
           {{ item.titleKey | translate }}
-          <lucide-icon [name]="item.isOpen ? 'Minus' : 'Plus'"></lucide-icon>
+          <lucide-icon [name]="item.isOpen ? 'Minus' : 'Plus'" aria-hidden="true"></lucide-icon>
         </button>
-        <div class="faq-answer" [style.max-height]="item.isOpen ? '500px' : '0'">
+        <div
+          class="faq-answer"
+          [style.max-height]="item.isOpen ? '500px' : '0'"
+          [id]="'faq-answer-' + $index"
+          role="region"
+          [attr.aria-labelledby]="'faq-btn-' + $index"
+        >
           <div class="faq-answer-inner" [innerHTML]="item.descKey | translate"></div>
         </div>
       </div>

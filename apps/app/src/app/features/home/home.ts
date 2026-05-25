@@ -4,10 +4,8 @@ import {
   OnInit,
   inject,
   AfterViewInit,
-  Inject,
   PLATFORM_ID,
   ElementRef,
-  ViewChild,
   Renderer2,
   signal,
   OnDestroy,
@@ -34,7 +32,6 @@ import { DigitalMaturitySelector } from './components/digital-maturity-selector/
 import { VideoModal } from '@shared/components/video-modal/video-modal';
 import { BookingModal } from '@shared/components/booking-modal/booking-modal';
 import { ExitIntentModal } from './components/exit-intent-modal/exit-intent-modal';
-import { ImageComparisonComponent } from '@shared/components/image-comparison/image-comparison';
 import { SkeletonLoaderComponent } from '@shared/components/skeleton-loader/skeleton-loader.component';
 import { RoiCalculatorComponent } from '@shared/components/roi-calculator/roi-calculator.component';
 import { PictureComponent } from '@shared/components/picture/picture';
@@ -44,11 +41,8 @@ import { FeatureFlagService } from '@core/services/feature-flag.service';
 import { OnboardingFlowService } from '@core/services/onboarding-flow.service';
 
 // Swiper Web Components
-import { Pagination, Autoplay, EffectCoverflow, EffectFade, Navigation } from 'swiper/modules';
-import { register } from 'swiper/element/bundle';
+import { Pagination, Autoplay, EffectFade, Navigation } from 'swiper/modules';
 import { triggerTick } from '@shared/utils/haptic-feedback';
-
-register();
 
 @Component({
   selector: 'jsl-home',
@@ -64,7 +58,6 @@ register();
     VideoModal,
     BookingModal,
     ExitIntentModal,
-    ImageComparisonComponent,
     SkeletonLoaderComponent,
     RoiCalculatorComponent,
     PictureComponent
@@ -416,7 +409,7 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
   });
   public isReturningVisitor = signal(false);
   public isSubmitting = signal(false);
-  public isLoading = signal(true); // For skeleton loader demo
+  public isLoading = signal(false); // No artificial loading delay — content renders immediately
   public showScrollIndicator = signal(true);
   public isMobileExitSheetOpen = signal(false);
 
@@ -486,6 +479,9 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
     }
 
     if (isPlatformBrowser(this.platformId)) {
+      // Register Swiper web components only in browser (avoids SSR overhead)
+      import('swiper/element/bundle').then(({ register }) => register());
+
       const scrollIndicatorSeen = localStorage.getItem('jsl_scroll_indicator_seen');
       if (scrollIndicatorSeen) {
         this.showScrollIndicator.set(false);
@@ -497,14 +493,6 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
       } else {
         localStorage.setItem('jsl_visited', 'true');
       }
-
-      // Simulate initial loading
-      setTimeout(() => {
-        this.isLoading.set(false);
-        // El slider de offerings no existe en el DOM mientras se muestra el skeleton
-        // por eso lo inicializamos cuando termina la carga simulada.
-        setTimeout(() => this.initializeOfferingsSlider(), 0);
-      }, 1500);
     }
 
     this.addSchemaData();
@@ -560,7 +548,7 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
 
 
   private initializeOfferingsSlider() {
-    if (!this.isBrowser || this.isLoading()) return;
+    if (!this.isBrowser) return;
 
     const offeringsSwiperEl = this.el.nativeElement.querySelector('.offerings-section swiper-container');
     if (!offeringsSwiperEl) return;
@@ -844,8 +832,8 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
         testimonialSwiperEl.initialize();
       }
 
-      // 4. Offerings Slider
-      this.initializeOfferingsSlider();
+      // 4. Offerings Slider — init directly, no artificial delay
+      setTimeout(() => this.initializeOfferingsSlider(), 0);
 
       // 4. Latest Insights Slider
       const insightsSwiperEl = this.el.nativeElement.querySelector('.latest-insights swiper-container');

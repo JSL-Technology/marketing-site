@@ -57,7 +57,8 @@
     <link rel="dns-prefetch" href="https://www.google-analytics.com" />
 
     <!-- Preload critical above-the-fold hero image (LCP optimization) -->
-    <link rel="preload" as="image" href="assets/imgs/Avif/img-2.avif" type="image/avif" fetchpriority="high" />
+    <!-- imagesizes tells the browser the image renders at 100vw, matching the fill hero -->
+    <link rel="preload" as="image" href="assets/imgs/Avif/img-2.avif" type="image/avif" fetchpriority="high" imagesizes="100vw" />
 
     <!-- Fonts: async (non-render-blocking) via preload + onload swap -->
     <link

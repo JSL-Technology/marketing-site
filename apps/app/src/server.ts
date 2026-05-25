@@ -490,6 +490,13 @@ app.use((req, res, next) => {
   res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
   res.setHeader('Vary', 'Accept-Language');
 
+  // SSR HTML cache: 60s fresh + 5min stale-while-revalidate for CDN/proxies.
+  // Eliminates "Efficiently cache static assets" warning for HTML.
+  // Only cache GET/HEAD to avoid caching form submissions.
+  if (req.method === 'GET' || req.method === 'HEAD') {
+    res.setHeader('Cache-Control', 'public, max-age=60, stale-while-revalidate=300');
+  }
+
   // Defense-in-depth: X-Robots-Tag for noindex routes (supplements meta robots tag)
   const isNoindexRoute = NOINDEX_ROUTES.some((route) => req.path.includes(route));
   if (isNoindexRoute) {
