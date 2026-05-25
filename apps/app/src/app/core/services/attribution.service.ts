@@ -1,7 +1,8 @@
-import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID, DestroyRef, inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 export interface UtmTouch {
   utm_source?: string;
@@ -25,6 +26,8 @@ const MAX_TOUCHES = 10;
 
 @Injectable({ providedIn: 'root' })
 export class AttributionService {
+  private readonly destroyRef = inject(DestroyRef);
+
   constructor(
     @Inject(PLATFORM_ID) private platformId: object,
     private router: Router,
@@ -32,7 +35,10 @@ export class AttributionService {
     if (isPlatformBrowser(this.platformId)) {
       this.captureCurrentTouch();
       this.router.events
-        .pipe(filter((e): e is NavigationEnd => e instanceof NavigationEnd))
+        .pipe(
+          filter((e): e is NavigationEnd => e instanceof NavigationEnd),
+          takeUntilDestroyed(this.destroyRef),
+        )
         .subscribe(() => this.captureCurrentTouch());
     }
   }

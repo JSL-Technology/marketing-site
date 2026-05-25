@@ -1,14 +1,14 @@
-<div class="solutions-page">
+﻿<div class="solutions-page">
   <!-- Decorative Background Elements -->
   <div class="bg-glow bg-glow--1"></div>
   <div class="bg-glow bg-glow--2"></div>
 
   <!-- Hero Section -->
-  <section class="solutions-hero">
+  <section class="solutions-hero" aria-labelledby="solutions-hero-heading">
     <div class="container">
       <div class="hero-content">
         <span class="section-eyebrow" jslAnimateOnScroll>{{ 'SOLUTIONS.EYEBROW' | translate }}</span>
-        <h1 class="hero-title" jslAnimateOnScroll>{{ 'SOLUTIONS.TITLE' | translate }}</h1>
+        <h1 class="hero-title" id="solutions-hero-heading" jslAnimateOnScroll>{{ 'SOLUTIONS.TITLE' | translate }}</h1>
         <p class="hero-subtitle" jslAnimateOnScroll>{{ 'SOLUTIONS.SUBTITLE' | translate }}</p>
         <div class="hero-actions" jslAnimateOnScroll>
           <button (click)="scrollToGrid()" class="btn-primary">

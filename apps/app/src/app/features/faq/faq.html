@@ -1,9 +1,9 @@
-<!-- Hero Section -->
-<section class="faq-hero">
+﻿<!-- Hero Section -->
+<section class="faq-hero" aria-labelledby="faq-hero-heading">
   <div class="container">
     <div class="faq-hero__content">
       <span class="section-eyebrow" jslAnimateOnScroll>{{ 'FAQ.EYEBROW' | translate }}</span>
-      <h1 jslAnimateOnScroll>{{ 'FAQ.TITLE' | translate }}</h1>
+      <h1 jslAnimateOnScroll id="faq-hero-heading">{{ 'FAQ.TITLE' | translate }}</h1>
       <p class="subtitle" jslAnimateOnScroll>{{ 'FAQ.SUBTITLE' | translate }}</p>
 
       <!-- Enterprise Search Bar -->
@@ -62,14 +62,21 @@
             <button
               class="faq-card__trigger"
               (click)="toggleQuestion($index)"
-              [attr.aria-expanded]="openQuestionIndex() === $index">
+              [attr.aria-expanded]="openQuestionIndex() === $index"
+              [attr.aria-controls]="'faq-answer-' + $index"
+              [id]="'faq-question-' + $index">
               <span class="faq-card__question">{{ item.questionKey | translate }}</span>
-              <div class="faq-card__icon-box">
+              <div class="faq-card__icon-box" aria-hidden="true">
                 <lucide-icon name="ChevronDown" class="chevron" [size]="20"></lucide-icon>
               </div>
             </button>
 
-            <div class="faq-card__answer-wrapper" [class.faq-card__answer-wrapper--open]="openQuestionIndex() === $index">
+            <div
+              class="faq-card__answer-wrapper"
+              [class.faq-card__answer-wrapper--open]="openQuestionIndex() === $index"
+              [id]="'faq-answer-' + $index"
+              role="region"
+              [attr.aria-labelledby]="'faq-question-' + $index">
               <div class="faq-card__answer">
                 <div class="answer-content" [innerHTML]="item.answerKey | translate"></div>
               </div>

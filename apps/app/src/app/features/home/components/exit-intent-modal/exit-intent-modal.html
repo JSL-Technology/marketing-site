@@ -1,16 +1,24 @@
 @if (isOpen) {
-  <div class="modal-overlay" @overlayAnimation (click)="onClose()">
-    <div class="modal-container" @modalAnimation (click)="$event.stopPropagation()">
+  <div class="modal-overlay" @overlayAnimation (click)="onClose()" role="presentation">
+    <div
+      class="modal-container"
+      @modalAnimation
+      (click)="$event.stopPropagation()"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="exit-modal-title"
+      cdkTrapFocus
+      cdkTrapFocusAutoCapture>
       <button class="modal-close" (click)="onClose()" [attr.aria-label]="'ARIA.CLOSE_MODAL' | translate">
-        <lucide-icon name="X"></lucide-icon>
+        <lucide-icon name="X" aria-hidden="true"></lucide-icon>
       </button>
 
       <div class="modal-content">
-        <div class="modal-icon">
+        <div class="modal-icon" aria-hidden="true">
           <lucide-icon name="FileText" size="48"></lucide-icon>
         </div>
 
-        <h2 class="modal-title">{{ 'EXIT_MODAL.TITLE' | translate }}</h2>
+        <h2 id="exit-modal-title" class="modal-title">{{ 'EXIT_MODAL.TITLE' | translate }}</h2>
         <p class="modal-subtitle">{{ 'EXIT_MODAL.SUBTITLE' | translate }}</p>
 
         <ul class="modal-benefits">

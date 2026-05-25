@@ -81,6 +81,17 @@
   --accent-primary-rgb: var(--primary-rgb);
   --border-radius: var(--radius-md);
   --bg-body: var(--bg-primary);
+
+  // Z-index scale — use these tokens instead of raw values
+  --z-base:      1;
+  --z-raised:    10;
+  --z-dropdown:  50;
+  --z-sticky:    80;
+  --z-header:    100;
+  --z-overlay:   200;
+  --z-modal:     300;
+  --z-toast:     400;
+  --z-tooltip:   500;
 }
 
 // 2. Reseteo Básico y Estilos Globales
@@ -90,11 +101,9 @@
   box-sizing: border-box;
 }
 
-@media (max-width: 768px) {
-  * {
-    cursor: default !important;
-  }
-}
+// ACC-28: Removed `cursor: default !important` override on mobile.
+// That rule broke `cursor: pointer` on buttons/links for tablet+stylus users.
+// Touch devices inherently show no cursor; there is no need to force one.
 
 html,
 body {
@@ -146,8 +155,31 @@ body {
 
 // Accesibilidad: Foco consistente
 :focus-visible {
-  outline: none;
-  box-shadow: var(--focus-ring);
+  outline: 2px solid var(--primary, #0066cc);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(var(--primary-rgb, 0, 102, 204), 0.25);
+}
+
+/* Skip to main content — accessible keyboard shortcut */
+.skip-to-main {
+  position: absolute;
+  top: -100%;
+  left: 0;
+  padding: 0.75rem 1.5rem;
+  background: var(--primary, #0066cc);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  z-index: 9999;
+  border-radius: 0 0 8px 0;
+  text-decoration: none;
+  transition: top 0.15s ease;
+
+  &:focus {
+    top: 0;
+    outline: 3px solid #fff;
+    outline-offset: 2px;
+  }
 }
 
 a {
@@ -217,10 +249,42 @@ a {
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  [jslAnimateOnScroll],
+  [jslAnimateOnScroll].animated {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
 lucide-icon {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+// ── Hero Slider: PictureComponent image styles (ACC-30) ───────────────────────
+// jsl-picture uses ViewEncapsulation.Emulated, so we target it from the global
+// stylesheet instead of using ::ng-deep inside home.scss.
+.hero-slider jsl-picture img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-slider .swiper-slide-active jsl-picture img {
+  transform: scale(1.08);
+  transition: transform 8s ease-out;
+}
+
+.hero-slider .swiper-slide:nth-child(2) jsl-picture img {
+  object-position: left center;
+}
+
+.hero-slider .swiper-slide:nth-child(3) jsl-picture img {
+  object-position: left center;
 }
 
 // Utility Classes (Minimal set to avoid full framework)

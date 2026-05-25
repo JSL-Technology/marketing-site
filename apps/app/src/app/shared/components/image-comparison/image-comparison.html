@@ -25,12 +25,13 @@
     [attr.aria-valuenow]="sliderPosition"
     aria-valuemin="0"
     aria-valuemax="100"
-    [attr.aria-label]="'Comparison slider'"
+    [attr.aria-label]="'IMAGE_COMPARISON.SLIDER_LABEL' | translate"
+    [attr.aria-valuetext]="sliderPosition + '% — ' + ('IMAGE_COMPARISON.SHOWING_MODERN' | translate)"
     (keydown)="onKeyDown($event)"
   >
     <div class="handle-line"></div>
     <div class="handle-circle">
-      <lucide-icon name="ChevronsLeftRight" size="16"></lucide-icon>
+      <lucide-icon name="ChevronsLeftRight" size="16" aria-hidden="true"></lucide-icon>
     </div>
   </div>
 </div>

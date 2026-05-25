@@ -12,7 +12,7 @@ import { Seo } from '@core/services/seo';
 import { Router, RouterLink } from '@angular/router';
 import { AnimateOnScroll } from '@shared/directives/animate-on-scroll';
 import { Subject } from 'rxjs';
-import { takeUntil, finalize, distinctUntilChanged } from 'rxjs/operators';
+import { takeUntil, finalize, distinctUntilChanged, debounceTime } from 'rxjs/operators';
 import { ALL_ICONS } from '@core/constants/icons';
 
 @Component({
@@ -143,13 +143,17 @@ export class Contact implements OnInit, OnDestroy {
     // Pre-fill segment from personalization service
     const segment = this.personalizationService.userSegment();
     if (segment && segment !== 'unknown') {
-      this.contactForm.patchValue({ referralSource: '' }, { emitEvent: false });
+      this.contactForm.patchValue({ referralSource: segment }, { emitEvent: false });
     }
   }
 
   private setupFormStartTracking(): void {
     this.contactForm.valueChanges
-      .pipe(takeUntil(this.destroy$))
+      .pipe(
+        debounceTime(500),
+        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
+        takeUntil(this.destroy$)
+      )
       .subscribe((value) => {
         const lastField = this.getLastMeaningfulField(value);
         if (lastField) {
@@ -225,11 +229,17 @@ export class Contact implements OnInit, OnDestroy {
 
   get f() { return this.contactForm.controls; }
 
+  get currentLang(): string { return this.router.url.split('/')[1] || 'en'; }
+
   async onSubmit(): Promise<void> {
+    if (this.isSubmitting) return;
+    this.isSubmitting = true;
+
     this.contactForm.get('privacy')!.markAsTouched();
     this.contactForm.get('phone')!.markAsTouched();
 
     if (this.contactForm.invalid) {
+      this.isSubmitting = false;
       this.contactForm.markAllAsTouched();
       this.toastService.show('CONTACT.FORM.ERROR', 'error');
       Object.keys(this.contactForm.controls).forEach(key => {
@@ -242,6 +252,7 @@ export class Contact implements OnInit, OnDestroy {
     }
 
     if (this.contactForm.value.honeypot) {
+      this.isSubmitting = false;
       this.submitSuccess = true;
       this.contactForm.reset({ privacy: false, serviceOther: '', referralSource: '', honeypot: '' });
       this.toastService.show('CONTACT.FORM.SUCCESS', 'success');
@@ -250,11 +261,11 @@ export class Contact implements OnInit, OnDestroy {
 
     const recaptchaToken = await this.getRecaptchaToken();
     if (!recaptchaToken) {
+      this.isSubmitting = false;
       this.toastService.show('CONTACT.FORM.RECAPTCHA_ERROR', 'error');
       return;
     }
 
-    this.isSubmitting = true;
     this.submitSuccess = false;
     this.submitError = false;
 
@@ -289,7 +300,8 @@ export class Contact implements OnInit, OnDestroy {
           this.analytics.trackEvent('lead_synced', { form_name: 'contact', lead_status: response?.success ? 'synced' : 'pending_sync' });
           this.analytics.trackConversion('contact_form_submit');
           this.analytics.trackEvent('generate_lead', { method: 'contact_form' });
-          this.router.navigate(['/thank-you']);
+          const currentLang = this.router.url.split('/')[1] || 'en';
+          this.router.navigate(['/', currentLang, 'thank-you']);
         },
         error: (err: any) => {
           this.submitError = true;
@@ -318,6 +330,7 @@ export class Contact implements OnInit, OnDestroy {
   }
 
   private injectRecaptchaScript(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
     if (!this.recaptchaSiteKey || document.getElementById('recaptcha-enterprise-script')) return;
     const script = document.createElement('script');
     script.id = 'recaptcha-enterprise-script';

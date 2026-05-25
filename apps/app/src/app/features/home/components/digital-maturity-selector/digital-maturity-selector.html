@@ -2,12 +2,18 @@
   <div class="maturity-content">
 
     @if (step() < questions.length) {
-      <div class="question-container fade-in">
-        <div class="progress-bar">
+      <div class="question-container fade-in" aria-live="polite" aria-atomic="true">
+        <div
+          class="progress-bar"
+          role="progressbar"
+          [attr.aria-valuenow]="step() + 1"
+          aria-valuemin="1"
+          [attr.aria-valuemax]="questions.length"
+          [attr.aria-label]="'MATURITY.STEP' | translate">
           <div class="progress-fill" [style.width.%]="((step() + 1) / questions.length) * 100"></div>
         </div>
 
-        <span class="step-indicator">{{ 'MATURITY.STEP' | translate }} {{ step() + 1 }}/{{ questions.length }}</span>
+        <span class="step-indicator" aria-hidden="true">{{ 'MATURITY.STEP' | translate }} {{ step() + 1 }}/{{ questions.length }}</span>
 
         <h3 class="question-title">{{ questions[step()].titleKey | translate }}</h3>
 

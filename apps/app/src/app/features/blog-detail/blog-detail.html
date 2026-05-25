@@ -150,13 +150,23 @@
               }
               <div class="author-card__social">
                 @if (author.linkedIn) {
-                  <a [href]="author.linkedIn" target="_blank" class="author-social-link" [title]="'SHARE.LINKEDIN' | translate">
-                    <lucide-icon name="Linkedin"></lucide-icon>
+                  <a
+                    [href]="author.linkedIn"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="author-social-link"
+                    [attr.aria-label]="('SHARE.LINKEDIN' | translate) + ' — ' + author.nameKey">
+                    <lucide-icon name="Linkedin" aria-hidden="true"></lucide-icon>
                   </a>
                 }
                 @if (author.twitter) {
-                  <a [href]="author.twitter" target="_blank" class="author-social-link" [title]="'SHARE.TWITTER' | translate">
-                    <lucide-icon name="Twitter"></lucide-icon>
+                  <a
+                    [href]="author.twitter"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="author-social-link"
+                    [attr.aria-label]="('SHARE.TWITTER' | translate) + ' — ' + author.nameKey">
+                    <lucide-icon name="Twitter" aria-hidden="true"></lucide-icon>
                   </a>
                 }
               </div>
@@ -214,8 +224,15 @@
   </div>
 
   @if (showSideShareMenu()) {
-    <div class="share-modal-overlay" (click)="toggleSideShareMenu()">
-      <div class="share-modal-container" (click)="$event.stopPropagation()">
+    <div class="share-modal-overlay" (click)="toggleSideShareMenu()" role="presentation">
+      <div
+        class="share-modal-container"
+        (click)="$event.stopPropagation()"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="share-modal-title"
+        cdkTrapFocus
+        cdkTrapFocusAutoCapture>
         <app-social-share
           [url]="'/blog/' + post.slug"
           [title]="'BLOG.' + post.key + '_TITLE' | translate"
@@ -226,11 +243,18 @@
   }
 
   @if (showCommentsModal()) {
-    <div class="comments-modal-overlay" (click)="toggleCommentsModal()">
-      <div class="comments-modal-container" (click)="$event.stopPropagation()">
+    <div class="comments-modal-overlay" (click)="toggleCommentsModal()" role="presentation">
+      <div
+        class="comments-modal-container"
+        (click)="$event.stopPropagation()"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="comments-modal-title"
+        cdkTrapFocus
+        cdkTrapFocusAutoCapture>
         <div class="modal-header">
-          <h3>{{ 'BLOG.COMMENTS' | translate }} ({{ comments().length }})</h3>
-          <button class="close-modal-btn" (click)="toggleCommentsModal()" aria-label="Close">
+          <h3 id="comments-modal-title">{{ 'BLOG.COMMENTS' | translate }} ({{ comments().length }})</h3>
+          <button class="close-modal-btn" (click)="toggleCommentsModal()" [attr.aria-label]="'ARIA.CLOSE_MODAL' | translate">
             <lucide-icon name="X" [size]="24"></lucide-icon>
           </button>
         </div>

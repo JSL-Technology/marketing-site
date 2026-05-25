@@ -511,7 +511,7 @@
   inset: 0;
   background: rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(16px);
-  z-index: 10000;
+  z-index: var(--z-modal); // ACC-32: was 10000
   display: flex;
   align-items: center;
   justify-content: center;
@@ -540,13 +540,20 @@
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .share-modal-container,
+  .comments-modal-container {
+    animation: none !important;
+  }
+}
+
 // --- COMMENTS MODAL ---
 .comments-modal-overlay {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(8px);
-  z-index: 10000;
+  z-index: var(--z-modal); // ACC-32: was 10000
   display: flex;
   align-items: center;
   justify-content: center;
@@ -852,7 +859,7 @@
   inset-inline-start: 0;
   width: 100%;
   height: 4px;
-  z-index: 9999;
+  z-index: var(--z-overlay); // ACC-32: was 9999
 
   .progress-bar-container {
     width: 100%;

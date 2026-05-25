@@ -1,8 +1,8 @@
-<section class="developers-hero">
+﻿<section class="developers-hero" aria-labelledby="developers-hero-heading">
   <div class="container">
     <div class="hero-content" jslAnimateOnScroll>
       <span class="section-eyebrow">{{ 'DEVELOPERS.EYEBROW' | translate }}</span>
-      <h1>{{ 'DEVELOPERS.TITLE' | translate }}</h1>
+      <h1 id="developers-hero-heading">{{ 'DEVELOPERS.TITLE' | translate }}</h1>
       <p class="subtitle">{{ 'DEVELOPERS.SUBTITLE' | translate }}</p>
       <div class="actions">
         <a [routerLink]="['/', currentLang, 'status']" class="status-link">

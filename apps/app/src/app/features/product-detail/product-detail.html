@@ -10,11 +10,19 @@
 
       <!-- Breadcrumb -->
       <nav class="pd-breadcrumb" [attr.aria-label]="'ARIA.BREADCRUMB' | translate">
-        <a [routerLink]="['/', currentLang, 'home']">{{ 'COMMON.BREADCRUMB_HOME' | translate }}</a>
-        <lucide-icon name="ChevronRight" [size]="14"></lucide-icon>
-        <a [routerLink]="['/', currentLang, 'products']">{{ 'HEADER.PRODUCTS' | translate }}</a>
-        <lucide-icon name="ChevronRight" [size]="14"></lucide-icon>
-        <span>{{ 'PRODUCTS.' + product.key + '_TITLE' | translate }}</span>
+        <ol class="pd-breadcrumb__list">
+          <li>
+            <a [routerLink]="['/', currentLang, 'home']">{{ 'COMMON.BREADCRUMB_HOME' | translate }}</a>
+          </li>
+          <li aria-hidden="true" class="pd-breadcrumb__separator"><lucide-icon name="ChevronRight" [size]="14"></lucide-icon></li>
+          <li>
+            <a [routerLink]="['/', currentLang, 'products']">{{ 'HEADER.PRODUCTS' | translate }}</a>
+          </li>
+          <li aria-hidden="true" class="pd-breadcrumb__separator"><lucide-icon name="ChevronRight" [size]="14"></lucide-icon></li>
+          <li aria-current="page">
+            <span>{{ 'PRODUCTS.' + product.key + '_TITLE' | translate }}</span>
+          </li>
+        </ol>
       </nav>
 
       <div class="pd-hero__content">

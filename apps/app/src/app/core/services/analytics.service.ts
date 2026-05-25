@@ -1,7 +1,8 @@
-import { Injectable, Inject, PLATFORM_ID, Optional, isDevMode } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID, Optional, isDevMode, DestroyRef, inject, OnDestroy } from '@angular/core';
 import { isPlatformBrowser, DOCUMENT } from '@angular/common';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { GA_MEASUREMENT_ID } from '../constants/tokens';
 import { EVENT_CATALOG, isKnownEvent, DeviceCategory } from './analytics-events';
 
@@ -13,7 +14,7 @@ declare global {
 }
 
 @Injectable({ providedIn: 'root' })
-export class AnalyticsService {
+export class AnalyticsService implements OnDestroy {
   private initialized = false;
   private currentLeadId: string | null = null;
   private interactionId: string = this.generateId('int');
@@ -21,6 +22,9 @@ export class AnalyticsService {
   private formStartTimes: Record<string, number> = {};
   private scrollDepthReported = new Set<number>();
   private cwvInitialized = false;
+  private readonly destroyRef = inject(DestroyRef);
+  private performanceObservers: PerformanceObserver[] = [];
+  private scrollDepthCleanups: Array<() => void> = [];
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: object,
@@ -102,6 +106,9 @@ export class AnalyticsService {
   initScrollDepthTracking(): void {
     if (!isPlatformBrowser(this.platformId) || typeof IntersectionObserver === 'undefined') return;
 
+    // Clean up previous sentinels and observers
+    this.cleanupScrollDepthSentinels();
+
     const milestones = [25, 50, 75, 90];
     milestones.forEach((pct) => {
       const sentinel = this.document.createElement('div');
@@ -130,8 +137,19 @@ export class AnalyticsService {
           { threshold: 0 },
         );
         observer.observe(sentinel);
+
+        // Store cleanup
+        this.scrollDepthCleanups.push(() => {
+          try { observer.disconnect(); } catch { /* ignore */ }
+          try { sentinel.remove(); } catch { /* ignore */ }
+        });
       });
     });
+  }
+
+  private cleanupScrollDepthSentinels(): void {
+    this.scrollDepthCleanups.forEach((cleanup) => cleanup());
+    this.scrollDepthCleanups = [];
   }
 
   // --- Core Web Vitals via PerformanceObserver ---
@@ -182,9 +200,18 @@ export class AnalyticsService {
       if (!PerformanceObserver.supportedEntryTypes?.includes(type)) return;
       const observer = new PerformanceObserver((list) => callback(list.getEntries()));
       observer.observe({ type, buffered: true });
+      this.performanceObservers.push(observer);
     } catch {
       // browser doesn't support this entry type
     }
+  }
+
+  ngOnDestroy(): void {
+    this.performanceObservers.forEach((obs) => {
+      try { obs.disconnect(); } catch { /* ignore */ }
+    });
+    this.performanceObservers = [];
+    this.cleanupScrollDepthSentinels();
   }
 
   private getCommonParams(): Record<string, unknown> {
@@ -263,9 +290,14 @@ export class AnalyticsService {
   }
 
   private trackPageViews(): void {
-    this.router.events.pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd)).subscribe((event) => {
+    this.router.events.pipe(
+      filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+      takeUntilDestroyed(this.destroyRef),
+    ).subscribe((event) => {
       // Reset scroll depth on navigation
       this.scrollDepthReported.clear();
+      this.cleanupScrollDepthSentinels();
+      this.initScrollDepthTracking();
       this.trackEvent('funnel_landing_view', { page_location: `${this.document.location.origin}${event.urlAfterRedirects}` });
     });
   }

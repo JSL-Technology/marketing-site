@@ -3,6 +3,25 @@ import { ConfigService } from '@nestjs/config';
 import { MailService } from './mail.service';
 import { ContactDto } from './contact.dto';
 
+// SEG-01: Escape HTML special characters to prevent XSS in email templates.
+function escapeHtml(str: string | null | undefined): string {
+  if (str == null) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;');
+}
+
+// SEG-12: Mask email address in logs to avoid PII in plaintext log output.
+function maskEmail(email: string | null | undefined): string {
+  if (!email) return '***';
+  const atIdx = email.indexOf('@');
+  if (atIdx <= 0) return '***';
+  return `***@${email.slice(atIdx + 1)}`;
+}
+
 export interface LeadScore {
   score: number;
   tier: 'hot' | 'warm' | 'cold';
@@ -18,16 +37,16 @@ export class ContactService {
   ) {}
 
   async handleContactForm(formData: ContactDto) {
-    this.logger.log(`Receiving contact form: ${formData.email}`);
+    this.logger.log(`Receiving contact form: ${maskEmail(formData.email)}`);
 
     if (formData.honeypot) {
-      this.logger.warn(`Potential bot submission detected: ${formData.email}`);
+      this.logger.warn(`Potential bot submission detected: ${maskEmail(formData.email)}`);
       return { success: true, message: 'Message received successfully' };
     }
 
     const isRecaptchaValid = await this.verifyRecaptcha(formData.recaptchaToken);
     if (!isRecaptchaValid) {
-      this.logger.warn(`reCAPTCHA validation failed for: ${formData.email}`);
+      this.logger.warn(`reCAPTCHA validation failed for: ${maskEmail(formData.email)}`);
       return { success: false, message: 'Captcha verification failed' };
     }
 
@@ -68,7 +87,7 @@ export class ContactService {
   }
 
   async handleNewsletterSubscription(email: string) {
-    this.logger.log(`New newsletter subscription: ${email}`);
+    this.logger.log(`New newsletter subscription: ${maskEmail(email)}`);
     const whitepaperListId = this.configService.get<string>('BREVO_LIST_WHITEPAPER_ID');
     const ids = whitepaperListId ? [Number(whitepaperListId)] : [];
     await this.addBrevoContact(
@@ -123,7 +142,7 @@ export class ContactService {
       score >= 30 ? 'warm' :
       'cold';
 
-    this.logger.log(`[LeadScore] ${formData.email}: score=${score} tier=${tier}`);
+    this.logger.log(`[LeadScore] ${maskEmail(formData.email)}: score=${score} tier=${tier}`);
     return { score, tier };
   }
 
@@ -155,21 +174,21 @@ export class ContactService {
         body: JSON.stringify({
           sender:  { name: 'JSL CRM', email: 'noreply@jsl.technology' },
           to:      [{ email: alertEmail }],
-          subject: `🔥 Hot Lead: ${formData.name} (${formData.company ?? 'No company'}) — Score ${leadScore.score}`,
+          subject: `🔥 Hot Lead: ${escapeHtml(formData.name)} (${escapeHtml(formData.company ?? 'No company')}) — Score ${leadScore.score}`,
           htmlContent: `
             <h2>New hot lead received</h2>
-            <p><strong>Name:</strong> ${formData.name}</p>
-            <p><strong>Email:</strong> <a href="mailto:${formData.email}">${formData.email}</a></p>
-            <p><strong>Company:</strong> ${formData.company ?? '—'}</p>
-            <p><strong>Service:</strong> ${formData.service}</p>
-            <p><strong>Budget:</strong> ${formData.budget ?? '—'}</p>
-            <p><strong>Segment:</strong> ${formData.segment ?? '—'}</p>
-            <p><strong>Phone:</strong> ${formData.phone ?? '—'}</p>
-            <p><strong>Source:</strong> ${formData.utm_source ?? 'direct'}</p>
+            <p><strong>Name:</strong> ${escapeHtml(formData.name)}</p>
+            <p><strong>Email:</strong> <a href="mailto:${escapeHtml(formData.email)}">${escapeHtml(formData.email)}</a></p>
+            <p><strong>Company:</strong> ${escapeHtml(formData.company) || '—'}</p>
+            <p><strong>Service:</strong> ${escapeHtml(formData.service)}</p>
+            <p><strong>Budget:</strong> ${escapeHtml(formData.budget) || '—'}</p>
+            <p><strong>Segment:</strong> ${escapeHtml(formData.segment) || '—'}</p>
+            <p><strong>Phone:</strong> ${escapeHtml(formData.phone) || '—'}</p>
+            <p><strong>Source:</strong> ${escapeHtml(formData.utm_source) || 'direct'}</p>
             <p><strong>Lead Score:</strong> ${leadScore.score} / 100 (${leadScore.tier.toUpperCase()})</p>
             <hr>
-            <p><strong>Message:</strong><br>${formData.message}</p>
-            <p style="margin-top:16px;color:#888;font-size:12px;">Lead ID: ${formData.leadId ?? '—'} · Client ID: ${formData.clientId ?? '—'}</p>
+            <p><strong>Message:</strong><br>${escapeHtml(formData.message)}</p>
+            <p style="margin-top:16px;color:#888;font-size:12px;">Lead ID: ${escapeHtml(formData.leadId) || '—'} · Client ID: ${escapeHtml(formData.clientId) || '—'}</p>
           `,
         }),
       });
@@ -233,7 +252,7 @@ export class ContactService {
         const body = await response.text();
         this.logger.warn(`[Brevo] Non-OK response ${response.status}: ${body}`);
       } else {
-        this.logger.log(`[Brevo] Contact synced: ${email}`);
+        this.logger.log(`[Brevo] Contact synced: ${maskEmail(email)}`);
       }
     } catch (error) {
       this.logger.error('[Brevo] Failed to sync contact', error);

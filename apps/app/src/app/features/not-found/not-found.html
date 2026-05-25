@@ -7,15 +7,18 @@
       <p>{{ 'NOT_FOUND.SUBTITLE' | translate }}</p>
 
       <!-- Search -->
-      <div class="not-found-search">
+      <div class="not-found-search" role="search">
+        <label for="not-found-search-input" class="sr-only">{{ 'NOT_FOUND.SEARCH_PLACEHOLDER' | translate }}</label>
         <input
+          id="not-found-search-input"
           type="search"
           class="not-found-search__input"
           [placeholder]="'NOT_FOUND.SEARCH_PLACEHOLDER' | translate"
+          [attr.aria-label]="'NOT_FOUND.SEARCH_PLACEHOLDER' | translate"
           [(ngModel)]="searchQuery"
           (keyup.enter)="onSearch()">
-        <button class="not-found-search__btn" (click)="onSearch()">
-          <lucide-icon name="Search" [size]="18"></lucide-icon>
+        <button class="not-found-search__btn" (click)="onSearch()" [attr.aria-label]="'ARIA.SEARCH' | translate">
+          <lucide-icon name="Search" [size]="18" aria-hidden="true"></lucide-icon>
         </button>
       </div>
 

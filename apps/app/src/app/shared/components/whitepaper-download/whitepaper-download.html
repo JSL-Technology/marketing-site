@@ -62,12 +62,15 @@
       <form (submit)="onSubmit()" class="wp-form">
         <div class="wp-form__group">
           <lucide-icon name="Mail" [size]="15" class="wp-form__icon"></lucide-icon>
+          <label for="whitepaper-email" class="sr-only">{{ 'WHITEPAPER.EMAIL_PLACEHOLDER' | translate }}</label>
           <input
+            id="whitepaper-email"
             type="email"
             [(ngModel)]="email"
             (ngModelChange)="onEmailChange()"
             name="email"
             [placeholder]="'WHITEPAPER.EMAIL_PLACEHOLDER' | translate"
+            [attr.aria-label]="'WHITEPAPER.EMAIL_PLACEHOLDER' | translate"
             required
             class="wp-form__input"
           />

@@ -22,7 +22,7 @@ export class RoiCalculatorComponent {
   employees = signal<number>(5);
 
   weeklySavings = computed(() => this.hoursSaved() * this.hourlyRate() * this.employees());
-  monthlySavings = computed(() => this.weeklySavings() * 4);
+  monthlySavings = computed(() => this.weeklySavings() * 52 / 12);
   annualSavings = computed(() => this.weeklySavings() * 52);
 
   onSliderChange(): void {

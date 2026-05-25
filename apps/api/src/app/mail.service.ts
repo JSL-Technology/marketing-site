@@ -2,6 +2,17 @@ import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as nodemailer from 'nodemailer';
 
+// SEG-02: Escape HTML special characters to prevent XSS in email templates.
+function escapeHtml(str: string | null | undefined): string {
+  if (str == null) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;');
+}
+
 @Injectable()
 export class MailService {
   private readonly logger = new Logger(MailService.name);
@@ -32,7 +43,7 @@ export class MailService {
     const mailOptions = {
       from: this.configService.get<string>('SMTP_FROM') || 'noreply@jsltechnology.com',
       to: this.configService.get<string>('CONTACT_RECEIVER_EMAIL'),
-      subject: `New Contact Form Submission: ${contactData.service}`,
+      subject: `New Contact Form Submission: ${escapeHtml(contactData.service)}`,
       text: `
         You have a new contact form submission:
 
@@ -47,15 +58,15 @@ export class MailService {
       `,
       html: `
         <h3>New Contact Form Submission</h3>
-        <p><strong>Name:</strong> ${contactData.name}</p>
-        <p><strong>Email:</strong> ${contactData.email}</p>
-        <p><strong>Phone:</strong> ${contactData.phone || 'Not provided'}</p>
-        <p><strong>Company:</strong> ${contactData.company || 'Not provided'}</p>
-        <p><strong>Budget:</strong> ${contactData.budget || 'Not provided'}</p>
-        <p><strong>Segment:</strong> ${contactData.segment || 'unknown'}</p>
-        <p><strong>Service of Interest:</strong> ${contactData.service}</p>
+        <p><strong>Name:</strong> ${escapeHtml(contactData.name)}</p>
+        <p><strong>Email:</strong> ${escapeHtml(contactData.email)}</p>
+        <p><strong>Phone:</strong> ${escapeHtml(contactData.phone) || 'Not provided'}</p>
+        <p><strong>Company:</strong> ${escapeHtml(contactData.company) || 'Not provided'}</p>
+        <p><strong>Budget:</strong> ${escapeHtml(contactData.budget) || 'Not provided'}</p>
+        <p><strong>Segment:</strong> ${escapeHtml(contactData.segment) || 'unknown'}</p>
+        <p><strong>Service of Interest:</strong> ${escapeHtml(contactData.service)}</p>
         <p><strong>Message:</strong></p>
-        <p>${contactData.message}</p>
+        <p>${escapeHtml(contactData.message)}</p>
       `,
     };
 

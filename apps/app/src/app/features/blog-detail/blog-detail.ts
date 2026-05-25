@@ -10,7 +10,6 @@ import {
   AfterViewChecked,
   AfterViewInit,
   ElementRef,
-  Inject,
   PLATFORM_ID,
   ViewChild,
   HostListener,
@@ -22,6 +21,7 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LucideAngularModule } from 'lucide-angular';
+import { A11yModule } from '@angular/cdk/a11y';
 import { Subscription, Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { DataService, BlogPost, TeamMember } from '@core/services/data.service';
@@ -53,7 +53,8 @@ register();
     CtaComponent,
     WhitepaperDownloadComponent,
     Card,
-    SocialShareComponent
+    SocialShareComponent,
+    A11yModule
   ],
   templateUrl: './blog-detail.html',
   styleUrl: './blog-detail.scss',
@@ -69,7 +70,7 @@ export class BlogDetail
   private dataService = inject(DataService);
   private titleService = inject(Title);
   private el = inject(ElementRef);
-  @Inject(PLATFORM_ID) private platformId = inject(PLATFORM_ID);
+  private platformId = inject(PLATFORM_ID);
   private seoService = inject(Seo);
   public directionService = inject(DirectionService);
   private scrollEngine = inject(ScrollEngineService);
@@ -272,7 +273,7 @@ export class BlogDetail
       const tooltip = this.copyTooltip?.nativeElement;
       if (tooltip) {
         const originalText = tooltip.textContent;
-        tooltip.textContent = '¡Copiado!';
+        tooltip.textContent = this.translate.instant('BLOG.COPIED');
         
         setTimeout(() => {
           tooltip.textContent = originalText;
@@ -344,6 +345,9 @@ export class BlogDetail
   }
 
   ngOnDestroy(): void {
+    if (isPlatformBrowser(this.platformId) && typeof window.speechSynthesis !== 'undefined') {
+      window.speechSynthesis.cancel();
+    }
     this.langSub?.unsubscribe();
   }
 

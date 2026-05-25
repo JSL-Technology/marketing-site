@@ -1,28 +1,31 @@
-import { Component, Input, Output, EventEmitter, HostListener } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, Input, Output, EventEmitter, HostListener, OnChanges, OnDestroy, SimpleChanges, inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { LucideAngularModule } from 'lucide-angular';
 import { SafeUrlPipe } from '../../pipes/safe-url.pipe';
+import { OverlayManagerService } from '@core/services/overlay-manager.service';
 
 @Component({
   selector: 'jsl-video-modal',
   standalone: true,
-  imports: [CommonModule, LucideAngularModule, SafeUrlPipe],
+  imports: [LucideAngularModule, SafeUrlPipe],
   template: `
-    <div class="video-modal-overlay" *ngIf="isOpen" (click)="onClose()">
-      <div class="video-modal-container" (click)="$event.stopPropagation()">
-        <button class="close-btn" (click)="onClose()" aria-label="Close">
-          <lucide-icon name="X"></lucide-icon>
-        </button>
-        <div class="video-wrapper">
-          <iframe
-            [src]="videoUrl | safeUrl"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen>
-          </iframe>
+    @if (isOpen) {
+      <div class="video-modal-overlay" (click)="onClose()">
+        <div class="video-modal-container" (click)="$event.stopPropagation()">
+          <button class="close-btn" (click)="onClose()" aria-label="Close">
+            <lucide-icon name="X"></lucide-icon>
+          </button>
+          <div class="video-wrapper">
+            <iframe
+              [src]="videoUrl | safeUrl"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen>
+            </iframe>
+          </div>
         </div>
       </div>
-    </div>
+    }
   `,
   styles: [`
     .video-modal-overlay {
@@ -105,19 +108,37 @@ import { SafeUrlPipe } from '../../pipes/safe-url.pipe';
     }
   `]
 })
-export class VideoModal {
+export class VideoModal implements OnChanges, OnDestroy {
   @Input() isOpen = false;
   @Input() videoUrl = '';
   @Output() close = new EventEmitter<void>();
 
+  private readonly overlayManager = inject(OverlayManagerService);
+  private readonly platformId = inject(PLATFORM_ID);
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['isOpen']) {
+      if (this.isOpen) {
+        this.overlayManager.register('video-modal', { lockScroll: true });
+      } else {
+        this.overlayManager.unregister('video-modal');
+      }
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.overlayManager.unregister('video-modal');
+  }
+
   @HostListener('document:keydown.escape', ['$event'])
   onEscape(event: Event) {
-    if (this.isOpen) {
+    if (isPlatformBrowser(this.platformId) && this.isOpen) {
       this.onClose();
     }
   }
 
   onClose() {
+    this.overlayManager.unregister('video-modal');
     this.close.emit();
   }
 }

@@ -45,7 +45,6 @@ export class ApiService {
       utm_campaign: formData.utm_campaign ?? null
     };
 
-    console.log('ApiService: Enviando formulario de contacto...', payload);
     return this.http.post<ApiResponse>('/api/contact', payload);
   }
 
@@ -56,7 +55,6 @@ export class ApiService {
     const leadId = this.analytics.getLeadId();
     const clientId = this.analytics.getClientId();
 
-    console.log('ApiService: Suscribiendo al newsletter...', email);
     return this.http.post<ApiResponse>('/api/newsletter', {
       email,
       leadId,

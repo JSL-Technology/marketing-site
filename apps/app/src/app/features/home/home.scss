@@ -67,29 +67,8 @@ swiper-container {
     align-items: flex-end; // Editorial layout: aligned to bottom
   }
 
-  // --- INICIO DE CORRECCIÃ“N DE ASPECT RATIO ---
-  // Using ::ng-deep to target elements inside PictureComponent since it uses Emulated encapsulation
-  ::ng-deep jsl-picture {
-    img {
-      object-fit: cover; // Asegura que la imagen cubra el slide sin distorsionarse
-      object-position: center;
-      transition: transform 12s ease-out; // Cinematic slow zoom
-    }
-  }
-
-  &.swiper-slide-active ::ng-deep jsl-picture img {
-    transform: scale(1.08);
-  }
-
-  // Control focal point based on image content
-  &:nth-child(2) ::ng-deep jsl-picture img {
-    object-position: left center; // Slide 2: focus on laptop/code
-  }
-
-  &:nth-child(3) ::ng-deep jsl-picture img {
-    object-position: left center; // Slide 3: focus on workspace
-  }
-  // --- FIN DE CORRECCIÃ“N DE ASPECT RATIO ---
+  // ACC-30: ::ng-deep removed — styles moved to global styles.scss
+  // (.hero-slider jsl-picture img targets PictureComponent from global scope)
 
   &__overlay {
     position: absolute;
@@ -356,7 +335,7 @@ swiper-container {
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
-  z-index: 15;
+  z-index: var(--z-raised); // ACC-32: was 15
   opacity: 0.7;
   transition:
     opacity 1s ease,
@@ -366,6 +345,9 @@ swiper-container {
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
+    // ACC-33: pause infinite animations when element is hidden to save GPU
+    .wheel { animation-play-state: paused; }
+    .arrow { animation-play-state: paused; }
   }
 
   .mouse {
@@ -426,6 +408,26 @@ swiper-container {
   100% {
     opacity: 0;
     transform: rotate(45deg) translateY(5px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-indicator {
+    display: none;
+  }
+
+  .wheel,
+  .arrow {
+    animation: none !important;
+  }
+
+  /* Disable all other animations */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
 
@@ -1138,8 +1140,10 @@ swiper-container {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 42px;
-  height: 42px;
+  min-width: 44px;
+  min-height: 44px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -1427,7 +1431,7 @@ swiper-container {
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     white-space: nowrap;
     flex-shrink: 0;
-    min-height: 36px;
+    min-height: 44px;
 
     &:hover:not(.active) {
       background: var(--bg-secondary);
@@ -1620,7 +1624,7 @@ swiper-container {
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.14);
     color: rgba(255, 255, 255, 0.92);
-    font-size: 0.64rem;
+    font-size: 0.75rem; // ACC-27: was 0.64rem (<12px)
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.09em;
@@ -1876,8 +1880,10 @@ swiper-container {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  min-width: 44px;
+  min-height: 44px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   background: var(--bg-card);
   border: 1px solid var(--border-color);
@@ -2041,7 +2047,7 @@ swiper-container {
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   color: #fff;
-  font-size: 0.63rem;
+  font-size: 0.75rem; // ACC-27: was 0.63rem (<12px)
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -2132,7 +2138,7 @@ swiper-container {
 }
 
 .insight-card__tag {
-  font-size: 0.67rem;
+  font-size: 0.75rem; // ACC-27: was 0.67rem (<12px)
   font-weight: 600;
   color: var(--text-muted);
   background: rgba(var(--primary-rgb), 0.06);

@@ -3,7 +3,7 @@ import { Injectable, inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformServer } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { map, catchError, shareReplay } from 'rxjs/operators';
 
 // Fallback data in case API is not reachable during SSR or development
 import {
@@ -170,6 +170,14 @@ export class DataService {
   private platformId = inject(PLATFORM_ID);
   private isServer = isPlatformServer(this.platformId);
   private apiUrl = '/api/data';
+  private cache = new Map<string, Observable<any>>();
+
+  private getCached<T>(key: string, request: Observable<T>): Observable<T> {
+    if (!this.cache.has(key)) {
+      this.cache.set(key, request.pipe(shareReplay(1)));
+    }
+    return this.cache.get(key) as Observable<T>;
+  }
 
   // --- Métodos de Ventures ---
   getVentures(): Observable<Venture[]> {
@@ -182,8 +190,8 @@ export class DataService {
   // --- Métodos de Soluciones ---
   getSolutions(): Observable<Solution[]> {
     if (this.isServer) return of(SOLUTIONS);
-    return this.http.get<Solution[]>(`${this.apiUrl}/solutions`).pipe(
-      catchError(() => of(SOLUTIONS))
+    return this.getCached('solutions',
+      this.http.get<Solution[]>(`${this.apiUrl}/solutions`).pipe(catchError(() => of(SOLUTIONS)))
     );
   }
 
@@ -197,8 +205,8 @@ export class DataService {
   // --- Métodos de Productos ---
   getProducts(): Observable<Product[]> {
     if (this.isServer) return of(PRODUCTS);
-    return this.http.get<Product[]>(`${this.apiUrl}/products`).pipe(
-      catchError(() => of(PRODUCTS))
+    return this.getCached('products',
+      this.http.get<Product[]>(`${this.apiUrl}/products`).pipe(catchError(() => of(PRODUCTS)))
     );
   }
 
@@ -209,8 +217,8 @@ export class DataService {
   // --- Métodos de Proyectos (Casos de Éxito) ---
   getProjects(): Observable<Project[]> {
     if (this.isServer) return of(PROJECTS);
-    return this.http.get<Project[]>(`${this.apiUrl}/projects`).pipe(
-      catchError(() => of(PROJECTS))
+    return this.getCached('projects',
+      this.http.get<Project[]>(`${this.apiUrl}/projects`).pipe(catchError(() => of(PROJECTS)))
     );
   }
 
@@ -221,8 +229,8 @@ export class DataService {
   // --- Métodos de Blog ---
   getBlogPosts(): Observable<BlogPost[]> {
     if (this.isServer) return of(BLOG_POSTS);
-    return this.http.get<BlogPost[]>(`${this.apiUrl}/blog`).pipe(
-      catchError(() => of(BLOG_POSTS))
+    return this.getCached('blog',
+      this.http.get<BlogPost[]>(`${this.apiUrl}/blog`).pipe(catchError(() => of(BLOG_POSTS)))
     );
   }
 
@@ -236,8 +244,8 @@ export class DataService {
   // --- Métodos de Equipo ---
   getTeamMembers(): Observable<TeamMember[]> {
     if (this.isServer) return of(TEAM_MEMBERS);
-    return this.http.get<TeamMember[]>(`${this.apiUrl}/team`).pipe(
-      catchError(() => of(TEAM_MEMBERS))
+    return this.getCached('team',
+      this.http.get<TeamMember[]>(`${this.apiUrl}/team`).pipe(catchError(() => of(TEAM_MEMBERS)))
     );
   }
 
@@ -248,8 +256,8 @@ export class DataService {
   // --- Métodos de Testimonios ---
   getTestimonials(): Observable<Testimonial[]> {
     if (this.isServer) return of(TESTIMONIALS);
-    return this.http.get<Testimonial[]>(`${this.apiUrl}/testimonials`).pipe(
-      catchError(() => of(TESTIMONIALS))
+    return this.getCached('testimonials',
+      this.http.get<Testimonial[]>(`${this.apiUrl}/testimonials`).pipe(catchError(() => of(TESTIMONIALS)))
     );
   }
 
@@ -261,8 +269,8 @@ export class DataService {
   // --- Métodos de Stack Tecnológico ---
   getTechStack(): Observable<TechCategory[]> {
     if (this.isServer) return of(TECH_STACK);
-    return this.http.get<TechCategory[]>(`${this.apiUrl}/tech-stack`).pipe(
-      catchError(() => of(TECH_STACK))
+    return this.getCached('tech-stack',
+      this.http.get<TechCategory[]>(`${this.apiUrl}/tech-stack`).pipe(catchError(() => of(TECH_STACK)))
     );
   }
 
@@ -299,51 +307,43 @@ export class DataService {
 
   // --- Método de Búsqueda Global ---
   search(query: string): Observable<{ type: string; item: any }[]> {
+    return this.http.get<{ type: string; item: any }[]>(
+      `${this.apiUrl}/search`,
+      { params: { q: query } }
+    ).pipe(
+      catchError(() => of(this.searchMockData(query)))
+    );
+  }
+
+  private searchMockData(query: string): { type: string; item: any }[] {
     const q = query.toLowerCase();
     const results: { type: string; item: any }[] = [];
 
-    // Search in Ventures
     VENTURES.forEach(v => {
-      if (v.name.toLowerCase().includes(q) || v.slug.includes(q)) {
+      if (v.name.toLowerCase().includes(q) || v.slug.includes(q))
         results.push({ type: 'venture', item: v });
-      }
     });
-
-    // Search in Solutions
     SOLUTIONS.forEach(s => {
-      if (s.slug.includes(q) || s.key.toLowerCase().includes(q)) {
+      if (s.slug.includes(q) || s.key.toLowerCase().includes(q))
         results.push({ type: 'solution', item: s });
-      }
     });
-
-    // Search in Products
     PRODUCTS.forEach(p => {
-      if (p.slug.includes(q) || p.key.toLowerCase().includes(q)) {
+      if (p.slug.includes(q) || p.key.toLowerCase().includes(q))
         results.push({ type: 'product', item: p });
-      }
     });
-
-    // Search in Blog
     BLOG_POSTS.forEach(b => {
-      if (b.slug.includes(q) || b.key.toLowerCase().includes(q) || b.tags.some(t => t.toLowerCase().includes(q))) {
+      if (b.slug.includes(q) || b.key.toLowerCase().includes(q) || b.tags.some(t => t.toLowerCase().includes(q)))
         results.push({ type: 'blog', item: b });
-      }
     });
-
-    // Search in Projects
     PROJECTS.forEach(p => {
-      if (p.slug.includes(q) || p.key.toLowerCase().includes(q)) {
+      if (p.slug.includes(q) || p.key.toLowerCase().includes(q))
         results.push({ type: 'project', item: p });
-      }
     });
-
-    // Search in Static Pages
     STATIC_PAGES.forEach(p => {
-      if (p.slug.includes(q) || p.key.toLowerCase().includes(q)) {
+      if (p.slug.includes(q) || p.key.toLowerCase().includes(q))
         results.push({ type: 'page', item: p });
-      }
     });
 
-    return of(results);
+    return results;
   }
 }

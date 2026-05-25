@@ -18,6 +18,7 @@ export class Seo {
   private siteName = 'JSL Technology';
   private defaultImageUrl: string;
   private supportedLangs = SUPPORTED_LANGUAGES;
+  private resourceHintsInitialized = false;
 
   constructor(
     private titleService: Title,
@@ -54,6 +55,14 @@ export class Seo {
         this.setPaginationLinks(); // limpia prev/next en cada navegación
       }),
       map(() => this.getDeepestRoute(this.activatedRoute)),
+      map(route => {
+        // Find the nearest route that actually has SEO data (handles nested indexing routes)
+        let seoRoute = route;
+        while (seoRoute && !seoRoute.snapshot.data['title']) {
+          seoRoute = seoRoute.parent!;
+        }
+        return seoRoute || route;
+      }),
       filter(route => !!route.snapshot.data['title']),
       switchMap(route => {
         const titleKey = route.snapshot.data['title'];
@@ -105,10 +114,8 @@ export class Seo {
                             route.snapshot.url.some(s => s.path === 'server-error');
 
         if (isNotFound) {
-          console.log('SEO: Setting status to 404 for', fullPath);
           this.response.status(404);
         } else if (isServerError) {
-          console.log('SEO: Setting status to 500 for', fullPath);
           this.response.status(500);
         }
       }
@@ -123,7 +130,14 @@ export class Seo {
         ? this.baseTitle
         : `${translatedTitle} | ${this.baseTitle}`;
       
-      const currentLang = route.parent?.snapshot.params['lang'];
+      // Find 'lang' parameter by traversing up the tree
+      let currentLang = route.snapshot.params['lang'];
+      let parent = route.parent;
+      while (!currentLang && parent) {
+        currentLang = parent.snapshot.params['lang'];
+        parent = parent.parent;
+      }
+
       const pathSegments = route.snapshot.pathFromRoot
         .flatMap(r => r.url.map(segment => segment.path))
         .filter(path => path !== currentLang); // Exclude language segment from path
@@ -385,8 +399,11 @@ export class Seo {
 
   /**
    * Inyecta Resource Hints (preconnect, dns-prefetch) para optimizar carga.
+   * Only runs once per app lifecycle — no-op on subsequent NavigationEnd events.
    */
   public setResourceHints(): void {
+    if (this.resourceHintsInitialized) return;
+    this.resourceHintsInitialized = true;
     const domains = [
       'https://fonts.googleapis.com',
       'https://fonts.gstatic.com'

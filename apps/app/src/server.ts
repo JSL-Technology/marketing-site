@@ -27,19 +27,9 @@ import { detectPreferredLanguage } from './app/core/utils/language-url';
 const browserDistFolder = join(import.meta.dirname, '../browser');
 
 const app = express();
-const angularApp = new AngularNodeAppEngine();
 
-type SeoHealthSnapshot = {
-  generatedAt: string;
-  canonicalBaseUrl: string;
-  indexedRouteCount: number;
-  localeCount: number;
-  sitemapEntryCount: number;
-  noindexRoutes: string[];
-  schemaTypes: string[];
-};
-
-let latestSeoHealthSnapshot: SeoHealthSnapshot | null = null;
+// Running behind Render/other reverse proxies: trust forwarded headers for client IP/proto.
+app.set('trust proxy', true);
 
 const CANONICAL_BASE_URL = (
   process.env['CANONICAL_BASE_URL'] ?? 'https://www.jsl.technology'
@@ -56,32 +46,105 @@ const ENV_FEATURE_FLAGS: Record<string, boolean> = (() => {
   }
 })();
 const CANONICAL_HOSTS = new Set(
-  (process.env['CANONICAL_HOSTS'] ?? 'www.jsl.technology,jsl.technology')
+  (process.env['CANONICAL_HOSTS'] ?? 'www.jsl.technology,jsl.technology,jsl-technology.onrender.com')
     .split(',')
     .map((host) => host.trim().toLowerCase())
     .filter(Boolean),
 );
+const SKIP_CANONICAL_REDIRECT = process.env['SKIP_CANONICAL_REDIRECT'] === 'true';
+
+// Pre-calculate canonical host for efficiency and to catch invalid URL early.
+const CANONICAL_HOST = (() => {
+  try {
+    return new URL(CANONICAL_BASE_URL).hostname.toLowerCase();
+  } catch (e) {
+    console.warn(`[server] Invalid CANONICAL_BASE_URL: "${CANONICAL_BASE_URL}". Falling back to host part only.`);
+    // Fallback if URL is just a hostname or invalid
+    return CANONICAL_BASE_URL.replace(/^https?:\/\//, '').split('/')[0].toLowerCase() || 'www.jsl.technology';
+  }
+})();
+
+const angularApp = new AngularNodeAppEngine({
+  allowedHosts: [
+    'localhost',
+    '127.0.0.1',
+    'localhost:4000',
+    '127.0.0.1:4000',
+    'localhost:4100',
+    '127.0.0.1:4100',
+    'localhost:4200',
+    '127.0.0.1:4200',
+    ...Array.from(CANONICAL_HOSTS),
+  ],
+  trustProxyHeaders: true,
+});
+
+type SeoHealthSnapshot = {
+  generatedAt: string;
+  canonicalBaseUrl: string;
+  indexedRouteCount: number;
+  localeCount: number;
+  sitemapEntryCount: number;
+  noindexRoutes: string[];
+  schemaTypes: string[];
+};
+
+let latestSeoHealthSnapshot: SeoHealthSnapshot | null = null;
 
 // --- OPTIMIZACIÓN: Compresión Gzip/Brotli ---
 app.use(compression());
 
-// --- SEO: Canonical host redirect (non-www → www, production only) ---
-// Runs before all route handlers so redirects are issued before any work is done.
+// --- SEO: Canonical host redirect (e.g. jsl.technology -> www.jsl.technology) ---
+// This logic ensures only one canonical domain serves content, preventing split SEO juice.
+// It can be disabled via SKIP_CANONICAL_REDIRECT=true if handled by infra (Cloudflare/Render).
 app.use((req, res, next) => {
-  const host = req.get('host')?.toLowerCase() ?? '';
-  if (host === 'jsl.technology') {
-    const proto = req.get('x-forwarded-proto')?.split(',')[0]?.trim() || req.protocol || 'https';
-    return res.redirect(301, `${proto}://www.jsl.technology${req.url}`);
+  if (SKIP_CANONICAL_REDIRECT) {
+    return next();
   }
+
+  const host = req.get('host')?.toLowerCase() ?? '';
+
+  // 1. If no host header, skip.
+  if (!host) {
+    return next();
+  }
+
+  // 2. If the host is already canonical, skip.
+  if (host === CANONICAL_HOST) {
+    return next();
+  }
+
+  // 3. Skip redirection for local development and health checks.
+  const isLocalHost =
+    host.startsWith('localhost') ||
+    host.startsWith('127.0.0.1') ||
+    host.startsWith('0.0.0.0') ||
+    host.endsWith('.local');
+
+  if (isLocalHost) {
+    return next();
+  }
+
+  // 4. Redirect only if the current host is explicitly allowed/recognized in CANONICAL_HOSTS.
+  // This avoids redirecting internal Render URLs (like *.onrender.com) unless they are in the set.
+  if (CANONICAL_HOSTS.has(host)) {
+    const proto = req.get('x-forwarded-proto')?.split(',')[0]?.trim() || req.protocol || 'https';
+    return res.redirect(301, `${proto}://${CANONICAL_HOST}${req.url}`);
+  }
+
   return next();
 });
 
 // --- SEGURIDAD: Rate Limiting ---
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutos
-  max: 10000, // Límite aumentado significativamente para permitir tests E2E paralelos sin bloqueos 429
+  max: 100, // Production limit: 100 requests per 15-minute window per IP
   standardHeaders: true, // Devuelve info en cabeceras `RateLimit-*`
   legacyHeaders: false, // Deshabilita cabeceras `X-RateLimit-*`
+  skip: (req) => {
+    const ip = req.ip || req.get('x-forwarded-for') || req.socket.remoteAddress || '';
+    return ip === '127.0.0.1' || ip === '::1' || ip === '::ffff:127.0.0.1';
+  },
 });
 // Aplicar rate limiting a todas las rutas
 app.use(limiter);
@@ -198,6 +261,7 @@ const NOINDEX_ROUTES = ['/status', '/thank-you', '/server-error', '/not-found'];
 function shouldSkipLanguageRedirect(pathname: string): boolean {
   if (pathname === '/') return true;
   if (pathname.startsWith('/api/') || pathname === '/api') return true;
+  if (pathname.startsWith('/seo/') || pathname === '/seo') return true;
   if (pathname.startsWith('/assets/')) return true;
   if (pathname === '/robots.txt' || pathname === '/sitemap.xml' || pathname === '/favicon.ico')
     return true;
@@ -244,7 +308,7 @@ function generateSitemap(domain: string): string {
     0,
   );
   const indexedRouteCount = staticRoutes.length + dynamicEntriesCount;
-  const sitemapEntryCount = indexedRouteCount * supportedLangs.length;
+  const sitemapEntryCount = indexedRouteCount; // one <url> per canonical route
 
   latestSeoHealthSnapshot = {
     generatedAt: new Date().toISOString(),
@@ -314,6 +378,8 @@ function generateDynamicEntriesXml(
 
 /**
  * Helper para generar una entrada <url> con hreflang, priority, changefreq e image:image opcionales.
+ * Generates ONE <url> per route (not per lang×route) with all language alternates inside.
+ * The canonical <loc> uses the default language (en).
  */
 function generateUrlEntry(
   route: string,
@@ -323,40 +389,35 @@ function generateUrlEntry(
   changefreq = 'monthly',
   images: SitemapImage[] = [],
 ): string {
-  let entryXml = '';
+  const canonicalUrl = `${domain}/${defaultLang}${route ? '/' + route : ''}`;
 
-  supportedLangs.forEach((lang) => {
-    const url = `${domain}/${lang}${route ? '/' + route : ''}`;
+  let entryXml = '<url>';
+  entryXml += `<loc>${canonicalUrl}</loc>`;
+  entryXml += `<lastmod>${lastmod}</lastmod>`;
+  entryXml += `<changefreq>${changefreq}</changefreq>`;
+  entryXml += `<priority>${priority}</priority>`;
 
-    entryXml += '<url>';
-    entryXml += `<loc>${url}</loc>`;
-    entryXml += `<lastmod>${lastmod}</lastmod>`;
-    entryXml += `<changefreq>${changefreq}</changefreq>`;
-    entryXml += `<priority>${priority}</priority>`;
-
-    // image:image extensions (only on the canonical lang entry to avoid duplication)
-    if (lang === defaultLang && images.length > 0) {
-      images.forEach((img) => {
-        entryXml += '<image:image>';
-        entryXml += `<image:loc>${escapeXml(img.loc)}</image:loc>`;
-        if (img.title) entryXml += `<image:title>${escapeXml(img.title)}</image:title>`;
-        if (img.caption) entryXml += `<image:caption>${escapeXml(img.caption)}</image:caption>`;
-        entryXml += '</image:image>';
-      });
-    }
-
-    // hreflang alternates
-    supportedLangs.forEach((altLang) => {
-      const altUrl = `${domain}/${altLang}${route ? '/' + route : ''}`;
-      entryXml += `<xhtml:link rel="alternate" hreflang="${altLang}" href="${altUrl}" />`;
+  // image:image extensions
+  if (images.length > 0) {
+    images.forEach((img) => {
+      entryXml += '<image:image>';
+      entryXml += `<image:loc>${escapeXml(img.loc)}</image:loc>`;
+      if (img.title) entryXml += `<image:title>${escapeXml(img.title)}</image:title>`;
+      if (img.caption) entryXml += `<image:caption>${escapeXml(img.caption)}</image:caption>`;
+      entryXml += '</image:image>';
     });
+  }
 
-    // x-default
-    const defaultUrl = `${domain}/${defaultLang}${route ? '/' + route : ''}`;
-    entryXml += `<xhtml:link rel="alternate" hreflang="x-default" href="${defaultUrl}" />`;
-
-    entryXml += '</url>';
+  // hreflang alternates for all supported languages
+  supportedLangs.forEach((altLang) => {
+    const altUrl = `${domain}/${altLang}${route ? '/' + route : ''}`;
+    entryXml += `<xhtml:link rel="alternate" hreflang="${altLang}" href="${altUrl}" />`;
   });
+
+  // x-default points to the default language URL
+  entryXml += `<xhtml:link rel="alternate" hreflang="x-default" href="${canonicalUrl}" />`;
+
+  entryXml += '</url>';
 
   return entryXml;
 }
@@ -383,15 +444,39 @@ function escapeXml(str: string): string {
  * ```
  */
 
+const sitemapCache = new Map<string, { xml: string; generatedAt: number }>();
+const SITEMAP_CACHE_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
+
 app.get('/sitemap.xml', (req, res) => {
-  const domain = resolveCanonicalBaseUrl(req);
+  // Always use production canonical URL for sitemap to avoid local/staging host leakage.
+  const domain = CANONICAL_BASE_URL;
+  const cached = sitemapCache.get(domain);
+  const now = Date.now();
+
+  if (cached && (now - cached.generatedAt) < SITEMAP_CACHE_TTL_MS) {
+    res.header('Content-Type', 'application/xml');
+    res.header('Cache-Control', 'public, max-age=86400');
+    res.send(cached.xml);
+    return;
+  }
 
   const sitemap = generateSitemap(domain);
+  sitemapCache.set(domain, { xml: sitemap, generatedAt: now });
   res.header('Content-Type', 'application/xml');
+  res.header('Cache-Control', 'public, max-age=86400');
   res.send(sitemap);
 });
 
 app.get('/seo/health', (req, res) => {
+  const secret = process.env['HEALTH_CHECK_SECRET'];
+  if (secret) {
+    const provided = req.headers['x-health-secret'];
+    if (provided !== secret) {
+      res.status(401).json({ error: 'Unauthorized' });
+      return;
+    }
+  }
+
   const canonicalBaseUrl = resolveCanonicalBaseUrl(req);
   if (!latestSeoHealthSnapshot) {
     const dynamicEntriesCount = DYNAMIC_SITEMAP_COLLECTIONS.reduce(
@@ -421,6 +506,21 @@ app.get('/seo/health', (req, res) => {
 });
 
 /**
+ * Standalone security headers middleware — applied to ALL responses including static assets.
+ */
+function applySecurityHeaders(req: express.Request, res: express.Response, next: express.NextFunction): void {
+  res.setHeader('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
+  res.setHeader('Vary', 'Accept-Language');
+  next();
+}
+
+app.use(applySecurityHeaders);
+
+/**
  * Serve static files from /browser
  */
 app.use(
@@ -444,13 +544,6 @@ app.use(
  * Handle all other requests by rendering the Angular application.
  */
 app.use((req, res, next) => {
-  res.setHeader('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
-  res.setHeader('X-Content-Type-Options', 'nosniff');
-  res.setHeader('X-Frame-Options', 'DENY');
-  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
-  res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
-  res.setHeader('Vary', 'Accept-Language');
-
   // Defense-in-depth: X-Robots-Tag for noindex routes (supplements meta robots tag)
   const isNoindexRoute = NOINDEX_ROUTES.some((route) => req.path.includes(route));
   if (isNoindexRoute) {
@@ -461,7 +554,10 @@ app.use((req, res, next) => {
     'Content-Security-Policy',
     [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ https://connect.facebook.net https://www.clarity.ms",
+      // 'unsafe-inline' is required for Angular SSR inline bootstrap scripts.
+      // 'strict-dynamic' is included to prepare for nonce migration — in browsers
+      // that support strict-dynamic, 'unsafe-inline' is ignored for script execution.
+      "script-src 'self' 'unsafe-inline' 'strict-dynamic' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ https://connect.facebook.net https://www.clarity.ms",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",
       "img-src 'self' data: https: https://www.google-analytics.com https://www.facebook.com",
@@ -472,7 +568,6 @@ app.use((req, res, next) => {
   );
 
   const dynamicBaseUrl = resolveCanonicalBaseUrl(req);
-  const requestHost = req.get('host');
 
   angularApp
     .handle(req, {
@@ -486,7 +581,6 @@ app.use((req, res, next) => {
         { provide: FEATURE_FLAGS, useValue: ENV_FEATURE_FLAGS },
         { provide: CLARITY_PROJECT_ID, useValue: ENV_CLARITY_PROJECT_ID },
       ],
-      allowedHosts: ['127.0.0.1', 'localhost', '127.0.0.1:4000', 'localhost:4000', requestHost],
     })
     .then((response) => (response ? writeResponseToNodeResponse(response, res) : next()))
     .catch(next);

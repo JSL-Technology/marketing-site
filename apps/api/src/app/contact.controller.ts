@@ -1,6 +1,7 @@
 import { Controller, Post, Body } from '@nestjs/common';
 import { ContactService } from './contact.service';
 import { ContactDto } from './contact.dto';
+import { NewsletterDto } from './newsletter.dto';
 
 @Controller()
 export class ContactController {
@@ -12,7 +13,7 @@ export class ContactController {
   }
 
   @Post('newsletter')
-  async subscribeNewsletter(@Body('email') email: string) {
-    return this.contactService.handleNewsletterSubscription(email);
+  async subscribeNewsletter(@Body() dto: NewsletterDto) {
+    return this.contactService.handleNewsletterSubscription(dto.email);
   }
 }

@@ -1,6 +1,7 @@
-import { Injectable, Inject, signal, WritableSignal, PLATFORM_ID } from '@angular/core';
+import { Injectable, Inject, signal, WritableSignal, PLATFORM_ID, DestroyRef, inject } from '@angular/core';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { isRtlLanguage } from '@core/constants/languages';
 
 @Injectable({
@@ -8,6 +9,7 @@ import { isRtlLanguage } from '@core/constants/languages';
 })
 export class DirectionService {
   public isRtl: WritableSignal<boolean> = signal(false);
+  private readonly destroyRef = inject(DestroyRef);
 
   constructor(
     private translate: TranslateService,
@@ -22,7 +24,7 @@ export class DirectionService {
     this.syncDirection(this.translate.currentLang || this.translate.getDefaultLang() || 'en');
 
     // Subscribe to language changes
-    this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+    this.translate.onLangChange.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((event: LangChangeEvent) => {
       this.syncDirection(event.lang);
     });
   }

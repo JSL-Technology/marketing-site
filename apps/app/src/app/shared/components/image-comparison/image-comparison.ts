@@ -1,12 +1,13 @@
 import { Component, Input, ViewChild, ElementRef, HostListener, AfterViewInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LucideAngularModule } from 'lucide-angular';
+import { TranslateModule } from '@ngx-translate/core';
 import { DirectionService } from '@core/services/direction.service';
 
 @Component({
   selector: 'jsl-image-comparison',
   standalone: true,
-  imports: [CommonModule, LucideAngularModule],
+  imports: [CommonModule, LucideAngularModule, TranslateModule],
   templateUrl: './image-comparison.html',
   styleUrls: ['./image-comparison.scss']
 })

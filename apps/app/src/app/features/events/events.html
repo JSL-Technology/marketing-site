@@ -1,6 +1,6 @@
-<section class="events-hero">
+﻿<section class="events-hero" aria-labelledby="events-hero-heading">
   <div class="container">
-    <h1>{{ 'EVENTS.TITLE' | translate }}</h1>
+    <h1 id="events-hero-heading">{{ 'EVENTS.TITLE' | translate }}</h1>
     <p class="subtitle">{{ 'EVENTS.SUBTITLE' | translate }}</p>
   </div>
 </section>
@@ -11,8 +11,15 @@
     <div class="events-grid">
       @for (event of upcomingEvents; track event.startDate) {
         <article class="event-card" [attr.itemscope]="''" itemtype="https://schema.org/Event">
-          <div class="event-image" [style.backgroundImage]="'url(' + event.image + ')'">
-            <meta itemprop="image" [attr.content]="event.image">
+          <!-- ACC-35: use <img> instead of background-image for schema.org + a11y -->
+          <div class="event-image">
+            <img
+              [src]="event.image"
+              [attr.alt]="event.title"
+              itemprop="image"
+              width="800"
+              height="200"
+              loading="lazy">
           </div>
           <div class="event-content">
             <div class="event-date" itemprop="startDate" [attr.datetime]="event.startDate">
@@ -20,9 +27,15 @@
             </div>
             <h3 itemprop="name">{{ event.title }}</h3>
             <p itemprop="description">{{ event.description }}</p>
-            <a [href]="event.registrationUrl || '#'" class="btn-register" target="_blank" rel="noopener noreferrer">
-              {{ 'EVENTS.REGISTER' | translate }}
-            </a>
+            @if (event.registrationUrl) {
+              <a [href]="event.registrationUrl" class="btn-register" target="_blank" rel="noopener noreferrer">
+                {{ 'EVENTS.REGISTER' | translate }}
+              </a>
+            } @else {
+              <button class="btn-register btn-register--disabled" disabled [attr.aria-disabled]="true">
+                {{ 'EVENTS.COMING_SOON' | translate }}
+              </button>
+            }
           </div>
         </article>
       }
@@ -32,11 +45,21 @@
     <div class="events-grid">
       @for (event of pastEvents; track event.title) {
         <div class="event-card">
-          <div class="event-image grayscale" [style.backgroundImage]="'url(' + event.image + ')'"></div>
+          <div class="event-image grayscale">
+            <img [src]="event.image" [attr.alt]="event.title" width="800" height="200" loading="lazy">
+          </div>
           <div class="event-content">
             <div class="event-date">{{ event.date }}</div>
             <h3>{{ event.title }}</h3>
-            <button class="btn-outline">{{ 'EVENTS.WATCH_RECORDING' | translate }}</button>
+            @if (event.recordingUrl) {
+              <a [href]="event.recordingUrl" target="_blank" rel="noopener noreferrer" class="btn-outline">
+                {{ 'EVENTS.WATCH_RECORDING' | translate }}
+              </a>
+            } @else {
+              <span class="btn-outline btn-outline--disabled" aria-disabled="true">
+                {{ 'EVENTS.RECORDING_UNAVAILABLE' | translate }}
+              </span>
+            }
           </div>
         </div>
       }

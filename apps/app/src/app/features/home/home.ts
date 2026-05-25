@@ -449,6 +449,8 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
   private unlistenProjectsMouseMove: (() => void) | null = null;
   private unlistenProjectsMouseLeave: (() => void) | null = null;
   private socialProofInterval: any;
+  private socialProofTimeout: ReturnType<typeof setTimeout> | null = null;
+  private mobileExitScrollHandler: (() => void) | null = null;
   private isBrowser: boolean;
   private destroy$ = new Subject<void>();
 
@@ -476,7 +478,7 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.translate.onLangChange.subscribe((event) => {
+    this.translate.onLangChange.pipe(takeUntil(this.destroy$)).subscribe((event) => {
       this.currentLang = event.lang;
       // Re-generate schema on lang change if needed, but for now simple init
     });
@@ -498,13 +500,11 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
         localStorage.setItem('jsl_visited', 'true');
       }
 
-      // Simulate initial loading
-      setTimeout(() => {
-        this.isLoading.set(false);
-        // El slider de offerings no existe en el DOM mientras se muestra el skeleton
-        // por eso lo inicializamos cuando termina la carga simulada.
-        setTimeout(() => this.initializeOfferingsSlider(), 0);
-      }, 1500);
+      // Remove artificial delay — set loading false immediately and allow change detection
+      // to run before initializing the slider (skeleton disappears synchronously).
+      this.isLoading.set(false);
+      // Use setTimeout(0) to allow change detection to render the slider DOM first.
+      setTimeout(() => this.initializeOfferingsSlider(), 0);
     }
 
     this.addSchemaData();
@@ -513,6 +513,10 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
+    if (this.mobileExitScrollHandler) {
+      window.removeEventListener('scroll', this.mobileExitScrollHandler);
+      this.mobileExitScrollHandler = null;
+    }
     if (this.unlistenExitIntent) {
       this.unlistenExitIntent();
     }
@@ -540,6 +544,10 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
     if (this.unlistenProjectsMouseLeave) {
       this.unlistenProjectsMouseLeave();
     }
+    if (this.socialProofTimeout) {
+      clearTimeout(this.socialProofTimeout);
+      this.socialProofTimeout = null;
+    }
     if (this.socialProofInterval) {
       clearInterval(this.socialProofInterval);
     }
@@ -559,7 +567,10 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
   }
 
 
+  private offeringsSliderInitialized = false;
+
   private initializeOfferingsSlider() {
+    if (this.offeringsSliderInitialized) return;
     if (!this.isBrowser || this.isLoading()) return;
 
     const offeringsSwiperEl = this.el.nativeElement.querySelector('.offerings-section swiper-container');
@@ -569,6 +580,7 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
 
     if (!offeringsSwiperEl.swiper) {
       offeringsSwiperEl.initialize();
+      this.offeringsSliderInitialized = true;
       this.setupOfferingsNavigationVisibility();
       this.bindSliderBoundaryState(
         offeringsSwiperEl,
@@ -576,6 +588,7 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
         this.canOfferingsNext
       );
     } else {
+      this.offeringsSliderInitialized = true;
       offeringsSwiperEl.swiper.update();
       this.refreshSliderBoundaryState(
         offeringsSwiperEl,
@@ -891,7 +904,8 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
     if (!this.isBrowser) return;
 
     // Initial delay then periodic
-    setTimeout(() => {
+    this.socialProofTimeout = setTimeout(() => {
+      this.socialProofTimeout = null;
       this.showRandomSocialProof();
       this.socialProofInterval = setInterval(() => {
         this.showRandomSocialProof();
@@ -961,8 +975,8 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
       lastScrollTime = now;
     };
 
+    this.mobileExitScrollHandler = onScroll;
     window.addEventListener('scroll', onScroll, { passive: true });
-    this.destroy$.subscribe(() => window.removeEventListener('scroll', onScroll));
   }
 
   closeMobileExitSheet(): void {
@@ -1076,8 +1090,13 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
     projectsSection.style.setProperty('--projects-nav-right-visibility', '0');
   }
 
+  private starsCache = new Map<number, any[]>();
+
   getStars(count: number): any[] {
-    return new Array(count);
+    if (!this.starsCache.has(count)) {
+      this.starsCache.set(count, new Array(count).fill(null));
+    }
+    return this.starsCache.get(count)!;
   }
 
   toggleFaq(index: number) {

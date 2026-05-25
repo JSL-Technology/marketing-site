@@ -6,12 +6,13 @@ import {
   isDevMode,
 } from '@angular/core';
 import { provideRouter, withInMemoryScrolling } from '@angular/router';
-import { provideHttpClient, withFetch } from '@angular/common/http';
+import { provideHttpClient, withFetch, HttpClient } from '@angular/common/http';
 import { provideServiceWorker } from '@angular/service-worker';
 import { BASE_URL } from './core/constants/tokens';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { TranslateLoader, provideTranslateService } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { LucideAngularModule } from 'lucide-angular';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { CookieService } from 'ngx-cookie-service';
@@ -19,7 +20,10 @@ import { ALL_ICONS } from './core/constants/icons';
 
 import { routes } from './app.routes';
 
-// Carga estática de traducciones para SSR
+// Static SSR fallbacks — all 11 languages bundled for correct server-side rendering.
+// On the browser, translations are loaded lazily via HttpClient (only the needed language).
+// Tradeoff: these static imports increase the SSR bundle size (~50-100 KB total for 11 langs),
+// but browser clients only download one language file on demand, improving client-side performance.
 import * as en from '@assets/i18n/en.json';
 import * as es from '@assets/i18n/es.json';
 import * as ar from '@assets/i18n/ar.json';
@@ -32,33 +36,19 @@ import * as pt from '@assets/i18n/pt.json';
 import * as zh from '@assets/i18n/zh.json';
 import * as ht from '@assets/i18n/ht.json';
 
-export function createTranslateLoader(): TranslateLoader {
+const SSR_TRANSLATIONS: Record<string, any> = { en, es, ar, de, fr, it, ja, ko, pt, zh, ht };
+
+export function createTranslateLoader(platformId: object, http: HttpClient): TranslateLoader {
   return {
     getTranslation: (lang: string): Observable<any> => {
-      switch (lang) {
-        case 'es':
-          return of(es);
-        case 'ar':
-          return of(ar);
-        case 'de':
-          return of(de);
-        case 'fr':
-          return of(fr);
-        case 'it':
-          return of(it);
-        case 'ja':
-          return of(ja);
-        case 'ko':
-          return of(ko);
-        case 'pt':
-          return of(pt);
-        case 'zh':
-          return of(zh);
-        case 'ht':
-          return of(ht);
-        default:
-          return of(en);
+      // On server: use bundled static fallbacks (all 11 languages available for correct SSR)
+      if (!isPlatformBrowser(platformId)) {
+        return of(SSR_TRANSLATIONS[lang] ?? SSR_TRANSLATIONS['en']);
       }
+      // On browser: lazy load only the needed language from assets via HTTP
+      return http.get<any>(`/assets/i18n/${lang}.json`).pipe(
+        catchError(() => of(SSR_TRANSLATIONS[lang] ?? SSR_TRANSLATIONS['en'])),
+      );
     },
   } as TranslateLoader;
 }
@@ -92,6 +82,7 @@ export const appConfig: ApplicationConfig = {
       loader: {
         provide: TranslateLoader,
         useFactory: createTranslateLoader,
+        deps: [PLATFORM_ID, HttpClient],
       },
     }),
     importProvidersFrom(LucideAngularModule.pick(ALL_ICONS)),

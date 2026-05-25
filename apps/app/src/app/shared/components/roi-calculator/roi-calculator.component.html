@@ -1,7 +1,7 @@
 <div class="roi-calculator-card">
   <div class="roi-header">
     <div class="icon-wrapper">
-      <lucide-icon [name]="icons.Calculator"></lucide-icon>
+      <lucide-icon [name]="icons.Calculator" aria-hidden="true"></lucide-icon>
     </div>
     <h3>{{ 'MATURITY.ROI_CALCULATOR.TITLE' | translate }}</h3>
     <p>{{ 'MATURITY.ROI_CALCULATOR.SUBTITLE' | translate }}</p>
@@ -10,50 +10,56 @@
   <div class="roi-content">
     <div class="inputs-section">
       <div class="input-group">
-        <label>
-          <lucide-icon [name]="icons.Clock" size="16"></lucide-icon>
+        <label for="roi-hours-saved">
+          <lucide-icon [name]="icons.Clock" size="16" aria-hidden="true"></lucide-icon>
           {{ 'MATURITY.ROI_CALCULATOR.HOURS_SAVED' | translate }}
         </label>
         <div class="range-wrapper">
           <input
+            id="roi-hours-saved"
             type="range"
             [ngModel]="hoursSaved()"
             (ngModelChange)="hoursSaved.set($event)"
             (change)="onSliderChange()"
-            min="1" max="40" step="1">
-          <span class="value">{{ hoursSaved() }} hrs</span>
+            min="1" max="40" step="1"
+            [attr.aria-valuetext]="hoursSaved() + ' hrs'">
+          <span class="value" aria-hidden="true">{{ hoursSaved() }} hrs</span>
         </div>
       </div>
 
       <div class="input-group">
-        <label>
-          <lucide-icon [name]="icons.DollarSign" size="16"></lucide-icon>
+        <label for="roi-hourly-rate">
+          <lucide-icon [name]="icons.DollarSign" size="16" aria-hidden="true"></lucide-icon>
           {{ 'MATURITY.ROI_CALCULATOR.HOURLY_RATE' | translate }}
         </label>
         <div class="range-wrapper">
           <input
+            id="roi-hourly-rate"
             type="range"
             [ngModel]="hourlyRate()"
             (ngModelChange)="hourlyRate.set($event)"
             (change)="onSliderChange()"
-            min="10" max="200" step="5">
-          <span class="value">${{ hourlyRate() }}</span>
+            min="10" max="200" step="5"
+            [attr.aria-valuetext]="'$' + hourlyRate() + '/hr'">
+          <span class="value" aria-hidden="true">${{ hourlyRate() }}</span>
         </div>
       </div>
 
       <div class="input-group">
-        <label>
-          <lucide-icon [name]="icons.Users" size="16"></lucide-icon>
+        <label for="roi-employees">
+          <lucide-icon [name]="icons.Users" size="16" aria-hidden="true"></lucide-icon>
           {{ 'MATURITY.ROI_CALCULATOR.EMPLOYEES' | translate }}
         </label>
         <div class="range-wrapper">
           <input
+            id="roi-employees"
             type="range"
             [ngModel]="employees()"
             (ngModelChange)="employees.set($event)"
             (change)="onSliderChange()"
-            min="1" max="100" step="1">
-          <span class="value">{{ employees() }}</span>
+            min="1" max="100" step="1"
+            [attr.aria-valuetext]="employees() + ' employees'">
+          <span class="value" aria-hidden="true">{{ employees() }}</span>
         </div>
       </div>
     </div>

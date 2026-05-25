@@ -1,4 +1,4 @@
-<section class="hero-slider">
+﻿<section class="hero-slider" aria-labelledby="hero-main-heading">
   <!-- Añadido #heroSwiper para referencia en TypeScript -->
   <swiper-container 
     #heroSwiper
@@ -21,7 +21,7 @@
         } @else {
           <p class="hero-slide__eyebrow">{{ 'HOME.WELCOME_EYEBROW' | translate }}</p>
         }
-        <h1 class="hero-slide__title">{{ personalizedHeroTitle() | translate }}</h1>
+        <h1 class="hero-slide__title" id="hero-main-heading">{{ personalizedHeroTitle() | translate }}</h1>
         <p class="hero-slide__subtitle">{{ personalizedHeroSubtitle() | translate }}</p>
 
         @if (heroVariant() === 'B') {
@@ -122,8 +122,8 @@
     </div>
   </div>
 
-  <!-- NUEVO: Scroll Down Indicator -->
-  <div class="scroll-indicator" [class.hidden]="!showScrollIndicator()">
+  <!-- Scroll Down Indicator — purely decorative -->
+  <div class="scroll-indicator" [class.hidden]="!showScrollIndicator()" aria-hidden="true" role="presentation">
     <div class="mouse">
       <div class="wheel"></div>
     </div>
@@ -215,16 +215,24 @@
     <h2 class="section-title">{{ 'HOME.OFFERINGS_TITLE' | translate }}</h2>
 
     <div class="search-trigger-container">
-      <div class="search-trigger" (click)="openSearch()">
-        <lucide-icon name="Search"></lucide-icon>
+      <button
+        class="search-trigger"
+        (click)="openSearch()"
+        type="button"
+        [attr.aria-label]="'HOME.SEARCH_PLACEHOLDER' | translate">
+        <lucide-icon name="Search" aria-hidden="true"></lucide-icon>
         <span>{{ 'HOME.SEARCH_PLACEHOLDER' | translate }}</span>
-      </div>
+      </button>
     </div>
 
     <div class="offerings-tabs-container">
-      <div class="offerings-tabs">
+      <div class="offerings-tabs" role="tablist" [attr.aria-label]="'HOME.OFFERINGS_TITLE' | translate">
         <button
           class="tab-btn"
+          role="tab"
+          id="tab-services"
+          aria-controls="tabpanel-services"
+          [attr.aria-selected]="activeTab() === 'services'"
           [class.active]="activeTab() === 'services'"
           (click)="setActiveTab('services')"
         >
@@ -232,6 +240,10 @@
         </button>
         <button
           class="tab-btn"
+          role="tab"
+          id="tab-products"
+          aria-controls="tabpanel-products"
+          [attr.aria-selected]="activeTab() === 'products'"
           [class.active]="activeTab() === 'products'"
           (click)="setActiveTab('products')"
         >
@@ -241,7 +253,11 @@
     </div>
   </div>
 
-  <div class="offerings-content">
+  <div
+    class="offerings-content"
+    role="tabpanel"
+    [id]="activeTab() === 'services' ? 'tabpanel-services' : 'tabpanel-products'"
+    [attr.aria-labelledby]="activeTab() === 'services' ? 'tab-services' : 'tab-products'">
     @if (isLoading()) {
       <div class="solutions-grid">
          @for (i of [1,2,3]; track $index) {
@@ -352,11 +368,12 @@
     <p class="section-subtitle">{{ 'HOME.PROJECTS_SUBTITLE' | translate }}</p>
   </div>
 
-  <div class="projects-filter">
+  <div class="projects-filter" role="group" [attr.aria-label]="'HOME.PROJECTS_FILTER_LABEL' | translate">
     @for (category of projectCategories; track category) {
       <button
         class="filter-pill"
         [class.active]="selectedProjectCategory() === category"
+        [attr.aria-pressed]="selectedProjectCategory() === category"
         (click)="setProjectCategory(category)">
         {{ category }}
       </button>
@@ -477,7 +494,14 @@
 
       <div class="lead-magnet-form-wrapper">
         <div class="lead-magnet-form">
-          <input type="email" [placeholder]="'HOME.LEAD_MAGNET_PLACEHOLDER' | translate" class="lead-magnet-input" />
+          <label for="lead-magnet-email" class="sr-only">{{ 'HOME.LEAD_MAGNET_PLACEHOLDER' | translate }}</label>
+          <input
+            id="lead-magnet-email"
+            type="email"
+            [placeholder]="'HOME.LEAD_MAGNET_PLACEHOLDER' | translate"
+            class="lead-magnet-input"
+            [attr.aria-label]="'HOME.LEAD_MAGNET_PLACEHOLDER' | translate"
+          />
           <button (click)="downloadLeadMagnet()" class="lead-magnet-btn" [disabled]="isSubmitting()">
             @if (isSubmitting()) {
                <span>{{ 'HOME.LEAD_MAGNET_SENDING' | translate }}</span>
