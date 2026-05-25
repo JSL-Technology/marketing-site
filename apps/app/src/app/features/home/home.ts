@@ -41,7 +41,7 @@ import { FeatureFlagService } from '@core/services/feature-flag.service';
 import { OnboardingFlowService } from '@core/services/onboarding-flow.service';
 
 // Swiper Web Components
-import { Pagination, Autoplay, EffectFade, Navigation } from 'swiper/modules';
+import { Pagination, Autoplay, EffectFade, Navigation, EffectCoverflow } from 'swiper/modules';
 import { triggerTick } from '@shared/utils/haptic-feedback';
 
 @Component({
