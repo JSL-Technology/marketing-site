@@ -135,6 +135,20 @@ export class BottomSheetComponent implements OnInit, OnChanges, OnDestroy {
               requestAnimationFrame(() => {
                 this.ngZone.run(() => {
                   this.scaleY = 1;
+
+                  // Clear manual styles to ensure Angular bindings have full control.
+                  // We do this after one frame so the browser has picked up the
+                  // transition from the 'current' values set above.
+                  if (this.sheetContainer) {
+                    this.renderer.removeStyle(this.sheetContainer.nativeElement, 'transform');
+                    this.renderer.removeStyle(this.sheetContainer.nativeElement, 'transform-origin');
+                    this.renderer.removeStyle(this.sheetContainer.nativeElement, 'transition');
+                  }
+                  if (this.backdropElement) {
+                    this.renderer.removeStyle(this.backdropElement.nativeElement, 'opacity');
+                    this.renderer.removeStyle(this.backdropElement.nativeElement, 'transition');
+                  }
+
                   this.cdRef.markForCheck();
                 });
               });
@@ -195,7 +209,7 @@ export class BottomSheetComponent implements OnInit, OnChanges, OnDestroy {
         this.translateY = 100;
         this.overlayOpacity = 0;
         this.transitionStyle = 'none';
-        this.cdRef.detectChanges();
+        this.cdRef.markForCheck();
       }
 
       if (wasAlreadyOpen && wasAlreadyRendered) {
