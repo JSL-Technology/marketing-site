@@ -17,9 +17,13 @@
     [style.transition]="transitionStyle"
   >
     <!-- Handle for mobile feel -->
-    <div class="bottom-sheet-handle-wrapper" (click)="onClose()">
-      <div class="bottom-sheet-handle"></div>
-    </div>
+    <button
+      class="bottom-sheet-handle-wrapper"
+      (click)="onClose()"
+      [attr.aria-label]="'COMMON.CLOSE' | translate"
+    >
+      <span class="bottom-sheet-handle"></span>
+    </button>
 
     <!-- Header (Optional) -->
     <div class="bottom-sheet-header" *ngIf="title || showCloseButton">

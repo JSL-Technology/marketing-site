@@ -114,32 +114,44 @@ export class BottomSheetComponent implements OnInit, OnChanges, OnDestroy {
           } else {
             // Reset to reactive state
             this.ngZone.run(() => {
+              // We enable the transition first while keeping the current scaleY
+              // to ensure a smooth hand-off from manual gestures to reactive animation.
+              this.isDragging = false;
+              this.scaleY = scaleY ?? 1;
+              this.transformOrigin = transformOrigin ?? 'bottom';
+
               // `y` is produced in pixels by the gesture engine. Once drag ends we
               // return to declarative state that uses percentage-based translateY
               // in the template, so we must snap back to semantic open/closed values.
               this.translateY = this.isOpen ? 0 : 100;
-              this.isDragging = false;
-              this.scaleY = 1;
-              // We keep the last transformOrigin during the snap-back transition
               this.overlayOpacity = this.isOpen ? 1 : 0;
               this.transitionStyle = this.isOpen
                 ? 'transform 400ms cubic-bezier(0.32, 0.72, 0, 1), opacity 300ms ease'
                 : 'transform 300ms cubic-bezier(0.32, 0.72, 0, 1), opacity 250ms ease';
 
-              // Clear manual styles in next frame to avoid jump before reactive styles apply
-              requestAnimationFrame(() => {
-                if (this.sheetContainer) {
-                  this.renderer.removeStyle(this.sheetContainer.nativeElement, 'transform');
-                  this.renderer.removeStyle(this.sheetContainer.nativeElement, 'transform-origin');
-                  this.renderer.removeStyle(this.sheetContainer.nativeElement, 'transition');
-                }
-                if (this.backdropElement) {
-                  this.renderer.removeStyle(this.backdropElement.nativeElement, 'opacity');
-                  this.renderer.removeStyle(this.backdropElement.nativeElement, 'transition');
-                }
-              });
-
               this.cdRef.markForCheck();
+
+              // In the next frame, we set the target scaleY, triggering the transition.
+              requestAnimationFrame(() => {
+                this.ngZone.run(() => {
+                  this.scaleY = 1;
+
+                  // Clear manual styles to ensure Angular bindings have full control.
+                  // We do this after one frame so the browser has picked up the
+                  // transition from the 'current' values set above.
+                  if (this.sheetContainer) {
+                    this.renderer.removeStyle(this.sheetContainer.nativeElement, 'transform');
+                    this.renderer.removeStyle(this.sheetContainer.nativeElement, 'transform-origin');
+                    this.renderer.removeStyle(this.sheetContainer.nativeElement, 'transition');
+                  }
+                  if (this.backdropElement) {
+                    this.renderer.removeStyle(this.backdropElement.nativeElement, 'opacity');
+                    this.renderer.removeStyle(this.backdropElement.nativeElement, 'transition');
+                  }
+
+                  this.cdRef.markForCheck();
+                });
+              });
             });
           }
         },
@@ -188,6 +200,7 @@ export class BottomSheetComponent implements OnInit, OnChanges, OnDestroy {
       this.overlayManager.register('bottom-sheet', { lockScroll: true });
 
       const wasAlreadyRendered = this.isRendered;
+      const wasAlreadyOpen = this.translateY === 0 && this.isRendered;
       this.isRendered = true;
       this.syncHostMountPoint(true);
 
@@ -196,7 +209,13 @@ export class BottomSheetComponent implements OnInit, OnChanges, OnDestroy {
         this.translateY = 100;
         this.overlayOpacity = 0;
         this.transitionStyle = 'none';
-        this.cdRef.detectChanges();
+        this.cdRef.markForCheck();
+      }
+
+      if (wasAlreadyOpen && wasAlreadyRendered) {
+        // Already open and rendered, no need to trigger full animation sequence.
+        // This avoids fighting with gesture-based snap-back.
+        return;
       }
 
       // Trigger animation in next frame
