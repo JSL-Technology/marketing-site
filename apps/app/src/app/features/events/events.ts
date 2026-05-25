@@ -1,8 +1,9 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { CtaComponent } from '@shared/components/cta/cta';
 import { Seo } from '@core/services/seo';
+import { BASE_URL } from '@core/constants/tokens';
 
 interface EventItem {
   title: string;
@@ -23,27 +24,9 @@ interface EventItem {
 })
 export class Events implements OnInit {
   private seo = inject(Seo);
+  private baseUrl = inject(BASE_URL);
 
-  upcomingEvents: EventItem[] = [
-    {
-      title: 'virtex ERP 2.0 Demo',
-      startDate: '2025-11-15T14:00:00-05:00',
-      endDate: '2025-11-15T15:30:00-05:00',
-      description: 'See the new features of our flagship ERP system in action. Live walkthrough with Q&A session.',
-      image: 'https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&q=80&w=800',
-      registrationUrl: 'https://www.jsl.technology/en/events',
-      isOnline: true,
-    },
-    {
-      title: 'Cloud Security Masterclass',
-      startDate: '2025-12-05T11:00:00-05:00',
-      endDate: '2025-12-05T13:00:00-05:00',
-      description: 'Best practices for securing your infrastructure on AWS and Azure. Hands-on lab included.',
-      image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800',
-      registrationUrl: 'https://www.jsl.technology/en/events',
-      isOnline: true,
-    }
-  ];
+  upcomingEvents = signal<EventItem[]>([]);
 
   pastEvents: { title: string; date: string; image: string; recordingUrl?: string }[] = [
     {
@@ -54,11 +37,39 @@ export class Events implements OnInit {
   ];
 
   ngOnInit(): void {
+    this.initEvents();
     this.injectEventSchemas();
   }
 
+  private initEvents(): void {
+    this.upcomingEvents.set([
+      {
+        title: 'virtex ERP 2.0 Demo',
+        startDate: '2025-11-15T14:00:00-05:00',
+        endDate: '2025-11-15T15:30:00-05:00',
+        description:
+          'See the new features of our flagship ERP system in action. Live walkthrough with Q&A session.',
+        image:
+          'https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&q=80&w=800',
+        registrationUrl: `${this.baseUrl}/en/events`,
+        isOnline: true,
+      },
+      {
+        title: 'Cloud Security Masterclass',
+        startDate: '2025-12-05T11:00:00-05:00',
+        endDate: '2025-12-05T13:00:00-05:00',
+        description:
+          'Best practices for securing your infrastructure on AWS and Azure. Hands-on lab included.',
+        image:
+          'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800',
+        registrationUrl: `${this.baseUrl}/en/events`,
+        isOnline: true,
+      },
+    ]);
+  }
+
   private injectEventSchemas(): void {
-    this.upcomingEvents.forEach((event, index) => {
+    this.upcomingEvents().forEach((event, index) => {
       this.seo.setEventSchema(
         {
           name: event.title,
@@ -67,10 +78,16 @@ export class Events implements OnInit {
           endDate: event.endDate,
           image: event.image,
           organizerName: 'JSL Technology',
-          locationName: event.isOnline ? 'Online — JSL Technology Webinar' : 'Santo Domingo, Dominican Republic',
-          locationUrl: event.isOnline ? (event.registrationUrl ?? 'https://www.jsl.technology') : undefined,
+          locationName: event.isOnline
+            ? 'Online — JSL Technology Webinar'
+            : 'Santo Domingo, Dominican Republic',
+          locationUrl: event.isOnline
+            ? event.registrationUrl ?? this.baseUrl
+            : undefined,
           eventStatus: 'EventScheduled',
-          eventAttendanceMode: event.isOnline ? 'OnlineEventAttendanceMode' : 'OfflineEventAttendanceMode',
+          eventAttendanceMode: event.isOnline
+            ? 'OnlineEventAttendanceMode'
+            : 'OfflineEventAttendanceMode',
           url: event.registrationUrl,
         },
         `event-schema-${index}`,

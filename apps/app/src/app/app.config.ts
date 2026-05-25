@@ -61,7 +61,8 @@ export const appConfig: ApplicationConfig = {
         if (isPlatformBrowser(platformId)) {
           return document.location.origin;
         }
-        // Valor por defecto para SSR, puede ser sobreescrito en app.config.server.ts o via REQUEST
+        // Fallback for SSR if not provided by server.ts.
+        // This value is usually overridden by the provider in server.ts
         return 'https://www.jsl.technology';
       },
       deps: [PLATFORM_ID, DOCUMENT],

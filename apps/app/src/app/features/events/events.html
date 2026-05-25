@@ -9,7 +9,7 @@
   <div class="container">
     <h2 class="section-title">{{ 'EVENTS.UPCOMING' | translate }}</h2>
     <div class="events-grid">
-      @for (event of upcomingEvents; track event.startDate) {
+      @for (event of upcomingEvents(); track event.startDate) {
         <article class="event-card" [attr.itemscope]="''" itemtype="https://schema.org/Event">
           <!-- ACC-35: use <img> instead of background-image for schema.org + a11y -->
           <div class="event-image">

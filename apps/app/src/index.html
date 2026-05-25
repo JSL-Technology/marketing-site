@@ -26,8 +26,8 @@
     />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="JSL Technology" />
-    <meta property="og:url" content="https://www.jsl.technology/en" />
-    <meta property="og:image" content="https://www.jsl.technology/assets/imgs/jsl-social-default.jpg" />
+    <!-- Meta tags are updated dynamically by Angular SEO service.
+         Hardcoded values here are for initial crawler fallback only. -->
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="JSL Technology — Expert Software Development" />
@@ -40,11 +40,7 @@
       name="twitter:description"
       content="JSL Technology: Custom software development, ERP, POS, and mobile solutions to accelerate your business growth worldwide."
     />
-    <meta name="twitter:image" content="https://www.jsl.technology/assets/imgs/jsl-social-default.jpg" />
     <meta name="twitter:image:alt" content="JSL Technology — Expert Software Development" />
-
-    <link rel="canonical" href="https://www.jsl.technology/en" />
-    <link rel="alternate" hreflang="x-default" href="https://www.jsl.technology/en" />
 
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
 
@@ -100,29 +96,8 @@
       />
     </noscript>
 
-    <!-- WebSite schema — static fallback for crawlers before Angular hydration.
-         The dynamic SeoService overwrites this per-route with the correct language. -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "@id": "https://www.jsl.technology/#website",
-      "url": "https://www.jsl.technology",
-      "name": "JSL Technology",
-      "description": "Expert software development and digital transformation solutions for businesses worldwide.",
-      "publisher": {
-        "@id": "https://www.jsl.technology/#organization"
-      },
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": {
-          "@type": "EntryPoint",
-          "urlTemplate": "https://www.jsl.technology/{lang}/blog?q={search_term_string}"
-        },
-        "query-input": "required name=search_term_string"
-      }
-    }
-    </script>
+    <!-- Structured data is injected server-side by SeoService.
+         This static fallback is minimal and relies on dynamic overwrites. -->
   </head>
   <body>
     <a href="#main-content" class="skip-to-main" aria-label="Skip to main content">Skip to main content</a>

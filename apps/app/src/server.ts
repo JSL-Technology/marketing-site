@@ -34,6 +34,9 @@ app.set('trust proxy', true);
 const CANONICAL_BASE_URL = (
   process.env['CANONICAL_BASE_URL'] ?? 'https://www.jsl.technology'
 ).replace(/\/+$/, '');
+const CANONICAL_HOST = new URL(CANONICAL_BASE_URL).host.toLowerCase();
+const ENABLE_CANONICAL_REDIRECT = process.env['ENABLE_CANONICAL_REDIRECT'] !== 'false';
+
 const ENV_GA_MEASUREMENT_ID = process.env['GA_MEASUREMENT_ID'] ?? '';
 const ENV_GSC_VERIFICATION_TOKEN = process.env['GSC_VERIFICATION_TOKEN'] ?? '';
 const ENV_CALENDLY_URL = process.env['CALENDLY_URL'] ?? '';
@@ -82,14 +85,23 @@ let latestSeoHealthSnapshot: SeoHealthSnapshot | null = null;
 // --- OPTIMIZACIÓN: Compresión Gzip/Brotli ---
 app.use(compression());
 
-// --- SEO: Canonical host redirect (non-www → www, production only) ---
-// Runs before all route handlers so redirects are issued before any work is done.
+// --- SEO: Canonical host redirect (e.g. non-www → www or vice-versa) ---
+// Validates the current host against the desired CANONICAL_HOST to prevent redirection loops.
 app.use((req, res, next) => {
-  const host = req.get('host')?.toLowerCase() ?? '';
-  if (host === 'jsl.technology') {
-    const proto = req.get('x-forwarded-proto')?.split(',')[0]?.trim() || req.protocol || 'https';
-    return res.redirect(301, `${proto}://www.jsl.technology${req.url}`);
+  if (!ENABLE_CANONICAL_REDIRECT) {
+    return next();
   }
+
+  const host = req.get('host')?.toLowerCase() ?? '';
+
+  // Only redirect if:
+  // 1. The host is recognized as one of our canonical-adjacent hosts (to avoid redirecting local/temp domains)
+  // 2. The host is NOT already the canonical one.
+  if (CANONICAL_HOSTS.has(host) && host !== CANONICAL_HOST) {
+    const proto = req.get('x-forwarded-proto')?.split(',')[0]?.trim() || req.protocol || 'https';
+    return res.redirect(301, `${proto}://${CANONICAL_HOST}${req.originalUrl}`);
+  }
+
   return next();
 });
 
@@ -569,17 +581,12 @@ function resolveCanonicalBaseUrl(req: express.Request): string {
   const requestProtocol = forwardedProto?.split(',')[0]?.trim() || req.protocol || 'https';
   const isLocalHost = host.includes('localhost') || host.includes('127.0.0.1');
 
+  // For local development, use the current request host and protocol.
   if (isLocalHost && host) {
     return `${requestProtocol}://${host}`;
   }
 
-  if (!host) {
-    return CANONICAL_BASE_URL;
-  }
-
-  if (CANONICAL_HOSTS.has(host)) {
-    return CANONICAL_BASE_URL;
-  }
-
+  // In production, always return the canonical base URL to ensure SEO consistency
+  // (canonical tags, hreflang, OpenGraph) regardless of which alias was used to reach the server.
   return CANONICAL_BASE_URL;
 }
