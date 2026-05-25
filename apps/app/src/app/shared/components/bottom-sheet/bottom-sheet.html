@@ -12,7 +12,8 @@
   <div
     class="bottom-sheet-container"
     #sheetContainer
-    [style.transform]="'translateY(' + translateY + (isDragging ? 'px)' : '%)')"
+    [style.transform]="'translateY(' + translateY + (isDragging ? 'px)' : '%)') + ' scaleY(' + scaleY + ')'"
+    [style.transform-origin]="transformOrigin"
     [style.transition]="transitionStyle"
   >
     <!-- Handle for mobile feel -->

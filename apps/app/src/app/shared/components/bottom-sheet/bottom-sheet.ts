@@ -49,6 +49,8 @@ export class BottomSheetComponent implements OnInit, OnChanges, OnDestroy {
   private isAppendedToBody = false;
 
   public translateY = 100; // % by default (closed)
+  public scaleY = 1;
+  public transformOrigin = 'bottom';
   public overlayOpacity = 0;
   public transitionStyle = 'transform 400ms cubic-bezier(0.32, 0.72, 0, 1), opacity 300ms ease';
 
@@ -104,6 +106,11 @@ export class BottomSheetComponent implements OnInit, OnChanges, OnDestroy {
               this.renderer.setStyle(this.backdropElement.nativeElement, 'opacity', (progress ?? 1).toString());
               this.renderer.setStyle(this.backdropElement.nativeElement, 'transition', 'none');
             }
+
+            // Keep track of latest state for smooth hand-off to Angular zone
+            this.scaleY = scaleY ?? 1;
+            this.transformOrigin = transformOrigin ?? 'bottom';
+            this.isDragging = true;
           } else {
             // Reset to reactive state
             this.ngZone.run(() => {
@@ -112,21 +119,25 @@ export class BottomSheetComponent implements OnInit, OnChanges, OnDestroy {
               // in the template, so we must snap back to semantic open/closed values.
               this.translateY = this.isOpen ? 0 : 100;
               this.isDragging = false;
+              this.scaleY = 1;
+              // We keep the last transformOrigin during the snap-back transition
               this.overlayOpacity = this.isOpen ? 1 : 0;
               this.transitionStyle = this.isOpen
                 ? 'transform 400ms cubic-bezier(0.32, 0.72, 0, 1), opacity 300ms ease'
                 : 'transform 300ms cubic-bezier(0.32, 0.72, 0, 1), opacity 250ms ease';
 
-              // Clear manual styles
-              if (this.sheetContainer) {
-                this.renderer.removeStyle(this.sheetContainer.nativeElement, 'transform');
-                this.renderer.removeStyle(this.sheetContainer.nativeElement, 'transform-origin');
-                this.renderer.removeStyle(this.sheetContainer.nativeElement, 'transition');
-              }
-              if (this.backdropElement) {
-                this.renderer.removeStyle(this.backdropElement.nativeElement, 'opacity');
-                this.renderer.removeStyle(this.backdropElement.nativeElement, 'transition');
-              }
+              // Clear manual styles in next frame to avoid jump before reactive styles apply
+              requestAnimationFrame(() => {
+                if (this.sheetContainer) {
+                  this.renderer.removeStyle(this.sheetContainer.nativeElement, 'transform');
+                  this.renderer.removeStyle(this.sheetContainer.nativeElement, 'transform-origin');
+                  this.renderer.removeStyle(this.sheetContainer.nativeElement, 'transition');
+                }
+                if (this.backdropElement) {
+                  this.renderer.removeStyle(this.backdropElement.nativeElement, 'opacity');
+                  this.renderer.removeStyle(this.backdropElement.nativeElement, 'transition');
+                }
+              });
 
               this.cdRef.markForCheck();
             });
@@ -175,14 +186,18 @@ export class BottomSheetComponent implements OnInit, OnChanges, OnDestroy {
 
     if (isOpen) {
       this.overlayManager.register('bottom-sheet', { lockScroll: true });
+
+      const wasAlreadyRendered = this.isRendered;
       this.isRendered = true;
       this.syncHostMountPoint(true);
 
-      // Start from closed state
-      this.translateY = 100;
-      this.overlayOpacity = 0;
-      this.transitionStyle = 'none';
-      this.cdRef.detectChanges();
+      if (!wasAlreadyRendered) {
+        // Start from closed state only if not already rendered
+        this.translateY = 100;
+        this.overlayOpacity = 0;
+        this.transitionStyle = 'none';
+        this.cdRef.detectChanges();
+      }
 
       // Trigger animation in next frame
       requestAnimationFrame(() => {
@@ -190,6 +205,7 @@ export class BottomSheetComponent implements OnInit, OnChanges, OnDestroy {
           this.transitionStyle = 'transform 400ms cubic-bezier(0.32, 0.72, 0, 1), opacity 300ms ease';
           this.translateY = 0;
           this.overlayOpacity = 1;
+          this.scaleY = 1;
           this.cdRef.markForCheck();
         });
       });

@@ -83,6 +83,9 @@ export class BottomSheetGestures implements GestureHandler {
   private currentY = 0;
   private initialTranslateY = 0;
   private lastDragPosition = 0;
+  private lastScaleY = 1;
+  private lastTransformOrigin = 'bottom';
+  private cachedSheetHeight = 0;
 
   private velocityBuffer: Array<{ y: number; t: number }> = [];
 
@@ -123,6 +126,7 @@ export class BottomSheetGestures implements GestureHandler {
     this.currentY = this.startY;
     this.initialTranslateY = 0;
     this.isDragging = false;
+    this.cachedSheetHeight = this.config.getMaxTranslateY();
     this.resetVelocityBuffer();
     this.config.onStopTransition();
 
@@ -156,6 +160,8 @@ export class BottomSheetGestures implements GestureHandler {
     }
     this.wasOvershooting = isOvershooting;
     this.lastDragPosition = transform.translateY;
+    this.lastScaleY = transform.scaleY;
+    this.lastTransformOrigin = transform.transformOrigin;
 
     // Progress calculation for overlay
     // 0 is open, maxTranslate is closed
@@ -192,14 +198,14 @@ export class BottomSheetGestures implements GestureHandler {
       this.config.onOpen();
     }
 
-    this.config.onUpdateTranslate(this.lastDragPosition, null);
+    this.config.onUpdateTranslate(this.lastDragPosition, null, this.lastScaleY, this.lastTransformOrigin);
     this.resetDragState();
   }
 
   public onPointerCancel(event: PointerEvent): void {
     if (event.pointerId !== this.activePointerId) return;
     this.config.onOpen();
-    this.config.onUpdateTranslate(this.lastDragPosition, null);
+    this.config.onUpdateTranslate(this.lastDragPosition, null, this.lastScaleY, this.lastTransformOrigin);
     this.resetDragState();
   }
 
@@ -224,7 +230,7 @@ export class BottomSheetGestures implements GestureHandler {
     const maxStretchPercent = Math.max(0, this.config.maxStretchPercent ?? this.DEFAULT_MAX_STRETCH_PERCENT);
     const maxScale = 1 + maxStretchPercent / 100;
 
-    const sheetHeight = this.config.getMaxTranslateY();
+    const sheetHeight = this.cachedSheetHeight || this.config.getMaxTranslateY();
     const referenceOvershootPx = Math.max(1, sheetHeight * this.ELASTIC_OVERSHOOT_REFERENCE_RATIO);
     const normalizedOvershoot = Math.min(safeOvershoot / referenceOvershootPx, 1);
 
