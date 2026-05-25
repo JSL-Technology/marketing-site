@@ -4,6 +4,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Card } from '@shared/components/card/card';
 import { AnimateOnScroll } from '@shared/directives/animate-on-scroll';
 import { DataService } from '@core/services/data.service';
+import { BLOG_POSTS } from '@core/data/mock-data';
 import { CtaComponent } from '@shared/components/cta/cta';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
@@ -53,7 +54,7 @@ export class Blog implements OnInit, AfterViewInit {
 
   // 1. Señal base de todos los posts
   private allPosts = toSignal(this.dataService.getBlogPosts(), {
-    initialValue: [],
+    initialValue: BLOG_POSTS,
   });
 
   // 2. Señales para los filtros

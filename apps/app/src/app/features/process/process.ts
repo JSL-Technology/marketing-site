@@ -4,6 +4,7 @@ import { LucideAngularModule } from 'lucide-angular';
 import { AnimateOnScroll } from '@shared/directives/animate-on-scroll';
 import { CtaComponent } from '@shared/components/cta/cta';
 import { DataService } from '@core/services/data.service';
+import { PROCESS_STEPS } from '@core/data/mock-data';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Subscription } from 'rxjs';
 
@@ -18,7 +19,7 @@ export class Process implements OnDestroy {
   private dataService = inject(DataService);
   private langSub: Subscription;
 
-  public processSteps = toSignal(this.dataService.getProcessSteps(), { initialValue: [] });
+  public processSteps = toSignal(this.dataService.getProcessSteps(), { initialValue: PROCESS_STEPS });
 
   constructor(@Inject(TranslateService) private translate: TranslateService) {
     this.langSub = this.translate.onLangChange.subscribe(() => {});

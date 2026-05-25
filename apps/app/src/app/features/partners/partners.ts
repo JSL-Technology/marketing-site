@@ -6,6 +6,7 @@ import { CtaComponent } from '@shared/components/cta/cta';
 import { AnimateOnScroll } from '@shared/directives/animate-on-scroll';
 import { RouterLink } from '@angular/router';
 import { DataService, Partner } from '@core/services/data.service';
+import { PARTNERS } from '@core/data/mock-data';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Subscription } from 'rxjs';
 
@@ -21,7 +22,7 @@ export class Partners implements OnDestroy {
   currentLang: string;
   private langSub: Subscription;
 
-  allPartners = toSignal(this.data.getPartners(), { initialValue: [] as Partner[] });
+  allPartners = toSignal(this.data.getPartners(), { initialValue: PARTNERS as Partner[] });
 
   technologyPartners = [
     { name: 'AWS',       logo: 'assets/imgs/logos/aws.svg',          tier: 'advanced', desc: 'PARTNERS_PAGE.AWS_DESC'    },

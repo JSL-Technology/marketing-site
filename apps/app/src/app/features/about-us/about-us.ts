@@ -4,6 +4,7 @@ import { LucideAngularModule } from 'lucide-angular';
 import { RouterLink } from '@angular/router';
 import { AnimateOnScroll } from '@shared/directives/animate-on-scroll';
 import { DataService } from '@core/services/data.service';
+import { TEAM_MEMBERS } from '@core/data/mock-data';
 import { CtaComponent } from '@shared/components/cta/cta';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Subscription } from 'rxjs';
@@ -20,7 +21,7 @@ export class AboutUs implements OnDestroy {
   private langSub: Subscription;
 
   private dataService = inject(DataService);
-  public teamMembers = toSignal(this.dataService.getTeamMembers(), { initialValue: [] });
+  public teamMembers = toSignal(this.dataService.getTeamMembers(), { initialValue: TEAM_MEMBERS });
 
   coreValues = [
     { key: 'MISSION', icon: 'Target' },

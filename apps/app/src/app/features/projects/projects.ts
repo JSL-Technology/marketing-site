@@ -5,6 +5,7 @@ import { LucideAngularModule } from 'lucide-angular';
 import { Card } from '@shared/components/card/card';
 import { AnimateOnScroll } from '@shared/directives/animate-on-scroll';
 import { DataService } from '@core/services/data.service';
+import { PROJECTS } from '@core/data/mock-data';
 import { CtaComponent } from '@shared/components/cta/cta';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { PaginationComponent } from '@shared/components/pagination/pagination';
@@ -24,7 +25,7 @@ export class Projects implements OnDestroy {
   private langSub: Subscription;
 
   public currentLang: string;
-  public projects = toSignal(this.dataService.getProjects(), { initialValue: [] });
+  public projects = toSignal(this.dataService.getProjects(), { initialValue: PROJECTS });
 
   public activeCategory = signal<string>('all');
   public categories = [
