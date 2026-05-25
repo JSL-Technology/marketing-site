@@ -4,6 +4,7 @@ import { LucideAngularModule } from 'lucide-angular';
 import { RouterLink } from '@angular/router';
 import { AnimateOnScroll } from '@shared/directives/animate-on-scroll';
 import { DataService } from '@core/services/data.service';
+import { PRODUCTS } from '@core/data/mock-data';
 import { CtaComponent } from '@shared/components/cta/cta';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Subscription } from 'rxjs';
@@ -20,7 +21,7 @@ export class Products implements OnDestroy {
   private langSub: Subscription;
 
   public currentLang: string;
-  public products = toSignal(this.dataService.getProducts(), { initialValue: [] });
+  public products = toSignal(this.dataService.getProducts(), { initialValue: PRODUCTS });
 
   stats = [
     { icon: 'Zap',       valueKey: 'PRODUCTS.STAT_UPTIME_VAL',    labelKey: 'PRODUCTS.STAT_UPTIME'    },

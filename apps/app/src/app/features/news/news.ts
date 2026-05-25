@@ -6,6 +6,7 @@ import { DatePipe, TitleCasePipe } from '@angular/common';
 import { CtaComponent } from '@shared/components/cta/cta';
 import { AnimateOnScroll } from '@shared/directives/animate-on-scroll';
 import { DataService, BlogPost } from '@core/services/data.service';
+import { BLOG_POSTS } from '@core/data/mock-data';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Subscription } from 'rxjs';
 
@@ -21,7 +22,7 @@ export class News implements OnDestroy {
   currentLang: string;
   private langSub: Subscription;
 
-  allPosts = toSignal(this.data.getBlogPosts(), { initialValue: [] as BlogPost[] });
+  allPosts = toSignal(this.data.getBlogPosts(), { initialValue: BLOG_POSTS as BlogPost[] });
 
   featuredPost = computed(() => this.allPosts().find(p => p.featured) ?? this.allPosts()[0]);
   recentPosts  = computed(() => this.allPosts().filter(p => !p.featured).slice(0, 6));

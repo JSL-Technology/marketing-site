@@ -24,6 +24,16 @@ import { map, switchMap, timer, fromEvent, merge, takeUntil, Subject, filter, st
 import { Card } from '@shared/components/card/card';
 import { AnimateOnScroll } from '@shared/directives/animate-on-scroll';
 import { DataService, Technology, Testimonial, Project, Solution, Product, ProcessStep, Partner, BlogPost } from '@core/services/data.service';
+import {
+  TESTIMONIALS,
+  PROJECTS,
+  SOLUTIONS,
+  PRODUCTS,
+  PROCESS_STEPS,
+  PARTNERS,
+  TECH_STACK,
+  BLOG_POSTS
+} from '@core/data/mock-data';
 import { Seo } from '@core/services/seo';
 import { AnalyticsService } from '@core/services/analytics.service';
 import { ToastService } from '@core/services/toast.service';
@@ -319,8 +329,8 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
     { titleKey: 'FAQ.Q3_TITLE', descKey: 'FAQ.Q3_DESC', isOpen: false },
   ];
 
-  public testimonials: Signal<Testimonial[]> = toSignal(this.dataService.getTestimonials(), { initialValue: [] as Testimonial[] });
-  public projects: Signal<Project[]> = toSignal(this.dataService.getProjects(), { initialValue: [] as Project[] });
+  public testimonials: Signal<Testimonial[]> = toSignal(this.dataService.getTestimonials(), { initialValue: TESTIMONIALS as Testimonial[] });
+  public projects: Signal<Project[]> = toSignal(this.dataService.getProjects(), { initialValue: PROJECTS as Project[] });
 
   // New filtering logic for projects
   public selectedProjectCategory = signal<string>('All');
@@ -372,10 +382,10 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
     return 'HOME.HERO1_SUBTITLE';
   });
 
-  public solutions: Signal<Solution[]> = toSignal(this.dataService.getSolutions(), { initialValue: [] as Solution[] });
-  public products: Signal<Product[]> = toSignal(this.dataService.getProducts(), { initialValue: [] as Product[] });
-  public processSteps: Signal<ProcessStep[]> = toSignal(this.dataService.getProcessSteps(), { initialValue: [] as ProcessStep[] });
-  public partners: Signal<Partner[]> = toSignal(this.dataService.getPartners(), { initialValue: [] as Partner[] });
+  public solutions: Signal<Solution[]> = toSignal(this.dataService.getSolutions(), { initialValue: SOLUTIONS as Solution[] });
+  public products: Signal<Product[]> = toSignal(this.dataService.getProducts(), { initialValue: PRODUCTS as Product[] });
+  public processSteps: Signal<ProcessStep[]> = toSignal(this.dataService.getProcessSteps(), { initialValue: PROCESS_STEPS as ProcessStep[] });
+  public partners: Signal<Partner[]> = toSignal(this.dataService.getPartners(), { initialValue: PARTNERS as Partner[] });
 
   // Modal signals
   public isVideoModalOpen = signal(false);
@@ -401,12 +411,19 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
         return allTechs;
       })
     ),
-    { initialValue: [] as Technology[] }
+    {
+      initialValue: TECH_STACK.reduce((acc, cat) => {
+        cat.technologies.forEach(tech => {
+          if (!acc.some(t => t.name === tech.name)) acc.push(tech);
+        });
+        return acc;
+      }, [] as Technology[])
+    }
   );
 
   public latestBlogPosts: Signal<BlogPost[]> = toSignal(
     this.dataService.getBlogPosts().pipe(map((posts) => posts.slice(0, 3))),
-    { initialValue: [] as BlogPost[] }
+    { initialValue: BLOG_POSTS.slice(0, 3) as BlogPost[] }
   );
 
   public activeTab = signal<'services' | 'products'>('services');

@@ -3,6 +3,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Card } from '@shared/components/card/card';
 import { AnimateOnScroll } from '@shared/directives/animate-on-scroll';
 import { DataService } from '@core/services/data.service';
+import { SOLUTIONS } from '@core/data/mock-data';
 import { CtaComponent } from '@shared/components/cta/cta';
 import { LucideAngularModule } from 'lucide-angular';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -22,7 +23,7 @@ export class Solutions implements OnDestroy {
   private langSub: Subscription;
 
   public currentLang: string;
-  public solutions = toSignal(this.dataService.getSolutions(), { initialValue: [] });
+  public solutions = toSignal(this.dataService.getSolutions(), { initialValue: SOLUTIONS });
 
   stats = [
     { icon: 'Briefcase', valueKey: 'SOLUTIONS.STAT_PROJECTS_VAL',    labelKey: 'SOLUTIONS.STAT_PROJECTS'    },

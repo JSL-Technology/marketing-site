@@ -5,6 +5,7 @@ import { LucideAngularModule } from 'lucide-angular';
 import { AnimateOnScroll } from '@shared/directives/animate-on-scroll';
 import { CtaComponent } from '@shared/components/cta/cta';
 import { DataService, FaqItem } from '@core/services/data.service';
+import { FAQ_ITEMS } from '@core/data/mock-data';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Subscription } from 'rxjs';
 import { Seo } from '@core/services/seo';
@@ -29,7 +30,7 @@ export class Faq implements OnInit, OnDestroy {
 
   private langSub: Subscription | undefined;
 
-  allItems = toSignal(this.dataService.getFaqItems(), { initialValue: [] as FaqItem[] });
+  allItems = toSignal(this.dataService.getFaqItems(), { initialValue: FAQ_ITEMS as FaqItem[] });
 
   categories = [
     { key: 'all',       labelKey: 'FAQ.CAT_ALL',       icon: 'LayoutGrid' },

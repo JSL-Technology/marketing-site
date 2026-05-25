@@ -27,7 +27,40 @@ import { detectPreferredLanguage } from './app/core/utils/language-url';
 const browserDistFolder = join(import.meta.dirname, '../browser');
 
 const app = express();
-const angularApp = new AngularNodeAppEngine();
+
+// --- SEGURIDAD: Confiar en el proxy (Render/Cloudflare) ---
+app.set('trust proxy', 1);
+
+const SKIP_CANONICAL_REDIRECT = process.env['SKIP_CANONICAL_REDIRECT'] === 'true';
+
+const CANONICAL_BASE_URL = (
+  process.env['CANONICAL_BASE_URL'] ?? 'https://www.jsl.technology'
+).replace(/\/+$/, '');
+
+const CANONICAL_HOSTS = new Set(
+  (process.env['CANONICAL_HOSTS'] ?? 'www.jsl.technology,jsl.technology')
+    .split(',')
+    .map((host) => host.trim().toLowerCase())
+    .filter(Boolean),
+);
+
+// Extraer el host principal del URL canónico para redirecciones consistentes
+const CANONICAL_HOST = new URL(CANONICAL_BASE_URL).host.toLowerCase();
+
+const angularApp = new AngularNodeAppEngine({
+  trustProxyHeaders: true,
+  allowedHosts: [
+    'localhost',
+    '127.0.0.1',
+    'localhost:4000',
+    '127.0.0.1:4000',
+    'localhost:4100',
+    '127.0.0.1:4100',
+    'localhost:4200',
+    '127.0.0.1:4200',
+    ...Array.from(CANONICAL_HOSTS),
+  ],
+});
 
 type SeoHealthSnapshot = {
   generatedAt: string;
@@ -41,9 +74,6 @@ type SeoHealthSnapshot = {
 
 let latestSeoHealthSnapshot: SeoHealthSnapshot | null = null;
 
-const CANONICAL_BASE_URL = (
-  process.env['CANONICAL_BASE_URL'] ?? 'https://www.jsl.technology'
-).replace(/\/+$/, '');
 const ENV_GA_MEASUREMENT_ID = process.env['GA_MEASUREMENT_ID'] ?? '';
 const ENV_GSC_VERIFICATION_TOKEN = process.env['GSC_VERIFICATION_TOKEN'] ?? '';
 const ENV_CALENDLY_URL = process.env['CALENDLY_URL'] ?? '';
@@ -55,24 +85,30 @@ const ENV_FEATURE_FLAGS: Record<string, boolean> = (() => {
     return {};
   }
 })();
-const CANONICAL_HOSTS = new Set(
-  (process.env['CANONICAL_HOSTS'] ?? 'www.jsl.technology,jsl.technology')
-    .split(',')
-    .map((host) => host.trim().toLowerCase())
-    .filter(Boolean),
-);
 
 // --- OPTIMIZACIÓN: Compresión Gzip/Brotli ---
 app.use(compression());
 
-// --- SEO: Canonical host redirect (non-www → www, production only) ---
-// Runs before all route handlers so redirects are issued before any work is done.
+// --- SEO: Canonical host redirect (e.g., non-www → www or vice versa) ---
 app.use((req, res, next) => {
-  const host = req.get('host')?.toLowerCase() ?? '';
-  if (host === 'jsl.technology') {
-    const proto = req.get('x-forwarded-proto')?.split(',')[0]?.trim() || req.protocol || 'https';
-    return res.redirect(301, `${proto}://www.jsl.technology${req.url}`);
+  // Omitir si está desactivado por entorno o es un health check
+  if (SKIP_CANONICAL_REDIRECT || req.path.startsWith('/seo/health')) {
+    return next();
   }
+
+  const host = req.get('host')?.toLowerCase() ?? '';
+
+  // No redirigir en local
+  if (host.includes('localhost') || host.includes('127.0.0.1')) {
+    return next();
+  }
+
+  // Si el host actual no es el canónico pero está en la lista de hosts permitidos/alias, redirigir
+  if (host !== CANONICAL_HOST && CANONICAL_HOSTS.has(host)) {
+    const proto = req.get('x-forwarded-proto')?.split(',')[0]?.trim() || req.protocol || 'https';
+    return res.redirect(301, `${proto}://${CANONICAL_HOST}${req.url}`);
+  }
+
   return next();
 });
 
@@ -98,7 +134,7 @@ app.get('/', (req, res) => {
 
 app.use((req, res, next) => {
   const pathname = req.path;
-  if (shouldSkipLanguageRedirect(pathname)) {
+  if (shouldSkipLanguageRedirect(pathname) || pathname.startsWith('/seo/')) {
     return next();
   }
 
@@ -486,7 +522,6 @@ app.use((req, res, next) => {
         { provide: FEATURE_FLAGS, useValue: ENV_FEATURE_FLAGS },
         { provide: CLARITY_PROJECT_ID, useValue: ENV_CLARITY_PROJECT_ID },
       ],
-      allowedHosts: ['127.0.0.1', 'localhost', '127.0.0.1:4000', 'localhost:4000', requestHost],
     })
     .then((response) => (response ? writeResponseToNodeResponse(response, res) : next()))
     .catch(next);
