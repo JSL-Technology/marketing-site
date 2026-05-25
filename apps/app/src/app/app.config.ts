@@ -63,7 +63,7 @@ export const appConfig: ApplicationConfig = {
         }
         // Fallback for SSR if not provided by server.ts.
         // This value is usually overridden by the provider in server.ts
-        return 'https://www.jsl.technology';
+        return 'https://jsl.technology';
       },
       deps: [PLATFORM_ID, DOCUMENT],
     },

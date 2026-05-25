@@ -32,7 +32,7 @@ const app = express();
 app.set('trust proxy', true);
 
 const CANONICAL_BASE_URL = (
-  process.env['CANONICAL_BASE_URL'] ?? 'https://www.jsl.technology'
+  process.env['CANONICAL_BASE_URL'] ?? 'https://jsl.technology'
 ).replace(/\/+$/, '');
 const CANONICAL_HOST = new URL(CANONICAL_BASE_URL).host.toLowerCase();
 const ENABLE_CANONICAL_REDIRECT = process.env['ENABLE_CANONICAL_REDIRECT'] !== 'false';
