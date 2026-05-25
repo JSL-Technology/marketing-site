@@ -82,14 +82,24 @@ let latestSeoHealthSnapshot: SeoHealthSnapshot | null = null;
 // --- OPTIMIZACIÓN: Compresión Gzip/Brotli ---
 app.use(compression());
 
-// --- SEO: Canonical host redirect (non-www → www, production only) ---
+// --- SEO: Canonical host redirect (single source of truth via CANONICAL_BASE_URL) ---
 // Runs before all route handlers so redirects are issued before any work is done.
+const CANONICAL_URL = new URL(CANONICAL_BASE_URL);
+const CANONICAL_HOST = CANONICAL_URL.host.toLowerCase();
+const CANONICAL_PROTOCOL = CANONICAL_URL.protocol;
+
 app.use((req, res, next) => {
   const host = req.get('host')?.toLowerCase() ?? '';
-  if (host === 'jsl.technology') {
-    const proto = req.get('x-forwarded-proto')?.split(',')[0]?.trim() || req.protocol || 'https';
-    return res.redirect(301, `${proto}://www.jsl.technology${req.url}`);
+
+  // Keep localhost/dev hosts untouched.
+  if (!host || host.includes('localhost') || host.includes('127.0.0.1')) {
+    return next();
   }
+
+  if (host !== CANONICAL_HOST) {
+    return res.redirect(301, `${CANONICAL_PROTOCOL}//${CANONICAL_HOST}${req.url}`);
+  }
+
   return next();
 });
 
