@@ -26,8 +26,50 @@ import { detectPreferredLanguage } from './app/core/utils/language-url';
 
 const browserDistFolder = join(import.meta.dirname, '../browser');
 
+/**
+ * EXTRA_ALLOWED_HOSTS: Additional hostnames allowed for SSR rendering.
+ * Useful for Render PR Previews or staging environments.
+ */
+const EXTRA_ALLOWED_HOSTS = (process.env['ALLOWED_HOSTS'] ?? '')
+  .split(',')
+  .map((host) => host.trim().toLowerCase())
+  .filter(Boolean);
+
 const app = express();
-const angularApp = new AngularNodeAppEngine();
+
+/**
+ * PROXY CONFIGURATION:
+ * We trust the first proxy (Render's load balancer) to correctly interpret
+ * X-Forwarded-Proto and X-Forwarded-For headers.
+ * This ensures req.protocol is 'https' when the client connects via SSL,
+ * preventing redirection loops and allowing secure cookie handling.
+ */
+app.set('trust proxy', true);
+
+/**
+ * SSR ENGINE CONFIGURATION:
+ * AngularNodeAppEngine is configured to trust proxy headers for internal
+ * absolute URL generation and CSRF/SSRF protection.
+ *
+ * DOMAIN CANONICALIZATION:
+ * We no longer perform manual redirects between jsl.technology and www.jsl.technology
+ * within the application code. This logic is now managed at the infrastructure
+ * level (Render) to avoid 'ERR_TOO_MANY_REDIRECTS' and simplify the architecture.
+ */
+const angularApp = new AngularNodeAppEngine({
+  trustProxyHeaders: true,
+  allowedHosts: [
+    'localhost',
+    '127.0.0.1',
+    'jsl.technology',
+    'www.jsl.technology',
+    'localhost:4000',
+    'localhost:4100',
+    '127.0.0.1:4000',
+    '127.0.0.1:4100',
+    ...EXTRA_ALLOWED_HOSTS,
+  ],
+});
 
 type SeoHealthSnapshot = {
   generatedAt: string;
@@ -55,26 +97,8 @@ const ENV_FEATURE_FLAGS: Record<string, boolean> = (() => {
     return {};
   }
 })();
-const CANONICAL_HOSTS = new Set(
-  (process.env['CANONICAL_HOSTS'] ?? 'www.jsl.technology,jsl.technology')
-    .split(',')
-    .map((host) => host.trim().toLowerCase())
-    .filter(Boolean),
-);
-
 // --- OPTIMIZACIÓN: Compresión Gzip/Brotli ---
 app.use(compression());
-
-// --- SEO: Canonical host redirect (non-www → www, production only) ---
-// Runs before all route handlers so redirects are issued before any work is done.
-app.use((req, res, next) => {
-  const host = req.get('host')?.toLowerCase() ?? '';
-  if (host === 'jsl.technology') {
-    const proto = req.get('x-forwarded-proto')?.split(',')[0]?.trim() || req.protocol || 'https';
-    return res.redirect(301, `${proto}://www.jsl.technology${req.url}`);
-  }
-  return next();
-});
 
 // --- SEGURIDAD: Rate Limiting ---
 const limiter = rateLimit({
@@ -82,6 +106,7 @@ const limiter = rateLimit({
   max: 10000, // Límite aumentado significativamente para permitir tests E2E paralelos sin bloqueos 429
   standardHeaders: true, // Devuelve info en cabeceras `RateLimit-*`
   legacyHeaders: false, // Deshabilita cabeceras `X-RateLimit-*`
+  validate: false,
 });
 // Aplicar rate limiting a todas las rutas
 app.use(limiter);
@@ -199,7 +224,12 @@ function shouldSkipLanguageRedirect(pathname: string): boolean {
   if (pathname === '/') return true;
   if (pathname.startsWith('/api/') || pathname === '/api') return true;
   if (pathname.startsWith('/assets/')) return true;
-  if (pathname === '/robots.txt' || pathname === '/sitemap.xml' || pathname === '/favicon.ico')
+  if (
+    pathname === '/robots.txt' ||
+    pathname === '/sitemap.xml' ||
+    pathname === '/favicon.ico' ||
+    pathname.startsWith('/seo/')
+  )
     return true;
   return /\.[a-z0-9]+$/i.test(pathname);
 }
@@ -415,7 +445,7 @@ app.get('/seo/health', (req, res) => {
     ...latestSeoHealthSnapshot,
     canonicalHostPolicy: {
       canonicalBaseUrl: CANONICAL_BASE_URL,
-      allowedHosts: Array.from(CANONICAL_HOSTS),
+      extraAllowedHosts: EXTRA_ALLOWED_HOSTS,
     },
   });
 });
@@ -472,7 +502,6 @@ app.use((req, res, next) => {
   );
 
   const dynamicBaseUrl = resolveCanonicalBaseUrl(req);
-  const requestHost = req.get('host');
 
   angularApp
     .handle(req, {
@@ -486,7 +515,6 @@ app.use((req, res, next) => {
         { provide: FEATURE_FLAGS, useValue: ENV_FEATURE_FLAGS },
         { provide: CLARITY_PROJECT_ID, useValue: ENV_CLARITY_PROJECT_ID },
       ],
-      allowedHosts: ['127.0.0.1', 'localhost', '127.0.0.1:4000', 'localhost:4000', requestHost],
     })
     .then((response) => (response ? writeResponseToNodeResponse(response, res) : next()))
     .catch(next);
@@ -514,20 +542,10 @@ export const reqHandler = createNodeRequestHandler(app);
 
 function resolveCanonicalBaseUrl(req: express.Request): string {
   const host = req.get('host')?.toLowerCase() ?? '';
-  const forwardedProto = req.get('x-forwarded-proto');
-  const requestProtocol = forwardedProto?.split(',')[0]?.trim() || req.protocol || 'https';
   const isLocalHost = host.includes('localhost') || host.includes('127.0.0.1');
 
   if (isLocalHost && host) {
-    return `${requestProtocol}://${host}`;
-  }
-
-  if (!host) {
-    return CANONICAL_BASE_URL;
-  }
-
-  if (CANONICAL_HOSTS.has(host)) {
-    return CANONICAL_BASE_URL;
+    return `${req.protocol}://${host}`;
   }
 
   return CANONICAL_BASE_URL;
