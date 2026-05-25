@@ -92,7 +92,10 @@ async function checkRoute(route) {
     const sitemapRes = await fetch(`${baseUrl}/sitemap.xml`);
     const sitemapText = await sitemapRes.text();
     assertIncludes(sitemapText, '<urlset', 'Sitemap is invalid');
-    assertIncludes(sitemapText, `${baseUrl}/en/products/virtex`, 'Sitemap is missing product detail URL');
+
+    // The sitemap now uses CANONICAL_BASE_URL (production) by default.
+    // We check for the path part to ensure the item is indexed regardless of the domain used in the sitemap.
+    assertIncludes(sitemapText, '/en/products/virtex', 'Sitemap is missing product detail URL');
 
     const healthRes = await fetch(`${baseUrl}/seo/health`);
     if (!healthRes.ok) {
