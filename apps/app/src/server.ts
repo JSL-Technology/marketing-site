@@ -31,20 +31,6 @@ const app = express();
 // Running behind Render/other reverse proxies: trust forwarded headers for client IP/proto.
 app.set('trust proxy', true);
 
-const angularApp = new AngularNodeAppEngine();
-
-type SeoHealthSnapshot = {
-  generatedAt: string;
-  canonicalBaseUrl: string;
-  indexedRouteCount: number;
-  localeCount: number;
-  sitemapEntryCount: number;
-  noindexRoutes: string[];
-  schemaTypes: string[];
-};
-
-let latestSeoHealthSnapshot: SeoHealthSnapshot | null = null;
-
 const CANONICAL_BASE_URL = (
   process.env['CANONICAL_BASE_URL'] ?? 'https://www.jsl.technology'
 ).replace(/\/+$/, '');
@@ -66,6 +52,33 @@ const CANONICAL_HOSTS = new Set(
     .filter(Boolean),
 );
 
+const angularApp = new AngularNodeAppEngine({
+  allowedHosts: [
+    'localhost',
+    '127.0.0.1',
+    'localhost:4000',
+    '127.0.0.1:4000',
+    'localhost:4100',
+    '127.0.0.1:4100',
+    'localhost:4200',
+    '127.0.0.1:4200',
+    ...Array.from(CANONICAL_HOSTS),
+  ],
+  trustProxyHeaders: true,
+});
+
+type SeoHealthSnapshot = {
+  generatedAt: string;
+  canonicalBaseUrl: string;
+  indexedRouteCount: number;
+  localeCount: number;
+  sitemapEntryCount: number;
+  noindexRoutes: string[];
+  schemaTypes: string[];
+};
+
+let latestSeoHealthSnapshot: SeoHealthSnapshot | null = null;
+
 // --- OPTIMIZACIÓN: Compresión Gzip/Brotli ---
 app.use(compression());
 
@@ -86,6 +99,10 @@ const limiter = rateLimit({
   max: 100, // Production limit: 100 requests per 15-minute window per IP
   standardHeaders: true, // Devuelve info en cabeceras `RateLimit-*`
   legacyHeaders: false, // Deshabilita cabeceras `X-RateLimit-*`
+  skip: (req) => {
+    const ip = req.ip || req.get('x-forwarded-for') || req.socket.remoteAddress || '';
+    return ip === '127.0.0.1' || ip === '::1' || ip === '::ffff:127.0.0.1';
+  },
 });
 // Aplicar rate limiting a todas las rutas
 app.use(limiter);
@@ -202,6 +219,7 @@ const NOINDEX_ROUTES = ['/status', '/thank-you', '/server-error', '/not-found'];
 function shouldSkipLanguageRedirect(pathname: string): boolean {
   if (pathname === '/') return true;
   if (pathname.startsWith('/api/') || pathname === '/api') return true;
+  if (pathname.startsWith('/seo/') || pathname === '/seo') return true;
   if (pathname.startsWith('/assets/')) return true;
   if (pathname === '/robots.txt' || pathname === '/sitemap.xml' || pathname === '/favicon.ico')
     return true;
@@ -507,19 +525,6 @@ app.use((req, res, next) => {
   );
 
   const dynamicBaseUrl = resolveCanonicalBaseUrl(req);
-  const requestHost = req.get('host')?.toLowerCase();
-  const forwardedHost = req.get('x-forwarded-host')?.split(',')[0]?.trim().toLowerCase();
-  const allowedHosts = Array.from(
-    new Set([
-      '127.0.0.1',
-      'localhost',
-      '127.0.0.1:4000',
-      'localhost:4000',
-      ...CANONICAL_HOSTS,
-      ...(requestHost ? [requestHost] : []),
-      ...(forwardedHost ? [forwardedHost] : []),
-    ]),
-  );
 
   angularApp
     .handle(req, {
@@ -533,8 +538,6 @@ app.use((req, res, next) => {
         { provide: FEATURE_FLAGS, useValue: ENV_FEATURE_FLAGS },
         { provide: CLARITY_PROJECT_ID, useValue: ENV_CLARITY_PROJECT_ID },
       ],
-      allowedHosts,
-      trustProxyHeaders: true,
     })
     .then((response) => (response ? writeResponseToNodeResponse(response, res) : next()))
     .catch(next);
