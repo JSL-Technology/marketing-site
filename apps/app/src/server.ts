@@ -55,6 +55,12 @@ const CANONICAL_HOSTS = new Set(
     .filter(Boolean),
 );
 
+function normalizeHost(rawHost?: string): string {
+  const host = (rawHost ?? '').trim().toLowerCase();
+  if (!host) return '';
+  return host.replace(/:\d+$/, '');
+}
+
 const angularApp = new AngularNodeAppEngine({
   allowedHosts: [
     'localhost',
@@ -92,14 +98,22 @@ app.use((req, res, next) => {
     return next();
   }
 
-  const host = req.get('host')?.toLowerCase() ?? '';
+  const host = normalizeHost(req.get('host') ?? '');
+  const forwardedHost = normalizeHost(req.get('x-forwarded-host')?.split(',')[0]);
+  const canonicalHost = normalizeHost(CANONICAL_HOST);
 
   // Only redirect if:
   // 1. The host is recognized as one of our canonical-adjacent hosts (to avoid redirecting local/temp domains)
   // 2. The host is NOT already the canonical one.
-  if (CANONICAL_HOSTS.has(host) && host !== CANONICAL_HOST) {
+  // If any upstream already resolved the request to the canonical host,
+  // do not re-redirect here (prevents redirect ping-pong with CDN rules).
+  if (host === canonicalHost || forwardedHost === canonicalHost) {
+    return next();
+  }
+
+  if (CANONICAL_HOSTS.has(host) && host !== canonicalHost) {
     const proto = req.get('x-forwarded-proto')?.split(',')[0]?.trim() || req.protocol || 'https';
-    return res.redirect(301, `${proto}://${CANONICAL_HOST}${req.originalUrl}`);
+    return res.redirect(301, `${proto}://${canonicalHost}${req.originalUrl}`);
   }
 
   return next();
