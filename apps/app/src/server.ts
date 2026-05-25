@@ -51,6 +51,18 @@ const CANONICAL_HOSTS = new Set(
     .map((host) => host.trim().toLowerCase())
     .filter(Boolean),
 );
+const SKIP_CANONICAL_REDIRECT = process.env['SKIP_CANONICAL_REDIRECT'] === 'true';
+
+// Pre-calculate canonical host for efficiency and to catch invalid URL early.
+const CANONICAL_HOST = (() => {
+  try {
+    return new URL(CANONICAL_BASE_URL).hostname.toLowerCase();
+  } catch (e) {
+    console.warn(`[server] Invalid CANONICAL_BASE_URL: "${CANONICAL_BASE_URL}". Falling back to host part only.`);
+    // Fallback if URL is just a hostname or invalid
+    return CANONICAL_BASE_URL.replace(/^https?:\/\//, '').split('/')[0].toLowerCase() || 'www.jsl.technology';
+  }
+})();
 
 const angularApp = new AngularNodeAppEngine({
   allowedHosts: [
@@ -82,14 +94,44 @@ let latestSeoHealthSnapshot: SeoHealthSnapshot | null = null;
 // --- OPTIMIZACIÓN: Compresión Gzip/Brotli ---
 app.use(compression());
 
-// --- SEO: Canonical host redirect (non-www → www, production only) ---
-// Runs before all route handlers so redirects are issued before any work is done.
+// --- SEO: Canonical host redirect (e.g. jsl.technology -> www.jsl.technology) ---
+// This logic ensures only one canonical domain serves content, preventing split SEO juice.
+// It can be disabled via SKIP_CANONICAL_REDIRECT=true if handled by infra (Cloudflare/Render).
 app.use((req, res, next) => {
-  const host = req.get('host')?.toLowerCase() ?? '';
-  if (host === 'jsl.technology') {
-    const proto = req.get('x-forwarded-proto')?.split(',')[0]?.trim() || req.protocol || 'https';
-    return res.redirect(301, `${proto}://www.jsl.technology${req.url}`);
+  if (SKIP_CANONICAL_REDIRECT) {
+    return next();
   }
+
+  const host = req.get('host')?.toLowerCase() ?? '';
+
+  // 1. If no host header, skip.
+  if (!host) {
+    return next();
+  }
+
+  // 2. If the host is already canonical, skip.
+  if (host === CANONICAL_HOST) {
+    return next();
+  }
+
+  // 3. Skip redirection for local development and health checks.
+  const isLocalHost =
+    host.startsWith('localhost') ||
+    host.startsWith('127.0.0.1') ||
+    host.startsWith('0.0.0.0') ||
+    host.endsWith('.local');
+
+  if (isLocalHost) {
+    return next();
+  }
+
+  // 4. Redirect only if the current host is explicitly allowed/recognized in CANONICAL_HOSTS.
+  // This avoids redirecting internal Render URLs (like *.onrender.com) unless they are in the set.
+  if (CANONICAL_HOSTS.has(host)) {
+    const proto = req.get('x-forwarded-proto')?.split(',')[0]?.trim() || req.protocol || 'https';
+    return res.redirect(301, `${proto}://${CANONICAL_HOST}${req.url}`);
+  }
+
   return next();
 });
 
