@@ -1,6 +1,12 @@
 import { NgZone, isDevMode } from '@angular/core';
 import { GestureBusService, GestureHandler } from '@core/services/gesture-bus.service';
 import {
+  calculateElasticOffset,
+  calculateElasticScale,
+  calculateReleaseTarget,
+  SnapPoint
+} from '@core/utils/gesture-physics';
+import {
   GESTURE_EDGE_THRESHOLD,
   GESTURE_OPEN_THRESHOLD,
   GESTURE_MIN_SWIPE_DISTANCE,
@@ -136,11 +142,6 @@ export class MobileMenuGestures implements GestureHandler {
   // ── Instantaneous velocity buffer ────────────────────────────────────────────
   private velocityBuffer: Array<{ x: number; t: number }> = [];
 
-  // ── Elastic animation constants ──────────────────────────────────────────────
-  private readonly ELASTIC_OVERSHOOT_REFERENCE_RATIO = 0.25;
-  private readonly MIN_ELASTIC_EXPONENT = 1;
-  private readonly MAX_ELASTIC_EXPONENT = 5;
-
   private gestureBusUnregister: (() => void) | null = null;
 
   constructor(
@@ -235,29 +236,6 @@ export class MobileMenuGestures implements GestureHandler {
       : (translateX - closed) / menuWidth;
   }
 
-  // ── Elastic scale calculation ────────────────────────────────────────────────
-
-  private calculateElasticScale(overshoot: number): number {
-    const safeOvershoot = Math.max(0, overshoot);
-    if (safeOvershoot === 0) return 1;
-
-    const maxStretchPercent = Math.max(0, this.config.maxStretchPercent ?? GESTURE_MAX_STRETCH_PERCENT);
-    const maxScale          = 1 + maxStretchPercent / 100;
-
-    const referenceOvershootPx   = Math.max(1, this.config.menuWidth * this.ELASTIC_OVERSHOOT_REFERENCE_RATIO);
-    const normalizedOvershoot    = Math.min(safeOvershoot / referenceOvershootPx, 1);
-
-    const rawResistance          = this.config.elasticResistance ?? GESTURE_ELASTIC_RESISTANCE;
-    const safeResistance         = Number.isFinite(rawResistance) ? Number(rawResistance) : GESTURE_ELASTIC_RESISTANCE;
-    const normalizedResistance   = Math.min(100, Math.max(0, safeResistance)) / 100;
-    const exponent               =
-      this.MIN_ELASTIC_EXPONENT +
-      normalizedResistance * (this.MAX_ELASTIC_EXPONENT - this.MIN_ELASTIC_EXPONENT);
-
-    const damped = 1 - Math.pow(1 - normalizedOvershoot, exponent);
-    return 1 + damped * (maxScale - 1);
-  }
-
   private getElasticTransform(
     translateX: number,
     min: number,
@@ -268,13 +246,18 @@ export class MobileMenuGestures implements GestureHandler {
     let scaleX          = 1;
     let transformOrigin = isRtl ? 'right' : 'left';
 
+    const maxStretchPercent = this.config.maxStretchPercent ?? GESTURE_MAX_STRETCH_PERCENT;
+    // Increased resistance for "distancia larga" as requested.
+    // 8.0 means it takes 8x the distance to reach the same stretch compared to 1.0.
+    const resistance = 8.0;
+
     if (translateX > max) {
       finalTranslateX = max;
-      scaleX          = this.calculateElasticScale(translateX - max);
+      scaleX = calculateElasticScale(translateX - max, this.sessionMenuWidth, maxStretchPercent, resistance);
       transformOrigin = 'left';
     } else if (translateX < min) {
       finalTranslateX = min;
-      scaleX          = this.calculateElasticScale(min - translateX);
+      scaleX = calculateElasticScale(min - translateX, this.sessionMenuWidth, maxStretchPercent, resistance);
       transformOrigin = 'right';
     }
 
@@ -632,8 +615,6 @@ export class MobileMenuGestures implements GestureHandler {
       this.resetDragState();
       this.config.onUpdateTranslate(lastPos, null);
 
-      // If we interrupted an animation but didn't actually drag, resume the
-      // previous state to ensure the transition coordinator completes.
       if (wasOpen) {
         this.config.onOpen();
       } else {
@@ -644,34 +625,28 @@ export class MobileMenuGestures implements GestureHandler {
       return;
     }
 
-    const diffX     = this.currentX - this.startX;
-    const velocity  = this.getInstantaneousVelocity();
-    const absVelocity = Math.abs(velocity);
+    const velocity = this.getInstantaneousVelocity();
     const menuWidth = this.sessionMenuWidth;
-    const progress  = this.getProgress(this.lastDragPosition, menuWidth);
-    const isRtl     = this.sessionIsRtl;
+    const isRtl = this.sessionIsRtl;
 
-    let shouldStayOpen: boolean;
+    const snapPoints: SnapPoint[] = [
+      { id: 'closed', value: isRtl ? menuWidth : -menuWidth },
+      { id: 'open', value: 0 }
+    ];
 
-    if (absVelocity > this.velocityThreshold) {
-      // Prioritize final flick direction over total displacement.
-      // RTL: negative velocity is left (open), positive is right (close).
-      // LTR: positive velocity is right (open), negative is left (close).
-      shouldStayOpen = isRtl ? velocity < 0 : velocity > 0;
-    } else if (progress > this.openThreshold) {
-      shouldStayOpen = true;
-    } else if (Math.abs(diffX) > this.minSwipeDistance) {
-      shouldStayOpen = isRtl ? diffX < 0 : diffX > 0;
-    } else {
-      shouldStayOpen = progress > 0.5;
-    }
+    const target = calculateReleaseTarget({
+      position: this.lastDragPosition,
+      velocity,
+      snapPoints,
+      velocityThreshold: this.velocityThreshold
+    });
 
     const lastPos = this.lastDragPosition;
     this.resetDragState();
     this.config.onUpdateTranslate(lastPos, null);
 
-    this.debugGesture('drawer_gesture_end_decision', { shouldStayOpen, diffX, velocity, progress });
-    if (shouldStayOpen) {
+    this.debugGesture('drawer_gesture_end_decision', { target, velocity });
+    if (target.id === 'open') {
       this.config.onOpen();
       this.startCooldown();
       this.trackMetric('gesture_complete', { action: 'stay_open', source: 'drawer' });
@@ -790,35 +765,36 @@ export class MobileMenuGestures implements GestureHandler {
   private handleEdgeSwipeEnd(event: PointerEvent): void {
     if (event.pointerId !== this.activePointerId) return;
 
+    const menuWidth = this.sessionMenuWidth;
+    const isRtl = this.sessionIsRtl;
+
     if (!this.isDragging || !this.isHorizontalGesture) {
-      const menuWidth  = this.sessionMenuWidth;
-      const closedPos  = this.sessionIsRtl ? menuWidth : -menuWidth;
+      const closedPos = isRtl ? menuWidth : -menuWidth;
       this.resetDragState();
       this.config.onUpdateTranslate(closedPos, null);
       this.trackMetric('gesture_cancel', { source: 'edge' });
       return;
     }
 
-    const diffX     = this.currentX - this.startX;
-    const velocity  = this.getInstantaneousVelocity();
-    const absVelocity = Math.abs(velocity);
-    const menuWidth = this.sessionMenuWidth;
-    const progress  = this.getProgress(this.lastDragPosition, menuWidth);
+    const velocity = this.getInstantaneousVelocity();
+    const snapPoints: SnapPoint[] = [
+      { id: 'closed', value: isRtl ? menuWidth : -menuWidth },
+      { id: 'open', value: 0 }
+    ];
 
-    const isRtl            = this.sessionIsRtl;
-    const isValidDirection = isRtl ? diffX < 0 : diffX > 0;
-
-    const shouldOpen =
-      (absVelocity > this.velocityThreshold ? (isRtl ? velocity < 0 : velocity > 0) : false) ||
-      progress > this.openThreshold ||
-      (Math.abs(diffX) > this.minSwipeDistance && isValidDirection);
+    const target = calculateReleaseTarget({
+      position: this.lastDragPosition,
+      velocity,
+      snapPoints,
+      velocityThreshold: this.velocityThreshold
+    });
 
     const lastPos = this.lastDragPosition;
     this.resetDragState();
     this.config.onUpdateTranslate(lastPos, null);
 
-    this.debugGesture('edge_gesture_end_decision', { shouldOpen, diffX, velocity, progress });
-    if (shouldOpen) {
+    this.debugGesture('edge_gesture_end_decision', { target, velocity });
+    if (target.id === 'open') {
       this.config.onOpen();
       this.startCooldown();
       this.trackMetric('gesture_complete', { action: 'open', source: 'edge' });
