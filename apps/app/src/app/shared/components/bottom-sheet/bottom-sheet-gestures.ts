@@ -1,5 +1,11 @@
 import { NgZone } from '@angular/core';
 import { GestureBusService, GestureHandler } from '@core/services/gesture-bus.service';
+import {
+  calculateElasticOffset,
+  calculateElasticScale,
+  calculateReleaseTarget,
+  SnapPoint
+} from '@core/utils/gesture-physics';
 
 export interface BottomSheetGestureConfig {
   /**
@@ -95,10 +101,6 @@ export class BottomSheetGestures implements GestureHandler {
   private readonly DEFAULT_ELASTIC_RESISTANCE = 25; // 0-100 scale to match MobileMenuGestures
   private readonly DEFAULT_MAX_STRETCH_PERCENT = 4;
 
-  private readonly ELASTIC_OVERSHOOT_REFERENCE_RATIO = 0.25;
-  private readonly MIN_ELASTIC_EXPONENT = 1;
-  private readonly MAX_ELASTIC_EXPONENT = 5;
-
   private wasOvershooting = false;
   private gestureBusUnregister: (() => void) | null = null;
 
@@ -186,13 +188,21 @@ export class BottomSheetGestures implements GestureHandler {
     }
 
     const velocity = this.getInstantaneousVelocity();
-    const diffY = this.currentY - this.startY;
-    const closeThreshold = this.config.closeThreshold ?? this.DEFAULT_CLOSE_THRESHOLD;
-    const velocityThreshold = this.config.velocityThreshold ?? this.DEFAULT_VELOCITY_THRESHOLD;
+    const maxTranslate = Math.max(0, this.config.getMaxTranslateY());
 
-    const shouldClose = diffY > closeThreshold || (velocity > velocityThreshold && diffY > 20);
+    const snapPoints: SnapPoint[] = [
+      { id: 'open', value: 0 },
+      { id: 'closed', value: maxTranslate }
+    ];
 
-    if (shouldClose) {
+    const target = calculateReleaseTarget({
+      position: this.lastDragPosition,
+      velocity,
+      snapPoints,
+      velocityThreshold: this.config.velocityThreshold ?? this.DEFAULT_VELOCITY_THRESHOLD
+    });
+
+    if (target.id === 'closed') {
       this.config.onClose();
     } else {
       this.config.onOpen();
@@ -223,27 +233,6 @@ export class BottomSheetGestures implements GestureHandler {
     this.resetVelocityBuffer();
   }
 
-  private calculateElasticScale(overshoot: number): number {
-    const safeOvershoot = Math.max(0, overshoot);
-    if (safeOvershoot === 0) return 1;
-
-    const maxStretchPercent = Math.max(0, this.config.maxStretchPercent ?? this.DEFAULT_MAX_STRETCH_PERCENT);
-    const maxScale = 1 + maxStretchPercent / 100;
-
-    const sheetHeight = this.cachedSheetHeight || this.config.getMaxTranslateY();
-    const referenceOvershootPx = Math.max(1, sheetHeight * this.ELASTIC_OVERSHOOT_REFERENCE_RATIO);
-    const normalizedOvershoot = Math.min(safeOvershoot / referenceOvershootPx, 1);
-
-    const rawResistance = this.config.elasticResistance ?? this.DEFAULT_ELASTIC_RESISTANCE;
-    const normalizedResistance = Math.min(100, Math.max(0, rawResistance)) / 100;
-    const exponent =
-      this.MIN_ELASTIC_EXPONENT +
-      normalizedResistance * (this.MAX_ELASTIC_EXPONENT - this.MIN_ELASTIC_EXPONENT);
-
-    const damped = 1 - Math.pow(1 - normalizedOvershoot, exponent);
-    return 1 + damped * (maxScale - 1);
-  }
-
   private getElasticTransform(
     translateY: number,
     min: number,
@@ -253,18 +242,19 @@ export class BottomSheetGestures implements GestureHandler {
     let scaleY = 1;
     let transformOrigin = 'bottom';
 
+    const maxStretchPercent = this.config.maxStretchPercent ?? this.DEFAULT_MAX_STRETCH_PERCENT;
+    // Normalized to require more physical distance for stretch as requested
+    const resistance = 8.0;
+
     if (translateY < min) {
       // Overshooting UP (beyond open)
       finalTranslateY = min;
-      scaleY = this.calculateElasticScale(min - translateY);
+      scaleY = calculateElasticScale(min - translateY, this.cachedSheetHeight, maxStretchPercent, resistance);
       transformOrigin = 'bottom';
     } else if (translateY > max) {
-      // Overshooting DOWN (beyond closed) - We align this with mobile menu behavior
-      // where it doesn't really overshoot but resists, but here the requirement
-      // is specifically that it shouldn't be draggable past its limit (the bottom edge).
-      // So we apply the resistance/elastic scale but keep the bottom edge aligned.
+      // Overshooting DOWN (beyond closed)
       finalTranslateY = max;
-      scaleY = this.calculateElasticScale(translateY - max);
+      scaleY = calculateElasticScale(translateY - max, this.cachedSheetHeight, maxStretchPercent, resistance);
       transformOrigin = 'top';
     }
 
