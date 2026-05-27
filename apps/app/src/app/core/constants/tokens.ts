@@ -1,4 +1,5 @@
-import { InjectionToken } from '@angular/core';
+import { InjectionToken, inject, PLATFORM_ID, TransferState, makeStateKey } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 export const BASE_URL = new InjectionToken<string>('BASE_URL');
 export const RESPONSE = new InjectionToken<any>('RESPONSE');
@@ -8,6 +9,21 @@ export const REQUEST = new InjectionToken<any>('REQUEST');
 export const GA_MEASUREMENT_ID = new InjectionToken<string>('GA_MEASUREMENT_ID', {
   providedIn: 'root',
   factory: () => '',
+});
+
+/** reCAPTCHA Site Key. Provided by server.ts from process.env.RECAPTCHA_SITE_KEY. */
+export const RECAPTCHA_SITE_KEY = new InjectionToken<string>('RECAPTCHA_SITE_KEY', {
+  providedIn: 'root',
+  factory: () => {
+    const platformId = inject(PLATFORM_ID);
+    const transferState = inject(TransferState);
+    const key = makeStateKey<string>('RECAPTCHA_SITE_KEY');
+    if (isPlatformBrowser(platformId)) {
+      return transferState.get(key, '');
+    }
+    // Return empty during SSR factory; will be overridden by provider in server.ts
+    return '';
+  },
 });
 
 /** Google Search Console HTML verification token. Provided by server.ts from process.env.GSC_VERIFICATION_TOKEN. */

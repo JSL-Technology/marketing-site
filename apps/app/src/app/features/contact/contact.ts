@@ -9,6 +9,7 @@ import { AnalyticsService } from '@core/services/analytics.service';
 import { ClarityService } from '@core/services/clarity.service';
 import { PersonalizationService } from '@core/services/personalization.service';
 import { Seo } from '@core/services/seo';
+import { RECAPTCHA_SITE_KEY } from '@core/constants/tokens';
 import { Router, RouterLink } from '@angular/router';
 import { AnimateOnScroll } from '@shared/directives/animate-on-scroll';
 import { Subject } from 'rxjs';
@@ -34,7 +35,6 @@ export class Contact implements OnInit, OnDestroy {
   readonly totalSteps = 3;
   progressPercent = computed(() => Math.round(((this.currentStep() - 1) / this.totalSteps) * 100));
 
-  private readonly recaptchaSiteKey = (globalThis as any).__env?.RECAPTCHA_SITE_KEY ?? '';
   private destroy$ = new Subject<void>();
   private formStarted = false;
   private lastInteractedField = 'none';
@@ -48,7 +48,8 @@ export class Contact implements OnInit, OnDestroy {
     private personalizationService: PersonalizationService,
     private router: Router,
     private seo: Seo,
-    @Inject(PLATFORM_ID) private platformId: object
+    @Inject(PLATFORM_ID) private platformId: object,
+    @Inject(RECAPTCHA_SITE_KEY) private recaptchaSiteKey: string
   ) {}
 
   ngOnInit(): void {
@@ -300,10 +301,14 @@ export class Contact implements OnInit, OnDestroy {
   }
 
   private async getRecaptchaToken(): Promise<string | null> {
-    if (!this.recaptchaSiteKey || !(globalThis as any).grecaptcha?.execute) return null;
+    if (!this.recaptchaSiteKey || !(globalThis as any).grecaptcha?.execute) {
+      console.warn('reCAPTCHA site key missing or grecaptcha not loaded');
+      return null;
+    }
     try {
       return await (globalThis as any).grecaptcha.execute(this.recaptchaSiteKey, { action: 'contact_form_submit' });
-    } catch {
+    } catch (err) {
+      console.error('Error executing reCAPTCHA:', err);
       return null;
     }
   }
