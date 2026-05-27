@@ -8,6 +8,8 @@ import express from 'express';
 import { join } from 'node:path';
 import compression from 'compression';
 import rateLimit from 'express-rate-limit';
+import * as nodemailer from 'nodemailer';
+import { makeStateKey, TransferState } from '@angular/core';
 
 // --- AÑADIDO: Importar los datos para el sitemap dinámico ---
 import { PROJECTS, BLOG_POSTS, SOLUTIONS, PRODUCTS } from './app/core/data/mock-data';
@@ -17,6 +19,7 @@ import {
   RESPONSE,
   REQUEST,
   GA_MEASUREMENT_ID,
+  RECAPTCHA_SITE_KEY,
   GSC_VERIFICATION_TOKEN,
   CALENDLY_URL,
   FEATURE_FLAGS,
@@ -90,6 +93,17 @@ const ENV_GA_MEASUREMENT_ID = process.env['GA_MEASUREMENT_ID'] ?? '';
 const ENV_GSC_VERIFICATION_TOKEN = process.env['GSC_VERIFICATION_TOKEN'] ?? '';
 const ENV_CALENDLY_URL = process.env['CALENDLY_URL'] ?? '';
 const ENV_CLARITY_PROJECT_ID = process.env['CLARITY_PROJECT_ID'] ?? '';
+const ENV_RECAPTCHA_SITE_KEY = process.env['RECAPTCHA_SITE_KEY'] ?? '';
+const ENV_RECAPTCHA_SECRET_KEY = process.env['RECAPTCHA_SECRET_KEY'] ?? '';
+
+// SMTP Configuration
+const SMTP_HOST = process.env['SMTP_HOST'] ?? '';
+const SMTP_PORT = Number(process.env['SMTP_PORT'] ?? 587);
+const SMTP_USER = process.env['SMTP_USER'] ?? '';
+const SMTP_PASS = process.env['SMTP_PASS'] ?? '';
+const SMTP_FROM = process.env['SMTP_FROM'] ?? '"JSL Technology" <noreply@jsl.technology>';
+const CONTACT_RECEIVER_EMAIL = process.env['CONTACT_RECEIVER_EMAIL'] ?? 'contact@jsl.technology';
+
 const ENV_FEATURE_FLAGS: Record<string, boolean> = (() => {
   try {
     return JSON.parse(process.env['FEATURE_FLAGS'] ?? '{}');
@@ -99,6 +113,9 @@ const ENV_FEATURE_FLAGS: Record<string, boolean> = (() => {
 })();
 // --- OPTIMIZACIÓN: Compresión Gzip/Brotli ---
 app.use(compression());
+
+// Parse JSON payloads for API routes
+app.use(express.json());
 
 // --- SEGURIDAD: Rate Limiting ---
 const limiter = rateLimit({
@@ -430,6 +447,114 @@ app.get('/sitemap.xml', (req, res) => {
   res.send(sitemap);
 });
 
+/**
+ * Handle Contact Form Submission
+ * Verifies reCAPTCHA and sends email via SMTP.
+ */
+app.post('/api/contact', async (req, res) => {
+  const {
+    recaptchaToken,
+    name,
+    email,
+    company,
+    service,
+    serviceOther,
+    budget,
+    message,
+    phone,
+    referralSource,
+    segment,
+  } = req.body;
+
+  if (!recaptchaToken) {
+    return res.status(400).json({ success: false, message: 'reCAPTCHA token is required' });
+  }
+
+  try {
+    // 1. Verify reCAPTCHA
+    const verificationUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${ENV_RECAPTCHA_SECRET_KEY}&response=${recaptchaToken}`;
+    const verifyResponse = await fetch(verificationUrl, { method: 'POST' });
+    const verifyData = (await verifyResponse.json()) as {
+      success: boolean;
+      score?: number;
+      action?: string;
+    };
+
+    if (!verifyData.success || (verifyData.score !== undefined && verifyData.score < 0.5)) {
+      return res.status(403).json({
+        success: false,
+        message: 'reCAPTCHA verification failed',
+        details: verifyData,
+      });
+    }
+
+    // 2. Prepare Email
+    const transporter = nodemailer.createTransport({
+      host: SMTP_HOST,
+      port: SMTP_PORT,
+      secure: SMTP_PORT === 465,
+      auth: {
+        user: SMTP_USER,
+        pass: SMTP_PASS,
+      },
+    });
+
+    const selectedService = service === 'other' ? `Other (${serviceOther})` : service;
+
+    const mailOptions = {
+      from: SMTP_FROM,
+      to: CONTACT_RECEIVER_EMAIL,
+      replyTo: email,
+      subject: `New Lead: ${name} - ${selectedService}`,
+      text: `
+        Name: ${name}
+        Email: ${email}
+        Phone: ${phone || 'N/A'}
+        Company: ${company || 'N/A'}
+        Service: ${selectedService}
+        Budget: ${budget || 'N/A'}
+        Source: ${referralSource || 'N/A'}
+        Segment: ${segment || 'N/A'}
+
+        Message:
+        ${message}
+      `,
+      html: `
+        <div style="font-family: sans-serif; line-height: 1.5; color: #333;">
+          <h2>New Contact Form Submission</h2>
+          <table style="width: 100%; border-collapse: collapse;">
+            <tr><td style="padding: 8px; border: 1px solid #eee;"><strong>Name:</strong></td><td style="padding: 8px; border: 1px solid #eee;">${name}</td></tr>
+            <tr><td style="padding: 8px; border: 1px solid #eee;"><strong>Email:</strong></td><td style="padding: 8px; border: 1px solid #eee;"><a href="mailto:${email}">${email}</a></td></tr>
+            <tr><td style="padding: 8px; border: 1px solid #eee;"><strong>Phone:</strong></td><td style="padding: 8px; border: 1px solid #eee;">${phone || '—'}</td></tr>
+            <tr><td style="padding: 8px; border: 1px solid #eee;"><strong>Company:</strong></td><td style="padding: 8px; border: 1px solid #eee;">${company || '—'}</td></tr>
+            <tr><td style="padding: 8px; border: 1px solid #eee;"><strong>Service:</strong></td><td style="padding: 8px; border: 1px solid #eee;">${selectedService}</td></tr>
+            <tr><td style="padding: 8px; border: 1px solid #eee;"><strong>Budget:</strong></td><td style="padding: 8px; border: 1px solid #eee;">${budget || '—'}</td></tr>
+            <tr><td style="padding: 8px; border: 1px solid #eee;"><strong>Referral:</strong></td><td style="padding: 8px; border: 1px solid #eee;">${referralSource || '—'}</td></tr>
+            <tr><td style="padding: 8px; border: 1px solid #eee;"><strong>Segment:</strong></td><td style="padding: 8px; border: 1px solid #eee;">${segment || '—'}</td></tr>
+          </table>
+          <h3>Message:</h3>
+          <p style="background: #f9f9f9; padding: 15px; border-radius: 8px; border-left: 4px solid #007bff;">
+            ${message.replace(/\n/g, '<br>')}
+          </p>
+        </div>
+      `,
+    };
+
+    // 3. Send Email
+    await transporter.sendMail(mailOptions);
+
+    console.log(`Contact form email sent successfully for ${email}`);
+
+    return res.json({
+      success: true,
+      message: 'Message received and email sent successfully',
+    });
+  } catch (error) {
+    console.error('Error handling contact form submission:', error);
+    return res.status(500).json({ success: false, message: 'Internal server error' });
+  }
+});
+
 app.get('/seo/health', (req, res) => {
   const canonicalBaseUrl = resolveCanonicalBaseUrl(req);
   if (!latestSeoHealthSnapshot) {
@@ -519,13 +644,18 @@ app.use((req, res, next) => {
 
   const dynamicBaseUrl = resolveCanonicalBaseUrl(req);
 
+  const transferState = new TransferState();
+  transferState.set(makeStateKey<string>('RECAPTCHA_SITE_KEY'), ENV_RECAPTCHA_SITE_KEY);
+
   angularApp
     .handle(req, {
       providers: [
+        { provide: TransferState, useValue: transferState },
         { provide: BASE_URL, useValue: dynamicBaseUrl },
         { provide: RESPONSE, useValue: res },
         { provide: REQUEST, useValue: req },
         { provide: GA_MEASUREMENT_ID, useValue: ENV_GA_MEASUREMENT_ID },
+        { provide: RECAPTCHA_SITE_KEY, useValue: ENV_RECAPTCHA_SITE_KEY },
         { provide: GSC_VERIFICATION_TOKEN, useValue: ENV_GSC_VERIFICATION_TOKEN },
         { provide: CALENDLY_URL, useValue: ENV_CALENDLY_URL },
         { provide: FEATURE_FLAGS, useValue: ENV_FEATURE_FLAGS },
