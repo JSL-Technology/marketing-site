@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal, computed, ChangeDetectionStrategy, CUSTOM_ELEMENTS_SCHEMA, ViewChild, ElementRef, AfterViewInit, PLATFORM_ID, Inject } from '@angular/core';
+import { Component, OnInit, inject, signal, computed, ChangeDetectionStrategy, CUSTOM_ELEMENTS_SCHEMA, ViewChild, ElementRef, AfterViewInit, PLATFORM_ID, Inject, effect } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Card } from '@shared/components/card/card';
@@ -15,8 +15,6 @@ import { take } from 'rxjs/operators';
 
 // Swiper modules
 import { Pagination, Autoplay, Navigation, EffectFade } from 'swiper/modules';
-import { register } from 'swiper/element/bundle';
-register();
 
 @Component({
   selector: 'jsl-blog',
@@ -38,6 +36,7 @@ register();
 })
 export class Blog implements OnInit, AfterViewInit {
   @ViewChild('featuredSwiper') swiperElement!: ElementRef;
+  private swiperRegistered = signal(false);
 
   private platformId = inject(PLATFORM_ID);
   private translate = inject(TranslateService);
@@ -136,6 +135,27 @@ export class Blog implements OnInit, AfterViewInit {
 
   constructor() {
     this.currentLang = this.translate.currentLang || this.translate.defaultLang || 'es';
+
+    if (isPlatformBrowser(this.platformId)) {
+      import('swiper/element/bundle').then(({ register }) => {
+        register();
+        this.swiperRegistered.set(true);
+      });
+    }
+
+    effect(() => {
+      if (this.swiperRegistered() && this.featuredPosts().length > 0) {
+        setTimeout(() => {
+          if (this.swiperElement) {
+            const swiperEl = this.swiperElement.nativeElement;
+            if (!swiperEl.swiper && typeof swiperEl.initialize === 'function') {
+              Object.assign(swiperEl, this.featuredSwiperConfig);
+              swiperEl.initialize();
+            }
+          }
+        }, 50);
+      }
+    });
   }
 
   ngOnInit() {
@@ -147,12 +167,7 @@ export class Blog implements OnInit, AfterViewInit {
     this.dataService.getBlogPosts().pipe(take(1)).subscribe(() => this.syncBlogStructuredData());
   }
 
-  ngAfterViewInit() {
-    if (isPlatformBrowser(this.platformId) && this.swiperElement) {
-      Object.assign(this.swiperElement.nativeElement, this.featuredSwiperConfig);
-      this.swiperElement.nativeElement.initialize();
-    }
-  }
+  ngAfterViewInit() {}
 
   private syncBlogStructuredData(): void {
     const posts = this.allPosts();

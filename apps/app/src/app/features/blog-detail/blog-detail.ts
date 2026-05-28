@@ -16,6 +16,7 @@ import {
   HostListener,
   signal,
   WritableSignal,
+  effect,
 } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -37,8 +38,6 @@ import { ScrollEngineService } from '@core/services/scroll-engine.service';
 
 // Swiper Web Components
 import { Pagination, Autoplay, Navigation, FreeMode } from 'swiper/modules';
-import { register } from 'swiper/element/bundle';
-register();
 
 @Component({
   selector: 'jsl-blog-detail',
@@ -64,6 +63,7 @@ register();
 export class BlogDetail
   implements OnInit, OnDestroy, AfterViewChecked, AfterViewInit
 {
+  private swiperRegistered = signal(false);
   public translate = inject(TranslateService);
   private route = inject(ActivatedRoute);
   private dataService = inject(DataService);
@@ -109,6 +109,44 @@ export class BlogDetail
   constructor() {
     this.currentLang =
       this.translate.currentLang || this.translate.defaultLang || 'es';
+
+    if (isPlatformBrowser(this.platformId)) {
+      import('swiper/element/bundle').then(({ register }) => {
+        register();
+        this.swiperRegistered.set(true);
+      });
+    }
+
+    effect(() => {
+      if (this.swiperRegistered()) {
+        const swiperEl = this.el.nativeElement.querySelector('swiper-container');
+        if (swiperEl && !swiperEl.swiper && typeof swiperEl.initialize === 'function') {
+          const slides = swiperEl.querySelectorAll('swiper-slide');
+          if (slides.length > 0) {
+            this.swiperInitialized = true;
+            Object.assign(swiperEl, {
+              modules: [Pagination, Autoplay, Navigation, FreeMode],
+              spaceBetween: 24,
+              slidesPerView: 'auto',
+              centeredSlides: false,
+              grabCursor: true,
+              observer: true,
+              observeParents: true,
+              freeMode: true,
+              pagination: { clickable: true, dynamicBullets: true },
+              breakpoints: {
+                320: { slidesPerView: 1.2, spaceBetween: 16 },
+                480: { slidesPerView: 1.5, spaceBetween: 20 },
+                768: { slidesPerView: 2.2, spaceBetween: 24 },
+                1024: { slidesPerView: 3, spaceBetween: 30 },
+                1400: { slidesPerView: 3.5, spaceBetween: 30 },
+              },
+            });
+            swiperEl.initialize();
+          }
+        }
+      }
+    });
 
     this.post$ = this.route.paramMap.pipe(
       switchMap((params) => {
@@ -300,30 +338,6 @@ export class BlogDetail
       }
     }
 
-    if (!this.swiperInitialized) {
-      const swiperEl = this.el.nativeElement.querySelector('swiper-container');
-      const slides = swiperEl?.querySelectorAll('swiper-slide');
-      if (swiperEl && slides && slides.length > 0 && typeof swiperEl.initialize === 'function') {
-        this.swiperInitialized = true;
-        Object.assign(swiperEl, {
-          modules: [Pagination, Autoplay, Navigation, FreeMode],
-          spaceBetween: 24,
-          slidesPerView: 'auto',
-          centeredSlides: false,
-          grabCursor: true,
-          freeMode: true,
-          pagination: { clickable: true, dynamicBullets: true },
-          breakpoints: {
-            320: { slidesPerView: 1.2, spaceBetween: 16 },
-            480: { slidesPerView: 1.5, spaceBetween: 20 },
-            768: { slidesPerView: 2.2, spaceBetween: 24 },
-            1024: { slidesPerView: 3, spaceBetween: 30 },
-            1400: { slidesPerView: 3.5, spaceBetween: 30 },
-          },
-        });
-        swiperEl.initialize();
-      }
-    }
   }
 
   ngOnInit(): void {

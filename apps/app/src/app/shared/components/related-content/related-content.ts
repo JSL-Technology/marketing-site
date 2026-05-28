@@ -16,8 +16,6 @@ import { AnimateOnScroll } from '@shared/directives/animate-on-scroll';
 import { DirectionService } from '@core/services/direction.service';
 
 import { Pagination, Navigation, A11y } from 'swiper/modules';
-import { register } from 'swiper/element/bundle';
-register();
 
 @Component({
   selector: 'app-related-content',
@@ -28,6 +26,7 @@ register();
   styleUrls: ['./related-content.scss'],
 })
 export class RelatedContentComponent implements AfterViewChecked {
+  private swiperRegistered = false;
   @Input() items: (BlogPost | Solution)[] = [];
   @Input() type: 'blog' | 'solution' = 'blog';
   @Input() title = 'RELATED.TITLE';
@@ -36,6 +35,15 @@ export class RelatedContentComponent implements AfterViewChecked {
   private platformId = inject(PLATFORM_ID);
   private el = inject(ElementRef);
   private swiperReady = false;
+
+  constructor() {
+    if (isPlatformBrowser(this.platformId)) {
+      import('swiper/element/bundle').then(({ register }) => {
+        register();
+        this.swiperRegistered = true;
+      });
+    }
+  }
 
   getItemLink(item: any): string[] {
     return this.type === 'blog' ? ['/blog', item.slug] : ['/solutions', item.slug];
@@ -69,7 +77,7 @@ export class RelatedContentComponent implements AfterViewChecked {
   }
 
   ngAfterViewChecked(): void {
-    if (!isPlatformBrowser(this.platformId) || this.swiperReady) return;
+    if (!isPlatformBrowser(this.platformId) || this.swiperReady || !this.swiperRegistered) return;
     const swiperEl = this.el.nativeElement.querySelector('swiper-container');
     if (!swiperEl) return;
     const slides = swiperEl.querySelectorAll('swiper-slide');
@@ -83,6 +91,8 @@ export class RelatedContentComponent implements AfterViewChecked {
     Object.assign(swiperEl, {
       modules: [Pagination, Navigation, A11y],
       grabCursor: true,
+      observer: true,
+      observeParents: true,
       spaceBetween: 24,
       slidesPerView: 1.15,
       pagination: { clickable: true, dynamicBullets: true },
