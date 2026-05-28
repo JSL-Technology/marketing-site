@@ -625,12 +625,16 @@ export class Seo {
     endDate?: string;
     image: string;
     organizerName: string;
+    performerName?: string;
     locationName: string;
     locationUrl?: string;
     eventStatus?: 'EventScheduled' | 'EventPostponed' | 'EventCancelled' | 'EventRescheduled';
     eventAttendanceMode?: 'OfflineEventAttendanceMode' | 'OnlineEventAttendanceMode' | 'MixedEventAttendanceMode';
+    offersPrice?: number;
+    offersCurrency?: string;
     url?: string;
   }, id = 'event-schema'): void {
+    const isOffline = event.eventAttendanceMode === 'OfflineEventAttendanceMode';
     const schema: Record<string, unknown> = {
       '@context': 'https://schema.org',
       '@type': 'Event',
@@ -647,13 +651,47 @@ export class Seo {
         'url': this.baseUrl,
       },
       'location': {
-        '@type': event.eventAttendanceMode === 'OfflineEventAttendanceMode' ? 'Place' : 'VirtualLocation',
+        '@type': isOffline ? 'Place' : 'VirtualLocation',
         'name': event.locationName,
-        ...(event.locationUrl ? { 'url': event.locationUrl } : {}),
+        ...(isOffline ? {
+          'address': {
+            '@type': 'PostalAddress',
+            'streetAddress': event.locationName,
+            'addressLocality': 'Santo Domingo',
+            'addressRegion': 'DN',
+            'addressCountry': 'DO',
+          }
+        } : {
+          'url': event.locationUrl ?? event.url ?? this.baseUrl,
+        }),
       },
     };
     if (event.endDate) schema['endDate'] = event.endDate;
     if (event.url) schema['url'] = event.url;
+
+    if (event.performerName) {
+      schema['performer'] = {
+        '@type': 'Organization',
+        'name': event.performerName,
+      };
+    } else {
+      schema['performer'] = {
+        '@type': 'Organization',
+        'name': event.organizerName,
+      };
+    }
+
+    if (event.offersPrice !== undefined) {
+      schema['offers'] = {
+        '@type': 'Offer',
+        'price': event.offersPrice,
+        'priceCurrency': event.offersCurrency ?? 'USD',
+        'availability': 'https://schema.org/InStock',
+        'validFrom': event.startDate.split('T')[0],
+        'url': event.url ?? this.baseUrl,
+      };
+    }
+
     this.setJsonLd(schema, id);
   }
 

@@ -12,6 +12,9 @@ interface EventItem {
   image: string;
   registrationUrl?: string;
   isOnline?: boolean;
+  performerName?: string;
+  price?: number;
+  currency?: string;
 }
 
 @Component({
@@ -33,6 +36,9 @@ export class Events implements OnInit {
       image: 'https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&q=80&w=800',
       registrationUrl: 'https://www.jsl.technology/en/events',
       isOnline: true,
+      performerName: 'JSL Technology ERP Team',
+      price: 0,
+      currency: 'USD',
     },
     {
       title: 'Cloud Security Masterclass',
@@ -42,6 +48,9 @@ export class Events implements OnInit {
       image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800',
       registrationUrl: 'https://www.jsl.technology/en/events',
       isOnline: true,
+      performerName: 'JSL Technology Security Experts',
+      price: 0,
+      currency: 'USD',
     }
   ];
 
@@ -67,10 +76,13 @@ export class Events implements OnInit {
           endDate: event.endDate,
           image: event.image,
           organizerName: 'JSL Technology',
+          performerName: event.performerName,
           locationName: event.isOnline ? 'Online — JSL Technology Webinar' : 'Santo Domingo, Dominican Republic',
           locationUrl: event.isOnline ? (event.registrationUrl ?? 'https://www.jsl.technology') : undefined,
           eventStatus: 'EventScheduled',
           eventAttendanceMode: event.isOnline ? 'OnlineEventAttendanceMode' : 'OfflineEventAttendanceMode',
+          offersPrice: event.price,
+          offersCurrency: event.currency,
           url: event.registrationUrl,
         },
         `event-schema-${index}`,
