@@ -10,16 +10,15 @@
     <h2 class="section-title">{{ 'EVENTS.UPCOMING' | translate }}</h2>
     <div class="events-grid">
       @for (event of upcomingEvents; track event.startDate) {
-        <article class="event-card" [attr.itemscope]="''" itemtype="https://schema.org/Event">
+        <article class="event-card">
           <div class="event-image" [style.backgroundImage]="'url(' + event.image + ')'">
-            <meta itemprop="image" [attr.content]="event.image">
           </div>
           <div class="event-content">
-            <div class="event-date" itemprop="startDate" [attr.datetime]="event.startDate">
+            <div class="event-date">
               {{ formatDisplayDate(event.startDate) }}
             </div>
-            <h3 itemprop="name">{{ event.title }}</h3>
-            <p itemprop="description">{{ event.description }}</p>
+            <h3>{{ event.title }}</h3>
+            <p>{{ event.description }}</p>
             <a [href]="event.registrationUrl || '#'" class="btn-register" target="_blank" rel="noopener noreferrer">
               {{ 'EVENTS.REGISTER' | translate }}
             </a>
