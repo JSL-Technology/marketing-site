@@ -401,9 +401,9 @@ export class BlogDetail
 
       // --- Breadcrumbs Schema ---
       this.seoService.setBreadcrumbs([
-        { name: translations['COMMON.BREADCRUMB_HOME'], item: `/${this.currentLang}/home` },
-        { name: translations['HEADER.BLOG'], item: `/${this.currentLang}/blog` },
-        { name: translatedTitle, item: `/${this.currentLang}/blog/${this.postData?.slug}` }
+        { name: translations['COMMON.BREADCRUMB_HOME'], item: `/${this.currentLang}/home/` },
+        { name: translations['HEADER.BLOG'], item: `/${this.currentLang}/blog/` },
+        { name: translatedTitle, item: `/${this.currentLang}/blog/${this.postData?.slug}/` }
       ]);
       this.seoService.updateCanonicalTag(postUrl);
       this.seoService.updateSocialTags(

@@ -4,11 +4,11 @@ module.exports = {
       numberOfRuns: 3,
       startServerCommand: 'npm run serve:ssr:app',
       url: [
-        'http://localhost:4000/en/home',
-        'http://localhost:4000/en/solutions',
-        'http://localhost:4000/en/blog',
-        'http://localhost:4000/en/contact',
-        'http://localhost:4000/en/about-us'
+        'http://localhost:4000/en/home/',
+        'http://localhost:4000/en/solutions/',
+        'http://localhost:4000/en/blog/',
+        'http://localhost:4000/en/contact/',
+        'http://localhost:4000/en/about-us/'
       ],
       settings: [
         { preset: 'desktop' },

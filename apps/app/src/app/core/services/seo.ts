@@ -179,8 +179,8 @@ export class Seo {
       // --- I. Auto-breadcrumbs para páginas estáticas (no-home) ---
       if (currentLang && canonicalPath) {
         this.setBreadcrumbs([
-          { name: breadcrumbHome, item: `/${currentLang}` },
-          { name: translatedTitle, item: `/${currentLang}/${canonicalPath}` }
+          { name: breadcrumbHome, item: `/${currentLang}/` },
+          { name: translatedTitle, item: `/${currentLang}/${canonicalPath}/` }
         ]);
       }
     });
@@ -425,7 +425,7 @@ export class Seo {
         '@type': 'ListItem',
         'position': index + 1,
         'name': breadcrumb.name,
-        'item': breadcrumb.item.startsWith('http') ? breadcrumb.item : `${this.baseUrl}${breadcrumb.item}`
+        'item': breadcrumb.item.startsWith('http') ? breadcrumb.item : `${this.baseUrl}${breadcrumb.item.startsWith('/') ? '' : '/'}${breadcrumb.item}`
       }))
     };
     this.setJsonLd(breadcrumbSchema, 'breadcrumb-schema');

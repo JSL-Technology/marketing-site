@@ -174,13 +174,13 @@ export class Blog implements OnInit, AfterViewInit {
     if (!posts.length) return;
 
     const baseUrl = this.seoService.getBaseUrl();
-    const blogUrl = `${baseUrl}/${this.currentLang}/blog`;
+    const blogUrl = `${baseUrl}/${this.currentLang}/blog/`;
     const itemListElements = posts.map((post, index) => {
       const titleKey = `BLOG.${post.key}_TITLE`;
       const excerptKey = `BLOG.${post.key}_EXCERPT`;
       const title = this.translate.instant(titleKey);
       const excerpt = this.translate.instant(excerptKey);
-      const postUrl = `${baseUrl}/${this.currentLang}/blog/${post.slug}`;
+      const postUrl = `${baseUrl}/${this.currentLang}/blog/${post.slug}/`;
 
       return {
         '@type': 'BlogPosting',
@@ -231,7 +231,7 @@ export class Blog implements OnInit, AfterViewInit {
 
   private updatePaginationLinks(page: number): void {
     const totalPages = Math.ceil(this.totalItems() / this.itemsPerPage);
-    const base = `/${this.currentLang}/blog`;
+    const base = `/${this.currentLang}/blog/`;
     const params = new URLSearchParams();
     if (this.searchTerm()) params.set('q', this.searchTerm());
     if (this.selectedTag()) params.set('tag', this.selectedTag()!);

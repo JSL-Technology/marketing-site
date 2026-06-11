@@ -70,7 +70,7 @@ export class ProjectDetail implements OnInit, OnDestroy {
     const titleKey = `PROJECTS.${project.key}_TITLE`;
     const descKey = `PROJECTS.${project.key}_DESC`;
     const baseUrl = this.seoService.getBaseUrl();
-    const url = `${baseUrl}/${this.currentLang}/projects/${project.slug}`;
+    const url = `${baseUrl}/${this.currentLang}/projects/${project.slug}/`;
 
     this.translate.get([titleKey, descKey, 'COMMON.BREADCRUMB_HOME', 'HEADER.PROJECTS', 'COMMON.DEFAULT_DESCRIPTION']).subscribe(translations => {
       const title = `${translations[titleKey]} | JSL Technology`;
@@ -80,9 +80,9 @@ export class ProjectDetail implements OnInit, OnDestroy {
 
       // --- Breadcrumbs Schema ---
       this.seoService.setBreadcrumbs([
-        { name: translations['COMMON.BREADCRUMB_HOME'], item: `/${this.currentLang}/home` },
-        { name: translations['HEADER.PROJECTS'], item: `/${this.currentLang}/projects` },
-        { name: translations[titleKey], item: `/${this.currentLang}/projects/${project.slug}` }
+        { name: translations['COMMON.BREADCRUMB_HOME'], item: `/${this.currentLang}/home/` },
+        { name: translations['HEADER.PROJECTS'], item: `/${this.currentLang}/projects/` },
+        { name: translations[titleKey], item: `/${this.currentLang}/projects/${project.slug}/` }
       ]);
 
       this.seoService.updateCanonicalTag(url);

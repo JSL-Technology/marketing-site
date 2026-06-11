@@ -109,7 +109,7 @@ export class SolutionDetail implements OnInit, OnDestroy {
 
     // Set breadcrumbs first if possible, or wait for translations
     const baseUrl = this.seoService.getBaseUrl();
-    const url = `${baseUrl}/${this.currentLang}/solutions/${solution.slug}`;
+    const url = `${baseUrl}/${this.currentLang}/solutions/${solution.slug}/`;
 
     this.translate.get([titleKey, descKey, 'COMMON.BREADCRUMB_HOME', 'HEADER.SERVICES', 'COMMON.DEFAULT_DESCRIPTION']).subscribe(translations => {
       const title = `${translations[titleKey] || solution.key} | JSL Technology`;
@@ -119,9 +119,9 @@ export class SolutionDetail implements OnInit, OnDestroy {
 
       // --- Breadcrumbs Schema ---
       this.seoService.setBreadcrumbs([
-        { name: translations['COMMON.BREADCRUMB_HOME'], item: `/${this.currentLang}/home` },
-        { name: translations['HEADER.SERVICES'], item: `/${this.currentLang}/solutions` },
-        { name: translations[titleKey], item: `/${this.currentLang}/solutions/${solution.slug}` }
+        { name: translations['COMMON.BREADCRUMB_HOME'], item: `/${this.currentLang}/home/` },
+        { name: translations['HEADER.SERVICES'], item: `/${this.currentLang}/solutions/` },
+        { name: translations[titleKey], item: `/${this.currentLang}/solutions/${solution.slug}/` }
       ]);
 
       this.seoService.updateCanonicalTag(url);
