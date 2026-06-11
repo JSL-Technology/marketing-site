@@ -169,7 +169,7 @@ export class ProductDetail implements OnInit, OnDestroy {
     const titleKey = `PRODUCTS.${product.key}_TITLE`;
     const descKey = `PRODUCTS.${product.key}_DESC`;
     const baseUrl = this.seoService.getBaseUrl();
-    const url = `${baseUrl}/${this.currentLang}/products/${product.slug}`;
+    const url = `${baseUrl}/${this.currentLang}/products/${product.slug}/`;
 
     let imageUrl = product.imageUrl || '';
     if (imageUrl && !imageUrl.startsWith('http')) {
@@ -191,9 +191,9 @@ export class ProductDetail implements OnInit, OnDestroy {
       this.seoService.updateTitleAndDescription(title, description);
 
       this.seoService.setBreadcrumbs([
-        { name: translations['COMMON.BREADCRUMB_HOME'], item: `/${this.currentLang}/home` },
-        { name: translations['HEADER.PRODUCTS'], item: `/${this.currentLang}/products` },
-        { name: translations[titleKey], item: `/${this.currentLang}/products/${product.slug}` }
+        { name: translations['COMMON.BREADCRUMB_HOME'], item: `/${this.currentLang}/home/` },
+        { name: translations['HEADER.PRODUCTS'], item: `/${this.currentLang}/products/` },
+        { name: translations[titleKey], item: `/${this.currentLang}/products/${product.slug}/` }
       ]);
 
       this.seoService.updateCanonicalTag(url);

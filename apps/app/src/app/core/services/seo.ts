@@ -138,10 +138,10 @@ export class Seo {
       canonicalPath = canonicalPath.replace(/\/+$/, '');
 
       // (Ej: https://www.jsltechnology.com/es ó https://www.jsltechnology.com/es/solutions)
-      // Evitamos slash final si canonicalPath está vacío
+      // Evitamos slash final si canonicalPath está vacío (pero ahora lo queremos siempre)
       const canonicalUrl = canonicalPath
-        ? `${this.baseUrl}/${currentLang}/${canonicalPath}`
-        : `${this.baseUrl}/${currentLang}`;
+        ? `${this.baseUrl}/${currentLang}/${canonicalPath}/`
+        : `${this.baseUrl}/${currentLang}/`;
 
       // --- C. Actualizar Título y Meta Descripción ---
       this.titleService.setTitle(title);
@@ -179,8 +179,8 @@ export class Seo {
       // --- I. Auto-breadcrumbs para páginas estáticas (no-home) ---
       if (currentLang && canonicalPath) {
         this.setBreadcrumbs([
-          { name: breadcrumbHome, item: `/${currentLang}` },
-          { name: translatedTitle, item: `/${currentLang}/${canonicalPath}` }
+          { name: breadcrumbHome, item: `/${currentLang}/` },
+          { name: translatedTitle, item: `/${currentLang}/${canonicalPath}/` }
         ]);
       }
     });
@@ -425,7 +425,7 @@ export class Seo {
         '@type': 'ListItem',
         'position': index + 1,
         'name': breadcrumb.name,
-        'item': breadcrumb.item.startsWith('http') ? breadcrumb.item : `${this.baseUrl}${breadcrumb.item}`
+        'item': breadcrumb.item.startsWith('http') ? breadcrumb.item : `${this.baseUrl}${breadcrumb.item.startsWith('/') ? '' : '/'}${breadcrumb.item}`
       }))
     };
     this.setJsonLd(breadcrumbSchema, 'breadcrumb-schema');
@@ -753,7 +753,7 @@ export class Seo {
       const link: HTMLLinkElement = this.document.createElement('link');
       link.setAttribute('rel', 'alternate');
       link.setAttribute('hreflang', lang);
-      const url = canonicalPath ? `${baseUrl}/${lang}/${canonicalPath}` : `${baseUrl}/${lang}`;
+      const url = canonicalPath ? `${baseUrl}/${lang}/${canonicalPath}/` : `${baseUrl}/${lang}/`;
       link.setAttribute('href', url);
       this.document.head.appendChild(link);
     });
@@ -762,7 +762,7 @@ export class Seo {
     const defaultLink: HTMLLinkElement = this.document.createElement('link');
     defaultLink.setAttribute('rel', 'alternate');
     defaultLink.setAttribute('hreflang', 'x-default');
-    const defaultUrl = canonicalPath ? `${baseUrl}/en/${canonicalPath}` : `${baseUrl}/en`;
+    const defaultUrl = canonicalPath ? `${baseUrl}/en/${canonicalPath}/` : `${baseUrl}/en/`;
     defaultLink.setAttribute('href', defaultUrl); // Usamos 'en' como default
     this.document.head.appendChild(defaultLink);
   }
