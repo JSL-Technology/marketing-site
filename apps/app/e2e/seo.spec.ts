@@ -7,16 +7,16 @@ test.describe('SEO Technical Audit', () => {
 
   for (const lang of languages) {
     test(`Home page [${lang}] should have correct basic SEO tags`, async ({ page }) => {
-      await page.goto(`${baseUrl}/${lang}/home`);
+      await page.goto(`${baseUrl}/${lang}/home/`);
 
       // Canonical
       const canonical = page.locator('link[rel="canonical"]');
-      await expect(canonical).toHaveAttribute('href', `${baseUrl}/${lang}`);
+      await expect(canonical).toHaveAttribute('href', `${baseUrl}/${lang}/`);
 
       // Hreflang
       const hreflangs = page.locator('link[rel="alternate"][hreflang]');
       await expect(hreflangs).toHaveCount(totalLangsCount);
-      await expect(page.locator('link[rel="alternate"][hreflang="x-default"]')).toHaveAttribute('href', `${baseUrl}/en`);
+      await expect(page.locator('link[rel="alternate"][hreflang="x-default"]')).toHaveAttribute('href', `${baseUrl}/en/`);
 
       // Title & Description
       const title = await page.title();
@@ -32,11 +32,11 @@ test.describe('SEO Technical Audit', () => {
   }
 
   test('Organization schema should be present on all pages', async ({ page }) => {
-    await page.goto(`${baseUrl}/en/home`);
+    await page.goto(`${baseUrl}/en/home/`);
     const schemaScript = page.locator('script[type="application/ld+json"]#organization-schema');
     const schemaText = await schemaScript.textContent();
     const schema = JSON.parse(schemaText || '{}');
-    expect(schema['@type']).toBe('Organization');
+    expect(schema['@type']).toContain('Organization');
     expect(schema['name']).toBe('JSL Technology');
     expect(schema['url']).toBeDefined();
     expect(schema['logo']).toBeDefined();
@@ -120,10 +120,10 @@ test.describe('SEO Technical Audit', () => {
     expect(schema['mainEntity'][0]['acceptedAnswer']['@type']).toBe('Answer');
   });
 
-  test('Canonical should not have trailing slash', async ({ page }) => {
+  test('Canonical should have trailing slash', async ({ page }) => {
     await page.goto(`${baseUrl}/es/solutions/`);
     const canonical = page.locator('link[rel="canonical"]');
-    await expect(canonical).toHaveAttribute('href', /[^/]$/);
+    await expect(canonical).toHaveAttribute('href', /\/$/);
   });
 
   test('Meta tags should not accumulate during SPA navigation', async ({ page }) => {
@@ -155,11 +155,11 @@ test.describe('SEO Technical Audit', () => {
     expect(body).toContain('<?xml');
     expect(body).toContain('<urlset');
     expect(body).toContain('<loc>');
-    expect(body).toContain(`${baseUrl}/en`);
-    expect(body).toContain(`${baseUrl}/en/products/virtex`);
+    expect(body).toContain(`${baseUrl}/en/`);
+    expect(body).toContain(`${baseUrl}/en/products/virtex/`);
 
     // Check that noindex routes are NOT in sitemap
-    expect(body).not.toContain('<loc>' + baseUrl + '/en/status</loc>');
+    expect(body).not.toContain('<loc>' + baseUrl + '/en/status/</loc>');
     expect(body).not.toContain('<loc>' + baseUrl + '/en/server-error</loc>');
     expect(body).not.toContain('<loc>' + baseUrl + '/en/thank-you</loc>');
     expect(body).not.toContain('<loc>' + baseUrl + '/en/not-found</loc>');

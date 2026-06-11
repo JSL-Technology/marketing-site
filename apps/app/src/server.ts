@@ -137,35 +137,70 @@ const limiter = rateLimit({
 // Aplicar rate limiting a todas las rutas
 app.use(limiter);
 
-app.get('/', (req, res) => {
-  const lang = detectPreferredLanguage(
-    req.headers['accept-language'],
-    req.headers['cookie'],
-    SUPPORTED_LANGUAGES,
-    defaultLang,
-  );
-  res.redirect(301, `/${lang}`);
-});
-
+/**
+ * CANONICAL REDIRECTS MIDDLEWARE:
+ * Enforces HTTPS, www prefix, trailing slash, and language prefix.
+ * Also handles legacy route redirects.
+ * All checks are performed before redirecting to avoid multiple redirect hops.
+ */
 app.use((req, res, next) => {
+  const host = req.get('host') || '';
+  const protocol = req.headers['x-forwarded-proto'] || req.protocol;
   const pathname = req.path;
+  const search = req.url.slice(pathname.length);
+
+  // Skip redirection for APIs, assets, and files
   if (shouldSkipLanguageRedirect(pathname)) {
     return next();
   }
 
-  const firstSegment = pathname.split('/').filter(Boolean)[0]?.toLowerCase();
-  if (firstSegment && SUPPORTED_LANGUAGES.includes(firstSegment)) {
-    return next();
+  let targetProtocol = protocol;
+  let targetHost = host;
+
+  // 1. Enforce HTTPS and www on production
+  // We use jsl.technology as the base to enforce www.jsl.technology
+  if (!host.includes('localhost') && !host.includes('127.0.0.1')) {
+    targetProtocol = 'https';
+    targetHost = 'www.jsl.technology';
   }
 
-  const lang = detectPreferredLanguage(
-    req.headers['accept-language'],
-    req.headers['cookie'],
-    SUPPORTED_LANGUAGES,
-    defaultLang,
-  );
-  const redirectPath = `/${lang}${req.originalUrl.startsWith('/') ? req.originalUrl : `/${req.originalUrl}`}`;
-  return res.redirect(301, redirectPath);
+  let targetPathname = pathname;
+
+  // 2. Handle Legacy Routes
+  if (targetPathname === '/it/home' || targetPathname === '/it/home/') {
+    targetPathname = '/it/';
+  } else if (
+    targetPathname === '/solutions/cloud-architecture' ||
+    targetPathname === '/solutions/cloud-architecture/'
+  ) {
+    targetPathname = '/en/solutions/cloud-architecture/';
+  }
+
+  // 3. Enforce Language Prefix
+  const firstSegment = targetPathname.split('/').filter(Boolean)[0]?.toLowerCase();
+  if (!firstSegment || !SUPPORTED_LANGUAGES.includes(firstSegment)) {
+    const lang = detectPreferredLanguage(
+      req.headers['accept-language'] as string,
+      req.headers['cookie'] as string,
+      SUPPORTED_LANGUAGES,
+      defaultLang,
+    );
+    targetPathname = `/${lang}${targetPathname.startsWith('/') ? targetPathname : `/${targetPathname}`}`;
+  }
+
+  // 4. Enforce Trailing Slash
+  if (!targetPathname.endsWith('/')) {
+    targetPathname += '/';
+  }
+
+  const targetUrl = `${targetProtocol}://${targetHost}${targetPathname}${search}`;
+  const currentUrl = `${protocol}://${host}${req.url}`;
+
+  if (currentUrl !== targetUrl) {
+    return res.redirect(301, targetUrl);
+  }
+
+  next();
 });
 
 // --- INICIO: Funciones para generar el Sitemap ---
@@ -247,7 +282,6 @@ const STATIC_LASTMOD = process.env['BUILD_DATE'] || new Date().toISOString().spl
 const NOINDEX_ROUTES = ['/status', '/thank-you', '/server-error', '/not-found'];
 
 function shouldSkipLanguageRedirect(pathname: string): boolean {
-  if (pathname === '/') return true;
   if (pathname.startsWith('/api/') || pathname === '/api') return true;
   if (pathname.startsWith('/assets/')) return true;
   if (
@@ -382,7 +416,7 @@ function generateUrlEntry(
   let entryXml = '';
 
   supportedLangs.forEach((lang) => {
-    const url = `${domain}/${lang}${route ? '/' + route : ''}`;
+    const url = `${domain}/${lang}/${route ? route + '/' : ''}`;
 
     entryXml += '<url>';
     entryXml += `<loc>${url}</loc>`;
@@ -403,12 +437,12 @@ function generateUrlEntry(
 
     // hreflang alternates
     supportedLangs.forEach((altLang) => {
-      const altUrl = `${domain}/${altLang}${route ? '/' + route : ''}`;
+      const altUrl = `${domain}/${altLang}/${route ? route + '/' : ''}`;
       entryXml += `<xhtml:link rel="alternate" hreflang="${altLang}" href="${altUrl}" />`;
     });
 
     // x-default
-    const defaultUrl = `${domain}/${defaultLang}${route ? '/' + route : ''}`;
+    const defaultUrl = `${domain}/${defaultLang}/${route ? route + '/' : ''}`;
     entryXml += `<xhtml:link rel="alternate" hreflang="x-default" href="${defaultUrl}" />`;
 
     entryXml += '</url>';
