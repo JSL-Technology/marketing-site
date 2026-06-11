@@ -140,16 +140,16 @@ export class Seo {
       // (Ej: https://www.jsltechnology.com/es ó https://www.jsltechnology.com/es/solutions)
       // Evitamos slash final si canonicalPath está vacío
       const canonicalUrl = canonicalPath
-        ? `${this.baseUrl}/${currentLang}/${canonicalPath}`
-        : `${this.baseUrl}/${currentLang}`;
+        ? `${this.baseUrl}/${currentLang}/${canonicalPath}/`
+        : `${this.baseUrl}/${currentLang}/`;
 
       // --- C. Actualizar Título y Meta Descripción ---
       this.titleService.setTitle(title);
       this.metaService.updateTag({ name: 'description', content: translatedDesc });
 
       // --- D. Actualizar Etiqueta Canónica (¡NUEVO!) ---
-      // Esto se ejecuta en servidor y cliente
-      this.updateCanonicalTag(canonicalUrl);
+      // NOTA: CanonicalService ya se encarga de esto en app.ts
+      // this.updateCanonicalTag(canonicalUrl);
 
       // --- E. Actualizar Etiquetas de Redes Sociales (¡NUEVO!) ---
       // (Asumimos una imagen por defecto, pero podrías hacerla dinámica)
@@ -753,7 +753,7 @@ export class Seo {
       const link: HTMLLinkElement = this.document.createElement('link');
       link.setAttribute('rel', 'alternate');
       link.setAttribute('hreflang', lang);
-      const url = canonicalPath ? `${baseUrl}/${lang}/${canonicalPath}` : `${baseUrl}/${lang}`;
+      const url = canonicalPath ? `${baseUrl}/${lang}/${canonicalPath}/` : `${baseUrl}/${lang}/`;
       link.setAttribute('href', url);
       this.document.head.appendChild(link);
     });

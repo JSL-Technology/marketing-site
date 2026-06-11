@@ -10,9 +10,13 @@ export function hasLanguagePrefix(path: string, supportedLangs: readonly string[
 
 export function buildLocalizedUrl(path: string, lang: string, supportedLangs: readonly string[]): string {
   const safePath = path.startsWith('/') ? path : `/${path}`;
-  return hasLanguagePrefix(safePath, supportedLangs)
+  const localized = hasLanguagePrefix(safePath, supportedLangs)
     ? safePath
     : `/${normalizeLang(lang)}${safePath === '/' ? '' : safePath}`;
+
+  // Garantizar trailing slash para consistencia con server.ts
+  if (/\.\w+$/.test(localized)) return localized; // archivos
+  return localized.endsWith('/') ? localized : `${localized}/`;
 }
 
 export function detectPreferredLanguage(
