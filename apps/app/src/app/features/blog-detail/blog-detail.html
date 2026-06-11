@@ -226,58 +226,74 @@
   }
 
   @if (showCommentsModal()) {
-    <div class="comments-modal-overlay" (click)="toggleCommentsModal()">
-      <div class="comments-modal-container" (click)="$event.stopPropagation()">
-        <div class="modal-header">
-          <h3>{{ 'BLOG.COMMENTS' | translate }} ({{ comments().length }})</h3>
-          <button class="close-modal-btn" (click)="toggleCommentsModal()" aria-label="Close">
-            <lucide-icon name="X" [size]="24"></lucide-icon>
-          </button>
+    @if (breakpointService.isMobile()) {
+      <jsl-bottom-sheet
+        [isOpen]="showCommentsModal()"
+        [title]="('BLOG.COMMENTS' | translate) + ' (' + comments().length + ')'"
+        (close)="toggleCommentsModal()"
+      >
+        <div class="mobile-comments-container">
+          <ng-container [ngTemplateOutlet]="commentsContent"></ng-container>
         </div>
-
-        <div class="modal-body custom-scrollbar">
-          <div class="comment-form-container">
-            <div class="form-group">
-              <label for="comment-textarea" class="sr-only">{{ 'BLOG.SUBMIT_COMMENT' | translate }}</label>
-              <textarea
-                id="comment-textarea"
-                [placeholder]="'BLOG.COMMENT_PLACEHOLDER' | translate"
-                [(ngModel)]="newCommentText"
-                (keydown)="handleCommentKeydown($event)"
-              ></textarea>
-              <div class="form-footer">
-                <span class="hint">Ctrl + Enter to send</span>
-                <button class="submit-comment-btn" (click)="submitComment()">
-                  {{ 'BLOG.SUBMIT_COMMENT' | translate }}
-                </button>
-              </div>
-            </div>
+      </jsl-bottom-sheet>
+    } @else {
+      <div class="comments-modal-overlay" (click)="toggleCommentsModal()">
+        <div class="comments-modal-container" (click)="$event.stopPropagation()">
+          <div class="modal-header">
+            <h3>{{ 'BLOG.COMMENTS' | translate }} ({{ comments().length }})</h3>
+            <button class="close-modal-btn" (click)="toggleCommentsModal()" aria-label="Close">
+              <lucide-icon name="X" [size]="24"></lucide-icon>
+            </button>
           </div>
 
-          <div class="comments-list">
-            @for (comment of comments(); track comment.date) {
-              <div class="comment-item">
-                <div class="comment-avatar">
-                  <div class="avatar-placeholder">{{ comment.author[0] }}</div>
-                </div>
-                <div class="comment-content">
-                  <div class="comment-meta">
-                    <span class="comment-author">{{ comment.author }}</span>
-                    <span class="comment-date">{{ comment.date | date: 'short' }}</span>
-                  </div>
-                  <p class="comment-text">{{ comment.text }}</p>
-                </div>
-              </div>
-            } @empty {
-              <div class="empty-comments">
-                <p>{{ 'BLOG.NO_COMMENTS' | translate }}</p>
-              </div>
-            }
+          <div class="modal-body custom-scrollbar">
+            <ng-container [ngTemplateOutlet]="commentsContent"></ng-container>
           </div>
         </div>
       </div>
-    </div>
+    }
   }
+
+  <ng-template #commentsContent>
+    <div class="comment-form-container">
+      <div class="form-group">
+        <label for="comment-textarea" class="sr-only">{{ 'BLOG.SUBMIT_COMMENT' | translate }}</label>
+        <textarea
+          id="comment-textarea"
+          [placeholder]="'BLOG.COMMENT_PLACEHOLDER' | translate"
+          [(ngModel)]="newCommentText"
+          (keydown)="handleCommentKeydown($event)"
+        ></textarea>
+        <div class="form-footer">
+          <span class="hint">Ctrl + Enter to send</span>
+          <button class="submit-comment-btn" (click)="submitComment()">
+            {{ 'BLOG.SUBMIT_COMMENT' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="comments-list">
+      @for (comment of comments(); track comment.date) {
+        <div class="comment-item">
+          <div class="comment-avatar">
+            <div class="avatar-placeholder">{{ comment.author[0] }}</div>
+          </div>
+          <div class="comment-content">
+            <div class="comment-meta">
+              <span class="comment-author">{{ comment.author }}</span>
+              <span class="comment-date">{{ comment.date | date: 'short' }}</span>
+            </div>
+            <p class="comment-text">{{ comment.text }}</p>
+          </div>
+        </div>
+      } @empty {
+        <div class="empty-comments">
+          <p>{{ 'BLOG.NO_COMMENTS' | translate }}</p>
+        </div>
+      }
+    </div>
+  </ng-template>
 } @else {
   <div class="not-found-container">
     <div class="container">

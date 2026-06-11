@@ -18,7 +18,7 @@ import {
   WritableSignal,
   effect,
 } from '@angular/core';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { CommonModule, isPlatformBrowser, NgTemplateOutlet } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -35,6 +35,8 @@ import { Seo } from '@core/services/seo';
 import { DirectionService } from '@core/services/direction.service';
 import { SocialShareComponent } from '@shared/components/social-share/social-share';
 import { ScrollEngineService } from '@core/services/scroll-engine.service';
+import { BreakpointService } from '@core/services/breakpoint.service';
+import { BottomSheetComponent } from '@shared/components/bottom-sheet/bottom-sheet';
 
 // Swiper Web Components
 import { Pagination, Autoplay, Navigation, FreeMode } from 'swiper/modules';
@@ -44,6 +46,7 @@ import { Pagination, Autoplay, Navigation, FreeMode } from 'swiper/modules';
   standalone: true,
   imports: [
     CommonModule,
+    NgTemplateOutlet,
     FormsModule,
     TranslateModule,
     RouterLink,
@@ -52,7 +55,8 @@ import { Pagination, Autoplay, Navigation, FreeMode } from 'swiper/modules';
     CtaComponent,
     WhitepaperDownloadComponent,
     Card,
-    SocialShareComponent
+    SocialShareComponent,
+    BottomSheetComponent
   ],
   templateUrl: './blog-detail.html',
   styleUrl: './blog-detail.scss',
@@ -72,6 +76,7 @@ export class BlogDetail
   @Inject(PLATFORM_ID) private platformId = inject(PLATFORM_ID);
   private seoService = inject(Seo);
   public directionService = inject(DirectionService);
+  public breakpointService = inject(BreakpointService);
   private scrollEngine = inject(ScrollEngineService);
 
   @ViewChild('copyTooltip') copyTooltip!: ElementRef;
