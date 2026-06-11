@@ -111,6 +111,18 @@ const ENV_FEATURE_FLAGS: Record<string, boolean> = (() => {
     return {};
   }
 })();
+
+/**
+ * LEGACY_REDIRECTS: Specific 1-to-1 route mapping for legacy or moved pages.
+ * Handles routes that don't follow a simple pattern or need explicit redirection.
+ */
+const LEGACY_REDIRECTS: Record<string, string> = {
+  '/solutions/cloud-architecture': '/en/solutions/cloud-architecture',
+  '/solutions/artificial-intelligence': '/en/solutions/artificial-intelligence',
+  '/solutions/custom-software': '/en/solutions/custom-software',
+  '/solutions/mobile-development': '/en/solutions/mobile-development',
+};
+
 // --- OPTIMIZACIÓN: Compresión Gzip/Brotli ---
 app.use(compression());
 
@@ -137,6 +149,46 @@ const limiter = rateLimit({
 // Aplicar rate limiting a todas las rutas
 app.use(limiter);
 
+/**
+ * SEO & REDIRECT MIDDLEWARE:
+ * Handles legacy routes, trailing slashes for language roots, and home-to-root normalization.
+ * This layer ensures robust indexing and avoids "Page with redirect" errors in Search Console.
+ */
+app.use((req, res, next) => {
+  const pathname = req.path;
+  const originalUrl = req.originalUrl;
+
+  // 1. Check for explicit legacy redirects
+  if (LEGACY_REDIRECTS[pathname]) {
+    const query = originalUrl.includes('?') ? originalUrl.substring(originalUrl.indexOf('?')) : '';
+    return res.redirect(301, `${LEGACY_REDIRECTS[pathname]}${query}`);
+  }
+
+  // 2. Skip logic for assets, API, and technical routes
+  if (shouldSkipLanguageRedirect(pathname)) {
+    return next();
+  }
+
+  const segments = pathname.split('/').filter(Boolean);
+  const firstSegment = segments[0]?.toLowerCase();
+  const isLangRoute = firstSegment && SUPPORTED_LANGUAGES.includes(firstSegment);
+
+  if (isLangRoute) {
+    // 3. Normalized trailing slash for language root (e.g., /en -> /en/)
+    if (segments.length === 1 && !pathname.endsWith('/')) {
+      return res.redirect(301, `${pathname}/`);
+    }
+
+    // 4. Redirect /:lang/home -> /:lang/
+    if (segments[1]?.toLowerCase() === 'home') {
+      const remainingPath = originalUrl.substring(pathname.length);
+      return res.redirect(301, `/${firstSegment}/${remainingPath}`);
+    }
+  }
+
+  next();
+});
+
 app.get('/', (req, res) => {
   const lang = detectPreferredLanguage(
     req.headers['accept-language'],
@@ -144,7 +196,11 @@ app.get('/', (req, res) => {
     SUPPORTED_LANGUAGES,
     defaultLang,
   );
-  res.redirect(301, `/${lang}`);
+  // Redirect to language root with trailing slash, preserving query parameters
+  const query = req.originalUrl.includes('?')
+    ? req.originalUrl.substring(req.originalUrl.indexOf('?'))
+    : '';
+  res.redirect(301, `/${lang}/${query}`);
 });
 
 app.use((req, res, next) => {
@@ -164,6 +220,7 @@ app.use((req, res, next) => {
     SUPPORTED_LANGUAGES,
     defaultLang,
   );
+  // Use trailing slash when prefixing language
   const redirectPath = `/${lang}${req.originalUrl.startsWith('/') ? req.originalUrl : `/${req.originalUrl}`}`;
   return res.redirect(301, redirectPath);
 });
