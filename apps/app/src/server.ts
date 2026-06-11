@@ -136,6 +136,49 @@ const limiter = rateLimit({
 });
 // Aplicar rate limiting a todas las rutas
 app.use(limiter);
+// ─── CAPA 1: TRAILING SLASH ─────────────────────────────────────────────
+// Normaliza todas las rutas sin trailing slash → con trailing slash (301)
+// No aplica a archivos estáticos ni a la raíz
+app.use((req, res, next) => {
+  const path = req.path;
+  if (/\.\w+$/.test(path)) return next(); // tiene extensión → estático
+  if (path === "/") return next(); // raíz → no tocar
+  if (!path.endsWith("/")) {
+    const qs = req.url.slice(path.length); // preserva query string
+    return res.redirect(301, path + "/" + qs);
+  }
+  next();
+});
+
+// ─── CAPA 2: REDIRECTS PERMANENTES (rutas legacy) ───────────────────────
+// Fuente de verdad: editar SOLO este objeto para agregar/quitar redirects
+const PERMANENT_REDIRECTS: Record<string, string> = {
+  // NOTA: las keys ya incluyen trailing slash porque la Capa 1 ya normalizó
+  "/en/home/": "/en/",
+  "/es/home/": "/es/",
+  "/ar/home/": "/ar/",
+  "/de/home/": "/de/",
+  "/fr/home/": "/fr/",
+  "/it/home/": "/it/",
+  "/ja/home/": "/ja/",
+  "/ko/home/": "/ko/",
+  "/pt/home/": "/pt/",
+  "/zh/home/": "/zh/",
+  "/ht/home/": "/ht/",
+  "/solutions/cloud-architecture/": "/en/solutions/cloud-architecture/",
+};
+
+app.use((req, res, next) => {
+  const destination = PERMANENT_REDIRECTS[req.path];
+  if (destination) {
+    const qs = req.url.slice(req.path.length); // preserva query string
+    return res.redirect(301, destination + qs);
+  }
+  next();
+});
+
+
+
 
 app.get('/', (req, res) => {
   const lang = detectPreferredLanguage(
@@ -144,7 +187,7 @@ app.get('/', (req, res) => {
     SUPPORTED_LANGUAGES,
     defaultLang,
   );
-  res.redirect(301, `/${lang}`);
+  res.redirect(301, `/${lang}/`);
 });
 
 app.use((req, res, next) => {
@@ -165,7 +208,10 @@ app.use((req, res, next) => {
     defaultLang,
   );
   const redirectPath = `/${lang}${req.originalUrl.startsWith('/') ? req.originalUrl : `/${req.originalUrl}`}`;
-  return res.redirect(301, redirectPath);
+  // Si el redirectPath no termina en slash y no es un archivo, se le añadirá en la siguiente vuelta del middleware de trailing slash
+  // o podemos forzarlo aquí para ahorrar un salto. Dado que Capa 1 ya pasó, mejor forzarlo aquí.
+  const finalRedirect = redirectPath.endsWith('/') ? redirectPath : `${redirectPath}/`;
+  return res.redirect(301, finalRedirect);
 });
 
 // --- INICIO: Funciones para generar el Sitemap ---
@@ -382,7 +428,7 @@ function generateUrlEntry(
   let entryXml = '';
 
   supportedLangs.forEach((lang) => {
-    const url = `${domain}/${lang}${route ? '/' + route : ''}`;
+    const url = `${domain}/${lang}${route ? '/' + route + '/' : '/'}`;
 
     entryXml += '<url>';
     entryXml += `<loc>${url}</loc>`;
@@ -403,12 +449,12 @@ function generateUrlEntry(
 
     // hreflang alternates
     supportedLangs.forEach((altLang) => {
-      const altUrl = `${domain}/${altLang}${route ? '/' + route : ''}`;
+      const altUrl = `${domain}/${altLang}${route ? '/' + route + '/' : '/'}`;
       entryXml += `<xhtml:link rel="alternate" hreflang="${altLang}" href="${altUrl}" />`;
     });
 
     // x-default
-    const defaultUrl = `${domain}/${defaultLang}${route ? '/' + route : ''}`;
+    const defaultUrl = `${domain}/${defaultLang}${route ? '/' + route + '/' : '/'}`;
     entryXml += `<xhtml:link rel="alternate" hreflang="x-default" href="${defaultUrl}" />`;
 
     entryXml += '</url>';
@@ -584,10 +630,8 @@ app.get('/seo/health', (req, res) => {
   });
 });
 
-/**
- * Serve static files from /browser
- */
-app.use(
+// ─── CAPA 3: ARCHIVOS ESTÁTICOS ─────────────────────────────────────────
+app.get('*.*',
   express.static(browserDistFolder, {
     maxAge: '1y',
     index: false,
@@ -604,10 +648,8 @@ app.use(
   }),
 );
 
-/**
- * Handle all other requests by rendering the Angular application.
- */
-app.use((req, res, next) => {
+// ─── CAPA 4: ANGULAR ENGINE (catch-all) ─────────────────────────────────
+app.get('*', (req, res, next) => {
   res.setHeader('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('X-Frame-Options', 'DENY');

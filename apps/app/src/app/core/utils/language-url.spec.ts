@@ -12,11 +12,11 @@ describe('language-url utils', () => {
     expect(hasLanguagePrefix('/solutions/web-development', supported)).toBe(false);
   });
 
-  it('prefixes route when missing language', () => {
-    expect(buildLocalizedUrl('/solutions/web-development', 'es', supported)).toBe('/es/solutions/web-development');
+  it('prefixes route when missing language and adds trailing slash', () => {
+    expect(buildLocalizedUrl('/solutions/web-development', 'es', supported)).toBe('/es/solutions/web-development/');
   });
 
-  it('does not duplicate an existing language prefix', () => {
-    expect(buildLocalizedUrl('/en/solutions/web-development', 'es', supported)).toBe('/en/solutions/web-development');
+  it('does not duplicate an existing language prefix and adds trailing slash', () => {
+    expect(buildLocalizedUrl('/en/solutions/web-development', 'es', supported)).toBe('/en/solutions/web-development/');
   });
 });

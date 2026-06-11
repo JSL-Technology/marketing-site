@@ -9,8 +9,9 @@ export const routes: Routes = [
     canActivate: [languageInitGuard],
     children: [
       {
-        path: 'home',
+        path: '',
         loadComponent: () => import('./features/home/home').then(c => c.Home),
+        pathMatch: 'full',
         data: {
           title: 'HEADER.HOME',
           description: 'HOME.HERO1_SUBTITLE',
@@ -332,8 +333,8 @@ export const routes: Routes = [
         }
       },
       {
-        path: '',
-        redirectTo: 'home',
+        path: 'home',
+        redirectTo: '',
         pathMatch: 'full'
       },
       { 

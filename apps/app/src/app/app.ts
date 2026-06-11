@@ -21,6 +21,7 @@ import { MenuService } from './core/services/menu.service';
 import { LanguageSuggestionComponent } from './shared/components/language-suggestion/language-suggestion';
 import { ClarityService } from './core/services/clarity.service';
 import { MetaPixelService } from './core/services/meta-pixel.service';
+import { CanonicalService } from './core/services/canonical.service';
 import Lenis from 'lenis';
 
 @Component({
@@ -65,6 +66,7 @@ export class App implements OnInit, OnDestroy {
   private onTouchEndHandler = this.onTouchEnd.bind(this);
 
   private readonly toastService = inject(ToastService);
+  private readonly canonicalService = inject(CanonicalService);
 
   readonly hasToasts$ = this.toastService.toasts$.pipe(map((toasts) => toasts.length > 0));
 
@@ -102,6 +104,7 @@ export class App implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.canonicalService.init();
     if (this.isBrowser) {
       this.initSwipeBlocker();
       this.initLenis();
