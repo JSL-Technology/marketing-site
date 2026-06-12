@@ -1,4 +1,10 @@
-import { calculateElasticOffset, calculateElasticScale, calculateReleaseTarget, SnapPoint } from './gesture-physics';
+import { provideZonelessChangeDetection } from '@angular/core';
+import {
+  calculateElasticOffset,
+  calculateElasticScale,
+  calculateReleaseTarget,
+  SnapPoint,
+} from './gesture-physics';
 
 describe('GesturePhysics', () => {
   describe('calculateElasticOffset', () => {
@@ -40,11 +46,11 @@ describe('GesturePhysics', () => {
     });
 
     it('should require more distance with higher resistance', () => {
-       const overshoot = 100;
-       const res1 = calculateElasticOffset(overshoot, referenceSize, maxStretchPercent, 1);
-       const res2 = calculateElasticOffset(overshoot, referenceSize, maxStretchPercent, 5);
+      const overshoot = 100;
+      const res1 = calculateElasticOffset(overshoot, referenceSize, maxStretchPercent, 1);
+      const res2 = calculateElasticOffset(overshoot, referenceSize, maxStretchPercent, 5);
 
-       expect(res2).toBeLessThan(res1);
+      expect(res2).toBeLessThan(res1);
     });
   });
 
@@ -64,7 +70,7 @@ describe('GesturePhysics', () => {
   describe('calculateReleaseTarget', () => {
     const snapPoints: SnapPoint[] = [
       { id: 'closed', value: -400 },
-      { id: 'open', value: 0 }
+      { id: 'open', value: 0 },
     ];
     const velocityThreshold = 0.5;
 
@@ -73,7 +79,7 @@ describe('GesturePhysics', () => {
         position: -350,
         velocity: 0.1,
         snapPoints,
-        velocityThreshold
+        velocityThreshold,
       };
       expect(calculateReleaseTarget(config).id).toBe('closed');
 
@@ -86,7 +92,7 @@ describe('GesturePhysics', () => {
         position: -350,
         velocity: 0.6, // Moving towards 'open' (0)
         snapPoints,
-        velocityThreshold
+        velocityThreshold,
       };
       expect(calculateReleaseTarget(config).id).toBe('open');
 
@@ -94,17 +100,17 @@ describe('GesturePhysics', () => {
         position: -50,
         velocity: -0.6, // Moving towards 'closed' (-400)
         snapPoints,
-        velocityThreshold
+        velocityThreshold,
       };
       expect(calculateReleaseTarget(config2).id).toBe('closed');
     });
 
     it('should stay at boundaries even with high velocity', () => {
-       const config = {
+      const config = {
         position: 10,
         velocity: 1.0,
         snapPoints,
-        velocityThreshold
+        velocityThreshold,
       };
       expect(calculateReleaseTarget(config).id).toBe('open');
 
@@ -112,7 +118,7 @@ describe('GesturePhysics', () => {
         position: -410,
         velocity: -1.0,
         snapPoints,
-        velocityThreshold
+        velocityThreshold,
       };
       expect(calculateReleaseTarget(config2).id).toBe('closed');
     });

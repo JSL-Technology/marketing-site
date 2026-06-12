@@ -1,3 +1,6 @@
+import { LucideAngularModule } from 'lucide-angular';
+import { ALL_ICONS } from '../../core/constants/icons';
+import { importProvidersFrom } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ProjectDetail } from './project-detail';
 import { provideRouter } from '@angular/router';
@@ -16,14 +19,14 @@ describe('ProjectDetail', () => {
     await TestBed.configureTestingModule({
       imports: [ProjectDetail, NoopAnimationsModule, TranslateModule.forRoot()],
       providers: [
+        importProvidersFrom(LucideAngularModule.pick(ALL_ICONS)),
         provideRouter([]),
         provideZonelessChangeDetection(),
         provideHttpClient(),
         provideHttpClientTesting(),
-        { provide: BASE_URL, useValue: 'https://www.jsl.technology' }
-      ]
-    })
-    .compileComponents();
+        { provide: BASE_URL, useValue: 'https://www.jsl.technology' },
+      ],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(ProjectDetail);
     component = fixture.componentInstance;

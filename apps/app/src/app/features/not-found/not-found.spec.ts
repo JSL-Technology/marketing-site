@@ -1,8 +1,20 @@
+import { importProvidersFrom, provideZonelessChangeDetection } from '@angular/core';
+import { ALL_ICONS } from '../../core/constants/icons';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
-import { provideZonelessChangeDetection } from '@angular/core';
-import { LucideAngularModule, Layers, Package, Briefcase, BookOpen, Users, Mail, Search, Home } from 'lucide-angular';
+
+import {
+  LucideAngularModule,
+  Layers,
+  Package,
+  Briefcase,
+  BookOpen,
+  Users,
+  Mail,
+  Search,
+  Home,
+} from 'lucide-angular';
 
 import { NotFound } from './not-found';
 
@@ -12,17 +24,14 @@ describe('NotFound', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        NotFound,
-        LucideAngularModule.pick({ Layers, Package, Briefcase, BookOpen, Users, Mail, Search, Home })
-      ],
+      imports: [NotFound],
       providers: [
+        importProvidersFrom(LucideAngularModule.pick(ALL_ICONS)),
         provideRouter([]),
         provideTranslateService(),
-        provideZonelessChangeDetection()
-      ]
-    })
-    .compileComponents();
+        provideZonelessChangeDetection(),
+      ],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(NotFound);
     component = fixture.componentInstance;

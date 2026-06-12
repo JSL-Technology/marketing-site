@@ -10,15 +10,12 @@ describe('Seo', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        TranslateModule.forRoot(),
-        RouterModule.forRoot([])
-      ],
+      imports: [TranslateModule.forRoot(), RouterModule.forRoot([])],
       providers: [
         Seo,
         provideZonelessChangeDetection(),
-        { provide: BASE_URL, useValue: 'https://www.jsl.technology' }
-      ]
+        { provide: BASE_URL, useValue: 'https://www.jsl.technology' },
+      ],
     });
     service = TestBed.inject(Seo);
   });

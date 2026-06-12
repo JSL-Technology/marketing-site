@@ -13,7 +13,7 @@ describe('ApiService', () => {
       providers: [
         provideZonelessChangeDetection(),
         provideHttpClient(),
-        provideHttpClientTesting()
+        provideHttpClientTesting(),
       ],
     });
     service = TestBed.inject(ApiService);

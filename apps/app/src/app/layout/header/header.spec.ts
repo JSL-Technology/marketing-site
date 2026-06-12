@@ -21,10 +21,9 @@ describe('Header', () => {
         provideTranslateService(), // Mock
         provideZonelessChangeDetection(),
         importProvidersFrom(LucideAngularModule.pick(ALL_ICONS)),
-        MenuService
-      ]
-    })
-    .compileComponents();
+        MenuService,
+      ],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(Header);
     component = fixture.componentInstance;
@@ -47,7 +46,7 @@ describe('Header', () => {
     expect(menuService.isMobileMenuOpen()).toBe(true);
 
     // Wait for MenuService cooldown (400ms)
-    await new Promise(resolve => setTimeout(resolve, 450));
+    await new Promise((resolve) => setTimeout(resolve, 450));
 
     component.toggleMobileMenu();
     expect(menuService.isMobileMenuOpen()).toBe(false);
@@ -58,7 +57,7 @@ describe('Header', () => {
     expect(menuService.isMobileMenuOpen()).toBe(true);
 
     // Wait for MenuService cooldown (400ms)
-    await new Promise(resolve => setTimeout(resolve, 450));
+    await new Promise((resolve) => setTimeout(resolve, 450));
 
     component.closeMobileMenu();
     expect(menuService.isMobileMenuOpen()).toBe(false);

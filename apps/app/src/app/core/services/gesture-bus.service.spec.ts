@@ -15,8 +15,8 @@ describe('GestureBusService', () => {
         provideZonelessChangeDetection(),
         GestureBusService,
         { provide: AnalyticsService, useValue: analyticsServiceSpy },
-        { provide: PLATFORM_ID, useValue: 'browser' }
-      ]
+        { provide: PLATFORM_ID, useValue: 'browser' },
+      ],
     });
     service = TestBed.inject(GestureBusService);
   });
@@ -29,12 +29,12 @@ describe('GestureBusService', () => {
     const handler1: GestureHandler = {
       name: 'LowPriority',
       priority: 10,
-      onPointerDown: jasmine.createSpy('onPointerDown1').and.returnValue(true)
+      onPointerDown: jasmine.createSpy('onPointerDown1').and.returnValue(true),
     };
     const handler2: GestureHandler = {
       name: 'HighPriority',
       priority: 100,
-      onPointerDown: jasmine.createSpy('onPointerDown2').and.returnValue(true)
+      onPointerDown: jasmine.createSpy('onPointerDown2').and.returnValue(true),
     };
 
     service.registerHandler(handler1);
@@ -52,19 +52,19 @@ describe('GestureBusService', () => {
       name: 'Handler1',
       priority: 10,
       onPointerDown: jasmine.createSpy('onPointerDown1').and.returnValue(true),
-      onPointerCancel: jasmine.createSpy('onPointerCancel1')
+      onPointerCancel: jasmine.createSpy('onPointerCancel1'),
     };
     const handler2: GestureHandler = {
       name: 'Handler2',
       priority: 100,
-      onPointerDown: jasmine.createSpy('onPointerDown2').and.returnValue(true)
+      onPointerDown: jasmine.createSpy('onPointerDown2').and.returnValue(true),
     };
 
     service.registerHandler(handler1);
 
     // Initial capture by handler1
     (service as any).handlePointerDown(new PointerEvent('pointerdown'));
-    expect(service['activeHandler']).toBe(handler1);
+    expect(service['activeHandler']).toEqual(handler1);
 
     // Register handler2 (higher priority)
     service.registerHandler(handler2);
@@ -73,11 +73,14 @@ describe('GestureBusService', () => {
     const event2 = new PointerEvent('pointerdown');
     (service as any).handlePointerDown(event2);
 
-    expect(service['activeHandler']).toBe(handler2);
+    expect(service['activeHandler']).toEqual(handler2);
     expect(handler1.onPointerCancel).toHaveBeenCalled();
-    expect(analyticsServiceSpy.trackEvent).toHaveBeenCalledWith('gesture_ownership_change', jasmine.objectContaining({
-      from: 'Handler1',
-      to: 'Handler2'
-    }));
+    expect(analyticsServiceSpy.trackEvent).toHaveBeenCalledWith(
+      'gesture_ownership_change',
+      jasmine.objectContaining({
+        from: 'Handler1',
+        to: 'Handler2',
+      }),
+    );
   });
 });

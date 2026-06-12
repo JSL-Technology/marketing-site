@@ -1,3 +1,6 @@
+import { provideRouter } from '@angular/router';
+import { provideZonelessChangeDetection } from '@angular/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CtaComponent } from './cta';
@@ -8,9 +11,9 @@ describe('CtaComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CtaComponent]
-    })
-    .compileComponents();
+      providers: [provideRouter([]), provideTranslateService(), provideZonelessChangeDetection()],
+      imports: [CtaComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(CtaComponent);
     component = fixture.componentInstance;

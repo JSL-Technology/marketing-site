@@ -24,8 +24,8 @@ describe('App', () => {
         provideHttpClientTesting(),
         provideRouter([]),
         provideTranslateService(),
-        { provide: Seo, useValue: mockSeoService }
-      ]
+        { provide: Seo, useValue: mockSeoService },
+      ],
     }).compileComponents();
   });
 
@@ -65,7 +65,7 @@ describe('App.detectEdge', () => {
 
   describe('RTL mode', () => {
     it('detects right edge when clientX is within threshold from right', () => {
-      expect(App.detectEdge(SCREEN, SCREEN, THRESHOLD, true)).toBeTrue();       // 375 >= 375-24=351
+      expect(App.detectEdge(SCREEN, SCREEN, THRESHOLD, true)).toBeTrue(); // 375 >= 375-24=351
       expect(App.detectEdge(SCREEN - THRESHOLD, SCREEN, THRESHOLD, true)).toBeTrue(); // 351 >= 351
     });
 

@@ -1,3 +1,5 @@
+import { provideTranslateService } from '@ngx-translate/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LogoCard } from './logo-card';
@@ -8,9 +10,9 @@ describe('LogoCard', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LogoCard]
-    })
-    .compileComponents();
+      providers: [provideTranslateService(), provideZonelessChangeDetection()],
+      imports: [LogoCard],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(LogoCard);
     component = fixture.componentInstance;

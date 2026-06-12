@@ -1,3 +1,11 @@
+import { of } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
+import { LucideAngularModule } from 'lucide-angular';
+import { ALL_ICONS } from '../../core/constants/icons';
+import { importProvidersFrom } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { Process } from './process';
@@ -8,9 +16,14 @@ describe('Process', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Process]
-    })
-    .compileComponents();
+      providers: [
+        provideHttpClient(),
+        importProvidersFrom(LucideAngularModule.pick(ALL_ICONS)),
+        provideTranslateService(),
+        provideZonelessChangeDetection(),
+      ],
+      imports: [Process],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(Process);
     component = fixture.componentInstance;

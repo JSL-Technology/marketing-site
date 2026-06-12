@@ -20,8 +20,8 @@ describe('OnboardingFlowService', () => {
         OnboardingFlowService,
         { provide: CookieService, useValue: cookieServiceSpy },
         { provide: OverlayManagerService, useValue: overlayManagerSpy },
-        { provide: PLATFORM_ID, useValue: 'browser' }
-      ]
+        { provide: PLATFORM_ID, useValue: 'browser' },
+      ],
     });
   });
 

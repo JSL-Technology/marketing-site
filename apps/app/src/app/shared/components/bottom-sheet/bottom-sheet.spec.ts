@@ -1,8 +1,10 @@
+import { importProvidersFrom, provideZonelessChangeDetection } from '@angular/core';
+import { ALL_ICONS } from '../../../core/constants/icons';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideZonelessChangeDetection } from '@angular/core';
+
 import { BottomSheetComponent } from './bottom-sheet';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { LucideAngularModule, X } from 'lucide-angular';
+import { LucideAngularModule } from 'lucide-angular';
 import { TranslateModule } from '@ngx-translate/core';
 import { GestureBusService } from '@core/services/gesture-bus.service';
 
@@ -12,16 +14,12 @@ describe('BottomSheetComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        BottomSheetComponent,
-        NoopAnimationsModule,
-        LucideAngularModule.pick({ X }),
-        TranslateModule.forRoot()
-      ],
+      imports: [BottomSheetComponent, NoopAnimationsModule, TranslateModule.forRoot()],
       providers: [
+        importProvidersFrom(LucideAngularModule.pick(ALL_ICONS)),
         GestureBusService,
-        provideZonelessChangeDetection()
-      ]
+        provideZonelessChangeDetection(),
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(BottomSheetComponent);
@@ -46,8 +44,8 @@ describe('BottomSheetComponent', () => {
         currentValue: true,
         previousValue: false,
         firstChange: true,
-        isFirstChange: () => true
-      }
+        isFirstChange: () => true,
+      },
     });
     fixture.detectChanges();
 

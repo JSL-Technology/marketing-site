@@ -18,10 +18,9 @@ describe('Card', () => {
         provideZonelessChangeDetection(),
         provideTranslateService(),
         provideRouter([]),
-        importProvidersFrom(LucideAngularModule.pick(ALL_ICONS))
-      ]
-    })
-    .compileComponents();
+        importProvidersFrom(LucideAngularModule.pick(ALL_ICONS)),
+      ],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(Card);
     component = fixture.componentInstance;

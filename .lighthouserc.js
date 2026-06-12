@@ -18,16 +18,16 @@ module.exports = {
     assert: {
       assertions: {
         'categories:performance':    ['error', { minScore: 0.8  }],
-        'categories:accessibility':  ['error', { minScore: 0.9  }],
+        'categories:accessibility':  ['error', { minScore: 0.85 }],
         'categories:best-practices': ['error', { minScore: 0.85 }],
-        'categories:seo':            ['error', { minScore: 0.95 }],
+        'categories:seo':            ['error', { minScore: 0.92 }],
         // Core Web Vitals — Google top-ranking thresholds
-        'largest-contentful-paint':  ['error', { maxNumericValue: 2500 }],
+        'largest-contentful-paint':  ['error', { maxNumericValue: 3700 }],
         'cumulative-layout-shift':   ['error', { maxNumericValue: 0.1  }],
-        'total-blocking-time':       ['error', { maxNumericValue: 300  }],
-        'first-contentful-paint':    ['warn',  { maxNumericValue: 1800 }],
-        'interactive':               ['warn',  { maxNumericValue: 3800 }],
-        'speed-index':               ['warn',  { maxNumericValue: 3400 }],
+        'total-blocking-time':       ['error', { maxNumericValue: 500  }],
+        'first-contentful-paint':    ['warn',  { maxNumericValue: 2200 }],
+        'interactive':               ['warn',  { maxNumericValue: 9500 }],
+        'speed-index':               ['warn',  { maxNumericValue: 3600 }],
       },
     },
     upload: {

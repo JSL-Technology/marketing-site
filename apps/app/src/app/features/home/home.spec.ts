@@ -1,3 +1,7 @@
+import { LucideAngularModule } from 'lucide-angular';
+import { ALL_ICONS } from '../../core/constants/icons';
+import { importProvidersFrom } from '@angular/core';
+import { provideRouter } from '@angular/router';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
@@ -17,6 +21,8 @@ describe('Home', () => {
     await TestBed.configureTestingModule({
       imports: [Home, TranslateModule.forRoot()],
       providers: [
+        importProvidersFrom(LucideAngularModule.pick(ALL_ICONS)),
+        provideRouter([]),
         provideZonelessChangeDetection(),
         provideHttpClient(),
         provideHttpClientTesting(),
@@ -29,13 +35,12 @@ describe('Home', () => {
             snapshot: {
               params: {},
               queryParams: {},
-              data: {}
-            }
-          }
-        }
-      ]
-    })
-    .compileComponents();
+              data: {},
+            },
+          },
+        },
+      ],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(Home);
     component = fixture.componentInstance;

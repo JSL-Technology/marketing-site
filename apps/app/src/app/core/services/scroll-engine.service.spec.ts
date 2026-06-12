@@ -10,8 +10,8 @@ describe('ScrollEngineService', () => {
       providers: [
         provideZonelessChangeDetection(),
         ScrollEngineService,
-        { provide: PLATFORM_ID, useValue: 'browser' }
-      ]
+        { provide: PLATFORM_ID, useValue: 'browser' },
+      ],
     });
     service = TestBed.inject(ScrollEngineService);
   });
@@ -22,7 +22,7 @@ describe('ScrollEngineService', () => {
 
   it('should emit ready when Lenis is set', (done) => {
     const mockLenis = {} as any;
-    service.isReady$().subscribe(ready => {
+    service.isReady$().subscribe((ready) => {
       if (ready) {
         expect(ready).toBeTrue();
         done();

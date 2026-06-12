@@ -631,7 +631,7 @@ app.get('/seo/health', (req, res) => {
 });
 
 // ─── CAPA 3: ARCHIVOS ESTÁTICOS ─────────────────────────────────────────
-app.get('*.*',
+app.get('/*path.:ext',
   express.static(browserDistFolder, {
     maxAge: '1y',
     index: false,
@@ -649,7 +649,7 @@ app.get('*.*',
 );
 
 // ─── CAPA 4: ANGULAR ENGINE (catch-all) ─────────────────────────────────
-app.get('*', (req, res, next) => {
+app.get('{/*path}', (req, res, next) => {
   res.setHeader('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('X-Frame-Options', 'DENY');

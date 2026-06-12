@@ -71,22 +71,20 @@ describe('DirectionService', () => {
   });
 
   it('sets dir="ltr" on documentElement for English default lang', () => {
-    expect(documentMock.documentElement.setAttribute)
-      .toHaveBeenCalledWith('dir', 'ltr');
+    expect(documentMock.documentElement.setAttribute).toHaveBeenCalledWith('dir', 'ltr');
   });
 
   it('sets lang="en" on documentElement for English default lang', () => {
-    expect(documentMock.documentElement.setAttribute)
-      .toHaveBeenCalledWith('lang', 'en');
+    expect(documentMock.documentElement.setAttribute).toHaveBeenCalledWith('lang', 'en');
   });
 
   // ── Switching to each supported RTL language ───────────────────────────────
 
   const RTL_LANGS = [
-    { code: 'ar', name: 'Arabic'  },
-    { code: 'he', name: 'Hebrew'  },
+    { code: 'ar', name: 'Arabic' },
+    { code: 'he', name: 'Hebrew' },
     { code: 'fa', name: 'Persian' },
-    { code: 'ur', name: 'Urdu'    },
+    { code: 'ur', name: 'Urdu' },
   ];
 
   RTL_LANGS.forEach(({ code, name }) => {
@@ -98,13 +96,11 @@ describe('DirectionService', () => {
       });
 
       it(`sets dir="rtl" on documentElement`, () => {
-        expect(lastCallFor(documentMock.documentElement.setAttribute, 'dir'))
-          .toBe('rtl');
+        expect(lastCallFor(documentMock.documentElement.setAttribute, 'dir')).toBe('rtl');
       });
 
       it(`sets lang="${code}" on documentElement`, () => {
-        expect(lastCallFor(documentMock.documentElement.setAttribute, 'lang'))
-          .toBe(code);
+        expect(lastCallFor(documentMock.documentElement.setAttribute, 'lang')).toBe(code);
       });
     });
   });
@@ -128,8 +124,7 @@ describe('DirectionService', () => {
 
     emitLang(onLangChangeEmitter, 'en');
     expect(service.isRtl()).toBeFalse();
-    expect(lastCallFor(documentMock.documentElement.setAttribute, 'dir'))
-      .toBe('ltr');
+    expect(lastCallFor(documentMock.documentElement.setAttribute, 'dir')).toBe('ltr');
   });
 
   it('handles multiple consecutive RTL language switches correctly', () => {
@@ -138,8 +133,7 @@ describe('DirectionService', () => {
     emitLang(onLangChangeEmitter, 'fa');
 
     expect(service.isRtl()).toBeTrue();
-    expect(lastCallFor(documentMock.documentElement.setAttribute, 'lang'))
-      .toBe('fa');
+    expect(lastCallFor(documentMock.documentElement.setAttribute, 'lang')).toBe('fa');
   });
 
   it('handles multiple consecutive LTR language switches correctly', () => {
@@ -148,8 +142,7 @@ describe('DirectionService', () => {
     emitLang(onLangChangeEmitter, 'fr');
 
     expect(service.isRtl()).toBeFalse();
-    expect(lastCallFor(documentMock.documentElement.setAttribute, 'lang'))
-      .toBe('fr');
+    expect(lastCallFor(documentMock.documentElement.setAttribute, 'lang')).toBe('fr');
   });
 
   // ── syncDirection called directly ──────────────────────────────────────────
@@ -157,16 +150,14 @@ describe('DirectionService', () => {
   it('syncDirection() works correctly when called directly with an RTL lang', () => {
     service.syncDirection('ar');
     expect(service.isRtl()).toBeTrue();
-    expect(lastCallFor(documentMock.documentElement.setAttribute, 'dir'))
-      .toBe('rtl');
+    expect(lastCallFor(documentMock.documentElement.setAttribute, 'dir')).toBe('rtl');
   });
 
   it('syncDirection() works correctly when called directly with a LTR lang', () => {
     service.syncDirection('ar'); // force RTL first
     service.syncDirection('de');
     expect(service.isRtl()).toBeFalse();
-    expect(lastCallFor(documentMock.documentElement.setAttribute, 'dir'))
-      .toBe('ltr');
+    expect(lastCallFor(documentMock.documentElement.setAttribute, 'dir')).toBe('ltr');
   });
 
   // ── SSR safety ────────────────────────────────────────────────────────────
@@ -186,10 +177,14 @@ describe('DirectionService', () => {
   it('isRtl signal is readable synchronously after each lang change', () => {
     const results: boolean[] = [];
 
-    emitLang(onLangChangeEmitter, 'ar'); results.push(service.isRtl());
-    emitLang(onLangChangeEmitter, 'en'); results.push(service.isRtl());
-    emitLang(onLangChangeEmitter, 'he'); results.push(service.isRtl());
-    emitLang(onLangChangeEmitter, 'es'); results.push(service.isRtl());
+    emitLang(onLangChangeEmitter, 'ar');
+    results.push(service.isRtl());
+    emitLang(onLangChangeEmitter, 'en');
+    results.push(service.isRtl());
+    emitLang(onLangChangeEmitter, 'he');
+    results.push(service.isRtl());
+    emitLang(onLangChangeEmitter, 'es');
+    results.push(service.isRtl());
 
     expect(results).toEqual([true, false, true, false]);
   });

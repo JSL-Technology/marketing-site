@@ -11,9 +11,8 @@ describe('WhatsAppButtonComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [WhatsAppButtonComponent, TranslateModule.forRoot()],
-      providers: [provideZonelessChangeDetection()]
-    })
-    .compileComponents();
+      providers: [provideZonelessChangeDetection()],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(WhatsAppButtonComponent);
     component = fixture.componentInstance;
@@ -29,7 +28,9 @@ describe('WhatsAppButtonComponent', () => {
 
   it('should have correct WhatsApp link for english', () => {
     const anchor = fixture.nativeElement.querySelector('a');
-    expect(anchor.href).toContain('wa.me/18092641693?text=Hi!%20I%20would%20like%20more%20information%20about%20your%20services.');
+    expect(anchor.href).toContain(
+      'wa.me/18092641693?text=Hi!%20I%20would%20like%20more%20information%20about%20your%20services.',
+    );
   });
 
   it('should change WhatsApp message based on current language', () => {
@@ -37,7 +38,9 @@ describe('WhatsAppButtonComponent', () => {
     fixture.detectChanges();
 
     const anchor = fixture.nativeElement.querySelector('a');
-    expect(anchor.href).toContain('%C2%A1Hola!%20Me%20gustar%C3%ADa%20recibir%20m%C3%A1s%20informaci%C3%B3n%20sobre%20sus%20servicios.');
+    expect(anchor.href).toContain(
+      '%C2%A1Hola!%20Me%20gustar%C3%ADa%20recibir%20m%C3%A1s%20informaci%C3%B3n%20sobre%20sus%20servicios.',
+    );
   });
 
   it('should have target="_blank"', () => {

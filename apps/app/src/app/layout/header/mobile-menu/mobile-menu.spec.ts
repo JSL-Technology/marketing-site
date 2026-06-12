@@ -1,3 +1,11 @@
+import {
+  NO_ERRORS_SCHEMA,
+  WritableSignal,
+  importProvidersFrom,
+  provideZonelessChangeDetection,
+  signal,
+} from '@angular/core';
+import { ALL_ICONS } from '../../../core/constants/icons';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 import { MobileMenu } from './mobile-menu';
@@ -6,19 +14,48 @@ import { DirectionService } from '../../../core/services/direction.service';
 import { AnalyticsService } from '../../../core/services/analytics.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import {
-  LucideAngularModule, Search, X, SearchX, ChevronDown,
-  Mail, CircleDollarSign, HelpCircle, Headphones, LayoutGrid,
-  Monitor, Smartphone, Laptop, CloudCog, Building2, Package,
-  ExternalLink, Layers, Workflow, Cpu, Briefcase,
-  Heart, TrendingUp, Rocket, ShieldCheck, Lightbulb, Newspaper,
-  CalendarDays, Radio, BookOpen, Map, Code, Linkedin, Github,
-  Twitter, Instagram,
+  LucideAngularModule,
+  Search,
+  X,
+  SearchX,
+  ChevronDown,
+  Mail,
+  CircleDollarSign,
+  HelpCircle,
+  Headphones,
+  LayoutGrid,
+  Monitor,
+  Smartphone,
+  Laptop,
+  CloudCog,
+  Building2,
+  Package,
+  ExternalLink,
+  Layers,
+  Workflow,
+  Cpu,
+  Briefcase,
+  Heart,
+  TrendingUp,
+  Rocket,
+  ShieldCheck,
+  Lightbulb,
+  Newspaper,
+  CalendarDays,
+  Radio,
+  BookOpen,
+  Map,
+  Code,
+  Linkedin,
+  Github,
+  Twitter,
+  Instagram,
   // Info reemplaza a Users para HEADER.ABOUT (INCONS-02)
   Info,
   // Network reemplaza a Users para HEADER.PARTNERS (INCONS-02)
   Network,
 } from 'lucide-angular';
-import { NO_ERRORS_SCHEMA, WritableSignal, provideZonelessChangeDetection, signal } from '@angular/core';
+
 import { By } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { MobileMenuQuickAccess } from './mobile-menu-quick-access';
@@ -74,17 +111,9 @@ describe('MobileMenu', () => {
         MobileMenuSection,
         FormsModule,
         TranslateModule.forRoot(),
-        LucideAngularModule.pick({
-          Search, X, SearchX, ChevronDown, Mail, CircleDollarSign,
-          HelpCircle, Headphones, LayoutGrid, Monitor, Smartphone,
-          Laptop, CloudCog, Building2, Package, ExternalLink,
-          Layers, Info, Network, Workflow, Cpu, Briefcase, Heart,
-          TrendingUp, Rocket, ShieldCheck, Lightbulb, Newspaper,
-          CalendarDays, Radio, BookOpen, Map, Code, Linkedin,
-          Github, Twitter, Instagram,
-        }),
       ],
       providers: [
+        importProvidersFrom(LucideAngularModule.pick(ALL_ICONS)),
         provideZonelessChangeDetection(),
         provideRouter([]),
         { provide: MenuService, useValue: menuServiceMock },
@@ -96,11 +125,11 @@ describe('MobileMenu', () => {
 
     translateService = TestBed.inject(TranslateService);
     translateService.setTranslation('en', {
-      'SEARCH.RESULTS_COUNT':  '{{count}} results',
+      'SEARCH.RESULTS_COUNT': '{{count}} results',
       'SEARCH.NO_RESULTS_FOUND': 'No results found',
-      'ARIA.CLOSE_MENU':       'Close menu',
-      'HEADER.SERVICES':       'Services',
-      'HEADER.CONTACT':        'Contact',
+      'ARIA.CLOSE_MENU': 'Close menu',
+      'HEADER.SERVICES': 'Services',
+      'HEADER.CONTACT': 'Contact',
     });
     translateService.use('en');
 
@@ -179,7 +208,7 @@ describe('MobileMenu', () => {
   });
 
   it('should set background elements inert when menu opens and remove when closes', async () => {
-    const main   = document.createElement('main');
+    const main = document.createElement('main');
     const footer = document.createElement('jsl-footer');
     document.body.appendChild(main);
     document.body.appendChild(footer);
@@ -190,7 +219,7 @@ describe('MobileMenu', () => {
     fixture.detectChanges();
 
     // Allow transition coordinator fallback timer (DRAWER_TRANSITION_DURATION_MS + 100 = 500ms)
-    await new Promise(resolve => setTimeout(resolve, 600));
+    await new Promise((resolve) => setTimeout(resolve, 600));
     fixture.detectChanges();
 
     expect(main.hasAttribute('inert')).toBeTrue();
@@ -198,7 +227,7 @@ describe('MobileMenu', () => {
 
     menuServiceMock.isMobileMenuOpen.set(false);
     fixture.detectChanges();
-    await new Promise(resolve => setTimeout(resolve, 600));
+    await new Promise((resolve) => setTimeout(resolve, 600));
     fixture.detectChanges();
 
     expect(main.hasAttribute('inert')).toBeFalse();
@@ -267,7 +296,9 @@ describe('MobileMenu', () => {
   });
 
   it('onMenuRouteNavigate should call router.navigate with all segments as strings', () => {
-    const routerSpy = spyOn(TestBed.inject(Router), 'navigate').and.returnValue(Promise.resolve(true));
+    const routerSpy = spyOn(TestBed.inject(Router), 'navigate').and.returnValue(
+      Promise.resolve(true),
+    );
     component.onMenuRouteNavigate(['es', 'solutions', 42], 'test');
     expect(routerSpy).toHaveBeenCalledWith(['es', 'solutions', '42']);
   });

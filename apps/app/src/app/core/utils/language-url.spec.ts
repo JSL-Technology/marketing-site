@@ -1,3 +1,4 @@
+import { provideZonelessChangeDetection } from '@angular/core';
 import { buildLocalizedUrl, hasLanguagePrefix, normalizeLang } from './language-url';
 
 describe('language-url utils', () => {
@@ -13,10 +14,14 @@ describe('language-url utils', () => {
   });
 
   it('prefixes route when missing language and adds trailing slash', () => {
-    expect(buildLocalizedUrl('/solutions/web-development', 'es', supported)).toBe('/es/solutions/web-development/');
+    expect(buildLocalizedUrl('/solutions/web-development', 'es', supported)).toBe(
+      '/es/solutions/web-development/',
+    );
   });
 
   it('does not duplicate an existing language prefix and adds trailing slash', () => {
-    expect(buildLocalizedUrl('/en/solutions/web-development', 'es', supported)).toBe('/en/solutions/web-development/');
+    expect(buildLocalizedUrl('/en/solutions/web-development', 'es', supported)).toBe(
+      '/en/solutions/web-development/',
+    );
   });
 });

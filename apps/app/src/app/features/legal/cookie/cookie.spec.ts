@@ -10,10 +10,7 @@ describe('Cookie', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [Cookie],
-      providers: [
-        provideZonelessChangeDetection(),
-        provideTranslateService()
-      ]
+      providers: [provideZonelessChangeDetection(), provideTranslateService()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(Cookie);

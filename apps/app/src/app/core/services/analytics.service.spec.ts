@@ -1,8 +1,10 @@
+import { provideRouter } from '@angular/router';
+import { PLATFORM_ID, provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { provideZonelessChangeDetection } from '@angular/core';
+
 import { AnalyticsService } from './analytics.service';
 import { Router } from '@angular/router';
-import { PLATFORM_ID } from '@angular/core';
+
 import { DOCUMENT } from '@angular/common';
 
 describe('AnalyticsService', () => {
@@ -14,12 +16,13 @@ describe('AnalyticsService', () => {
 
     TestBed.configureTestingModule({
       providers: [
+        provideRouter([]),
         provideZonelessChangeDetection(),
         AnalyticsService,
         { provide: Router, useValue: routerSpy },
         { provide: PLATFORM_ID, useValue: 'browser' },
-        { provide: DOCUMENT, useValue: document }
-      ]
+        { provide: DOCUMENT, useValue: document },
+      ],
     });
     service = TestBed.inject(AnalyticsService);
 
@@ -33,9 +36,13 @@ describe('AnalyticsService', () => {
     service.setLeadId('test-lead-123');
     service.trackEvent('test_event');
 
-    expect((window as any).gtag).toHaveBeenCalledWith('event', 'test_event', jasmine.objectContaining({
-      lead_id: 'test-lead-123'
-    }));
+    expect((window as any).gtag).toHaveBeenCalledWith(
+      'event',
+      'test_event',
+      jasmine.objectContaining({
+        lead_id: 'test-lead-123',
+      }),
+    );
   });
 
   it('should calculate elapsed time for forms correctly', (done) => {

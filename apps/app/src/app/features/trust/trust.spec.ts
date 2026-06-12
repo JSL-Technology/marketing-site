@@ -1,3 +1,5 @@
+import { importProvidersFrom } from '@angular/core';
+import { provideRouter } from '@angular/router';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Trust } from './trust';
 import { TranslateModule } from '@ngx-translate/core';
@@ -13,21 +15,19 @@ describe('Trust', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        Trust,
-        TranslateModule.forRoot(),
-        LucideAngularModule.pick(ALL_ICONS)
-      ],
+      imports: [Trust, TranslateModule.forRoot()],
       providers: [
+        importProvidersFrom(LucideAngularModule.pick(ALL_ICONS)),
+        provideRouter([]),
         provideZonelessChangeDetection(),
         {
           provide: ActivatedRoute,
           useValue: {
             params: of({ lang: 'en' }),
-            snapshot: { params: { lang: 'en' } }
-          }
-        }
-      ]
+            snapshot: { params: { lang: 'en' } },
+          },
+        },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(Trust);

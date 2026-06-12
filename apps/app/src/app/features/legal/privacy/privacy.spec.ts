@@ -1,3 +1,5 @@
+import { provideZonelessChangeDetection } from '@angular/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { Privacy } from './privacy';
@@ -8,9 +10,9 @@ describe('Privacy', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Privacy]
-    })
-    .compileComponents();
+      providers: [provideZonelessChangeDetection(), provideTranslateService()],
+      imports: [Privacy],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(Privacy);
     component = fixture.componentInstance;

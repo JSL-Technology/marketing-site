@@ -1,3 +1,4 @@
+import { provideZonelessChangeDetection } from '@angular/core';
 import { isRtlLanguage, RTL_LANGUAGES, SUPPORTED_LANGUAGES } from './languages';
 
 describe('RTL_LANGUAGES registry', () => {

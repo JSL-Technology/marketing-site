@@ -1,3 +1,4 @@
+import { importProvidersFrom } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Ventures } from './ventures';
 import { TranslateModule } from '@ngx-translate/core';
@@ -7,7 +8,7 @@ import { LucideAngularModule } from 'lucide-angular';
 import { ActivatedRoute } from '@angular/router';
 import { provideRouter } from '@angular/router';
 import { provideZonelessChangeDetection } from '@angular/core';
-import { ALL_ICONS } from '@core/constants/icons';
+import { ALL_ICONS } from '../../core/constants/icons';
 
 describe('Ventures', () => {
   let component: Ventures;
@@ -15,12 +16,9 @@ describe('Ventures', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        Ventures,
-        TranslateModule.forRoot(),
-        LucideAngularModule.pick(ALL_ICONS)
-      ],
+      imports: [Ventures, TranslateModule.forRoot()],
       providers: [
+        importProvidersFrom(LucideAngularModule.pick(ALL_ICONS)),
         provideZonelessChangeDetection(),
         provideHttpClient(),
         provideHttpClientTesting(),
@@ -28,12 +26,11 @@ describe('Ventures', () => {
         {
           provide: ActivatedRoute,
           useValue: {
-            snapshot: { paramMap: { get: () => 'en' } }
-          }
-        }
-      ]
-    })
-    .compileComponents();
+            snapshot: { paramMap: { get: () => 'en' } },
+          },
+        },
+      ],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(Ventures);
     component = fixture.componentInstance;

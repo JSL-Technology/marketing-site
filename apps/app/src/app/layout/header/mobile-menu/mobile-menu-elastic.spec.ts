@@ -1,5 +1,5 @@
+import { NgZone, provideZonelessChangeDetection } from '@angular/core';
 import { MobileMenuGestures, MobileMenuGestureConfig } from './mobile-menu-gestures';
-import { NgZone } from '@angular/core';
 
 describe('MobileMenuElastic', () => {
   let gestures: MobileMenuGestures;
@@ -27,7 +27,7 @@ describe('MobileMenuElastic', () => {
     mockNgZone.run.and.callFake((fn: Function) => fn());
 
     mockGestureBus = {
-      registerHandler: jasmine.createSpy('registerHandler').and.returnValue(() => {})
+      registerHandler: jasmine.createSpy('registerHandler').and.returnValue(() => {}),
     };
 
     gestures = new MobileMenuGestures(mockConfig, mockNgZone, mockGestureBus);
@@ -42,7 +42,7 @@ describe('MobileMenuElastic', () => {
       isPrimary: true,
       pointerType: 'touch',
       stopPropagation: () => {},
-      target: { classList: { contains: () => false } }
+      target: { classList: { contains: () => false } },
     } as any;
 
     gestures.onPointerDown(pointerDownEvent);
@@ -82,7 +82,7 @@ describe('MobileMenuElastic', () => {
       isPrimary: true,
       pointerType: 'touch',
       stopPropagation: () => {},
-      target: { classList: { contains: () => false } }
+      target: { classList: { contains: () => false } },
     } as any;
 
     gestures.onPointerDown(pointerDownEvent);
@@ -137,7 +137,7 @@ describe('MobileMenuElastic', () => {
       isPrimary: true,
       pointerType: 'touch',
       stopPropagation: () => {},
-      target: { classList: { contains: () => false } }
+      target: { classList: { contains: () => false } },
     } as any;
 
     // We need to mock window.innerWidth for the isInsideMenu check in RTL
@@ -176,7 +176,7 @@ describe('MobileMenuElastic', () => {
       clientY: 20,
       isPrimary: true,
       pointerType: 'touch',
-      target: {}
+      target: {},
     } as any);
 
     // Initial move to trigger horizontal gesture
@@ -187,7 +187,7 @@ describe('MobileMenuElastic', () => {
       isPrimary: true,
       pointerType: 'touch',
       preventDefault: () => {},
-      stopPropagation: () => {}
+      stopPropagation: () => {},
     } as any);
 
     gestures.onPointerMove({
@@ -197,14 +197,14 @@ describe('MobileMenuElastic', () => {
       isPrimary: true,
       pointerType: 'touch',
       preventDefault: () => {},
-      stopPropagation: () => {}
+      stopPropagation: () => {},
     } as any);
     gestures.onPointerUp({
       pointerId,
       clientX: 120,
       clientY: 25,
       isPrimary: true,
-      pointerType: 'touch'
+      pointerType: 'touch',
     } as any);
 
     expect(mockConfig.onOpen).toHaveBeenCalled();
@@ -221,7 +221,7 @@ describe('MobileMenuElastic', () => {
       clientY: 20,
       isPrimary: true,
       pointerType: 'touch',
-      target: {}
+      target: {},
     } as any);
     gestures.onPointerMove({
       pointerId,
@@ -230,7 +230,7 @@ describe('MobileMenuElastic', () => {
       isPrimary: true,
       pointerType: 'touch',
       preventDefault: () => {},
-      stopPropagation: () => {}
+      stopPropagation: () => {},
     } as any);
 
     expect(gestures.getIsDragging()).toBeFalse();
@@ -253,7 +253,7 @@ describe('MobileMenuElastic', () => {
       clientY: 40,
       isPrimary: true,
       pointerType: 'touch',
-      target: {}
+      target: {},
     } as any);
 
     // Initial move to trigger horizontal gesture
@@ -264,7 +264,7 @@ describe('MobileMenuElastic', () => {
       isPrimary: true,
       pointerType: 'touch',
       preventDefault: () => {},
-      stopPropagation: () => {}
+      stopPropagation: () => {},
     } as any);
 
     gestures.onPointerMove({
@@ -274,14 +274,14 @@ describe('MobileMenuElastic', () => {
       isPrimary: true,
       pointerType: 'touch',
       preventDefault: () => {},
-      stopPropagation: () => {}
+      stopPropagation: () => {},
     } as any);
     gestures.onPointerUp({
       pointerId,
       clientX: 260,
       clientY: 44,
       isPrimary: true,
-      pointerType: 'touch'
+      pointerType: 'touch',
     } as any);
 
     expect(mockConfig.onOpen).toHaveBeenCalled();

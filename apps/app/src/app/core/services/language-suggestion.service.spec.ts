@@ -1,3 +1,4 @@
+import { provideRouter } from '@angular/router';
 import { TestBed } from '@angular/core/testing';
 import { LanguageSuggestionService } from './language-suggestion.service';
 import { CookieService } from 'ngx-cookie-service';
@@ -21,19 +22,20 @@ describe('LanguageSuggestionService', () => {
 
     onboardingFlowSpy = {
       isLanguageStep: signal(false),
-      completeLanguage: jasmine.createSpy('completeLanguage')
+      completeLanguage: jasmine.createSpy('completeLanguage'),
     };
 
     TestBed.configureTestingModule({
       providers: [
+        provideRouter([]),
         provideZonelessChangeDetection(),
         LanguageSuggestionService,
         { provide: CookieService, useValue: cookieServiceSpy },
         { provide: TranslateService, useValue: translateServiceSpy },
         { provide: Router, useValue: routerSpy },
         { provide: OnboardingFlowService, useValue: onboardingFlowSpy },
-        { provide: PLATFORM_ID, useValue: 'browser' }
-      ]
+        { provide: PLATFORM_ID, useValue: 'browser' },
+      ],
     });
 
     translateServiceSpy.getLangs.and.returnValue(['en', 'es']);
@@ -44,8 +46,8 @@ describe('LanguageSuggestionService', () => {
 
     // Mock navigator.languages to ensure no suggestion is triggered
     Object.defineProperty(navigator, 'languages', {
-        get: () => ['es'],
-        configurable: true
+      get: () => ['es'],
+      configurable: true,
     });
     cookieServiceSpy.get.and.returnValue('es');
 

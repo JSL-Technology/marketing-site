@@ -1,10 +1,11 @@
+import { importProvidersFrom } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { VirteexLanding } from './virteex-landing';
 import { TranslateModule } from '@ngx-translate/core';
 import { LucideAngularModule } from 'lucide-angular';
 import { provideRouter } from '@angular/router';
 import { provideZonelessChangeDetection } from '@angular/core';
-import { ALL_ICONS } from '@core/constants/icons';
+import { ALL_ICONS } from '../../core/constants/icons';
 
 describe('VirteexLanding', () => {
   let component: VirteexLanding;
@@ -12,17 +13,13 @@ describe('VirteexLanding', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        VirteexLanding,
-        TranslateModule.forRoot(),
-        LucideAngularModule.pick(ALL_ICONS)
-      ],
+      imports: [VirteexLanding, TranslateModule.forRoot()],
       providers: [
+        importProvidersFrom(LucideAngularModule.pick(ALL_ICONS)),
         provideZonelessChangeDetection(),
-        provideRouter([])
-      ]
-    })
-    .compileComponents();
+        provideRouter([]),
+      ],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(VirteexLanding);
     component = fixture.componentInstance;
