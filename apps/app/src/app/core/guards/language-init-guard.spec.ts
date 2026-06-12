@@ -1,3 +1,6 @@
+import { provideRouter } from '@angular/router';
+import { provideZonelessChangeDetection } from '@angular/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { TestBed } from '@angular/core/testing';
 import { CanActivateFn } from '@angular/router';
 
@@ -8,7 +11,10 @@ describe('languageInitGuard', () => {
       TestBed.runInInjectionContext(() => languageInitGuard(...guardParameters));
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [
+        provideRouter([]),
+        provideTranslateService(),provideZonelessChangeDetection()],});
   });
 
   it('should be created', () => {

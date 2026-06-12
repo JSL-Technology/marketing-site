@@ -1,3 +1,7 @@
+import { LucideAngularModule } from 'lucide-angular';
+import { ALL_ICONS } from '../../core/constants/icons';
+import { importProvidersFrom } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Footer } from './footer';
 import { provideRouter } from '@angular/router';
@@ -11,6 +15,8 @@ describe('Footer', () => {
     await TestBed.configureTestingModule({
       imports: [Footer],
       providers: [
+        importProvidersFrom(LucideAngularModule.pick(ALL_ICONS)),
+        provideZonelessChangeDetection(),
         provideRouter([]), // Mock
         provideTranslateService() // Mock
       ]

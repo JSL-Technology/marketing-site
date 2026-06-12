@@ -1,4 +1,6 @@
-import { provideZonelessChangeDetection } from '@angular/core';
+import { importProvidersFrom, provideZonelessChangeDetection } from '@angular/core';
+import { ALL_ICONS } from '../../core/constants/icons';
+
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { LanguageSwitcher } from './language-switcher';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
@@ -14,13 +16,11 @@ describe('LanguageSwitcher', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        LanguageSwitcher,
+      imports: [LanguageSwitcher,
         TranslateModule.forRoot(),
-        NoopAnimationsModule,
-        LucideAngularModule.pick({ Globe, ChevronDown, Check, Languages, X })
-      ],
+        NoopAnimationsModule],
       providers: [
+        importProvidersFrom(LucideAngularModule.pick(ALL_ICONS)),
         provideZonelessChangeDetection(),
         provideRouter([]),
       ],

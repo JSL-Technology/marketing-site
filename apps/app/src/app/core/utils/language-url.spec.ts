@@ -1,3 +1,4 @@
+import { provideZonelessChangeDetection } from '@angular/core';
 import { buildLocalizedUrl, hasLanguagePrefix, normalizeLang } from './language-url';
 
 describe('language-url utils', () => {

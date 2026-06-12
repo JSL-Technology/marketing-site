@@ -1,3 +1,5 @@
+import { NO_ERRORS_SCHEMA, WritableSignal, importProvidersFrom, provideZonelessChangeDetection, signal } from '@angular/core';
+import { ALL_ICONS } from '../../../core/constants/icons';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 import { MobileMenu } from './mobile-menu';
@@ -18,7 +20,7 @@ import {
   // Network reemplaza a Users para HEADER.PARTNERS (INCONS-02)
   Network,
 } from 'lucide-angular';
-import { NO_ERRORS_SCHEMA, WritableSignal, provideZonelessChangeDetection, signal } from '@angular/core';
+
 import { By } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { MobileMenuQuickAccess } from './mobile-menu-quick-access';
@@ -67,24 +69,14 @@ describe('MobileMenu', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [
-        MobileMenu,
+      imports: [MobileMenu,
         MobileMenuQuickAccess,
         MobileMenuSearch,
         MobileMenuSection,
         FormsModule,
-        TranslateModule.forRoot(),
-        LucideAngularModule.pick({
-          Search, X, SearchX, ChevronDown, Mail, CircleDollarSign,
-          HelpCircle, Headphones, LayoutGrid, Monitor, Smartphone,
-          Laptop, CloudCog, Building2, Package, ExternalLink,
-          Layers, Info, Network, Workflow, Cpu, Briefcase, Heart,
-          TrendingUp, Rocket, ShieldCheck, Lightbulb, Newspaper,
-          CalendarDays, Radio, BookOpen, Map, Code, Linkedin,
-          Github, Twitter, Instagram,
-        }),
-      ],
+        TranslateModule.forRoot()],
       providers: [
+        importProvidersFrom(LucideAngularModule.pick(ALL_ICONS)),
         provideZonelessChangeDetection(),
         provideRouter([]),
         { provide: MenuService, useValue: menuServiceMock },

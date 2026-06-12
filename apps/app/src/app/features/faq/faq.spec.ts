@@ -1,5 +1,7 @@
+import { importProvidersFrom, provideZonelessChangeDetection } from '@angular/core';
+import { ALL_ICONS } from '../../core/constants/icons';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideZonelessChangeDetection } from '@angular/core';
+
 import { TranslateModule } from '@ngx-translate/core';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
@@ -14,12 +16,10 @@ describe('Faq', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        Faq,
-        TranslateModule.forRoot(),
-        LucideAngularModule.pick({ Search, X, LayoutGrid, Zap, DollarSign, Settings, Cpu, ChevronDown, MessageSquare, Mail, MessageCircle })
-      ],
+      imports: [Faq,
+        TranslateModule.forRoot()],
       providers: [
+        importProvidersFrom(LucideAngularModule.pick(ALL_ICONS)),
         provideZonelessChangeDetection(),
         provideHttpClient(),
         provideHttpClientTesting(),

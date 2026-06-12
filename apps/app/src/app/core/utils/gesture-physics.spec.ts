@@ -1,3 +1,4 @@
+import { provideZonelessChangeDetection } from '@angular/core';
 import { calculateElasticOffset, calculateElasticScale, calculateReleaseTarget, SnapPoint } from './gesture-physics';
 
 describe('GesturePhysics', () => {

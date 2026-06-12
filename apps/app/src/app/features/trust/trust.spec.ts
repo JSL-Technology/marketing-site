@@ -1,3 +1,5 @@
+import { importProvidersFrom } from '@angular/core';
+import { provideRouter } from '@angular/router';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Trust } from './trust';
 import { TranslateModule } from '@ngx-translate/core';
@@ -16,9 +18,10 @@ describe('Trust', () => {
       imports: [
         Trust,
         TranslateModule.forRoot(),
-        LucideAngularModule.pick(ALL_ICONS)
       ],
       providers: [
+        importProvidersFrom(LucideAngularModule.pick(ALL_ICONS)),
+        provideRouter([]),
         provideZonelessChangeDetection(),
         {
           provide: ActivatedRoute,

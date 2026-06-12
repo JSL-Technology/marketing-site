@@ -1,3 +1,6 @@
+import { LucideAngularModule } from 'lucide-angular';
+import { ALL_ICONS } from '../../core/constants/icons';
+import { importProvidersFrom } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { ProductDetail } from './product-detail';
@@ -18,6 +21,7 @@ describe('ProductDetail', () => {
         TranslateModule.forRoot()
       ],
       providers: [
+        importProvidersFrom(LucideAngularModule.pick(ALL_ICONS)),
         provideZonelessChangeDetection(),
         provideHttpClient(),
         provideHttpClientTesting(),

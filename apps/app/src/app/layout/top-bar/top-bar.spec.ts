@@ -1,4 +1,7 @@
-import { provideZonelessChangeDetection } from '@angular/core';
+import { provideRouter } from '@angular/router';
+import { importProvidersFrom, provideZonelessChangeDetection } from '@angular/core';
+import { ALL_ICONS } from '../../core/constants/icons';
+
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { LucideAngularModule, Globe, ChevronDown, Headphones, User } from 'lucide-angular';
@@ -13,6 +16,8 @@ describe('TopBar', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       providers: [
+        provideRouter([]),
+        importProvidersFrom(LucideAngularModule.pick(ALL_ICONS)),
         provideZonelessChangeDetection(),
         {
           provide: ActivatedRoute,
@@ -25,7 +30,7 @@ describe('TopBar', () => {
       imports: [
         TopBar,
         TranslateModule.forRoot(),
-        LucideAngularModule.pick({ Globe, ChevronDown, Headphones, User })
+        LucideAngularModule.pick(ALL_ICONS)
       ]
     })
     .compileComponents();
