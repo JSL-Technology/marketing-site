@@ -1,0 +1,650 @@
+
+> nx run app:test --watch=false --browsers=ChromeHeadless
+
+[33m❯[39m Building...
+[32m✔[39m Building...
+[37m[1mInitial chunk files[22m                                                       [2m | [22m[1mNames[22m                                                                  [2m | [22m [1mRaw size[22m
+[32mchunk-6HWTCGHF.js[37m                                                         [2m | [22m[2m-[22m                                                                      [2m | [22m  [36m1.16 MB[37m[2m | [22m
+[32mchunk-IRHVKHKP.js[37m                                                         [2m | [22m[2m-[22m                                                                      [2m | [22m  [36m1.13 MB[37m[2m | [22m
+[32mpolyfills.js[37m                                                              [2m | [22m[2mpolyfills[22m                                                              [2m | [22m[36m946.60 kB[37m[2m | [22m
+[32mchunk-U5NMEGEK.js[37m                                                         [2m | [22m[2m-[22m                                                                      [2m | [22m[36m255.25 kB[37m[2m | [22m
+[32mspec-app-features-home-home.spec.js[37m                                       [2m | [22m[2mspec-app-features-home-home.spec[22m                                       [2m | [22m[36m247.51 kB[37m[2m | [22m
+[32mchunk-6HGKWKVA.js[37m                                                         [2m | [22m[2m-[22m                                                                      [2m | [22m[36m242.87 kB[37m[2m | [22m
+[32mchunk-A7GYM2A2.js[37m                                                         [2m | [22m[2m-[22m                                                                      [2m | [22m[36m198.49 kB[37m[2m | [22m
+[32mchunk-B25EUJZQ.js[37m                                                         [2m | [22m[2m-[22m                                                                      [2m | [22m[36m197.23 kB[37m[2m | [22m
+[32mchunk-ICBZBFGD.js[37m       [39m[37m                                                  [2m | [22m[2m-[22m                                                                      [2m | [22m[36m166.92 kB[37m[2m | [22m
+[32mspec-app-features-careers-careers.spec.js[37m                                 [2m | [22m[2mspec-app-features-careers-careers.spec[22m                                 [2m | [22m[36m137.21 kB[37m[2m | [22m
+[32mchunk-HSP723DI.js[37m                                                         [2m | [22m[2m-[22m                                                                      [2m | [22m [36m96.27 kB[37m[2m | [22m
+[32mchunk-GLCHJIFA.js[37m                                                         [2m | [22m[2m-[22m                                                                      [2m | [22m [36m76.01 kB[37m[2m | [22m
+[32mspec-app-app.spec.js[37m                                                      [2m | [22m[2mspec-app-app.spec[22m                                                      [2m | [22m [36m73.80 kB[37m[2m | [22m
+[32mspec-app-features-blog-detail-blog-detail.spec.js[37m                         [2m | [22m[2mspec-app-features-blog-detail-blog-detail.spec[22m                         [2m | [22m [36m65.80 kB[37m[2m | [22m
+[32mspec-app-features-contact-contact.spec.js[37m                                 [2m | [22m[2mspec-app-features-contact-contact.spec[22m                                 [2m | [22m [36m53.56 kB[37m[2m | [22m
+[32mchunk-27CKQJH3.js[37m                                                         [2m | [22m[2m-[22m                                                                      [2m | [22m [36m48.92 kB[37m[2m | [22m
+[32mchunk-LGFPVQ52.js[37m                                                         [2m | [22m[2m-[22m                                                                      [2m | [22m [36m43.40 kB[37m[2m | [22m
+[32mspec-app-features-product-detail-product-detail.s[39m[37mpec.js[37m                   [2m | [22m[2mspec-app-features-product-detail-product-detail.spec[22m                   [2m | [22m [36m41.40 kB[37m[2m | [22m
+[32mchunk-4YHIYZEA.js[37m                                                         [2m | [22m[2m-[22m                                                                      [2m | [22m [36m40.93 kB[37m[2m | [22m
+[32mchunk-3U4BGV7A.js[37m                                                         [2m | [22m[2m-[22m                                                                      [2m | [22m [36m37.56 kB[37m[2m | [22m
+[32mchunk-VX7KC3QB.js[37m                                                         [2m | [22m[2m-[22m                                                                      [2m | [22m [36m36.08 kB[37m[2m | [22m
+[32mspec-app-features-solution-detail-solution-detail.spec.js[37m                 [2m | [22m[2mspec-app-features-solution-detail-solution-detail.spec[22m                 [2m | [22m [36m33.84 kB[37m[2m | [22m
+[32mchunk-QGSCBQRR.js[37m                                                         [2m | [22m[2m-[22m                                                                      [2m | [22m [36m29.20 kB[37m[2m | [22m
+[32mchunk-XY42VVCH.js[37m                                                         [2m | [22m[2m-[22m                                                                      [2m | [22m [36m27.53 kB[37m[2m | [22m
+[32mchunk-CEMHF3BI.js[37m                                                         [2m | [22m[2m-[22m                                                                      [2m | [22m [36m22.82 kB[37m[2m | [22m
+[32mspec-app-features-blog-blog.spec.js[37m                                       [2m | [22m[2mspec-app-features-blog-blog.spec[22m                                       [2m | [22m [36m22.05 kB[37m[2m | [22m
+[32mspec-app-features-projects-projects.spec.js[37m                     [39m
+[37m          [2m | [22m[2mspec-app-features-projects-projects.spec[22m                               [2m | [22m [36m21.89 kB[37m[2m | [22m
+[32mchunk-X263MNPW.js[37m                                                         [2m | [22m[2m-[22m                                                                      [2m | [22m [36m21.78 kB[37m[2m | [22m
+[32mspec-app-features-investors-investors.spec.js[37m                             [2m | [22m[2mspec-app-features-investors-investors.spec[22m                             [2m | [22m [36m21.64 kB[37m[2m | [22m
+[32mchunk-WMXDPPV5.js[37m                                                         [2m | [22m[2m-[22m                                                                      [2m | [22m [36m21.63 kB[37m[2m | [22m
+[32mspec-app-features-faq-faq.spec.js[37m                                         [2m | [22m[2mspec-app-features-faq-faq.spec[22m                                         [2m | [22m [36m21.46 kB[37m[2m | [22m
+[32mspec-app-features-about-us-about-us.spec.js[37m                               [2m | [22m[2mspec-app-features-about-us-about-us.spec[22m                               [2m | [22m [36m21.08 kB[37m[2m | [22m
+[32mspec-app-features-products-products.spec.js[37m                               [2m | [22m[2mspec-app-features-products-products.spec[22m                               [2m | [22m [36m19.29 kB[37m[2m | [22m
+[32mspec-app-shared-components-chat-bubble-chat-bubble.spec.js[37m                [2m | [22m[2mspec-app-shared-components-chat-bubble-chat-bubble.spec[22m                [2m | [22m [36m18.97 kB[37m[2m | [22m
+[32mchunk-LCHXXWEJ.js[37m                                                         [2m | [22m[2m-[22m                                                                      [2m | [22m [36m18.33 kB[37m[2m | [22m
+[32mspec-app-features-trust-trust.spec.js[37m                                     [2m | [2[39m[37m2m[2mspec-app-features-trust-trust.spec[22m                                     [2m | [22m [36m17.69 kB[37m[2m | [22m
+[32mchunk-2QP3BQ7O.js[37m                                                         [2m | [22m[2m-[22m                                                                      [2m | [22m [36m17.51 kB[37m[2m | [22m
+[32mspec-app-features-industries-industries.spec.js[37m                           [2m | [22m[2mspec-app-features-industries-industries.spec[22m                           [2m | [22m [36m17.01 kB[37m[2m | [22m
+[32mspec-app-features-thank-you-thank-you.spec.js[37m                             [2m | [22m[2mspec-app-features-thank-you-thank-you.spec[22m                             [2m | [22m [36m15.67 kB[37m[2m | [22m
+[32mspec-app-features-solutions-solutions.spec.js[37m                             [2m | [22m[2mspec-app-features-solutions-solutions.spec[22m                             [2m | [22m [36m14.60 kB[37m[2m | [22m
+[32mchunk-OQJF4NL4.js[37m                                                         [2m | [22m[2m-[22m                                                                      [2m | [22m [36m13.86 kB[37m[2m | [22m
+[32mchunk-EAGNMSGH.js[37m                                                         [2m | [22m[2m-[22m                                                                      [2m | [22m [36m13.21 kB[37m[2m | [22m
+[32mspec-app-features-virteex-landing-virteex-landing.spec.js[37m                 [2m | [22m[2mspec-app-features-virteex-landing-virteex-landing.spec[22m                 [2m | [22m [36m12.63 kB[37m[2m | [22m
+[32mspec-app-core-guards-language-redirect-guard.spec.js[37m                      [2m | [22m[2mspec-app-core-guards-language-redirect-guard.spec[22m                      [2m | [22m [36m12.21 kB[37m[2m | [22m
+[32mchunk-YK3TP3G5.js[37m                                                         [2m | [22m[2m-[22m        [39m[37m                                                              [2m | [22m [36m12.20 kB[37m[2m | [22m
+[32mchunk-VACSIK6C.js[37m                                                         [2m | [22m[2m-[22m                                                                      [2m | [22m [36m11.65 kB[37m[2m | [22m
+[32mspec-app-layout-header-mobile-menu-mobile-menu.spec.js[37m                    [2m | [22m[2mspec-app-layout-header-mobile-menu-mobile-menu.spec[22m                    [2m | [22m [36m10.37 kB[37m[2m | [22m
+[32mspec-app-features-project-detail-project-detail.spec.js[37m                   [2m | [22m[2mspec-app-features-project-detail-project-detail.spec[22m                   [2m | [22m [36m10.09 kB[37m[2m | [22m
+[32mspec-app-features-not-found-not-found.spec.js[37m                             [2m | [22m[2mspec-app-features-not-found-not-found.spec[22m                             [2m | [22m  [36m8.85 kB[37m[2m | [22m
+[32mchunk-X7M6VFT2.js[37m                                                         [2m | [22m[2m-[22m                                                                      [2m | [22m  [36m8.77 kB[37m[2m | [22m
+[32mspec-app-features-ventures-ventures.spec.js[37m                               [2m | [22m[2mspec-app-features-ventures-ventures.spec[22m                               [2m | [22m  [36m8.67 kB[37m[2m | [22m
+[32mchunk-42VDWDH5.js[37m                                                         [2m | [22m[2m-[22m                                                                      [2m | [22m  [36m8.21 kB[37m[2m | [22m
+[32mspec-app-features-tech-stack-tech-stack.spec.js[37m                           [2m | [22m[2mspec-app-features-tech-stack-tech-stack.spec[22m                           [2m | [22m  [36m8.02 kB[37m[2m | [22m
+[32mspec-app-features-process-process.spec.js[37m                                 [2m | [22m[2mspec-app-features-process-process.[39m[37mspec[22m                                 [2m | [22m  [36m7.96 kB[37m[2m | [22m
+[32mspec-app-layout-header-mobile-menu-mobile-menu-elastic.spec.js[37m            [2m | [22m[2mspec-app-layout-header-mobile-menu-mobile-menu-elastic.spec[22m            [2m | [22m  [36m7.25 kB[37m[2m | [22m
+[32mspec-app-features-server-error-server-error.spec.js[37m                       [2m | [22m[2mspec-app-features-server-error-server-error.spec[22m                       [2m | [22m  [36m6.92 kB[37m[2m | [22m
+[32mchunk-YIFJT2UK.js[37m                                                         [2m | [22m[2m-[22m                                                                      [2m | [22m  [36m6.25 kB[37m[2m | [22m
+[32mstyles.css[37m                                                                [2m | [22m[2mstyles[22m                                                                 [2m | [22m  [36m6.15 kB[37m[2m | [22m
+[32mchunk-YAQFNYSW.js[37m                                                         [2m | [22m[2m-[22m                                                                      [2m | [22m  [36m6.13 kB[37m[2m | [22m
+[32mchunk-FMASQWX2.js[37m                                                         [2m | [22m[2m-[22m                                                                      [2m | [22m  [36m6.00 kB[37m[2m | [22m
+[32mspec-app-core-services-direction.service.spec.js[37m                          [2m | [22m[2mspec-app-core-services-direction.service.spec[22m                          [2m | [22m  [36m5.96 kB[37m[2m | [22m
+[32mchunk-5WLAJ2UE.js[37m                                                         [2m | [22m[2m-[22m                                                                      [2m | [22m  [36m5.88 kB[37m[2m | [22m
+[32mchunk-S4HAZSR5.js[37m                                                         [2m | [22m[2m-[22m                                                [39m[37m                      [2m | [22m  [36m5.45 kB[37m[2m | [22m
+[32mspec-app-features-legal-privacy-privacy.spec.js[37m                           [2m | [22m[2mspec-app-features-legal-privacy-privacy.spec[22m                           [2m | [22m  [36m5.33 kB[37m[2m | [22m
+[32mchunk-5Y5GWJWP.js[37m                                                         [2m | [22m[2m-[22m                                                                      [2m | [22m  [36m4.69 kB[37m[2m | [22m
+[32mspec-app-features-legal-terms-terms.spec.js[37m                               [2m | [22m[2mspec-app-features-legal-terms-terms.spec[22m                               [2m | [22m  [36m4.66 kB[37m[2m | [22m
+[32mchunk-3NCF7DBJ.js[37m                                                         [2m | [22m[2m-[22m                                                                      [2m | [22m  [36m4.55 kB[37m[2m | [22m
+[32mchunk-QZFCJC4N.js[37m                                                         [2m | [22m[2m-[22m                                                                      [2m | [22m  [36m4.48 kB[37m[2m | [22m
+[32mspec-app-features-legal-cookie-cookie.spec.js[37m                             [2m | [22m[2mspec-app-features-legal-cookie-cookie.spec[22m                             [2m | [22m  [36m4.46 kB[37m[2m | [22m
+[32mspec-app-core-guards-language-init-guard.spec.js[37m                          [2m | [22m[2mspec-app-core-guards-language-init-guard.spec[22m                          [2m | [22m  [36m4.38 kB[37m[2m | [22m
+[32mtest_main.js[37m                                                              [2m | [22m[2mtest_main[22m                                                              [2m | [22m  [36m4.38 kB[37m[2m | [22m
+[32mchunk-DOGFEILC.js[37m                                                         [2m | [22m[2m-[22m                                                                    [39m[37m  [2m | [22m  [36m4.30 kB[37m[2m | [22m
+[32mchunk-EAHVABFD.js[37m                                                         [2m | [22m[2m-[22m                                                                      [2m | [22m  [36m4.20 kB[37m[2m | [22m
+[32mspec-app-core-utils-gesture-physics.spec.js[37m                               [2m | [22m[2mspec-app-core-utils-gesture-physics.spec[22m                               [2m | [22m  [36m4.18 kB[37m[2m | [22m
+[32mchunk-63E2BWG2.js[37m                                                         [2m | [22m[2m-[22m                                                                      [2m | [22m  [36m3.94 kB[37m[2m | [22m
+[32mchunk-IBBCLDHW.js[37m                                                         [2m | [22m[2m-[22m                                                                      [2m | [22m  [36m3.92 kB[37m[2m | [22m
+[32mspec-app-layout-header-header.spec.js[37m                                     [2m | [22m[2mspec-app-layout-header-header.spec[22m                                     [2m | [22m  [36m3.72 kB[37m[2m | [22m
+[32mchunk-OOVZ7KET.js[37m                                                         [2m | [22m[2m-[22m                                                                      [2m | [22m  [36m3.61 kB[37m[2m | [22m
+[32mchunk-6VP2RIR6.js[37m                                                         [2m | [22m[2m-[22m                                                                      [2m | [22m  [36m3.39 kB[37m[2m | [22m
+[32mspec-app-shared-components-bottom-sheet-bottom-sheet.spec.js[37m              [2m | [22m[2mspec-app-shared-components-bottom-sheet-bottom-sheet.spec[22m              [2m | [22m  [36m3.32 kB[37m[2m | [22m
+[32mspec-app-core-services-onboarding-flow.service.spec.js[37m                    [2m | [22m[2mspec-app-core-services-onboarding-flow.service.spec[22m                    [2m | [22m  [36[39m[37mm3.31 kB[37m[2m | [22m
+[32mspec-app-layout-language-switcher-language-switcher.spec.js[37m               [2m | [22m[2mspec-app-layout-language-switcher-language-switcher.spec[22m               [2m | [22m  [36m3.08 kB[37m[2m | [22m
+[32mchunk-Y6UQGGUZ.js[37m                                                         [2m | [22m[2m-[22m                                                                      [2m | [22m  [36m3.06 kB[37m[2m | [22m
+[32mspec-app-core-services-gesture-bus.service.spec.js[37m                        [2m | [22m[2mspec-app-core-services-gesture-bus.service.spec[22m                        [2m | [22m  [36m3.04 kB[37m[2m | [22m
+[32mchunk-ZJSRZ33Q.js[37m                                                         [2m | [22m[2m-[22m                                                                      [2m | [22m  [36m3.02 kB[37m[2m | [22m
+[32mchunk-4HOAZSAH.js[37m                                                         [2m | [22m[2m-[22m                                                                      [2m | [22m  [36m2.96 kB[37m[2m | [22m
+[32mspec-app-core-constants-languages.spec.js[37m                                 [2m | [22m[2mspec-app-core-constants-languages.spec[22m                                 [2m | [22m  [36m2.76 kB[37m[2m | [22m
+[32mspec-app-layout-language-switcher-language-switcher.component.spec.js[37m     [2m | [22m[2mspec-app-layout-language-switcher-language-switcher.component.spec[22m     [2m | [22m  [36m2.74 kB[37m[2m | [22m
+[32mchunk-OWQ4BXJP.js[37m                                                         [2m | [22m[2m-[22m                                                                      [2m | [22m  [36m2.71 kB[37m[2m | [22m
+[32mspec-app-core-services-language-suggestion.service.spec.js[37m                [2m | [22m[2mspec-app-core-services-language-suggestion.service.spec[22m                [2m | [22m  [36m2.67 kB[37m[2m | [39m[37m[22m
+[32mchunk-57YG5PHF.js[37m                                                         [2m | [22m[2m-[22m                                                                      [2m | [22m  [36m2.55 kB[37m[2m | [22m
+[32mspec-app-layout-top-bar-top-bar.spec.js[37m                                   [2m | [22m[2mspec-app-layout-top-bar-top-bar.spec[22m                                   [2m | [22m  [36m2.51 kB[37m[2m | [22m
+[32mspec-app-layout-footer-footer.spec.js[37m                                     [2m | [22m[2mspec-app-layout-footer-footer.spec[22m                                     [2m | [22m  [36m2.50 kB[37m[2m | [22m
+[32mspec-app-shared-components-whatsapp-button-whatsapp-button.spec.js[37m        [2m | [22m[2mspec-app-shared-components-whatsapp-button-whatsapp-button.spec[22m        [2m | [22m  [36m2.48 kB[37m[2m | [22m
+[32mspec-app-shared-components-whitepaper-download-whitepaper-download.spec.js[37m[2m | [22m[2mspec-app-shared-components-whitepaper-download-whitepaper-download.spec[22m[2m | [22m  [36m2.36 kB[37m[2m | [22m
+[32mchunk-AMU5ZU6P.js[37m                                                         [2m | [22m[2m-[22m                                                                      [2m | [22m  [36m2.33 kB[37m[2m | [22m
+[32mchunk-O2NLGFV2.js[37m                                                         [2m | [22m[2m-[22m                                                                      [2m | [22m  [36m2.30 kB[37m[2m | [22m
+[32mchunk-XYOJM2HR.js[37m                                                         [2m | [22m[2m-[22m                                                                      [2m | [22m  [36m1.97 kB[37m[2m | [22m
+[32mspec-app-core-services-analytics.service.spec.js[37m                          [2m | [22m[2mspec-app-core-services-analytics.service.spec[22m                          [2m | [22m  [36m1.96 kB[37m[2m | [22m
+[32mchunk-H5D[39m[37mCV3OD.js[37m                                                         [2m | [22m[2m-[22m                                                                      [2m | [22m  [36m1.91 kB[37m[2m | [22m
+[32mchunk-MPYMXXTG.js[37m                                                         [2m | [22m[2m-[22m                                                                      [2m | [22m  [36m1.82 kB[37m[2m | [22m
+[32mspec-app-shared-components-card-card.spec.js[37m                              [2m | [22m[2mspec-app-shared-components-card-card.spec[22m                              [2m | [22m  [36m1.81 kB[37m[2m | [22m
+[32mspec-app-shared-components-cta-cta.spec.js[37m                                [2m | [22m[2mspec-app-shared-components-cta-cta.spec[22m                                [2m | [22m  [36m1.60 kB[37m[2m | [22m
+[32mspec-app-core-services-feature-flag.service.spec.js[37m                       [2m | [22m[2mspec-app-core-services-feature-flag.service.spec[22m                       [2m | [22m  [36m1.49 kB[37m[2m | [22m
+[32mchunk-PTXIIB67.js[37m                                                         [2m | [22m[2m-[22m                                                                      [2m | [22m  [36m1.45 kB[37m[2m | [22m
+[32mspec-app-shared-components-logo-card-logo-card.spec.js[37m                    [2m | [22m[2mspec-app-shared-components-logo-card-logo-card.spec[22m                    [2m | [22m  [36m1.41 kB[37m[2m | [22m
+[32mspec-app-core-services-seo.spec.js[37m                                        [2m | [22m[2mspec-app-core-services-seo.spec[22m                                        [2m | [22m  [36m1.28 kB[37m[2m | [22m
+[32mchunk-SPOACTKJ.js[37m                                                         [2m | [22m[2m-[22m                                                                      [2m | [22m  [36m1.22 kB[37m[2m | [22m
+[32mchunk-4I7JRGZM.js[37m       [39m[37m                                                  [2m | [22m[2m-[22m                                                                      [2m | [22m  [36m1.18 kB[37m[2m | [22m
+[32mspec-app-core-services-scroll-engine.service.spec.js[37m                      [2m | [22m[2mspec-app-core-services-scroll-engine.service.spec[22m                      [2m | [22m  [36m1.18 kB[37m[2m | [22m
+[32mspec-app-core-services-api.service.spec.js[37m                                [2m | [22m[2mspec-app-core-services-api.service.spec[22m                                [2m | [22m  [36m1.15 kB[37m[2m | [22m
+[32mspec-app-core-utils-language-url.spec.js[37m                                  [2m | [22m[2mspec-app-core-utils-language-url.spec[22m                                  [2m | [22m  [36m1.04 kB[37m[2m | [22m
+[32mspec-app-core-services-data.service.spec.js[37m                               [2m | [22m[2mspec-app-core-services-data.service.spec[22m                               [2m | [22m[36m881 bytes[37m[2m | [22m
+[32mchunk-RMWUMWVR.js[37m                                                         [2m | [22m[2m-[22m                                                                      [2m | [22m[36m848 bytes[37m[2m | [22m
+[32mchunk-WW4HISOY.js[37m                                                         [2m | [22m[2m-[22m                                                                      [2m | [22m[36m677 bytes[37m[2m | [22m
+[32mjasmine-cleanup-0.js[37m                                                      [2m | [22m[2mjasmine-cleanup-0[22m                                                      [2m | [22m[36m519 bytes[37m[2m | [22m
+[1m [22m                                                                         [2m | [22m[1mInitial total[22m                                                          [2m | [22m  [1m6.05 MB[22m
+[1mLazy chunk files[22m                                         [39m[37m                 [2m | [22m[1mNames[22m                                                                  [2m | [22m [1mRaw size[22m
+[32mchunk-LJSCJA66.js[37m                                                         [2m | [22m[2mswiper-element-bundle[22m                                                  [2m | [22m[36m177.65 kB[37m[2m | [22m
+[32mchunk-745GMJCK.js[37m                                                         [2m | [22m[2mprism[22m                                                                  [2m | [22m [36m58.55 kB[37m[2m | [22m
+Application bundle generation complete. [17.494 seconds] - 2026-06-12T13:17:30.953Z
+[39m
+[32m12 06 2026 13:17:31.748:INFO [karma-server]: [39mKarma v6.4.4 server started at http://localhost:9876/
+[32m12 06 2026 13:17:31.750:INFO [launcher]: [39mLaunching browsers ChromeHeadless with concurrency unlimited
+[32m12 06 2026 13:17:31.807:INFO [launcher]: [39mStarting browser ChromeHeadless
+[32m12 06 2026 13:17:34.001:INFO [Chrome Headless 145.0.0.0 (Linux 0.0.0)]: [39mConnected on socket aczg4U6KM5uS1RB2AAAB with id 16104917
+Chrome Headless 145.0.0.0 (Linux 0.0.0): Executed 0 of 183[32m SUCCESS[39m (0 secs / 0 secs)
+[33m12 06 2026 13:17:37.443:WARN [web-server]: [39m404: /api/data/projects
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 1 of 183[32m SUCCESS[39m (0 secs / 0.128 secs)
+[1A[2K[31mChrome Headless 145.0.0.0 (Linux 0.0.0) Terms should create FAILED[39m
+	ɵNotFound: NG0201: No provider found for `_TranslateService`. Source: Standalone[Terms2]. Find more at https://v20.angular.dev/errors/NG0201
+	error properties: Object({ code: -201, ngErrorCode: -201, ngErrorMessage: 'No provider found for `_TranslateService`.', ngTokenPath: [ '_TranslateService' ] })
+	ɵNotFound: NG0201: No provider found for `_TranslateService`. Source: Standalone[Terms2]. Find more at https://v20.angular.dev/errors/NG0201
+	    at createRuntimeError (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:924:19)
+	    at NullInjector.get (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:1494:27)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:2052:33)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:2052:33)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:2052:33)
+	    at ChainedInjector.get (node_modules/@angular/core/fesm2022/debug_node.mjs:13492:36)
+	    at lookupTokenUsingModuleInjector (node_modules/@angular/core/fesm2022/debug_node.mjs:1718:39)
+	    at getOrCreateInjectable (node_modules/@angular/core/fesm2022/debug_node.mjs:1766:12)
+	    at ɵɵdirectiveInject (node_modules/@angular/core/fesm2022/debug_node.mjs:13543:19)
+	    at ɵɵinject (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:1061:42)
+Chrome Headless 145.0.0.0 (Linux 0.0.0): Executed 2 of 183[31m (1 FAILED)[39m (0 secs / 0.543 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 3 of 183[31m (1 FAILED)[39m (0 secs / 1.194 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 4 of 183[31m (1 FAILED)[39m (0 secs / 1.223 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 5 of 183[31m (1 FAILED)[39m (0 secs / 1.246 secs)
+[1A[2K[31mChrome Headless 145.0.0.0 (Linux 0.0.0) TechStack should create FAILED[39m
+	ɵNotFound: NG0201: No provider found for `ActivatedRoute`. Source: Standalone[TechStack2]. Find more at https://v20.angular.dev/errors/NG0201
+	error properties: Object({ code: -201, ngErrorCode: -201, ngErrorMessage: 'No provider found for `ActivatedRoute`.', ngTokenPath: [ 'ActivatedRoute' ] })
+	ɵNotFound: NG0201: No provider found for `ActivatedRoute`. Source: Standalone[TechStack2]. Find more at https://v20.angular.dev/errors/NG0201
+	    at createRuntimeError (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:924:19)
+	    at NullInjector.get (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:1494:27)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:2052:33)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:2052:33)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:2052:33)
+	    at ChainedInjector.get (node_modules/@angular/core/fesm2022/debug_node.mjs:13492:36)
+	    at lookupTokenUsingModuleInjector (node_modules/@angular/core/fesm2022/debug_node.mjs:1718:39)
+	    at getOrCreateInjectable (node_modules/@angular/core/fesm2022/debug_node.mjs:1766:12)
+	    at ɵɵdirectiveInject (node_modules/@angular/core/fesm2022/debug_node.mjs:13543:19)
+	    at NodeInjectorFactory._RouterLink_Factory [as factory] (ng:///_RouterLink/ɵfac.js:5:7)
+Chrome Headless 145.0.0.0 (Linux 0.0.0): Executed 6 of 183[31m (2 FAILED)[39m (0 secs / 1.269 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 7 of 183[31m (2 FAILED)[39m (0 secs / 1.294 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 8 of 183[31m (2 FAILED)[39m (0 secs / 1.351 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 9 of 183[31m (2 FAILED)[39m (0 secs / 1.389 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 10 of 183[31m (2 FAILED)[39m (0 secs / 1.449 secs)
+[1A[2K[31mChrome Headless 145.0.0.0 (Linux 0.0.0) BottomSheetComponent should create FAILED[39m
+	TypeError: Cannot read properties of undefined (reading 'hasOwnProperty')
+	    at hasNgModuleDef (node_modules/@angular/core/fesm2022/testing.mjs:1608:18)
+	    at queueTypesFromModulesArrayRecur (node_modules/@angular/core/fesm2022/testing.mjs:1310:26)
+	    at TestBedCompiler.queueTypesFromModulesArray (node_modules/@angular/core/fesm2022/testing.mjs:1348:9)
+	    at TestBedCompiler.configureTestingModule (node_modules/@angular/core/fesm2022/testing.mjs:856:18)
+	    at _TestBedImpl.configureTestingModule (node_modules/@angular/core/fesm2022/testing.mjs:1993:23)
+	    at _TestBedImpl.configureTestingModule (node_modules/@angular/core/fesm2022/testing.mjs:1805:37)
+	    at apps/app/src/app/shared/components/bottom-sheet/bottom-sheet.spec.ts:16:19
+	    at Generator.next (<anonymous>)
+	    at chunk-57YG5PHF.js:61:61
+	    at new Promise (<anonymous>)
+Chrome Headless 145.0.0.0 (Linux 0.0.0): Executed 11 of 183[31m (3 FAILED)[39m (0 secs / 1.762 secs)
+[1A[2K[31mChrome Headless 145.0.0.0 (Linux 0.0.0) BottomSheetComponent should be closed by default FAILED[39m
+	TypeError: Cannot read properties of undefined (reading 'hasOwnProperty')
+	    at hasNgModuleDef (node_modules/@angular/core/fesm2022/testing.mjs:1608:18)
+	    at queueTypesFromModulesArrayRecur (node_modules/@angular/core/fesm2022/testing.mjs:1310:26)
+	    at TestBedCompiler.queueTypesFromModulesArray (node_modules/@angular/core/fesm2022/testing.mjs:1348:9)
+	    at TestBedCompiler.configureTestingModule (node_modules/@angular/core/fesm2022/testing.mjs:856:18)
+	    at _TestBedImpl.configureTestingModule (node_modules/@angular/core/fesm2022/testing.mjs:1993:23)
+	    at _TestBedImpl.configureTestingModule (node_modules/@angular/core/fesm2022/testing.mjs:1805:37)
+	    at apps/app/src/app/shared/components/bottom-sheet/bottom-sheet.spec.ts:16:19
+	    at Generator.next (<anonymous>)
+	    at chunk-57YG5PHF.js:61:61
+	    at new Promise (<anonymous>)
+Chrome Headless 145.0.0.0 (Linux 0.0.0): Executed 12 of 183[31m (4 FAILED)[39m (0 secs / 1.764 secs)
+[1A[2K[31mChrome Headless 145.0.0.0 (Linux 0.0.0) BottomSheetComponent should emit close event when onClose is called FAILED[39m
+	TypeError: Cannot read properties of undefined (reading 'hasOwnProperty')
+	    at hasNgModuleDef (node_modules/@angular/core/fesm2022/testing.mjs:1608:18)
+	    at queueTypesFromModulesArrayRecur (node_modules/@angular/core/fesm2022/testing.mjs:1310:26)
+	    at TestBedCompiler.queueTypesFromModulesArray (node_modules/@angular/core/fesm2022/testing.mjs:1348:9)
+	    at TestBedCompiler.configureTestingModule (node_modules/@angular/core/fesm2022/testing.mjs:856:18)
+	    at _TestBedImpl.configureTestingModule (node_modules/@angular/core/fesm2022/testing.mjs:1993:23)
+	    at _TestBedImpl.configureTestingModule (node_modules/@angular/core/fesm2022/testing.mjs:1805:37)
+	    at apps/app/src/app/shared/components/bottom-sheet/bottom-sheet.spec.ts:16:19
+	    at Generator.next (<anonymous>)
+	    at chunk-57YG5PHF.js:61:61
+	    at new Promise (<anonymous>)
+Chrome Headless 145.0.0.0 (Linux 0.0.0): Executed 13 of 183[31m (5 FAILED)[39m (0 secs / 1.764 secs)
+[1A[2K[31mChrome Headless 145.0.0.0 (Linux 0.0.0) BottomSheetComponent should update state when isOpen changes FAILED[39m
+	TypeError: Cannot read properties of undefined (reading 'hasOwnProperty')
+	    at hasNgModuleDef (node_modules/@angular/core/fesm2022/testing.mjs:1608:18)
+	    at queueTypesFromModulesArrayRecur (node_modules/@angular/core/fesm2022/testing.mjs:1310:26)
+	    at TestBedCompiler.queueTypesFromModulesArray (node_modules/@angular/core/fesm2022/testing.mjs:1348:9)
+	    at TestBedCompiler.configureTestingModule (node_modules/@angular/core/fesm2022/testing.mjs:856:18)
+	    at _TestBedImpl.configureTestingModule (node_modules/@angular/core/fesm2022/testing.mjs:1993:23)
+	    at _TestBedImpl.configureTestingModule (node_modules/@angular/core/fesm2022/testing.mjs:1805:37)
+	    at apps/app/src/app/shared/components/bottom-sheet/bottom-sheet.spec.ts:16:19
+	    at Generator.next (<anonymous>)
+	    at chunk-57YG5PHF.js:61:61
+	    at new Promise (<anonymous>)
+Chrome Headless 145.0.0.0 (Linux 0.0.0): Executed 14 of 183[31m (6 FAILED)[39m (0 secs / 1.764 secs)
+[1A[2K[31mChrome Headless 145.0.0.0 (Linux 0.0.0) Privacy should create FAILED[39m
+	ɵNotFound: NG0201: No provider found for `_TranslateService`. Source: Standalone[Privacy2]. Find more at https://v20.angular.dev/errors/NG0201
+	error properties: Object({ code: -201, ngErrorCode: -201, ngErrorMessage: 'No provider found for `_TranslateService`.', ngTokenPath: [ '_TranslateService' ] })
+	ɵNotFound: NG0201: No provider found for `_TranslateService`. Source: Standalone[Privacy2]. Find more at https://v20.angular.dev/errors/NG0201
+	    at createRuntimeError (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:924:19)
+	    at NullInjector.get (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:1494:27)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:2052:33)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:2052:33)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:2052:33)
+	    at ChainedInjector.get (node_modules/@angular/core/fesm2022/debug_node.mjs:13492:36)
+	    at lookupTokenUsingModuleInjector (node_modules/@angular/core/fesm2022/debug_node.mjs:1718:39)
+	    at getOrCreateInjectable (node_modules/@angular/core/fesm2022/debug_node.mjs:1766:12)
+	    at ɵɵdirectiveInject (node_modules/@angular/core/fesm2022/debug_node.mjs:13543:19)
+	    at ɵɵinject (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:1061:42)
+Chrome Headless 145.0.0.0 (Linux 0.0.0): Executed 15 of 183[31m (7 FAILED)[39m (0 secs / 1.78 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 16 of 183[31m (7 FAILED)[39m (0 secs / 1.78 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 17 of 183[31m (7 FAILED)[39m (0 secs / 1.78 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 18 of 183[31m (7 FAILED)[39m (0 secs / 1.781 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 19 of 183[31m (7 FAILED)[39m (0 secs / 1.781 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 20 of 183[31m (7 FAILED)[39m (0 secs / 1.781 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 21 of 183[31m (7 FAILED)[39m (0 secs / 1.781 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 22 of 183[31m (7 FAILED)[39m (0 secs / 1.781 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 23 of 183[31m (7 FAILED)[39m (0 secs / 1.781 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 24 of 183[31m (7 FAILED)[39m (0 secs / 1.829 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 25 of 183[31m (7 FAILED)[39m (0 secs / 1.831 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 26 of 183[31m (7 FAILED)[39m (0 secs / 1.849 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 27 of 183[31m (7 FAILED)[39m (0 secs / 1.85 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 28 of 183[31m (7 FAILED)[39m (0 secs / 1.85 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 29 of 183[31m (7 FAILED)[39m (0 secs / 1.85 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 30 of 183[31m (7 FAILED)[39m (0 secs / 1.85 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 31 of 183[31m (7 FAILED)[39m (0 secs / 1.851 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 32 of 183[31m (7 FAILED)[39m (0 secs / 1.851 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 33 of 183[31m (7 FAILED)[39m (0 secs / 1.851 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 34 of 183[31m (7 FAILED)[39m (0 secs / 1.851 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 35 of 183[31m (7 FAILED)[39m (0 secs / 1.851 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 36 of 183[31m (7 FAILED)[39m (0 secs / 1.851 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 37 of 183[31m (7 FAILED)[39m (0 secs / 1.883 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 38 of 183[31m (7 FAILED)[39m (0 secs / 1.931 secs)
+[1A[2K[31mChrome Headless 145.0.0.0 (Linux 0.0.0) WhitepaperDownloadComponent should create FAILED[39m
+	ɵNotFound: NG0201: No provider found for `_HttpClient`. Source: Standalone[WhitepaperDownloadComponent2]. Path: ApiService2 -> _HttpClient. Find more at https://v20.angular.dev/errors/NG0201
+	error properties: Object({ code: -201, ngErrorCode: -201, ngErrorMessage: 'No provider found for `_HttpClient`.', ngTokenPath: [ 'ApiService2', '_HttpClient' ] })
+	ɵNotFound: NG0201: No provider found for `_HttpClient`. Source: Standalone[WhitepaperDownloadComponent2]. Path: ApiService2 -> _HttpClient. Find more at https://v20.angular.dev/errors/NG0201
+	    at createRuntimeError (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:924:19)
+	    at NullInjector.get (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:1494:27)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:2052:33)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:2052:33)
+	    at R3Injector.retrieve (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:1936:25)
+	    at injectInjectorOnly (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:1049:39)
+	    at ɵɵinject (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:1061:42)
+	    at inject2 (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:1149:12)
+	    at ApiService2.<instance_members_initializer> (apps/app/src/app/core/services/api.service.ts:23:18)
+	    at new ApiService2 (apps/app/src/app/core/services/api.service.ts:27:3)
+Chrome Headless 145.0.0.0 (Linux 0.0.0): Executed 39 of 183[31m (8 FAILED)[39m (0 secs / 1.988 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 40 of 183[31m (8 FAILED)[39m (0 secs / 2.008 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 41 of 183[31m (8 FAILED)[39m (0 secs / 2.011 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 42 of 183[31m (8 FAILED)[39m (0 secs / 2.013 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 43 of 183[31m (8 FAILED)[39m (0 secs / 2.014 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 44 of 183[31m (8 FAILED)[39m (0 secs / 2.015 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 45 of 183[31m (8 FAILED)[39m (0 secs / 2.016 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 46 of 183[31m (8 FAILED)[39m (0 secs / 2.05 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 47 of 183[31m (8 FAILED)[39m (0 secs / 2.139 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 48 of 183[31m (8 FAILED)[39m (0 secs / 2.155 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 49 of 183[31m (8 FAILED)[39m (0 secs / 2.173 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 50 of 183[31m (8 FAILED)[39m (0 secs / 2.193 secs)
+[33m12 06 2026 13:17:39.251:WARN [web-server]: [39m404: /api/data/products
+[33m12 06 2026 13:17:39.426:WARN [web-server]: [39m404: /api/data/team
+[1A[2KLOG: [36m'[Analytics]', 'test_event', Object{interaction_id: 'int_1781270260609_xljipaua', lang: 'en', route: '/en/home', segment: 'unknown', source: 'direct', device: 'desktop', lead_id: 'test-lead-123', event_id: 'evt_1781270260609_gzkmqy3w', event_name: 'test_event'}[39m
+Chrome Headless 145.0.0.0 (Linux 0.0.0): Executed 50 of 183[31m (8 FAILED)[39m (0 secs / 2.193 secs)
+LOG: '[Analytics]', 'test_event', Object{interaction_id: 'int_1781270260609_xljipaua', lang: 'en', route: '/en/home', segment: 'unknown', source: 'direct', device: 'desktop', lead_id: 'test-lead-123', event_id: 'evt_1781270260609_gzkmqy3w', event_name: 'test_event'}
+[33m12 06 2026 13:17:40.695:WARN [web-server]: [39m404: /assets/imgs/logos/virteex.svg
+[1A[2KLOG: [36m'[MobileMenuGestures]', 'edge_swipe_detected', Object{pointerId: 1, x: 395, y: 40, state: Object{activePointerId: 1, isDragging: true, isHorizontalGesture: false, isEdgeSwipeActive: true, isOverlaySwipeActive: false}}[39m
+Chrome Headless 145.0.0.0 (Linux 0.0.0): Executed 50 of 183[31m (8 FAILED)[39m (0 secs / 2.193 secs)
+LOG: '[MobileMenuGestures]', 'edge_swipe_detected', Object{pointerId: 1, x: 395, y: 40, state: Object{activePointerId: 1, isDragging: true, isHorizontalGesture: false, isEdgeSwipeActive: true, isOverlaySwipeActive: false}}
+[1A[2KLOG: [36m'[MobileMenuGestures]', 'pointer_move', Object{pointerId: 1, x: 380, y: 40, state: Object{activePointerId: 1, isDragging: true, isHorizontalGesture: false, isEdgeSwipeActive: true, isOverlaySwipeActive: false}}[39m
+Chrome Headless 145.0.0.0 (Linux 0.0.0): Executed 50 of 183[31m (8 FAILED)[39m (0 secs / 2.193 secs)
+LOG: '[MobileMenuGestures]', 'pointer_move', Object{pointerId: 1, x: 380, y: 40, state: Object{activePointerId: 1, isDragging: true, isHorizontalGesture: false, isEdgeSwipeActive: true, isOverlaySwipeActive: false}}
+[1A[2KLOG: [36m'[MobileMenuGestures]', 'edge_horizontal_detected', Object{diffX: -15, diffY: 0, state: Object{activePointerId: 1, isDragging: true, isHorizontalGesture: false, isEdgeSwipeActive: true, isOverlaySwipeActive: false}}[39m
+Chrome Headless 145.0.0.0 (Linux 0.0.0): Executed 50 of 183[31m (8 FAILED)[39m (0 secs / 2.193 secs)
+LOG: '[MobileMenuGestures]', 'edge_horizontal_detected', Object{diffX: -15, diffY: 0, state: Object{activePointerId: 1, isDragging: true, isHorizontalGesture: false, isEdgeSwipeActive: true, isOverlaySwipeActive: false}}
+[1A[2KLOG: [36m'[MobileMenuGestures]', 'pointer_move', Object{pointerId: 1, x: 260, y: 44, state: Object{activePointerId: 1, isDragging: true, isHorizontalGesture: true, isEdgeSwipeActive: true, isOverlaySwipeActive: false}}[39m
+Chrome Headless 145.0.0.0 (Linux 0.0.0): Executed 50 of 183[31m (8 FAILED)[39m (0 secs / 2.193 secs)
+LOG: '[MobileMenuGestures]', 'pointer_move', Object{pointerId: 1, x: 260, y: 44, state: Object{activePointerId: 1, isDragging: true, isHorizontalGesture: true, isEdgeSwipeActive: true, isOverlaySwipeActive: false}}
+[1A[2KLOG: [36m'[MobileMenuGestures]', 'pointer_up', Object{pointerId: 1, x: 260, y: 44, state: Object{activePointerId: 1, isDragging: true, isHorizontalGesture: true, isEdgeSwipeActive: true, isOverlaySwipeActive: false}}[39m
+Chrome Headless 145.0.0.0 (Linux 0.0.0): Executed 50 of 183[31m (8 FAILED)[39m (0 secs / 2.193 secs)
+LOG: '[MobileMenuGestures]', 'pointer_up', Object{pointerId: 1, x: 260, y: 44, state: Object{activePointerId: 1, isDragging: true, isHorizontalGesture: true, isEdgeSwipeActive: true, isOverlaySwipeActive: false}}
+[1A[2KLOG: [36m'[MobileMenuGestures]', 'edge_gesture_end_decision', Object{target: Object{id: 'open', value: 0}, velocity: -240, state: Object{activePointerId: null, isDragging: false, isHorizontalGesture: false, isEdgeSwipeActive: false, isOverlaySwipeActive: false}}[39m
+Chrome Headless 145.0.0.0 (Linux 0.0.0): Executed 50 of 183[31m (8 FAILED)[39m (0 secs / 2.193 secs)
+LOG: '[MobileMenuGestures]', 'edge_gesture_end_decision', Object{target: Object{id: 'open', value: 0}, velocity: -240, state: Object{activePointerId: null, isDragging: false, isHorizontalGesture: false, isEdgeSwipeActive: false, isOverlaySwipeActive: false}}
+[1A[2KLOG: [36m'[MobileMenuGestures]', 'metric', Object{metric: 'gesture_complete', action: 'open', source: 'edge', state: Object{activePointerId: null, isDragging: false, isHorizontalGesture: false, isEdgeSwipeActive: false, isOverlaySwipeActive: false}}[39m
+Chrome Headless 145.0.0.0 (Linux 0.0.0): Executed 50 of 183[31m (8 FAILED)[39m (0 secs / 2.193 secs)
+LOG: '[MobileMenuGestures]', 'metric', Object{metric: 'gesture_complete', action: 'open', source: 'edge', state: Object{activePointerId: null, isDragging: false, isHorizontalGesture: false, isEdgeSwipeActive: false, isOverlaySwipeActive: false}}
+[1A[2KLOG: [36m'[MobileMenuGestures]', 'edge_swipe_detected', Object{pointerId: 1, x: 5, y: 20, state: Object{activePointerId: 1, isDragging: true, isHorizontalGesture: false, isEdgeSwipeActive: true, isOverlaySwipeActive: false}}[39m
+Chrome Headless 145.0.0.0 (Linux 0.0.0): Executed 50 of 183[31m (8 FAILED)[39m (0 secs / 2.193 secs)
+LOG: '[MobileMenuGestures]', 'edge_swipe_detected', Object{pointerId: 1, x: 5, y: 20, state: Object{activePointerId: 1, isDragging: true, isHorizontalGesture: false, isEdgeSwipeActive: true, isOverlaySwipeActive: false}}
+[1A[2KLOG: [36m'[MobileMenuGestures]', 'pointer_move', Object{pointerId: 1, x: 8, y: 80, state: Object{activePointerId: 1, isDragging: true, isHorizontalGesture: false, isEdgeSwipeActive: true, isOverlaySwipeActive: false}}[39m
+Chrome Headless 145.0.0.0 (Linux 0.0.0): Executed 50 of 183[31m (8 FAILED)[39m (0 secs / 2.193 secs)
+LOG: '[MobileMenuGestures]', 'pointer_move', Object{pointerId: 1, x: 8, y: 80, state: Object{activePointerId: 1, isDragging: true, isHorizontalGesture: false, isEdgeSwipeActive: true, isOverlaySwipeActive: false}}
+[1A[2KLOG: [36m'[MobileMenuGestures]', 'edge_gesture_cancel', Object{reason: 'vertical_lock', diffX: 3, diffY: 60, state: Object{activePointerId: 1, isDragging: true, isHorizontalGesture: false, isEdgeSwipeActive: true, isOverlaySwipeActive: false}}[39m
+Chrome Headless 145.0.0.0 (Linux 0.0.0): Executed 50 of 183[31m (8 FAILED)[39m (0 secs / 2.193 secs)
+LOG: '[MobileMenuGestures]', 'edge_gesture_cancel', Object{reason: 'vertical_lock', diffX: 3, diffY: 60, state: Object{activePointerId: 1, isDragging: true, isHorizontalGesture: false, isEdgeSwipeActive: true, isOverlaySwipeActive: false}}
+[1A[2KLOG: [36m'[MobileMenuGestures]', 'edge_gesture_cancel', Object{reason: 'vertical_lock', state: Object{activePointerId: null, isDragging: false, isHorizontalGesture: false, isEdgeSwipeActive: false, isOverlaySwipeActive: false}}[39m
+Chrome Headless 145.0.0.0 (Linux 0.0.0): Executed 50 of 183[31m (8 FAILED)[39m (0 secs / 2.193 secs)
+LOG: '[MobileMenuGestures]', 'edge_gesture_cancel', Object{reason: 'vertical_lock', state: Object{activePointerId: null, isDragging: false, isHorizontalGesture: false, isEdgeSwipeActive: false, isOverlaySwipeActive: false}}
+[1A[2KLOG: [36m'[MobileMenuGestures]', 'metric', Object{metric: 'gesture_cancel', source: 'edge_lock', reason: 'vertical_lock', state: Object{activePointerId: null, isDragging: false, isHorizontalGesture: false, isEdgeSwipeActive: false, isOverlaySwipeActive: false}}[39m
+Chrome Headless 145.0.0.0 (Linux 0.0.0): Executed 50 of 183[31m (8 FAILED)[39m (0 secs / 2.193 secs)
+LOG: '[MobileMenuGestures]', 'metric', Object{metric: 'gesture_cancel', source: 'edge_lock', reason: 'vertical_lock', state: Object{activePointerId: null, isDragging: false, isHorizontalGesture: false, isEdgeSwipeActive: false, isOverlaySwipeActive: false}}
+[1A[2KLOG: [36m'[MobileMenuGestures]', 'edge_swipe_detected', Object{pointerId: 1, x: 5, y: 20, state: Object{activePointerId: 1, isDragging: true, isHorizontalGesture: false, isEdgeSwipeActive: true, isOverlaySwipeActive: false}}[39m
+Chrome Headless 145.0.0.0 (Linux 0.0.0): Executed 50 of 183[31m (8 FAILED)[39m (0 secs / 2.193 secs)
+LOG: '[MobileMenuGestures]', 'edge_swipe_detected', Object{pointerId: 1, x: 5, y: 20, state: Object{activePointerId: 1, isDragging: true, isHorizontalGesture: false, isEdgeSwipeActive: true, isOverlaySwipeActive: false}}
+[1A[2KLOG: [36m'[MobileMenuGestures]', 'pointer_move', Object{pointerId: 1, x: 20, y: 20, state: Object{activePointerId: 1, isDragging: true, isHorizontalGesture: false, isEdgeSwipeActive: true, isOverlaySwipeActive: false}}[39m
+Chrome Headless 145.0.0.0 (Linux 0.0.0): Executed 50 of 183[31m (8 FAILED)[39m (0 secs / 2.193 secs)
+LOG: '[MobileMenuGestures]', 'pointer_move', Object{pointerId: 1, x: 20, y: 20, state: Object{activePointerId: 1, isDragging: true, isHorizontalGesture: false, isEdgeSwipeActive: true, isOverlaySwipeActive: false}}
+[1A[2KLOG: [36m'[MobileMenuGestures]', 'edge_horizontal_detected', Object{diffX: 15, diffY: 0, state: Object{activePointerId: 1, isDragging: true, isHorizontalGesture: false, isEdgeSwipeActive: true, isOverlaySwipeActive: false}}[39m
+Chrome Headless 145.0.0.0 (Linux 0.0.0): Executed 50 of 183[31m (8 FAILED)[39m (0 secs / 2.193 secs)
+LOG: '[MobileMenuGestures]', 'edge_horizontal_detected', Object{diffX: 15, diffY: 0, state: Object{activePointerId: 1, isDragging: true, isHorizontalGesture: false, isEdgeSwipeActive: true, isOverlaySwipeActive: false}}
+[1A[2KLOG: [36m'[MobileMenuGestures]', 'pointer_move', Object{pointerId: 1, x: 120, y: 25, state: Object{activePointerId: 1, isDragging: true, isHorizontalGesture: true, isEdgeSwipeActive: true, isOverlaySwipeActive: false}}[39m
+Chrome Headless 145.0.0.0 (Linux 0.0.0): Executed 50 of 183[31m (8 FAILED)[39m (0 secs / 2.193 secs)
+LOG: '[MobileMenuGestures]', 'pointer_move', Object{pointerId: 1, x: 120, y: 25, state: Object{activePointerId: 1, isDragging: true, isHorizontalGesture: true, isEdgeSwipeActive: true, isOverlaySwipeActive: false}}
+[1A[2KLOG: [36m'[MobileMenuGestures]', 'pointer_up', Object{pointerId: 1, x: 120, y: 25, state: Object{activePointerId: 1, isDragging: true, isHorizontalGesture: true, isEdgeSwipeActive: true, isOverlaySwipeActive: false}}[39m
+Chrome Headless 145.0.0.0 (Linux 0.0.0): Executed 50 of 183[31m (8 FAILED)[39m (0 secs / 2.193 secs)
+LOG: '[MobileMenuGestures]', 'pointer_up', Object{pointerId: 1, x: 120, y: 25, state: Object{activePointerId: 1, isDragging: true, isHorizontalGesture: true, isEdgeSwipeActive: true, isOverlaySwipeActive: false}}
+[1A[2KLOG: [36m'[MobileMenuGestures]', 'edge_gesture_end_decision', Object{target: Object{id: 'open', value: 0}, velocity: 500.00000186264515, state: Object{activePointerId: null, isDragging: false, isHorizontalGesture: false, isEdgeSwipeActive: false, isOverlaySwipeActive: false}}[39m
+Chrome Headless 145.0.0.0 (Linux 0.0.0): Executed 50 of 183[31m (8 FAILED)[39m (0 secs / 2.193 secs)
+LOG: '[MobileMenuGestures]', 'edge_gesture_end_decision', Object{target: Object{id: 'open', value: 0}, velocity: 500.00000186264515, state: Object{activePointerId: null, isDragging: false, isHorizontalGesture: false, isEdgeSwipeActive: false, isOverlaySwipeActive: false}}
+[1A[2KLOG: [36m'[MobileMenuGestures]', 'metric', Object{metric: 'gesture_complete', action: 'open', source: 'edge', state: Object{activePointerId: null, isDragging: false, isHorizontalGesture: false, isEdgeSwipeActive: false, isOverlaySwipeActive: false}}[39m
+Chrome Headless 145.0.0.0 (Linux 0.0.0): Executed 50 of 183[31m (8 FAILED)[39m (0 secs / 2.193 secs)
+LOG: '[MobileMenuGestures]', 'metric', Object{metric: 'gesture_complete', action: 'open', source: 'edge', state: Object{activePointerId: null, isDragging: false, isHorizontalGesture: false, isEdgeSwipeActive: false, isOverlaySwipeActive: false}}
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 51 of 183[31m (8 FAILED)[39m (0 secs / 2.233 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 52 of 183[31m (8 FAILED)[39m (0 secs / 3.454 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 53 of 183[31m (8 FAILED)[39m (0 secs / 3.47 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 54 of 183[31m (8 FAILED)[39m (0 secs / 3.484 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 55 of 183[31m (8 FAILED)[39m (0 secs / 3.498 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 56 of 183[31m (8 FAILED)[39m (0 secs / 3.519 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 57 of 183[31m (8 FAILED)[39m (0 secs / 3.533 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 58 of 183[31m (8 FAILED)[39m (0 secs / 3.55 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 59 of 183[31m (8 FAILED)[39m (0 secs / 3.562 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 60 of 183[31m (8 FAILED)[39m (0 secs / 3.579 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 61 of 183[31m (8 FAILED)[39m (0 secs / 3.593 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 62 of 183[31m (8 FAILED)[39m (0 secs / 3.605 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 63 of 183[31m (8 FAILED)[39m (0 secs / 3.616 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 64 of 183[31m (8 FAILED)[39m (0 secs / 3.628 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 65 of 183[31m (8 FAILED)[39m (0 secs / 3.632 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 66 of 183[31m (8 FAILED)[39m (0 secs / 3.653 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 67 of 183[31m (8 FAILED)[39m (0 secs / 3.774 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 68 of 183[31m (8 FAILED)[39m (0 secs / 3.791 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 69 of 183[31m (8 FAILED)[39m (0 secs / 3.797 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 70 of 183[31m (8 FAILED)[39m (0 secs / 3.823 secs)
+[1A[2K[31mChrome Headless 145.0.0.0 (Linux 0.0.0) GestureBusService should notify and cancel previous handler when a new handler captures the gesture FAILED[39m
+	Expected Object({ name: 'Handler1', priority: 10, onPointerDown: spy on onPointerDown1, onPointerCancel: spy on onPointerCancel1 }) to be Object({ name: 'Handler2', priority: 100, onPointerDown: spy on onPointerDown2 }). Tip: To check for deep equality, use .toEqual() instead of .toBe().
+	    at <Jasmine>
+	    at UserContext.<anonymous> (apps/app/src/app/core/services/gesture-bus.service.spec.ts:76:38)
+	    at <Jasmine>
+	Expected spy onPointerCancel1 to have been called.
+	    at <Jasmine>
+	    at UserContext.<anonymous> (apps/app/src/app/core/services/gesture-bus.service.spec.ts:77:38)
+	    at <Jasmine>
+	Expected spy AnalyticsService.trackEvent to have been called with:
+	  [ 'gesture_ownership_change', <jasmine.objectContaining(Object({ from: 'Handler1', to: 'Handler2' }))> ]
+	but it was never called.
+	    at <Jasmine>
+	    at UserContext.<anonymous> (apps/app/src/app/core/services/gesture-bus.service.spec.ts:78:44)
+	    at <Jasmine>
+Chrome Headless 145.0.0.0 (Linux 0.0.0): Executed 71 of 183[31m (9 FAILED)[39m (0 secs / 3.826 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 72 of 183[31m (9 FAILED)[39m (0 secs / 3.827 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 73 of 183[31m (9 FAILED)[39m (0 secs / 3.828 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 74 of 183[31m (9 FAILED)[39m (0 secs / 3.85 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 75 of 183[31m (9 FAILED)[39m (0 secs / 3.856 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 76 of 183[31m (9 FAILED)[39m (0 secs / 3.861 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 77 of 183[31m (9 FAILED)[39m (0 secs / 3.865 secs)
+[1A[2K[31mChrome Headless 145.0.0.0 (Linux 0.0.0) Process should create FAILED[39m
+	ɵNotFound: NG0201: No provider found for `ActivatedRoute`. Source: Standalone[Process2]. Find more at https://v20.angular.dev/errors/NG0201
+	error properties: Object({ code: -201, ngErrorCode: -201, ngErrorMessage: 'No provider found for `ActivatedRoute`.', ngTokenPath: [ 'ActivatedRoute' ] })
+	ɵNotFound: NG0201: No provider found for `ActivatedRoute`. Source: Standalone[Process2]. Find more at https://v20.angular.dev/errors/NG0201
+	    at createRuntimeError (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:924:19)
+	    at NullInjector.get (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:1494:27)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:2052:33)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:2052:33)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:2052:33)
+	    at ChainedInjector.get (node_modules/@angular/core/fesm2022/debug_node.mjs:13492:36)
+	    at lookupTokenUsingModuleInjector (node_modules/@angular/core/fesm2022/debug_node.mjs:1718:39)
+	    at getOrCreateInjectable (node_modules/@angular/core/fesm2022/debug_node.mjs:1766:12)
+	    at ɵɵdirectiveInject (node_modules/@angular/core/fesm2022/debug_node.mjs:13543:19)
+	    at NodeInjectorFactory._RouterLink_Factory [as factory] (ng:///_RouterLink/ɵfac.js:5:7)
+Chrome Headless 145.0.0.0 (Linux 0.0.0): Executed 78 of 183[31m (10 FAILED)[39m (0 secs / 3.874 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 79 of 183[31m (10 FAILED)[39m (0 secs / 3.874 secs)
+[1A[2K[31mChrome Headless 145.0.0.0 (Linux 0.0.0) Footer should set currentYear correctly FAILED[39m
+	ɵNotFound: NG0201: No provider found for `_HttpClient`. Source: Standalone[Footer2]. Path: ApiService2 -> _HttpClient. Find more at https://v20.angular.dev/errors/NG0201
+	error properties: Object({ code: -201, ngErrorCode: -201, ngErrorMessage: 'No provider found for `_HttpClient`.', ngTokenPath: [ 'ApiService2', '_HttpClient' ] })
+	ɵNotFound: NG0201: No provider found for `_HttpClient`. Source: Standalone[Footer2]. Path: ApiService2 -> _HttpClient. Find more at https://v20.angular.dev/errors/NG0201
+	    at createRuntimeError (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:924:19)
+	    at NullInjector.get (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:1494:27)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:2052:33)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:2052:33)
+	    at R3Injector.retrieve (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:1936:25)
+	    at injectInjectorOnly (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:1049:39)
+	    at ɵɵinject (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:1061:42)
+	    at inject2 (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:1149:12)
+	    at ApiService2.<instance_members_initializer> (apps/app/src/app/core/services/api.service.ts:23:18)
+	    at new ApiService2 (apps/app/src/app/core/services/api.service.ts:27:3)
+Chrome Headless 145.0.0.0 (Linux 0.0.0): Executed 80 of 183[31m (11 FAILED)[39m (0 secs / 3.876 secs)
+[1A[2K[31mChrome Headless 145.0.0.0 (Linux 0.0.0) Footer should create FAILED[39m
+	ɵNotFound: NG0201: No provider found for `_HttpClient`. Source: Standalone[Footer2]. Path: ApiService2 -> _HttpClient. Find more at https://v20.angular.dev/errors/NG0201
+	error properties: Object({ code: -201, ngErrorCode: -201, ngErrorMessage: 'No provider found for `_HttpClient`.', ngTokenPath: [ 'ApiService2', '_HttpClient' ] })
+	ɵNotFound: NG0201: No provider found for `_HttpClient`. Source: Standalone[Footer2]. Path: ApiService2 -> _HttpClient. Find more at https://v20.angular.dev/errors/NG0201
+	    at createRuntimeError (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:924:19)
+	    at NullInjector.get (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:1494:27)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:2052:33)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:2052:33)
+	    at R3Injector.retrieve (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:1936:25)
+	    at injectInjectorOnly (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:1049:39)
+	    at ɵɵinject (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:1061:42)
+	    at inject2 (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:1149:12)
+	    at ApiService2.<instance_members_initializer> (apps/app/src/app/core/services/api.service.ts:23:18)
+	    at new ApiService2 (apps/app/src/app/core/services/api.service.ts:27:3)
+Chrome Headless 145.0.0.0 (Linux 0.0.0): Executed 81 of 183[31m (12 FAILED)[39m (0 secs / 3.879 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 82 of 183[31m (12 FAILED)[39m (0 secs / 3.88 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 83 of 183[31m (12 FAILED)[39m (0 secs / 3.88 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 84 of 183[31m (12 FAILED)[39m (0 secs / 3.88 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 85 of 183[31m (12 FAILED)[39m (0 secs / 3.88 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 86 of 183[31m (12 FAILED)[39m (0 secs / 3.882 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 87 of 183[31m (12 FAILED)[39m (0 secs / 3.884 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 88 of 183[31m (12 FAILED)[39m (0 secs / 4.986 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 89 of 183[31m (12 FAILED)[39m (0 secs / 4.989 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 90 of 183[31m (12 FAILED)[39m (0 secs / 5.042 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 91 of 183[31m (12 FAILED)[39m (0 secs / 5.066 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 92 of 183[31m (12 FAILED)[39m (0 secs / 5.069 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 93 of 183[31m (12 FAILED)[39m (0 secs / 5.223 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 94 of 183[31m (12 FAILED)[39m (0 secs / 5.272 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 95 of 183[31m (12 FAILED)[39m (0 secs / 5.288 secs)
+[1A[2K[31mChrome Headless 145.0.0.0 (Linux 0.0.0) Blog should create FAILED[39m
+	ɵNotFound: NG0201: No provider found for `InjectionToken BASE_URL`. Source: Standalone[Blog2]. Path: Seo2 -> InjectionToken BASE_URL. Find more at https://v20.angular.dev/errors/NG0201
+	error properties: Object({ code: -201, ngErrorCode: -201, ngErrorMessage: 'No provider found for `InjectionToken BASE_URL`.', ngTokenPath: [ 'Seo2', 'InjectionToken BASE_URL' ] })
+	ɵNotFound: NG0201: No provider found for `InjectionToken BASE_URL`. Source: Standalone[Blog2]. Path: Seo2 -> InjectionToken BASE_URL. Find more at https://v20.angular.dev/errors/NG0201
+	    at createRuntimeError (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:924:19)
+	    at NullInjector.get (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:1494:27)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:2052:33)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:2052:33)
+	    at R3Injector.retrieve (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:1936:25)
+	    at injectInjectorOnly (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:1049:39)
+	    at ɵɵinject (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:1061:42)
+	    at Object.Seo2_Factory [as factory] (ng:///Seo2/ɵfac.js:7:56)
+	    at node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:2194:47
+	    at runInInjectorProfilerContext (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:749:9)
+Chrome Headless 145.0.0.0 (Linux 0.0.0): Executed 96 of 183[31m (13 FAILED)[39m (0 secs / 5.367 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 97 of 183[31m (13 FAILED)[39m (0 secs / 5.372 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 98 of 183[31m (13 FAILED)[39m (0 secs / 5.382 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 99 of 183[31m (13 FAILED)[39m (0 secs / 5.383 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 100 of 183[31m (13 FAILED)[39m (0 secs / 5.389 secs)
+[1A[2KLOG: [36m'[MobileMenuGestures]', 'drawer_drag_detected', Object{pointerId: 1, x: 320, y: 100, state: Object{activePointerId: 1, isDragging: false, isHorizontalGesture: false, isEdgeSwipeActive: false, isOverlaySwipeActive: false}}[39m
+Chrome Headless 145.0.0.0 (Linux 0.0.0): Executed 100 of 183[31m (13 FAILED)[39m (0 secs / 5.389 secs)
+LOG: '[MobileMenuGestures]', 'drawer_drag_detected', Object{pointerId: 1, x: 320, y: 100, state: Object{activePointerId: 1, isDragging: false, isHorizontalGesture: false, isEdgeSwipeActive: false, isOverlaySwipeActive: false}}
+[1A[2KLOG: [36m'[MobileMenuGestures]', 'pointer_move', Object{pointerId: 1, x: 270, y: 100, state: Object{activePointerId: 1, isDragging: false, isHorizontalGesture: false, isEdgeSwipeActive: false, isOverlaySwipeActive: false}}[39m
+Chrome Headless 145.0.0.0 (Linux 0.0.0): Executed 100 of 183[31m (13 FAILED)[39m (0 secs / 5.389 secs)
+LOG: '[MobileMenuGestures]', 'pointer_move', Object{pointerId: 1, x: 270, y: 100, state: Object{activePointerId: 1, isDragging: false, isHorizontalGesture: false, isEdgeSwipeActive: false, isOverlaySwipeActive: false}}
+[1A[2KLOG: [36m'[MobileMenuGestures]', 'drawer_horizontal_detected', Object{diffX: -50, diffY: 0, state: Object{activePointerId: 1, isDragging: false, isHorizontalGesture: false, isEdgeSwipeActive: false, isOverlaySwipeActive: false}}[39m
+Chrome Headless 145.0.0.0 (Linux 0.0.0): Executed 100 of 183[31m (13 FAILED)[39m (0 secs / 5.389 secs)
+LOG: '[MobileMenuGestures]', 'drawer_horizontal_detected', Object{diffX: -50, diffY: 0, state: Object{activePointerId: 1, isDragging: false, isHorizontalGesture: false, isEdgeSwipeActive: false, isOverlaySwipeActive: false}}
+[1A[2KLOG: [36m'[MobileMenuGestures]', 'drawer_drag_detected', Object{pointerId: 1, x: 100, y: 100, state: Object{activePointerId: 1, isDragging: false, isHorizontalGesture: false, isEdgeSwipeActive: false, isOverlaySwipeActive: false}}[39m
+Chrome Headless 145.0.0.0 (Linux 0.0.0): Executed 100 of 183[31m (13 FAILED)[39m (0 secs / 5.389 secs)
+LOG: '[MobileMenuGestures]', 'drawer_drag_detected', Object{pointerId: 1, x: 100, y: 100, state: Object{activePointerId: 1, isDragging: false, isHorizontalGesture: false, isEdgeSwipeActive: false, isOverlaySwipeActive: false}}
+[1A[2KLOG: [36m'[MobileMenuGestures]', 'pointer_move', Object{pointerId: 1, x: 20, y: 100, state: Object{activePointerId: 1, isDragging: false, isHorizontalGesture: false, isEdgeSwipeActive: false, isOverlaySwipeActive: false}}[39m
+Chrome Headless 145.0.0.0 (Linux 0.0.0): Executed 100 of 183[31m (13 FAILED)[39m (0 secs / 5.389 secs)
+LOG: '[MobileMenuGestures]', 'pointer_move', Object{pointerId: 1, x: 20, y: 100, state: Object{activePointerId: 1, isDragging: false, isHorizontalGesture: false, isEdgeSwipeActive: false, isOverlaySwipeActive: false}}
+[1A[2KLOG: [36m'[MobileMenuGestures]', 'drawer_horizontal_detected', Object{diffX: -80, diffY: 0, state: Object{activePointerId: 1, isDragging: false, isHorizontalGesture: false, isEdgeSwipeActive: false, isOverlaySwipeActive: false}}[39m
+Chrome Headless 145.0.0.0 (Linux 0.0.0): Executed 100 of 183[31m (13 FAILED)[39m (0 secs / 5.389 secs)
+LOG: '[MobileMenuGestures]', 'drawer_horizontal_detected', Object{diffX: -80, diffY: 0, state: Object{activePointerId: 1, isDragging: false, isHorizontalGesture: false, isEdgeSwipeActive: false, isOverlaySwipeActive: false}}
+[1A[2KLOG: [36m'[MobileMenuGestures]', 'pointer_move', Object{pointerId: 1, x: -300, y: 100, state: Object{activePointerId: 1, isDragging: true, isHorizontalGesture: true, isEdgeSwipeActive: false, isOverlaySwipeActive: false}}[39m
+Chrome Headless 145.0.0.0 (Linux 0.0.0): Executed 100 of 183[31m (13 FAILED)[39m (0 secs / 5.389 secs)
+LOG: '[MobileMenuGestures]', 'pointer_move', Object{pointerId: 1, x: -300, y: 100, state: Object{activePointerId: 1, isDragging: true, isHorizontalGesture: true, isEdgeSwipeActive: false, isOverlaySwipeActive: false}}
+[1A[2KLOG: [36m'[MobileMenuGestures]', 'drawer_drag_detected', Object{pointerId: 1, x: 100, y: 100, state: Object{activePointerId: 1, isDragging: false, isHorizontalGesture: false, isEdgeSwipeActive: false, isOverlaySwipeActive: false}}[39m
+Chrome Headless 145.0.0.0 (Linux 0.0.0): Executed 100 of 183[31m (13 FAILED)[39m (0 secs / 5.389 secs)
+LOG: '[MobileMenuGestures]', 'drawer_drag_detected', Object{pointerId: 1, x: 100, y: 100, state: Object{activePointerId: 1, isDragging: false, isHorizontalGesture: false, isEdgeSwipeActive: false, isOverlaySwipeActive: false}}
+[1A[2KLOG: [36m'[MobileMenuGestures]', 'pointer_move', Object{pointerId: 1, x: 150, y: 100, state: Object{activePointerId: 1, isDragging: false, isHorizontalGesture: false, isEdgeSwipeActive: false, isOverlaySwipeActive: false}}[39m
+Chrome Headless 145.0.0.0 (Linux 0.0.0): Executed 100 of 183[31m (13 FAILED)[39m (0 secs / 5.389 secs)
+LOG: '[MobileMenuGestures]', 'pointer_move', Object{pointerId: 1, x: 150, y: 100, state: Object{activePointerId: 1, isDragging: false, isHorizontalGesture: false, isEdgeSwipeActive: false, isOverlaySwipeActive: false}}
+[1A[2KLOG: [36m'[MobileMenuGestures]', 'drawer_horizontal_detected', Object{diffX: 50, diffY: 0, state: Object{activePointerId: 1, isDragging: false, isHorizontalGesture: false, isEdgeSwipeActive: false, isOverlaySwipeActive: false}}[39m
+Chrome Headless 145.0.0.0 (Linux 0.0.0): Executed 100 of 183[31m (13 FAILED)[39m (0 secs / 5.389 secs)
+LOG: '[MobileMenuGestures]', 'drawer_horizontal_detected', Object{diffX: 50, diffY: 0, state: Object{activePointerId: 1, isDragging: false, isHorizontalGesture: false, isEdgeSwipeActive: false, isOverlaySwipeActive: false}}
+[1A[2K[31mChrome Headless 145.0.0.0 (Linux 0.0.0) MobileMenuElastic should handle RTL overshooting (opening more) FAILED[39m
+	Expected 1.0181140487180151 to be close to 1.038, 2.
+	    at <Jasmine>
+	    at UserContext.<anonymous> (apps/app/src/app/layout/header/mobile-menu/mobile-menu-elastic.spec.ts:166:21)
+	    at <Jasmine>
+Chrome Headless 145.0.0.0 (Linux 0.0.0): Executed 101 of 183[31m (14 FAILED)[39m (0 secs / 5.392 secs)
+[1A[2K[31mChrome Headless 145.0.0.0 (Linux 0.0.0) MobileMenuElastic should calculate scaleX > 1 when overshooting left in LTR (closing more) FAILED[39m
+	Expected 1.0261369435256538 to be close to 1.04, 2.
+	    at <Jasmine>
+	    at UserContext.<anonymous> (apps/app/src/app/layout/header/mobile-menu/mobile-menu-elastic.spec.ts:125:21)
+	    at <Jasmine>
+Chrome Headless 145.0.0.0 (Linux 0.0.0): Executed 102 of 183[31m (15 FAILED)[39m (0 secs / 5.394 secs)
+[1A[2K[31mChrome Headless 145.0.0.0 (Linux 0.0.0) MobileMenuElastic should calculate scaleX > 1 when overshooting right in LTR (opening more) FAILED[39m
+	Expected 1.0181140487180151 to be close to 1.038, 2.
+	    at <Jasmine>
+	    at UserContext.<anonymous> (apps/app/src/app/layout/header/mobile-menu/mobile-menu-elastic.spec.ts:73:21)
+	    at <Jasmine>
+Chrome Headless 145.0.0.0 (Linux 0.0.0): Executed 103 of 183[31m (16 FAILED)[39m (0 secs / 5.395 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 104 of 183[31m (16 FAILED)[39m (0 secs / 5.414 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 105 of 183[31m (16 FAILED)[39m (0 secs / 5.423 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 106 of 183[31m (16 FAILED)[39m (0 secs / 5.432 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 107 of 183[31m (16 FAILED)[39m (0 secs / 5.435 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 108 of 183[31m (16 FAILED)[39m (0 secs / 5.489 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 109 of 183[31m (16 FAILED)[39m (0 secs / 6.005 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 110 of 183[31m (16 FAILED)[39m (0 secs / 6.484 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 111 of 183[31m (16 FAILED)[39m (0 secs / 6.536 secs)
+[1A[2K[31mChrome Headless 145.0.0.0 (Linux 0.0.0) LogoCard should create FAILED[39m
+	Error: NG02952: The NgOptimizedImage directive (activated on an <img> element with the `ngSrc=""`) has detected that `ngSrc` has an invalid value (``). To fix this, change the value to a non-empty string.
+	error properties: Object({ code: 2952 })
+	    at assertNonEmptyInput (node_modules/@angular/common/fesm2022/common.mjs:1676:15)
+	    at _NgOptimizedImage.ngOnInit (node_modules/@angular/common/fesm2022/common.mjs:1206:13)
+	    at callHookInternal (node_modules/@angular/core/fesm2022/debug_node.mjs:860:14)
+	    at callHook (node_modules/@angular/core/fesm2022/debug_node.mjs:887:13)
+	    at callHooks (node_modules/@angular/core/fesm2022/debug_node.mjs:841:17)
+	    at executeInitAndCheckHooks (node_modules/@angular/core/fesm2022/debug_node.mjs:791:9)
+	    at selectIndexInternal (node_modules/@angular/core/fesm2022/debug_node.mjs:7186:17)
+	    at ɵɵadvance (node_modules/@angular/core/fesm2022/debug_node.mjs:7169:5)
+	    at LogoCard2_Template (ng:///LogoCard2.js:22:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/debug_node.mjs:9125:9)
+Chrome Headless 145.0.0.0 (Linux 0.0.0): Executed 112 of 183[31m (17 FAILED)[39m (0 secs / 6.605 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 113 of 183[31m (17 FAILED)[39m (0 secs / 6.607 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 114 of 183[31m (17 FAILED)[39m (0 secs / 6.609 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 115 of 183[31m (17 FAILED)[39m (0 secs / 6.611 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 116 of 183[31m (17 FAILED)[39m (0 secs / 6.612 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 117 of 183[31m (17 FAILED)[39m (0 secs / 6.613 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 118 of 183[31m (17 FAILED)[39m (0 secs / 6.615 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 119 of 183[31m (17 FAILED)[39m (0 secs / 6.616 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 120 of 183[31m (17 FAILED)[39m (0 secs / 6.617 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 121 of 183[31m (17 FAILED)[39m (0 secs / 6.619 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 122 of 183[31m (17 FAILED)[39m (0 secs / 6.62 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 123 of 183[31m (17 FAILED)[39m (0 secs / 6.621 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 124 of 183[31m (17 FAILED)[39m (0 secs / 6.622 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 125 of 183[31m (17 FAILED)[39m (0 secs / 6.623 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 126 of 183[31m (17 FAILED)[39m (0 secs / 6.624 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 127 of 183[31m (17 FAILED)[39m (0 secs / 6.625 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 128 of 183[31m (17 FAILED)[39m (0 secs / 6.626 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 129 of 183[31m (17 FAILED)[39m (0 secs / 6.628 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 130 of 183[31m (17 FAILED)[39m (0 secs / 6.629 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 131 of 183[31m (17 FAILED)[39m (0 secs / 6.63 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 132 of 183[31m (17 FAILED)[39m (0 secs / 6.632 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 133 of 183[31m (17 FAILED)[39m (0 secs / 6.633 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 134 of 183[31m (17 FAILED)[39m (0 secs / 6.634 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 135 of 183[31m (17 FAILED)[39m (0 secs / 6.636 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 136 of 183[31m (17 FAILED)[39m (0 secs / 6.637 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 137 of 183[31m (17 FAILED)[39m (0 secs / 6.638 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 138 of 183[31m (17 FAILED)[39m (0 secs / 6.639 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 139 of 183[31m (17 FAILED)[39m (0 secs / 6.64 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 140 of 183[31m (17 FAILED)[39m (0 secs / 6.641 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 141 of 183[31m (17 FAILED)[39m (0 secs / 6.642 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 142 of 183[31m (17 FAILED)[39m (0 secs / 6.643 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 143 of 183[31m (17 FAILED)[39m (0 secs / 6.644 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 144 of 183[31m (17 FAILED)[39m (0 secs / 6.645 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 145 of 183[31m (17 FAILED)[39m (0 secs / 6.646 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 146 of 183[31m (17 FAILED)[39m (0 secs / 6.647 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 147 of 183[31m (17 FAILED)[39m (0 secs / 6.649 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 148 of 183[31m (17 FAILED)[39m (0 secs / 6.649 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 149 of 183[31m (17 FAILED)[39m (0 secs / 6.649 secs)
+[1A[2K[31mChrome Headless 145.0.0.0 (Linux 0.0.0) LanguageRedirectService does not duplicate language in URL FAILED[39m
+	Expected '/en/solutions/web-development/' to be '/en/solutions/web-development'.
+	    at <Jasmine>
+	    at UserContext.<anonymous> (apps/app/src/app/core/guards/language-redirect-guard.spec.ts:47:29)
+	    at <Jasmine>
+Chrome Headless 145.0.0.0 (Linux 0.0.0): Executed 150 of 183[31m (18 FAILED)[39m (0 secs / 6.652 secs)
+[1A[2K[31mChrome Headless 145.0.0.0 (Linux 0.0.0) LanguageRedirectService returns UrlTree with default language on server FAILED[39m
+	Expected '/en/solutions/web-development/' to be '/en/solutions/web-development'.
+	    at <Jasmine>
+	    at UserContext.<anonymous> (apps/app/src/app/core/guards/language-redirect-guard.spec.ts:29:29)
+	    at <Jasmine>
+Chrome Headless 145.0.0.0 (Linux 0.0.0): Executed 151 of 183[31m (19 FAILED)[39m (0 secs / 6.654 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 152 of 183[31m (19 FAILED)[39m (0 secs / 6.697 secs)
+[1A[2K[31mChrome Headless 145.0.0.0 (Linux 0.0.0) Careers should create FAILED[39m
+	ɵNotFound: NG0201: No provider found for `ActivatedRoute`. Source: Standalone[Careers2]. Path: Seo2 -> ActivatedRoute. Find more at https://v20.angular.dev/errors/NG0201
+	error properties: Object({ code: -201, ngErrorCode: -201, ngErrorMessage: 'No provider found for `ActivatedRoute`.', ngTokenPath: [ 'Seo2', 'ActivatedRoute' ] })
+	ɵNotFound: NG0201: No provider found for `ActivatedRoute`. Source: Standalone[Careers2]. Path: Seo2 -> ActivatedRoute. Find more at https://v20.angular.dev/errors/NG0201
+	    at createRuntimeError (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:924:19)
+	    at NullInjector.get (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:1494:27)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:2052:33)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:2052:33)
+	    at R3Injector.retrieve (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:1936:25)
+	    at injectInjectorOnly (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:1049:39)
+	    at ɵɵinject (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:1061:42)
+	    at Object.Seo2_Factory [as factory] (ng:///Seo2/ɵfac.js:5:37)
+	    at node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:2194:47
+	    at runInInjectorProfilerContext (node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:749:9)
+Chrome Headless 145.0.0.0 (Linux 0.0.0): Executed 153 of 183[31m (20 FAILED)[39m (0 secs / 6.755 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 154 of 183[31m (20 FAILED)[39m (0 secs / 6.755 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 155 of 183[31m (20 FAILED)[39m (0 secs / 6.755 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 156 of 183[31m (20 FAILED)[39m (0 secs / 6.755 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 157 of 183[31m (20 FAILED)[39m (0 secs / 6.756 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 158 of 183[31m (20 FAILED)[39m (0 secs / 6.756 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 159 of 183[31m (20 FAILED)[39m (0 secs / 6.756 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 160 of 183[31m (20 FAILED)[39m (0 secs / 6.757 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 161 of 183[31m (20 FAILED)[39m (0 secs / 6.757 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 162 of 183[31m (20 FAILED)[39m (0 secs / 6.757 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 163 of 183[31m (20 FAILED)[39m (0 secs / 6.757 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 164 of 183[31m (20 FAILED)[39m (0 secs / 6.757 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 165 of 183[31m (20 FAILED)[39m (0 secs / 6.757 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 166 of 183[31m (20 FAILED)[39m (0 secs / 6.757 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 167 of 183[31m (20 FAILED)[39m (0 secs / 6.758 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 168 of 183[31m (20 FAILED)[39m (0 secs / 6.758 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 169 of 183[31m (20 FAILED)[39m (0 secs / 6.758 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 170 of 183[31m (20 FAILED)[39m (0 secs / 6.758 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 171 of 183[31m (20 FAILED)[39m (0 secs / 6.759 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 172 of 183[31m (20 FAILED)[39m (0 secs / 6.759 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 173 of 183[31m (20 FAILED)[39m (0 secs / 6.759 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 174 of 183[31m (20 FAILED)[39m (0 secs / 6.759 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 175 of 183[31m (20 FAILED)[39m (0 secs / 6.759 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 176 of 183[31m (20 FAILED)[39m (0 secs / 6.76 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 177 of 183[31m (20 FAILED)[39m (0 secs / 6.76 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 178 of 183[31m (20 FAILED)[39m (0 secs / 6.761 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 179 of 183[31m (20 FAILED)[39m (0 secs / 6.761 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 180 of 183[31m (20 FAILED)[39m (0 secs / 6.761 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 181 of 183[31m (20 FAILED)[39m (0 secs / 6.761 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 182 of 183[31m (20 FAILED)[39m (0 secs / 6.761 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 183 of 183[31m (20 FAILED)[39m (0 secs / 6.761 secs)
+[1A[2KChrome Headless 145.0.0.0 (Linux 0.0.0): Executed 183 of 183[31m (20 FAILED)[39m (7.344 secs / 6.761 secs)
+[31mTOTAL: 20 FAILED, 163 SUCCESS[39m
+
+
+
+ NX   Running target test for project app failed
+
+Failed tasks:
+
+- app:test
+
+Hint: run the command with --verbose for more details.

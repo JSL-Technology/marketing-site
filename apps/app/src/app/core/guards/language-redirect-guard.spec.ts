@@ -1,4 +1,5 @@
-import { PLATFORM_ID } from '@angular/core';
+import { provideRouter } from '@angular/router';
+import { PLATFORM_ID, provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { RouterStateSnapshot } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -14,6 +15,8 @@ describe('LanguageRedirectService', () => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
       providers: [
+        provideRouter([]),
+        provideZonelessChangeDetection(),
         LanguageRedirectService,
         { provide: PLATFORM_ID, useValue: 'server' },
         { provide: CookieService, useValue: { get: () => '' } },
@@ -30,6 +33,8 @@ describe('LanguageRedirectService', () => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
       providers: [
+        provideRouter([]),
+        provideZonelessChangeDetection(),
         LanguageRedirectService,
         { provide: PLATFORM_ID, useValue: 'browser' },
         { provide: CookieService, useValue: { get: () => 'es' } },

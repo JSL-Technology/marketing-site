@@ -1,3 +1,4 @@
+import { provideRouter } from '@angular/router';
 import { TestBed } from '@angular/core/testing';
 import { LanguageSuggestionService } from './language-suggestion.service';
 import { CookieService } from 'ngx-cookie-service';
@@ -26,6 +27,7 @@ describe('LanguageSuggestionService', () => {
 
     TestBed.configureTestingModule({
       providers: [
+        provideRouter([]),
         provideZonelessChangeDetection(),
         LanguageSuggestionService,
         { provide: CookieService, useValue: cookieServiceSpy },

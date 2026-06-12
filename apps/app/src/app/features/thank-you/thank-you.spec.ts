@@ -1,8 +1,10 @@
+import { importProvidersFrom, provideZonelessChangeDetection } from '@angular/core';
+import { ALL_ICONS } from '../../core/constants/icons';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ThankYou } from './thank-you';
 import { TranslateModule } from '@ngx-translate/core';
 import { RouterModule } from '@angular/router';
-import { provideZonelessChangeDetection } from '@angular/core';
+
 import { LucideAngularModule, CheckCircle, Home } from 'lucide-angular';
 
 describe('ThankYou', () => {
@@ -15,9 +17,10 @@ describe('ThankYou', () => {
         ThankYou,
         TranslateModule.forRoot(),
         RouterModule.forRoot([]),
-        LucideAngularModule.pick({ CheckCircle, Home })
+        LucideAngularModule.pick(ALL_ICONS)
       ],
       providers: [
+        importProvidersFrom(LucideAngularModule.pick(ALL_ICONS)),
         provideZonelessChangeDetection()
       ]
     })

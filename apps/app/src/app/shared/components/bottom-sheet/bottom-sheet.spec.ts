@@ -1,5 +1,7 @@
+import { importProvidersFrom, provideZonelessChangeDetection } from '@angular/core';
+import { ALL_ICONS } from '../../../core/constants/icons';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideZonelessChangeDetection } from '@angular/core';
+
 import { BottomSheetComponent } from './bottom-sheet';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { LucideAngularModule, X } from 'lucide-angular';
@@ -12,13 +14,12 @@ describe('BottomSheetComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        BottomSheetComponent,
+      imports: [BottomSheetComponent,
         NoopAnimationsModule,
-        LucideAngularModule.pick({ X }),
-        TranslateModule.forRoot()
-      ],
+        ,
+        TranslateModule.forRoot()],
       providers: [
+        importProvidersFrom(LucideAngularModule.pick(ALL_ICONS)),
         GestureBusService,
         provideZonelessChangeDetection()
       ]

@@ -1,10 +1,11 @@
+import { importProvidersFrom } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { WhitepaperDownloadComponent } from './whitepaper-download';
 import { TranslateModule } from '@ngx-translate/core';
 import { LucideAngularModule } from 'lucide-angular';
 import { ToastService } from '@core/services/toast.service';
 import { provideZonelessChangeDetection } from '@angular/core';
-import { ALL_ICONS } from '@core/constants/icons';
+import { ALL_ICONS } from '../../../core/constants/icons';
 
 class MockToastService {
   show(message: string, type: string) {}
@@ -18,11 +19,11 @@ describe('WhitepaperDownloadComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         WhitepaperDownloadComponent,
-        TranslateModule.forRoot(),
-        LucideAngularModule.pick(ALL_ICONS)
+        TranslateModule.forRoot()
       ],
       providers: [
         provideZonelessChangeDetection(),
+        importProvidersFrom(LucideAngularModule.pick(ALL_ICONS)),
         { provide: ToastService, useClass: MockToastService }
       ]
     })

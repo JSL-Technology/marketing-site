@@ -1,5 +1,6 @@
+import { NgZone, provideZonelessChangeDetection } from '@angular/core';
 import { MobileMenuGestures, MobileMenuGestureConfig } from './mobile-menu-gestures';
-import { NgZone } from '@angular/core';
+
 
 describe('MobileMenuElastic', () => {
   let gestures: MobileMenuGestures;
